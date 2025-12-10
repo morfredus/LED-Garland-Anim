@@ -1,4 +1,4 @@
-# 📚 Architecture - LED-Garland-Anim v0.5.1
+# 📚 Architecture - LED-Garland-Anim v0.5.2
 
 ## 🎯 Overview
 

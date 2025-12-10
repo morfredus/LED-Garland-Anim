@@ -1,8 +1,8 @@
 # LED-Garland-Anim
 
-**Version 0.2.0** - Bi-directional LED Garland Animation Controller for ESP32/ESP32-S3
+**Version 0.5.1** - Bi-directional LED Garland Animation Controller for ESP32/ESP32-S3
 
-Control a 2-wire garland with anti-parallel LEDs via TB6612FNG motor driver module. Features 14 animations, 4 smart operating modes, OLED display with animated visualization, web interface with schedule configuration, and physical button controls.
+Control a 2-wire garland with anti-parallel LEDs via TB6612FNG motor driver module. Features 14 animations, 2 smart operating modes, OLED display with animated visualization, web interface, and physical button controls.
 
 [🇫🇷 Version française](README_FR.md) | [📝 Changelog](CHANGELOG.md) | [📚 Documentation](docs/)
 
@@ -26,11 +26,9 @@ Control a 2-wire garland with anti-parallel LEDs via TB6612FNG motor driver modu
 - **Meteor**: Fading light trail
 - **Auto Mode**: Cycle through all animations (30s each)
 
-### 🎮 4 Smart Operating Modes
-- **Permanent**: Always on
-- **Scheduled**: Activation based on time schedules (with web configuration)
-- **Motion Trigger**: PIR sensor activation (30s after detection)
-- **Night Off**: Automatic shutdown based on ambient light (LDR)
+### 🎮 2 Smart Operating Modes
+- **Permanent**: Always on (default at startup)
+- **Motion Trigger**: PIR sensor activation (30s after motion detection)
 
 ### 🖥️ OLED Real-time Display
 - Live display of current animation and mode names
@@ -42,8 +40,7 @@ Control a 2-wire garland with anti-parallel LEDs via TB6612FNG motor driver modu
 ### 🌐 Web Interface
 - **Complete Dashboard**: System info, memory, WiFi stats
 - **Garland Control**: Animation and mode selection
-- **Schedule Configuration**: Set start/end times for scheduled mode
-- **Sensor Visualization**: PIR status, light level, night detection
+- **Sensor Visualization**: PIR motion status, light level
 - **Remote Actions**: Refresh and restart
 
 ### 🔘 Physical Controls
@@ -77,8 +74,7 @@ Control a 2-wire garland with anti-parallel LEDs via TB6612FNG motor driver modu
 - **ESP32-S3 DevKitC-1** or **ESP32 DevKitC** board
 - **TB6612FNG** module (dual H-bridge motor controller)
 - 2-wire LED garland (anti-parallel LEDs, ~50 LEDs total)
-- **PIR HC-SR501** sensor (optional)
-- **LDR** photoresistor + 10kΩ resistor (optional)
+- **PIR HC-SR501** sensor (optional, for motion trigger mode)
 - **OLED SSD1306** 128x32 or 128x64 display (optional)
 - **TFT ST7789** 240x240 display (optional)
 - **NeoPixel RGB LED** WS2812B (optional)
@@ -138,7 +134,6 @@ TB6612FNG:
 
 Sensors:
   PIR   → GPIO 14
-  LDR   → GPIO 15 (ADC)
 
 Buttons:
   BTN1  → GPIO 16
@@ -159,7 +154,6 @@ TB6612FNG:
 
 Sensors:
   PIR   → GPIO 36
-  LDR   → GPIO 39 (ADC)
 
 Buttons:
   BTN1  → GPIO 4
@@ -258,21 +252,6 @@ In `include/garland_control.h`:
 #define MOTION_TRIGGER_DURATION 30000  // Duration in ms after detection
 ```
 
-### Adjust Night Threshold
-In `include/garland_control.h`:
-```cpp
-#define NIGHT_THRESHOLD 500  // ADC value (0-4095), lower = darker
-```
-
-### Change Schedule Default Times
-In `src/garland_control.cpp`:
-```cpp
-static uint8_t scheduleStartHour = 18;    // Start hour (0-23)
-static uint8_t scheduleStartMinute = 0;   // Start minute (0-59)
-static uint8_t scheduleEndHour = 23;      // End hour (0-23)
-static uint8_t scheduleEndMinute = 0;     // End minute (0-59)
-```
-
 ---
 
 ## 📊 Technical Specifications
@@ -303,6 +282,21 @@ static uint8_t scheduleEndMinute = 0;     // End minute (0-59)
 - Multi-network automatic (WiFiMulti)
 - Auto-reconnect on loss
 - Web server on port 80
+
+---
+
+## 🚀 Startup Behavior
+
+At boot, the system initializes with:
+- **Animation Mode**: `AUTO` - Cycles through all 14 animations (30 seconds each)
+- **Operating Mode**: `PERMANENT` - Garland always on
+- **Display**: Shows animation name and IP address on OLED
+
+Change these defaults in `src/garland_control.cpp`:
+```cpp
+static GarlandAnimation currentAnimation = ANIM_AUTO;    // Change to any animation
+static GarlandMode currentMode = MODE_PERMANENT;         // Or MODE_MOTION_TRIGGER
+```
 
 ---
 
