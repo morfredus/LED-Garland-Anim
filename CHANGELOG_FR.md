@@ -5,6 +5,18 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [0.6.0] - 2025-12-10
+
+### Ajouté
+- 🤖 **Commande Telegram** :
+  - Bot en polling avec `/anim <id|nom>`, `/mode <id|nom>`, `/nextanim`, `/nextmode`, `/status`, `/liste`
+  - `/liste` renvoie tous les modes et animations avec leurs IDs
+  - Notification Telegram automatique à la connexion WiFi (SSID, IP, anim/mode courants)
+
+### Modifié
+- 🔐 **Secrets** : `WIFI_NETWORKS` désormais défini inline dans `secrets.h` (plus de `secrets.cpp`).
+- 📄 **Documentation** : README/README_FR et USER_GUIDE/USER_GUIDE_FR mis à jour pour Telegram et version 0.6.0.
+
 ## [0.5.1] - 2025-12-10 (Patch - Documentation)
 
 ### Mis à jour

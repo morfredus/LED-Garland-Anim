@@ -196,7 +196,7 @@ ESP32-S3           TFT ST7789
 |-----------|--------|----------|-------------|-------|
 | **BOOT Button** | Button | GPIO 0 | Integrated button on board | Already present, long press restart |
 | **Button 1** | Button | GPIO 4 | External button | Animation change |
-| **Button 2** | Button | GPIO 15 | External button | Mode change |
+| **Button 2** | Button | GPIO 16 | External button | Mode change |
 | **Builtin LED** | LED | GPIO 2 | Integrated blue LED | Visual heartbeat |
 | **OLED SSD1306** | SDA | GPIO 21 | I2C Data | Connection to OLED SDA pin |
 | **OLED SSD1306** | SCL | GPIO 22 | I2C Clock | Connection to OLED SCL pin |
@@ -217,10 +217,10 @@ ESP32-S3           TFT ST7789
 | **TB6612FNG** | VCC | 3.3V | Logic power | ESP32 3V3 pin |
 | **TB6612FNG** | VM | 5-15V | Motor power | External power for garland |
 | **TB6612FNG** | GND | GND | Ground | Common with ESP32 GND |
-| **PIR Sensor** | OUT | GPIO 36 | Detection signal | HIGH = motion detected |
+| **PIR Sensor** | OUT | GPIO 35 | Detection signal | HIGH = motion detected |
 | **PIR Sensor** | VCC | 5V | Power | ESP32 5V pin (via USB) |
 | **PIR Sensor** | GND | GND | Ground | ESP32 GND pin |
-| **LDR Photoresistor** | Signal | GPIO 39 | ADC Read | Voltage divider with R=10kΩ |
+| **LDR Photoresistor** | Signal | GPIO 34 | ADC Read | Voltage divider with R=10kΩ |
 | **LDR** | VCC | 3.3V | Power | Via 10kΩ resistor |
 | **LDR** | GND | GND | Ground | Via LDR to GND |
 
@@ -392,7 +392,7 @@ digitalWrite(STBY, LOW);  // Put entire module to sleep
 #### LDR Doesn't Vary
 - Check voltage divider (10kΩ resistor)
 - Test LDR resistance with multimeter
-- Ensure GPIO 15/39 is in ADC mode
+- Ensure GPIO 15/34 is in ADC mode
 
 ### 📐 Useful Calculations
 

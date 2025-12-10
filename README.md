@@ -1,6 +1,6 @@
 # LED-Garland-Anim
 
-**Version 0.5.1** - Bi-directional LED Garland Animation Controller for ESP32/ESP32-S3
+**Version 0.6.0** - Bi-directional LED Garland Animation Controller for ESP32/ESP32-S3
 
 Control a 2-wire garland with anti-parallel LEDs via TB6612FNG motor driver module. Features 14 animations, 2 smart operating modes, OLED display with animated visualization, web interface, and physical button controls.
 
@@ -37,9 +37,14 @@ Control a 2-wire garland with anti-parallel LEDs via TB6612FNG motor driver modu
 - Adaptive layout for 128x32 and 128x64 screens
 - 10 FPS refresh rate for smooth animations
 
+### 📡 Telegram Remote Control
+- Bot commands: `/anim <id|name>`, `/mode <id|name>`, `/nextanim`, `/nextmode`, `/status`, `/liste`
+- `/liste` returns all animations and modes with numeric IDs
+- Automatic Telegram notification on WiFi connect (SSID, IP, current animation/mode)
+
 ### 🌐 Web Interface
 - **Complete Dashboard**: System info, memory, WiFi stats
-- **Garland Control**: Animation and mode selection
+- **Garland Control**: Animation and mode selection (2 modes, 15 animations incl. Auto)
 - **Sensor Visualization**: PIR motion status, light level
 - **Remote Actions**: Refresh and restart
 
@@ -90,22 +95,8 @@ git clone <your-repo>
 cd Anim-Guirlande
 ```
 
-### 2. Create `secrets.h` File
-The `include/secrets.h` file is ignored by Git. Create it manually:
-
-```cpp
-// include/secrets.h
-#ifndef SECRETS_H
-#define SECRETS_H
-
-const char* WIFI_NETWORKS[][2] = {
-    {"Home_SSID", "Password123"},
-    {"Office_SSID", "Password456"},
-    {"Phone_Hotspot", "12345678"}
-};
-
-#endif
-```
+### 2. Configure `include/secrets.h`
+Edit `include/secrets.h` to set your WiFi networks and Telegram bot credentials (`TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`).
 
 ### 3. Configure PlatformIO
 Modify build paths in `platformio.ini` (optional):
@@ -153,11 +144,11 @@ TB6612FNG:
   STBY  → GPIO 14
 
 Sensors:
-  PIR   → GPIO 36
+  PIR   → GPIO 35
 
 Buttons:
   BTN1  → GPIO 4
-  BTN2  → GPIO 15
+  BTN2  → GPIO 16
 
 Displays:
   OLED SDA → GPIO 21
@@ -181,9 +172,9 @@ pio device monitor
 ## 📡 Usage
 
 ### Startup
-1. Garland starts with **Alternating Fade** animation in **Permanent** mode
+1. Garland starts in **Auto** animation and **Permanent** mode
 2. OLED/TFT display shows WiFi connection progress
-3. Once connected, IP address is displayed for 3 seconds
+3. Once connected, IP address is displayed and a Telegram notification is sent (SSID/IP/animation/mode)
 4. Access web interface: `http://[ESP32_IP]`
 
 ### Physical Controls
@@ -192,11 +183,18 @@ pio device monitor
 - **BOOT Button (long press)**: Restart ESP32
 
 ### Web Interface
-- **Animation Selector**: Choose from 15 animations
-- **Mode Selector**: Switch between 4 operating modes
-- **Schedule Configuration**: Set start/end times for scheduled mode
+- **Animation Selector**: Choose from 15 animations (including Auto)
+- **Mode Selector**: Switch between 2 operating modes
 - **Refresh Button**: Update system information
 - **Restart Button**: Remote restart
+
+### Telegram Bot
+- Commands (from authorized chat):
+  - `/anim <id|name>` (e.g. `/anim 3`, `/anim auto`)
+  - `/mode <id|name>` (e.g. `/mode 1`, `/mode detect`)
+  - `/nextanim`, `/nextmode`
+  - `/status` (current animation, mode, IP)
+  - `/liste` (lists all modes and animations with IDs)
 
 ### OLED Display
 - Shows current animation name
@@ -213,7 +211,7 @@ Anim-Guirlande/
 ├── include/
 │   ├── board_config.h        # ESP32/S3 pin mapping
 │   ├── config.h              # General configuration
-│   ├── secrets.h             # WiFi credentials (not versioned)
+│   ├── secrets.h             # WiFi networks + Telegram credentials
 │   ├── display.h             # OLED/TFT display management
 │   ├── garland_control.h     # Garland control and animations
 │   ├── web_interface.h       # HTTP handlers

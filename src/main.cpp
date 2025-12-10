@@ -11,6 +11,7 @@
 #include "web_interface.h"
 #include "display.h"
 #include "garland_control.h"
+#include "telegram_control.h"
 
 // --- OBJETS ---
 WiFiMulti wifiMulti;
@@ -115,7 +116,7 @@ void handleBtn2Click() {
 // --- FONCTIONS WIFI ---
 void setupWifi() {
     LOG_PRINTLN("--- Démarrage WiFiMulti ---");
-    int numNetworks = sizeof(WIFI_NETWORKS) / sizeof(WIFI_NETWORKS[0]);
+    int numNetworks = WIFI_NETWORKS_COUNT;
     
     for (int i = 0; i < numNetworks; i++) {
         wifiMulti.addAP(WIFI_NETWORKS[i][0], WIFI_NETWORKS[i][1]);
@@ -164,6 +165,9 @@ void setupWifi() {
             pixels.setPixelColor(0, pixels.Color(0, 50, 0)); // Vert
             pixels.show();
         #endif
+
+        // Notification Telegram de connexion WiFi
+        sendTelegramStatus(WiFi.SSID().c_str(), WiFi.localIP());
     } else {
         LOG_PRINTLN(" Echec !");
         displayWifiFailed();
@@ -207,6 +211,8 @@ void setup() {
     // Démarrage Serveur Web
     if(WiFi.status() == WL_CONNECTED) {
         setupWebServer();
+        setupTelegramBot();
+        sendTelegramStatus(WiFi.SSID().c_str(), WiFi.localIP());
     }
 }
 
@@ -222,6 +228,9 @@ void loop() {
 
     // 3. Gestion Serveur Web
     server.handleClient();
+
+    // 3b. Commandes Telegram (polling léger)
+    handleTelegramBot();
 
     // 4. Gestion WiFi (Reconnexion auto)
     if(wifiMulti.run() != WL_CONNECTED) {

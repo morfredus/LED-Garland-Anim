@@ -1,4 +1,4 @@
-# User Guide - LED-Garland-Anim v0.4.0
+# User Guide - LED-Garland-Anim v0.6.0
 
 Complete user guide for the LED-Garland-Anim LED garland animation controller.
 
@@ -46,7 +46,7 @@ Example: `192.168.1.100`
 #### ESP32 Classic
 - **Button 0 (BOOT)**: Integrated on board
 - **Button 1**: GPIO 4 (external button)
-- **Button 2**: GPIO 15 (external button)
+- **Button 2**: GPIO 16 (external button)
 
 ### Button Functions
 
@@ -57,7 +57,7 @@ Example: `192.168.1.100`
 
 #### Button 2 - Mode Control
 - **Short press**: Cycle to next operating mode
-- **Sequence**: Permanent → Scheduled → Motion Trigger → Night Off → (restart)
+- **Sequence**: Permanent → Motion Trigger → (restart)
 - **Visual feedback**: NeoPixel flashes cyan
 
 #### Button 0 (BOOT) - Restart
@@ -83,15 +83,12 @@ Example: `192.168.1.100`
 - Click "Apply" to change
 
 **Mode Selector**
-- 4 operating modes
+- 2 operating modes (Permanent, Motion Trigger)
 - Current mode highlighted
 - Click "Apply" to change
 
-**Schedule Configuration** (v0.2.0+)
-- Start time: Hour and Minute inputs
-- End time: Hour and Minute inputs
-- Click "Save Schedule" to apply
-- Confirmation popup appears
+**Schedule Configuration**
+- Removed since v0.5.1 (modes simplified to 2). No schedule UI in current build.
 
 **Sensor Status**
 - Motion detected: Yes/No
@@ -137,6 +134,15 @@ Example: `192.168.1.100`
 ### Action Buttons
 - **🔄 Refresh**: Reload page with updated data
 - **🔴 Restart**: Restart ESP32 (asks for confirmation)
+
+### Telegram Bot
+- Send commands from the authorized chat:
+   - `/anim <id|name>` (e.g. `/anim 3`, `/anim auto`)
+   - `/mode <id|name>` (e.g. `/mode 1`, `/mode detect`)
+   - `/nextanim`, `/nextmode`
+   - `/status` (current animation, mode, IP)
+   - `/liste` (lists all modes and animations with IDs)
+- On WiFi connection, the device sends a Telegram notification with SSID/IP and current animation/mode.
 
 ---
 
@@ -206,27 +212,8 @@ Each animation has a unique visualization on the OLED:
 - Button 2 until "Permanent" displays
 - Web interface: Select "Permanent" mode
 
-### 2. Scheduled Mode (v0.2.0+)
-**Behavior**: Garland activates only during configured time window
-
-**Configuration**:
-1. Access web interface
-2. Scroll to "Schedule Configuration" section
-3. Set start time (hour and minute)
-4. Set end time (hour and minute)
-5. Click "Save Schedule"
-
-**Default schedule**: 18:00 - 23:00
-
-**Use cases**:
-- Automatic evening decoration (6 PM - 11 PM)
-- Energy saving
-- Unattended operation
-
-**Important**: Requires accurate system time. Consider adding RTC module for power-loss resilience.
-
-### 3. Motion Trigger Mode
-**Behavior**: Activates for 30 seconds after motion detection
+### 2. Motion Trigger Mode
+**Behavior**: Activates for 30 seconds after motion detection (PIR)
 
 **Prerequisite**: PIR sensor connected
 
@@ -235,47 +222,11 @@ Each animation has a unique visualization on the OLED:
 - Corridor lighting
 - Interactive displays
 
-**Trigger duration**: 30 seconds (configurable in code)
+**Trigger duration**: 30 seconds (configurable in code via `MOTION_TRIGGER_DURATION`)
 
-**Sensor**: PIR HC-SR501 module
-- Detection range: ~7 meters
-- Detection angle: ~120°
-- Adjustable sensitivity and delay
-
-### 4. Night Off Mode
-**Behavior**: Automatically turns off when ambient light is low (night time)
-
-**Prerequisite**: LDR photoresistor connected
-
-**Features** (v0.4.0+):
-- **Automatic detection**: Uses light sensor to detect nighttime
-- **OLED backlight off**: Screen saves power in night mode
-- **LED indicators silent**: Blue LED and NeoPixel stop blinking
-- **Minimal display**: OLED shows 3 fixed dots instead of animation
-- **No manual setup**: Fully automatic based on light level
-- **Night threshold**: 500/4095 ADC units (configurable)
-  - Lower value = darker environment needed to trigger
-  - Typical: 300-600 depending on ambient lighting
-
-**Use cases**:
-- Daytime decoration only
-- Automatic night shutdown
-- Light-reactive displays
-- Power-saving mode during sleep hours
-
-**When Night Mode Activates**:
-1. OLED backlight dims to off
-2. Animation stops (garland LEDs still respond to motion if set)
-3. Heartbeat LED/NeoPixel stops blinking
-4. Screen shows minimal dots to indicate system is still running
-
-**When Light Returns**:
-1. OLED backlight automatically turns on
-2. Normal display resumes
-3. Heartbeat LED/NeoPixel resumes blinking
-4. Animation continues (if in active mode)
-
----
+**Notes**:
+- Only 2 modes exist in v0.6.0 (Permanent, Motion Trigger). Scheduled and Night modes were removed.
+- Consider adding debounce if using noisy PIR modules.
 
 ## Animations
 
@@ -367,60 +318,21 @@ Automatically cycles through all 13 animations.
 
 ---
 
-## Schedule Configuration
+### 2. Motion Trigger Mode
+**Behavior**: Activates for 30 seconds after motion detection (PIR)
 
-### Web Interface Setup (v0.2.0+)
+**Prerequisite**: PIR sensor connected
 
-1. **Access Web Interface**
-   - Navigate to `http://[ESP32_IP]`
-   - Scroll to "LED Garland" card
+**Use cases**:
+- Entrance decoration
+- Corridor lighting
+- Interactive displays
 
-2. **Locate Schedule Section**
-   - Below mode selector
-   - Title "⏰ Schedule Configuration"
+**Trigger duration**: 30 seconds (configurable in code via `MOTION_TRIGGER_DURATION`)
 
-3. **Set Start Time**
-   - Enter start hour (0-23)
-   - Enter start minute (0-59)
-   - Example: 18:00 for 6 PM
-
-4. **Set End Time**
-   - Enter end hour (0-23)
-   - Enter end minute (0-59)
-   - Example: 23:00 for 11 PM
-
-5. **Save Configuration**
-   - Click "💾 Save Schedule" button
-   - Confirmation popup appears
-   - Page reloads with new values
-
-### Common Schedules
-
-**Evening Decoration** (Default)
-- Start: 18:00 (6 PM)
-- End: 23:00 (11 PM)
-- Usage: Automatic evening ambiance
-
-**All Night**
-- Start: 18:00 (6 PM)
-- End: 06:00 (6 AM)
-- Usage: Extended nighttime decoration
-
-**Daytime Only**
-- Start: 08:00 (8 AM)
-- End: 18:00 (6 PM)
-- Usage: Business hours, shop displays
-
-**Short Event**
-- Start: 19:00 (7 PM)
-- End: 21:00 (9 PM)
-- Usage: Dinners, specific events
-
-### Verification
-After saving, check:
-- Schedule values updated in fields
-- Garland behaves according to schedule
-- Verify system time if issues
+**Notes**:
+- Only 2 modes exist in v0.6.0 (Permanent, Motion Trigger). Scheduled and Night modes were removed.
+- Consider adding debounce if using noisy PIR modules.
 
 ---
 
@@ -428,18 +340,18 @@ After saving, check:
 
 ### Morning Routine
 1. Check current status on OLED
-2. No action needed in Scheduled/Motion modes
-3. Use Button 1 to change animation if desired
+2. Use Button 1 to change animation if desired
+3. Leave in Permanent or Motion Trigger based on need
 
 ### Evening Routine
-1. Scheduled mode activates automatically
+1. Choose Permanent (always on) or Motion Trigger
 2. Web interface to verify operation
-3. Adjust schedule if needed
+3. Adjust animation via buttons, web, or Telegram
 
 ### Leaving Home
-1. Set to Scheduled mode for automatic control
-2. Or turn off by setting to Motion Trigger (no motion = off)
-3. Check web interface remotely if on same network
+1. Set to Motion Trigger to reduce usage (no motion = off)
+2. Or leave in Permanent if desired
+3. Check web interface or Telegram if needed
 
 ### Quick Troubleshooting Actions
 - **Garland not working**: Press Button 1 to cycle animations
@@ -478,6 +390,6 @@ For detailed troubleshooting guide, see [TROUBLESHOOTING.md](./TROUBLESHOOTING.m
 
 ---
 
-**Version**: 0.2.0  
-**Last Updated**: 2025-12-09  
+**Version**: 0.6.0  
+**Last Updated**: 2025-12-10  
 **Next**: [Troubleshooting Guide](./TROUBLESHOOTING.md)

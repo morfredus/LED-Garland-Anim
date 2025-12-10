@@ -1,6 +1,6 @@
 # LED-Garland-Anim
 
-**Version 0.5.1** - Contrôleur d'animation de guirlande LED bi-directionnelle pour ESP32/ESP32-S3
+**Version 0.6.0** - Contrôleur d'animation de guirlande LED bi-directionnelle pour ESP32/ESP32-S3
 
 Contrôlez une guirlande à 2 fils avec LEDs en anti-parallèle via un module TB6612FNG. Dispose de 14 animations, 2 modes de fonctionnement intelligents, affichage OLED avec visualisation animée, interface web, et contrôles physiques par boutons.
 
@@ -37,11 +37,15 @@ Contrôlez une guirlande à 2 fils avec LEDs en anti-parallèle via un module TB
 - Mise en page adaptative pour écrans 128x32 et 128x64
 - Taux de rafraîchissement 10 FPS pour animations fluides
 
+### 📡 Contrôle Telegram
+- Commandes bot : `/anim <id|nom>`, `/mode <id|nom>`, `/nextanim`, `/nextmode`, `/status`, `/liste`
+- `/liste` renvoie toutes les animations et modes avec leurs IDs
+- Notification Telegram automatique à la connexion WiFi (SSID, IP, animation/mode courants)
+
 ### 🌐 Interface Web
 - **Tableau de Bord Complet**: Info système, mémoire, statistiques WiFi
-- **Contrôle Guirlande**: Sélection animation et mode
-- **Configuration Horaire**: Définir heures de début/fin pour mode programmé
-- **Visualisation Capteurs**: État PIR, niveau luminosité, détection nuit
+- **Contrôle Guirlande**: Sélection animation et mode (2 modes, 15 animations dont Auto)
+- **Visualisation Capteurs**: État PIR, niveau luminosité
 - **Actions à Distance**: Actualisation et redémarrage
 
 ### 🔘 Contrôles Physiques
@@ -91,22 +95,8 @@ git clone <votre-repo>
 cd Anim-Guirlande
 ```
 
-### 2. Créer le Fichier `secrets.h`
-Le fichier `include/secrets.h` est ignoré par Git. Créez-le manuellement :
-
-```cpp
-// include/secrets.h
-#ifndef SECRETS_H
-#define SECRETS_H
-
-const char* WIFI_NETWORKS[][2] = {
-    {"SSID_Maison", "MotDePasse123"},
-    {"SSID_Bureau", "MotDePasse456"},
-    {"Partage_Tel", "12345678"}
-};
-
-#endif
-```
+### 2. Configurer `include/secrets.h`
+Éditez `include/secrets.h` pour définir vos réseaux WiFi et les identifiants du bot Telegram (`TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`).
 
 ### 3. Configurer PlatformIO
 Modifiez les chemins de build dans `platformio.ini` (optionnel) :
@@ -154,11 +144,11 @@ TB6612FNG:
   STBY  → GPIO 14
 
 Capteurs:
-  PIR   → GPIO 36
+  PIR   → GPIO 35
 
 Boutons:
   BTN1  → GPIO 4
-  BTN2  → GPIO 15
+  BTN2  → GPIO 16
 
 Affichages:
   OLED SDA → GPIO 21
@@ -182,9 +172,9 @@ pio device monitor
 ## 📡 Utilisation
 
 ### Démarrage
-1. La guirlande démarre avec l'animation **Fade Alterné** en mode **Permanent**
+1. La guirlande démarre en animation **Auto** et mode **Permanent**
 2. L'écran OLED/TFT affiche la progression de connexion WiFi
-3. Une fois connecté, l'adresse IP s'affiche pendant 3 secondes
+3. Une fois connecté, l'adresse IP s'affiche et une notification Telegram est envoyée (SSID/IP/animation/mode)
 4. Accédez à l'interface web : `http://[IP_ESP32]`
 
 ### Contrôles Physiques
@@ -193,11 +183,18 @@ pio device monitor
 - **Bouton BOOT (appui long)**: Redémarrer l'ESP32
 
 ### Interface Web
-- **Sélecteur Animation**: Choisir parmi les 15 animations
-- **Sélecteur Mode**: Basculer entre les 4 modes de fonctionnement
-- **Configuration Horaire**: Définir heures de début/fin pour mode programmé
+- **Sélecteur Animation**: Choisir parmi 15 animations (dont Auto)
+- **Sélecteur Mode**: Basculer entre 2 modes de fonctionnement
 - **Bouton Actualiser**: Mettre à jour les informations système
 - **Bouton Redémarrer**: Redémarrage à distance
+
+### Bot Telegram
+- Commandes (depuis le chat autorisé) :
+  - `/anim <id|nom>` (ex : `/anim 3`, `/anim auto`)
+  - `/mode <id|nom>` (ex : `/mode 1`, `/mode detect`)
+  - `/nextanim`, `/nextmode`
+  - `/status` (animation, mode, IP courants)
+  - `/liste` (toutes les animations et modes avec IDs)
 
 ### Affichage OLED
 - Affiche le nom de l'animation courante
@@ -214,7 +211,7 @@ Anim-Guirlande/
 ├── include/
 │   ├── board_config.h        # Pin mapping ESP32/S3
 │   ├── config.h              # Configuration générale
-│   ├── secrets.h             # Identifiants WiFi (non versionné)
+│   ├── secrets.h             # Réseaux WiFi + identifiants Telegram
 │   ├── display.h             # Gestion écrans OLED/TFT
 │   ├── garland_control.h     # Contrôle guirlande et animations
 │   ├── web_interface.h       # Handlers HTTP
