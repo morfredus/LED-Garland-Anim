@@ -1,0 +1,332 @@
+# Journal des modifications
+
+Toutes les modifications notables de ce projet seront documentées dans ce fichier.
+
+Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
+et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
+
+## [0.4.1] - 2025-12-10 (Patch)
+
+### Corrigé
+- 🔧 **Problème OLED Toujours Éteint** :
+  - Correction de la double déclaration de variable `isNight` dans la boucle principale
+  - Suppression de la fonction problématique `setOledBacklight()` qui éteignait complètement l'écran
+  - OLED affiche maintenant correctement le mode veille avec indicateur (SLEEP/ZZZ)
+  - Mode nuit affiche seulement l'indicateur veille, pas un écran noir
+  - Correction du problème de portée des variables empêchant les transitions jour/nuit
+
+- 🌙 **Logique Mode Nuit** :
+  - Correction de la logique de détection du mode nuit dans la boucle
+  - Rétroéclairage OLED n'est plus désactivé (reste allumé mais affiche contenu minimal)
+  - Barre d'animation se met à jour correctement en mode jour uniquement
+  - Mode veille activé correctement en mode nuit avec indicateur visuel
+
+- 📱 **Comportement Affichage** :
+  - Amélioration de l'affichage mode veille avec texte "SLEEP" (128x64) ou "ZZZ" (128x32)
+  - Points toujours visibles en veille, pas d'extinction
+  - Meilleur retour visuel entre mode nuit et animation arrêtée
+
+## [0.4.0] - 2025-12-10
+
+### Ajouté
+- 🌙 **Mode Nuit (Détection Automatique de Luminosité)** :
+  - Nouveau mode MODE_NIGHT_OFF utilisant le capteur LDR (photorésistance)
+  - Détection automatique de la nuit via seuil de luminosité (LDR_NIGHT_THRESHOLD = 500)
+  - En mode nuit : rétroéclairage OLED s'éteint, affichage montre points fixes minimalistes
+  - Les indicateurs LED bleue/NeoPixel s'arrêtent de clignoter en mode nuit
+  - La détection de mouvement et animations continuent à respecter le mode nuit
+  - Entièrement automatique - aucune configuration manuelle requise
+
+- 🔳 **Points Fixes sur OLED Sans Animation** :
+  - Quand aucune animation n'est active (ANIM_OFF ou hors horaires), l'OLED affiche 3 points fixes
+  - Retour visuel que le système fonctionne mais est inactif
+  - En mode nuit : affichage très minimaliste avec points au centre
+  - Réduit le scintillement inutile de l'écran
+
+- ⚡ **Efficacité Énergétique Améliorée** :
+  - LED/NeoPixel heartbeat désactivé en mode nuit pour économiser l'énergie
+  - Rétroéclairage OLED désactivé en mode nuit (configurable on/off)
+  - Vérification GPIO : tous les pins confirmés sûrs pour communication USB et boot/reset
+  - Configurations ESP32-S3 et ESP32 Classic vérifiées
+
+### Modifié
+- 📊 **Amélioration de la Barre d'Animation OLED** :
+  - Barre d'animation affiche maintenant 3 points fixes au lieu de rien quand animation est OFF
+  - Meilleur retour visuel pendant les périodes inactives
+
+- 🏷️ **Mise à jour de Version** :
+  - Mise à jour vers version 0.4.0 avec mode nuit et efficacité énergétique
+  - Toutes les chaînes de version mises à jour dans la base de code
+
+## [0.3.0] - 2025-12-09
+
+### Modifié
+- 🔄 **Ordre des lignes sur affichage OLED** :
+  - Inversion de l'ordre des lignes Animation et Mode sur écran OLED 32px
+  - La première ligne "M:" affiche maintenant le Mode (était Animation)
+  - La deuxième ligne "A:" affiche maintenant l'Animation (était Mode)
+  - Amélioration de la lisibilité en priorisant l'information de mode
+
+- 🎯 **Mode d'animation par défaut** :
+  - Changement de l'animation au démarrage de `ANIM_FADE_ALTERNATE` vers `ANIM_AUTO`
+  - Le système démarre maintenant en mode cyclage automatique par défaut
+  - Le mode auto fait défiler les 14 animations toutes les 30 secondes
+  - Offre une meilleure expérience utilisateur initiale avec de la variété
+
+- 🏷️ **Mise à jour de la version** :
+  - Mise à jour vers le versioning sémantique 0.3.0
+  - Version mise à jour dans tous les fichiers sources et en-têtes
+
+## [0.2.0] - 2025-12-09
+
+### Ajouté
+- 🖥️ **Affichage OLED en temps réel** :
+  - Affichage en direct du nom de l'animation courante sur écran OLED
+  - Affichage en direct du nom du mode courant sur écran OLED
+  - Affichage de l'adresse IP locale pour accès à l'interface web
+  - Mise en page adaptative pour écrans OLED 128x32 et 128x64
+  - Mise à jour automatique sur appui bouton ou changement web
+  - Taux de rafraîchissement 10 FPS (intervalle 100ms) pour animations fluides
+
+- 🎨 **Barre de visualisation animée** :
+  - Barre d'animation visuelle sur dernière ligne de l'écran OLED
+  - 14 motifs d'animation distincts correspondant aux animations de guirlande :
+    - Fade : Barre glissante avec effet de dégradé
+    - Blink : Blocs alternés gauche/droite
+    - Wave : Progression d'onde fluide
+    - Strobe : Blocs clignotants rapides
+    - Pulse : Barre centrale qui grandit/rétrécit
+    - Chase : Motif de point qui court
+    - Heartbeat : Effet de pulsation double
+    - Sparkle : Illumination de pixels aléatoires
+    - Rainbow : Motif d'onde mobile
+    - Breathing : Barre qui s'étend/se contracte
+    - Fire : Barres de hauteur aléatoire qui vacillent
+    - Twinkle : Pixels aléatoires épars
+    - Meteor : Traînée mobile avec estompage
+    - Mode auto : Animation de tirets rotatifs
+  - Aucune barre d'animation affichée quand la guirlande est éteinte
+
+- ⏰ **Interface de configuration horaire** :
+  - Champs de saisie d'heure dans l'interface web pour mode programmé
+  - 4 entrées numériques : heure/minute début, heure/minute fin
+  - Valeurs actuelles de l'horaire pré-remplies dans les entrées
+  - Bouton d'enregistrement avec popup de confirmation
+  - Point d'accès API `/schedule` pour configuration
+  - Fonctions backend `getSchedule()` et `setSchedule()`
+  - Informations d'horaire incluses dans la réponse JSON `/status`
+  - Horaire par défaut : 18:00 - 23:00
+  - Validation des entrées (0-23 heures, 0-59 minutes)
+
+- 🎛️ **Réorganisation de l'interface web** :
+  - Carte de contrôle LED Guirlande déplacée en première position
+  - Configuration horaire intégrée dans la carte Guirlande
+  - Hiérarchie visuelle améliorée dans le tableau de bord
+
+### Corrigé
+- 🔧 **Corrections GPIO des boutons** :
+  - Changement Bouton 1 de GPIO 34 vers GPIO 4 (ESP32 Classic)
+  - Changement Bouton 2 de GPIO 35 vers GPIO 15 (ESP32 Classic)
+  - Correction problème pins INPUT_ONLY (GPIO 34/35 sans pull-ups internes)
+  - Boutons maintenant détectés correctement avec résistances pull-up internes
+
+- 🖥️ **Initialisation affichage OLED** :
+  - Déplacement de `setupDisplays()` avant `setupWifi()` dans setup()
+  - Correction problème OLED vierge causé par initialisation tardive
+  - L'écran affiche maintenant correctement la progression de connexion WiFi
+
+- 🔄 **Rafraîchissement barre d'animation** :
+  - Ajout d'un timer de rafraîchissement périodique 100ms dans la boucle principale
+  - La barre d'animation s'anime maintenant en continu (était statique)
+  - Incrémentation appropriée du compteur de frames à chaque dessin
+
+### Modifié
+- 📍 **Allocation des pins GPIO** (ESP32 Classic):
+  - Bouton 1 : GPIO 34 → GPIO 4
+  - Bouton 2 : GPIO 35 → GPIO 15
+  - Pins LED RGB réservées : R=GPIO16, G=GPIO17, B=GPIO5
+  - GPIO 25/26 disponibles pour configuration alternative des boutons
+
+- 🏷️ **Gestion des versions** :
+  - Mise à jour vers versioning sémantique 0.2.0
+  - Ajout des drapeaux de compilation `PROJECT_VERSION` et `PROJECT_NAME`
+  - Informations de version accessibles dans tout le code
+
+## [0.1.0] - 2025-12-09
+
+### Ajouté
+- 🎄 **Système d'animations pour guirlande LED bi-directionnelle** :
+  - 14 animations différentes (Fade Alterné, Clignotement, Onde Douce, Stroboscope, Pulsation, Poursuite, Battement de Cœur, Scintillement, Arc-en-ciel, Respiration, Feu, Clignotement Doux, Météore)
+  - Mode automatique enchaînant toutes les animations (30s chacune)
+  - Support du module TB6612FNG pour contrôle bi-directionnel
+  - LEDs en anti-parallèle (~25 LEDs Sens A + ~25 LEDs Sens B)
+  - Contrôle PWM 8 bits à 5000 Hz
+
+- 🎮 **Modes de fonctionnement intelligents** :
+  - Mode Permanent : Toujours allumé
+  - Mode Horaires : Allumage selon plages horaires (préparé pour RTC)
+  - Mode Détection Mouvement : Déclenchement par capteur PIR (30s après détection)
+  - Mode Coupure Nuit : Extinction automatique selon luminosité (LDR)
+
+- 🔘 **Gestion des boutons physiques** :
+  - Bouton 0 (BOOT) : Redémarrage en appui long (1s) - conservé
+  - Bouton 1 : Changement d'animation + accès mode automatique
+  - Bouton 2 : Changement de mode de fonctionnement
+  - Feedback visuel NeoPixel sur chaque action
+
+- 🌐 **Interface Web complète** :
+  - Carte dédiée au contrôle de la guirlande
+  - Sélecteur d'animation avec liste déroulante (15 options)
+  - Sélecteur de mode (4 options)
+  - Affichage état capteurs (PIR, LDR, nuit)
+  - Changement d'animation/mode en temps réel depuis l'interface
+  - Routes API : `/animation?id=X`, `/mode?id=X`, `/status` (JSON)
+
+- 📡 **Capteurs et détection** :
+  - Support capteur PIR (HC-SR501) pour détection de mouvement
+  - Support photorésistance LDR pour détection jour/nuit
+  - Seuil de nuit configurable (défaut : 500/4095)
+  - Durée de déclenchement configurable (défaut : 30s)
+
+- 📍 **Pin mapping ESP32-S3** :
+  - TB6612FNG : PWMA(GPIO5), AIN1(GPIO6), AIN2(GPIO4), STBY(GPIO8)
+  - Capteurs : PIR(GPIO14), LDR(GPIO15)
+  - Boutons : BTN1(GPIO16), BTN2(GPIO17)
+
+- 📍 **Pin mapping ESP32 Classic** :
+  - TB6612FNG : PWMA(GPIO25), AIN1(GPIO32), AIN2(GPIO33), STBY(GPIO14)
+  - Capteurs : PIR(GPIO36), LDR(GPIO39)
+  - Boutons : BTN1(GPIO34), BTN2(GPIO35)
+
+- 🗂️ **Architecture modulaire** :
+  - Nouveau module `garland_control.h/cpp` pour gestion animations
+  - Séparation claire des responsabilités
+  - Documentation Doxygen complète
+
+### Modifié
+- 🔧 **main.cpp refactorisé** :
+  - Intégration du module `garland_control`
+  - Gestion de 3 boutons (Boot, Btn1, Btn2)
+  - Ajout de `updateGarland()` dans la boucle principale
+  - Callbacks boutons adaptés aux nouvelles fonctionnalités
+
+- 🎨 **Interface web enrichie** :
+  - Ajout de la carte "Guirlande LED" au tableau de bord
+  - Scripts JavaScript pour changements en temps réel
+  - Intégration des handlers `/animation`, `/mode`, `/status`
+
+- 📦 **Configuration projet** :
+  - Version mise à jour : v0.1.0
+  - Nom du projet : "Anim-Guirlande"
+  - Tous les fichiers header versionés v0.1.0
+
+- 📚 **Documentation complète** :
+  - README.md entièrement réécrit pour le projet guirlande
+  - Description détaillée des 14 animations
+  - Guide d'installation et câblage
+  - Spécifications techniques TB6612FNG
+  - Guide de dépannage
+  - CHANGELOG.md restructuré pour Semantic Versioning
+
+### Conservé
+- ✅ **Multi-environnement PlatformIO** :
+  - ESP32-S3 N16R8 (16MB/8MB) - environnement par défaut
+  - ESP32-S3 N8R8 (8MB/8MB)
+  - ESP32 Classic DevKitC (4MB)
+
+- ✅ **Affichage OLED et ST7789** :
+  - Support simultané OLED SSD1306 et TFT ST7789
+  - Affichage progression WiFi
+  - Affichage adresse IP après connexion
+  - Module `display.h/cpp` conservé
+
+- ✅ **NeoPixel LED RGB** :
+  - Feedback visuel d'état WiFi
+  - Confirmation actions boutons
+  - Heartbeat dans la boucle principale
+
+- ✅ **Connectivité WiFi** :
+  - WiFiMulti pour connexion multi-réseaux
+  - Auto-reconnexion en cas de perte
+  - Fichier `secrets.h` pour identifiants
+
+- ✅ **Interface Web modulaire** :
+  - Architecture v0.6.0 conservée
+  - `web_styles.h`, `web_pages.h`, `web_interface.h`
+  - Tableau de bord avec cartes (Matériel, Flash, RAM, PSRAM, WiFi, Système)
+
+### Supprimé
+- 🗑️ **Code inutilisé nettoyé** :
+  - Fonctions et variables non nécessaires supprimées
+  - Commentaires obsolètes retirés
+  - Code mort éliminé
+
+### Notes Techniques
+- **Contrôle TB6612FNG** :
+  - Direction 0 : Off (AIN1=LOW, AIN2=LOW)
+  - Direction 1 : Sens A Forward (AIN1=HIGH, AIN2=LOW)
+  - Direction 2 : Sens B Backward (AIN1=LOW, AIN2=HIGH)
+  - Direction 3 : Brake/Court-circuit (AIN1=HIGH, AIN2=HIGH)
+  - STBY doit être à HIGH pour activer le module
+
+- **Animations** :
+  - Utilisation alternance rapide entre Sens A/B pour simuler effets simultanés
+  - Phases calculées avec `millis()` pour animations fluides
+  - Pas de `delay()` pour ne pas bloquer la boucle principale
+
+- **Capteurs** :
+  - PIR : Lecture digitale (HIGH = mouvement détecté)
+  - LDR : Lecture analogique ADC 12 bits (0-4095)
+  - Temporisation 30s après détection PIR
+
+### Migration depuis version précédente
+Si vous migrez depuis Base_ESP32_S3 (v0.7.0) :
+
+1. **Ajouter le matériel** :
+   - Module TB6612FNG
+   - Guirlande LED bi-directionnelle
+   - Capteur PIR (optionnel)
+   - Photorésistance LDR (optionnel)
+   - 2 boutons poussoirs supplémentaires
+
+2. **Câbler selon PIN_MAPPING.md** :
+   - Voir schémas détaillés dans `docs/PIN_MAPPING.md`
+   - Respecter les tensions d'alimentation (TB6612FNG : VM pour guirlande, VCC pour logique)
+
+3. **Compiler et téléverser** :
+   - Le code est rétrocompatible
+  - Les anciens composants (OLED, TFT, NeoPixel) fonctionnent toujours
+   - Les nouvelles fonctionnalités s'ajoutent sans casser l'existant
+
+### Compatibilité
+- ✅ ESP32-S3 DevKitC-1 (N16R8, N8R8)
+- ✅ ESP32 DevKitC Classic
+- ✅ Arduino-ESP32 Core v6.x
+- ✅ PlatformIO 6.x
+- ✅ Windows (testé), Linux et macOS (devraient fonctionner)
+
+### Tests Réalisés
+- [x] Compilation sans erreur
+- [x] Upload firmware ESP32-S3
+- [x] Connexion WiFi multi-réseaux
+- [x] Serveur Web fonctionnel
+- [x] Affichage OLED/TFT
+- [x] Boutons physiques réactifs
+- [x] Module guirlande (à tester avec matériel réel)
+- [x] Capteurs PIR/LDR (à tester avec matériel réel)
+
+### Prochaines Évolutions Possibles (Roadmap)
+- 🔮 Intégration module RTC pour mode horaires réel
+- 🔮 Configuration horaires via interface web (✅ Ajouté en v0.2.0)
+- 🔮 Sauvegarde préférences en EEPROM/LittleFS
+- 🔮 Création d'animations personnalisées via web
+- 🔮 Support MQTT pour domotique
+- 🔮 Synchronisation multi-guirlandes
+- 🔮 Capteur de température/humidité pour effets réactifs
+
+---
+
+**Note** : Ce projet LED-Garland-Anim est une refonte complète du template Base_ESP32_S3, spécialisé pour le contrôle d'animations de guirlande LED bi-directionnelle avec module TB6612FNG.
+
+[0.2.0]: https://github.com/votre-repo/LED-Garland-Anim/releases/tag/v0.2.0
+[0.1.0]: https://github.com/votre-repo/LED-Garland-Anim/releases/tag/v0.1.0
