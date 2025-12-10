@@ -5,6 +5,23 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [0.5.1] - 2025-12-10 (Patch - Documentation)
+
+### Mis à jour
+- 📄 **Fichiers de Documentation** :
+  - Mise à jour README.md et README_FR.md pour v0.5.1
+  - Mise à jour tous commentaires d'en-tête dans fichiers source pour v0.5.1
+  - Clarification : démarrage utilise mode Auto et mode Permanent par défaut
+  - Suppression références MODE_SCHEDULED et MODE_NIGHT_OFF de la documentation utilisateur
+
+## [0.5.1] - 2025-12-10
+
+### Mise à Jour
+- 📋 **Documentation**: Mise à jour README.md et README_FR.md avec description des 2 modes simplifiés
+- 📋 **Guides Utilisateur**: Suppression des références à MODE_SCHEDULED et MODE_NIGHT_OFF
+- 📋 **Info Démarrage**: Clarification du démarrage en mode Automatique et mode Permanent
+- 📋 **Interface Web**: Suppression des infos sur configuration horaire et détection nuit de la doc utilisateur
+
 ## [0.5.1] - 2025-12-10
 
 ### Supprimé

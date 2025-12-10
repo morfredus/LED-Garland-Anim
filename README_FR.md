@@ -1,8 +1,8 @@
 # LED-Garland-Anim
 
-**Version 0.2.0** - Contrôleur d'animation de guirlande LED bi-directionnelle pour ESP32/ESP32-S3
+**Version 0.5.1** - Contrôleur d'animation de guirlande LED bi-directionnelle pour ESP32/ESP32-S3
 
-Contrôlez une guirlande à 2 fils avec LEDs en anti-parallèle via un module TB6612FNG. Dispose de 14 animations, 4 modes de fonctionnement intelligents, affichage OLED avec visualisation animée, interface web avec configuration horaire, et contrôles physiques par boutons.
+Contrôlez une guirlande à 2 fils avec LEDs en anti-parallèle via un module TB6612FNG. Dispose de 14 animations, 2 modes de fonctionnement intelligents, affichage OLED avec visualisation animée, interface web, et contrôles physiques par boutons.
 
 [🇬🇧 English version](README.md) | [📝 Journal des modifications](CHANGELOG_FR.md) | [📚 Documentation](docs/)
 
@@ -26,11 +26,9 @@ Contrôlez une guirlande à 2 fils avec LEDs en anti-parallèle via un module TB
 - **Météore**: Traînée lumineuse qui s'estompe
 - **Mode Automatique**: Enchaînement de toutes les animations (30s chacune)
 
-### 🎮 4 Modes de Fonctionnement Intelligents
-- **Permanent**: Toujours allumé
-- **Horaires**: Activation selon plages horaires (avec configuration web)
-- **Détection Mouvement**: Déclenchement par capteur PIR (30s après détection)
-- **Coupure Nuit**: Extinction automatique selon luminosité ambiante (LDR)
+### 🎮 2 Modes de Fonctionnement Intelligents
+- **Permanent**: Toujours allumé (par défaut au démarrage)
+- **Détection Mouvement**: Déclenchement par capteur PIR (30s après détection mouvement)
 
 ### 🖥️ Affichage OLED en Temps Réel
 - Affichage en direct des noms d'animation et de mode
@@ -77,8 +75,7 @@ Contrôlez une guirlande à 2 fils avec LEDs en anti-parallèle via un module TB
 - Carte **ESP32-S3 DevKitC-1** ou **ESP32 DevKitC**
 - Module **TB6612FNG** (contrôleur moteur double pont H)
 - Guirlande LED à 2 fils (LEDs en anti-parallèle, ~50 LEDs total)
-- Capteur **PIR HC-SR501** (optionnel)
-- Photorésistance **LDR** + résistance 10kΩ (optionnel)
+- Capteur **PIR HC-SR501** (optionnel, pour mode détection mouvement)
 - Écran **OLED SSD1306** 128x32 ou 128x64 (optionnel)
 - Écran **TFT ST7789** 240x240 (optionnel)
 - **LED RGB NeoPixel** WS2812B (optionnel)
@@ -138,7 +135,6 @@ TB6612FNG:
 
 Capteurs:
   PIR   → GPIO 14
-  LDR   → GPIO 15 (ADC)
 
 Boutons:
   BTN1  → GPIO 16
@@ -159,7 +155,6 @@ TB6612FNG:
 
 Capteurs:
   PIR   → GPIO 36
-  LDR   → GPIO 39 (ADC)
 
 Boutons:
   BTN1  → GPIO 4
@@ -258,21 +253,6 @@ Dans `include/garland_control.h` :
 #define MOTION_TRIGGER_DURATION 30000  // Durée en ms après détection
 ```
 
-### Ajuster le Seuil de Nuit
-Dans `include/garland_control.h` :
-```cpp
-#define NIGHT_THRESHOLD 500  // Valeur ADC (0-4095), plus bas = plus sombre
-```
-
-### Modifier les Horaires Par Défaut
-Dans `src/garland_control.cpp` :
-```cpp
-static uint8_t scheduleStartHour = 18;    // Heure début (0-23)
-static uint8_t scheduleStartMinute = 0;   // Minute début (0-59)
-static uint8_t scheduleEndHour = 23;      // Heure fin (0-23)
-static uint8_t scheduleEndMinute = 0;     // Minute fin (0-59)
-```
-
 ---
 
 ## 📊 Spécifications Techniques
@@ -303,6 +283,21 @@ static uint8_t scheduleEndMinute = 0;     // Minute fin (0-59)
 - Multi-réseau automatique (WiFiMulti)
 - Auto-reconnexion en cas de perte
 - Serveur Web sur port 80
+
+---
+
+## 🚀 Comportement au Démarrage
+
+Au démarrage, le système s'initialise avec :
+- **Mode Animation** : `AUTO` - Enchaîne les 14 animations (30 sec chacune)
+- **Mode Fonctionnement** : `PERMANENT` - Guirlande toujours allumée
+- **Affichage** : Affiche le nom de l'animation et l'adresse IP sur l'OLED
+
+Modifiez ces valeurs par défaut dans `src/garland_control.cpp` :
+```cpp
+static GarlandAnimation currentAnimation = ANIM_AUTO;    // Changer vers une animation
+static GarlandMode currentMode = MODE_PERMANENT;         // Ou MODE_MOTION_TRIGGER
+```
 
 ---
 
