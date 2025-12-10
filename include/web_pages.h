@@ -58,7 +58,6 @@ String generateDashboardPage(
     html += "<div class='card-item'><span class='card-label'>Mode:</span><span class='card-value'>" + String(getGarlandModeName()) + "</span></div>";
     html += "<div class='card-item'><span class='card-label'>Motion:</span><span class='card-value'>" + String(isMotionDetected() ? "Detected" : "None") + "</span></div>";
     html += "<div class='card-item'><span class='card-label'>Brightness:</span><span class='card-value'>" + String(getLightLevel()) + " / 4095</span></div>";
-    html += "<div class='card-item'><span class='card-label'>Night Status:</span><span class='card-value'>" + String(isNightTime() ? "Yes" : "No") + "</span></div>";
     
     // Sélecteur d'animation
     html += "<div style='margin-top:15px;'>";
@@ -101,37 +100,12 @@ String generateDashboardPage(
         html += ">";
         switch(i) {
             case MODE_PERMANENT: html += "Permanent"; break;
-            case MODE_SCHEDULED: html += "Scheduled"; break;
             case MODE_MOTION_TRIGGER: html += "Motion Trigger"; break;
-            case MODE_NIGHT_OFF: html += "Night Off"; break;
         }
         html += "</option>";
     }
     html += "</select>";
     html += "<button onclick='changeMode()' style='margin-top:10px;width:100%;padding:10px;background:linear-gradient(135deg,#f093fb,#f5576c);color:white;border:none;border-radius:8px;cursor:pointer;'>Apply</button>";
-    html += "</div>";
-    
-    // Configuration horaire (affiché seulement si mode = Selon Horaires)
-    uint8_t startHour, startMinute, endHour, endMinute;
-    getSchedule(&startHour, &startMinute, &endHour, &endMinute);
-    html += "<div class='card-item' style='margin-top:15px;padding-top:15px;border-top:1px solid #e0e0e0;'>";
-    html += "<span style='font-weight:bold;display:block;margin-bottom:10px;'>⏰ Schedule Configuration</span>";
-    html += "<div style='display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;'>";
-    html += "<div><label style='font-size:12px;color:#666;'>Start:</label>";
-    html += "<div style='display:flex;gap:5px;'>";
-    html += "<input type='number' id='startHour' value='" + String(startHour) + "' min='0' max='23' style='width:50px;padding:5px;border:1px solid #ddd;border-radius:4px;'>";
-    html += "<span style='align-self:center;'>h</span>";
-    html += "<input type='number' id='startMinute' value='" + String(startMinute) + "' min='0' max='59' style='width:50px;padding:5px;border:1px solid #ddd;border-radius:4px;'>";
-    html += "</div></div>";
-    html += "<div><label style='font-size:12px;color:#666;'>End:</label>";
-    html += "<div style='display:flex;gap:5px;'>";
-    html += "<input type='number' id='endHour' value='" + String(endHour) + "' min='0' max='23' style='width:50px;padding:5px;border:1px solid #ddd;border-radius:4px;'>";
-    html += "<span style='align-self:center;'>h</span>";
-    html += "<input type='number' id='endMinute' value='" + String(endMinute) + "' min='0' max='59' style='width:50px;padding:5px;border:1px solid #ddd;border-radius:4px;'>";
-    html += "</div></div>";
-    html += "</div>";
-    html += "<button onclick='saveSchedule()' style='width:100%;padding:8px;background:linear-gradient(135deg,#667eea,#764ba2);color:white;border:none;border-radius:6px;cursor:pointer;'>💾 Save Schedule</button>";
-    html += "</div>";
     html += "</div>";
     
     // --- CARTE 2: Matériel ---
@@ -228,14 +202,6 @@ String generateDashboardPage(
     html += "function changeMode() {";
     html += "  var id = document.getElementById('modeSelect').value;";
     html += "  fetch('/mode?id=' + id).then(() => setTimeout(() => location.reload(), 500));";
-    html += "}";
-    html += "function saveSchedule() {";
-    html += "  var startH = document.getElementById('startHour').value;";
-    html += "  var startM = document.getElementById('startMinute').value;";
-    html += "  var endH = document.getElementById('endHour').value;";
-    html += "  var endM = document.getElementById('endMinute').value;";
-    html += "  fetch('/schedule?start_hour=' + startH + '&start_minute=' + startM + '&end_hour=' + endH + '&end_minute=' + endM)";
-    html += "    .then(() => { alert('Schedule saved!'); location.reload(); });";
     html += "}";
     html += "</script>";
     

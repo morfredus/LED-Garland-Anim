@@ -230,65 +230,32 @@ void loop() {
 
     // 5. Heartbeat Non-Bloquant (remplace delay)
     unsigned long currentMillis = millis();
-    bool isNight = isNightTime();  // Vérifier si on est en mode nuit
     
     if (currentMillis - previousMillis >= interval) {
         previousMillis = currentMillis;
         
-        // Clignotement du heartbeat (SAUF en mode nuit)
-        if (!isNight) {
-            ledState = !ledState;
-            
-            // Action visuelle selon la carte
-            #ifdef PIN_LED_BUILTIN
-                digitalWrite(PIN_LED_BUILTIN, ledState);
-            #endif
+        // Clignotement du heartbeat
+        ledState = !ledState;
+        
+        // Action visuelle selon la carte
+        #ifdef PIN_LED_BUILTIN
+            digitalWrite(PIN_LED_BUILTIN, ledState);
+        #endif
 
-            #ifdef HAS_NEOPIXEL
-                // Petit battement de coeur : vert si connecté, rouge sinon
-                if(wifiMulti.run() == WL_CONNECTED) {
-                    pixels.setPixelColor(0, ledState ? pixels.Color(0, 50, 0) : pixels.Color(0, 10, 0)); // Vert fort / Vert faible
-                } else {
-                     pixels.setPixelColor(0, ledState ? pixels.Color(50, 0, 0) : pixels.Color(10, 0, 0)); // Rouge fort / faible
-                }
-                pixels.show();
-            #endif
-        } else {
-            // Mode nuit : éteindre les LEDs
-            #ifdef PIN_LED_BUILTIN
-                digitalWrite(PIN_LED_BUILTIN, LOW);
-            #endif
-
-            #ifdef HAS_NEOPIXEL
-                pixels.setPixelColor(0, pixels.Color(0, 0, 0)); // Noir
-                pixels.show();
-            #endif
-        }
+        #ifdef HAS_NEOPIXEL
+            // Petit battement de coeur : vert si connecté, rouge sinon
+            if(wifiMulti.run() == WL_CONNECTED) {
+                pixels.setPixelColor(0, ledState ? pixels.Color(0, 50, 0) : pixels.Color(0, 10, 0)); // Vert fort / Vert faible
+            } else {
+                pixels.setPixelColor(0, ledState ? pixels.Color(50, 0, 0) : pixels.Color(10, 0, 0)); // Rouge fort / faible
+            }
+            pixels.show();
+        #endif
     }
     
-    // 6. Gestion du mode nuit - OLED et affichage
+    // 6. Rafraîchissement de l'animation OLED
     #ifdef HAS_OLED
-        static bool wasNight = false;
-        
-        if (isNight != wasNight) {
-            wasNight = isNight;
-            
-            if (isNight) {
-                // Passage en mode nuit : afficher l'écran de veille avec points fixes
-                displayOledSleepMode();
-            } else {
-                // Sortie du mode nuit : afficher l'état normal
-                if (WiFi.status() == WL_CONNECTED) {
-                    updateOledAnimationStatus(getGarlandAnimationName(), getGarlandModeName(), WiFi.localIP());
-                }
-            }
-        }
-    #endif
-    
-    // 7. Rafraîchissement de l'animation OLED (mise à jour de la barre d'animation)
-    // SAUF si on est en mode nuit
-    #ifdef HAS_OLED
-        if (!isNight && currentMillis - lastOledAnimUpdate >= oledAnimInterval) {
+        if (currentMillis - lastOledAnimUpdate >= oledAnimInterval) {
             lastOledAnimUpdate = currentMillis;
             // Redessiner l'écran avec la barre d'animation mise à jour
             if (WiFi.status() == WL_CONNECTED) {

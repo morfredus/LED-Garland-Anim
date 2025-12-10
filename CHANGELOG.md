@@ -5,6 +5,28 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [0.5.1] - 2025-12-10
+
+### Removed
+- ❌ **Removed MODE_SCHEDULED mode** :
+  - Removed schedule configuration functions (setSchedule, getSchedule)
+  - Removed hourly scheduling functionality (start/end time configuration)
+  - Simplified mode enum from 4 to 2 modes
+  
+- ❌ **Removed MODE_NIGHT_OFF mode** :
+  - Removed automatic night detection via LDR threshold
+  - Removed LDR_NIGHT_THRESHOLD constant
+  - Removed isNightTime() function
+  - Kept getLightLevel() for raw sensor data access
+
+### Simplified
+- 🎯 **Simplified to 2 core modes**:
+  - `MODE_PERMANENT`: Garland always on
+  - `MODE_MOTION_TRIGGER`: Activation by PIR motion detection (30 second duration)
+- 📄 Updated all documentation (ARCHITECTURE.md, ARCHITECTURE_FR.md)
+- 🌐 Updated web interface to show only 2 mode options
+- Removed schedule configuration UI from web dashboard
+
 ## [0.4.1] - 2025-12-10 (Patch)
 
 ### Fixed

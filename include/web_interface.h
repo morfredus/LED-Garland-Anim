@@ -107,44 +107,15 @@ void handleSetMode() {
  * @brief Handler pour récupérer l'état de la guirlande (GET /status)
  */
 void handleStatus() {
-    uint8_t startHour, startMinute, endHour, endMinute;
-    getSchedule(&startHour, &startMinute, &endHour, &endMinute);
-    
     String json = "{";
     json += "\"animation\":\"" + String(getGarlandAnimationName()) + "\",";
     json += "\"animation_id\":" + String((int)getGarlandAnimation()) + ",";
     json += "\"mode\":\"" + String(getGarlandModeName()) + "\",";
     json += "\"mode_id\":" + String((int)getGarlandMode()) + ",";
     json += "\"motion_detected\":" + String(isMotionDetected() ? "true" : "false") + ",";
-    json += "\"light_level\":" + String(getLightLevel()) + ",";
-    json += "\"is_night\":" + String(isNightTime() ? "true" : "false") + ",";
-    json += "\"schedule_start\":\"" + String(startHour) + ":" + (startMinute < 10 ? "0" : "") + String(startMinute) + "\",";
-    json += "\"schedule_end\":\"" + String(endHour) + ":" + (endMinute < 10 ? "0" : "") + String(endMinute) + "\"";
+    json += "\"light_level\":" + String(getLightLevel());
     json += "}";
     server.send(200, "application/json", json);
-}
-
-/**
- * @brief Handler pour configurer l'horaire programmé (GET /schedule?start_hour=X&start_minute=Y&end_hour=Z&end_minute=W)
- */
-void handleSetSchedule() {
-    if (server.hasArg("start_hour") && server.hasArg("start_minute") && 
-        server.hasArg("end_hour") && server.hasArg("end_minute")) {
-        
-        uint8_t startHour = server.arg("start_hour").toInt();
-        uint8_t startMinute = server.arg("start_minute").toInt();
-        uint8_t endHour = server.arg("end_hour").toInt();
-        uint8_t endMinute = server.arg("end_minute").toInt();
-        
-        setSchedule(startHour, startMinute, endHour, endMinute);
-        server.send(200, "text/plain", "Horaire programmé enregistré");
-        LOG_PRINT("Horaire programmé: ");
-        LOG_PRINT(startHour); LOG_PRINT(":"); LOG_PRINT(startMinute);
-        LOG_PRINT(" - ");
-        LOG_PRINT(endHour); LOG_PRINT(":"); LOG_PRINTLN(endMinute);
-    } else {
-        server.send(400, "text/plain", "Paramètres manquants");
-    }
 }
 
 /**
@@ -164,7 +135,6 @@ void setupWebServer() {
     server.on("/animation", handleSetAnimation);
     server.on("/mode", handleSetMode);
     server.on("/status", handleStatus);
-    server.on("/schedule", handleSetSchedule);
     server.onNotFound(handleNotFound);
     server.begin();
     LOG_PRINTLN("Serveur web démarré sur http://" + WiFi.localIP().toString());
