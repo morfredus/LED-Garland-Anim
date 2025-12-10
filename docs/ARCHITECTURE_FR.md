@@ -1,4 +1,4 @@
-# 📚 Architecture - LED-Garland-Anim v0.2.0
+# 📚 Architecture - LED-Garland-Anim v0.5.1
 
 ## 🎯 Vue d'ensemble
 
@@ -6,7 +6,7 @@ Le projet LED-Garland-Anim utilise une architecture modulaire pour contrôler un
 - **Interface Web** : Contrôle à distance et configuration
 - **Affichage Local** : OLED/TFT avec informations temps réel
 - **Contrôle Physique** : Boutons pour changement d'animation/mode
-- **Modes Intelligents** : Gestion automatique basée sur capteurs/horaires
+- **Modes Intelligents** : Gestion automatique basée sur capteurs
 - **Module TB6612FNG** : Contrôle bi-directionnel de la guirlande
 
 ## Structure Modulaire
@@ -32,19 +32,9 @@ const char* getGarlandModeName();              // Nom mode actuel
 - `ANIM_CHASE`, `ANIM_HEARTBEAT`, `ANIM_SPARKLE`, `ANIM_RAINBOW`
 - `ANIM_BREATHING`, `ANIM_FIRE`, `ANIM_TWINKLE`, `ANIM_METEOR`, `ANIM_AUTO`
 
-**Modes (4 types)** :
+**Modes (2 types)** :
 - `MODE_PERMANENT` : Toujours allumé
-- `MODE_SCHEDULED` : Selon horaires configurés
-- `MODE_MOTION_TRIGGER` : Activation par capteur PIR
-- `MODE_NIGHT_OFF` : Extinction selon luminosité LDR
-
-**Configuration Horaire (v0.2.0)** :
-```cpp
-void setSchedule(uint8_t startHour, uint8_t startMinute, 
-                 uint8_t endHour, uint8_t endMinute);
-void getSchedule(uint8_t* startHour, uint8_t* startMinute,
-                 uint8_t* endHour, uint8_t* endMinute);
-```
+- `MODE_MOTION_TRIGGER` : Activation par capteur PIR (détection de mouvement)
 
 ---
 

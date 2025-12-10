@@ -1,7 +1,7 @@
 /**
  * @file garland_control.cpp
  * @brief Implémentation du contrôle des animations de guirlande
- * @version 0.4.0
+ * @version 0.5.1
  * @date 2025-12-10
  */
 
@@ -21,12 +21,6 @@ static bool garlandEnabled = true;
 static uint8_t brightnessA = 0;
 static uint8_t brightnessB = 0;
 static float animationPhase = 0.0;
-
-// Horaires programmés (par défaut 18h00 - 23h00)
-static uint8_t scheduleStartHour = 18;
-static uint8_t scheduleStartMinute = 0;
-static uint8_t scheduleEndHour = 23;
-static uint8_t scheduleEndMinute = 0;
 
 // =============================================================================
 // NOMS DES ANIMATIONS ET MODES
@@ -52,9 +46,7 @@ static const char* animationNames[] = {
 
 static const char* modeNames[] = {
     "Permanent",
-    "Horaires",
-    "Detection",
-    "Nuit Off"
+    "Detection"
 };
 
 // =============================================================================
@@ -388,20 +380,11 @@ void updateGarland() {
             shouldBeOn = true;
             break;
             
-        case MODE_SCHEDULED:
-            // TODO: Implémenter la gestion des horaires avec RTC
-            shouldBeOn = true;
-            break;
-            
         case MODE_MOTION_TRIGGER:
             if (isMotionDetected()) {
                 motionDetectedTime = millis();
             }
             shouldBeOn = (millis() - motionDetectedTime < MOTION_TRIGGER_DURATION);
-            break;
-            
-        case MODE_NIGHT_OFF:
-            shouldBeOn = !isNightTime();
             break;
     }
     
@@ -530,33 +513,8 @@ bool isMotionDetected() {
     return digitalRead(PIN_PIR_SENSOR) == HIGH;
 }
 
-bool isNightTime() {
-    int lightLevel = analogRead(PIN_LDR_SENSOR);
-    return lightLevel < LDR_NIGHT_THRESHOLD;
-}
-
 int getLightLevel() {
     return analogRead(PIN_LDR_SENSOR);
-}
-
-void setSchedule(uint8_t startHour, uint8_t startMinute, uint8_t endHour, uint8_t endMinute) {
-    // Validation des valeurs
-    if (startHour > 23) startHour = 23;
-    if (startMinute > 59) startMinute = 59;
-    if (endHour > 23) endHour = 23;
-    if (endMinute > 59) endMinute = 59;
-    
-    scheduleStartHour = startHour;
-    scheduleStartMinute = startMinute;
-    scheduleEndHour = endHour;
-    scheduleEndMinute = endMinute;
-}
-
-void getSchedule(uint8_t* startHour, uint8_t* startMinute, uint8_t* endHour, uint8_t* endMinute) {
-    if (startHour) *startHour = scheduleStartHour;
-    if (startMinute) *startMinute = scheduleStartMinute;
-    if (endHour) *endHour = scheduleEndHour;
-    if (endMinute) *endMinute = scheduleEndMinute;
 }
 
 bool isAnimationActive() {

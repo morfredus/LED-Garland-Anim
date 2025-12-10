@@ -1,8 +1,8 @@
 /**
  * @file garland_control.h
  * @brief Contrôle des animations de guirlande LED bi-directionnelle
- * @version 0.3.0
- * @date 2025-12-09
+ * @version 0.5.1
+ * @date 2025-12-10
  * 
  * Module de gestion des animations pour guirlande LED à 2 fils avec LEDs en anti-parallèle.
  * Utilise le module TB6612FNG pour contrôler la direction du courant et l'intensité lumineuse.
@@ -48,9 +48,7 @@ enum GarlandAnimation {
  */
 enum GarlandMode {
     MODE_PERMANENT = 0,     ///< Toujours allumé
-    MODE_SCHEDULED,         ///< Allumage selon horaires
     MODE_MOTION_TRIGGER,    ///< Déclenchement par détection de mouvement
-    MODE_NIGHT_OFF,         ///< Coupure automatique la nuit (détection luminosité)
     MODE_COUNT              ///< Nombre total de modes
 };
 
@@ -63,7 +61,6 @@ enum GarlandMode {
 #define GARLAND_PWM_CHANNEL    0         ///< Canal PWM pour le TB6612FNG
 
 #define MOTION_TRIGGER_DURATION 30000    ///< Durée d'allumage après détection (ms)
-#define LDR_NIGHT_THRESHOLD    500       ///< Seuil ADC pour détecter la nuit
 
 // =============================================================================
 // PROTOTYPES DE FONCTIONS
@@ -143,11 +140,6 @@ void garlandOff();
 bool isMotionDetected();
 
 /**
- * @brief Vérifie si c'est la nuit (faible luminosité)
- * @return true si nuit, false sinon
- */
-bool isNightTime();
-
 /**
  * @brief Récupère la valeur brute du capteur de luminosité
  * @return Valeur ADC du LDR (0-4095 pour ESP32)
@@ -155,27 +147,8 @@ bool isNightTime();
 int getLightLevel();
 
 /**
- * @brief Configure les horaires d'allumage/extinction
- * @param startHour Heure de début (0-23)
- * @param startMinute Minute de début (0-59)
- * @param endHour Heure de fin (0-23)
- * @param endMinute Minute de fin (0-59)
- */
-void setSchedule(uint8_t startHour, uint8_t startMinute, uint8_t endHour, uint8_t endMinute);
-
-/**
- * @brief Récupère les horaires configurés
- * @param startHour Pointeur pour récupérer l'heure de début
- * @param startMinute Pointeur pour récupérer la minute de début
- * @param endHour Pointeur pour récupérer l'heure de fin
- * @param endMinute Pointeur pour récupérer la minute de fin
- */
-void getSchedule(uint8_t* startHour, uint8_t* startMinute, uint8_t* endHour, uint8_t* endMinute);
-
-/**
  * @brief Indique si une animation est actuellement active (non OFF et guirlande activée)
  * @return true si animation active, false sinon
  */
 bool isAnimationActive();
-
 #endif // GARLAND_CONTROL_H

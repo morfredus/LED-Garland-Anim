@@ -5,6 +5,28 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [0.5.1] - 2025-12-10
+
+### Supprimé
+- ❌ **Suppression du mode MODE_SCHEDULED** :
+  - Suppression de la configuration des horaires (setSchedule, getSchedule)
+  - Suppression de la planification horaire (configuration heure début/fin)
+  - Simplification de l'enum mode de 4 à 2 modes
+  
+- ❌ **Suppression du mode MODE_NIGHT_OFF** :
+  - Suppression de la détection automatique de nuit via seuil LDR
+  - Suppression de la constante LDR_NIGHT_THRESHOLD
+  - Suppression de la fonction isNightTime()
+  - Maintien de getLightLevel() pour accès aux données brutes du capteur
+
+### Simplifié
+- 🎯 **Simplification à 2 modes essentiels**:
+  - `MODE_PERMANENT` : Guirlande toujours allumée
+  - `MODE_MOTION_TRIGGER` : Activation par détection de mouvement (durée 30 secondes)
+- 📄 Mise à jour de toute la documentation (ARCHITECTURE.md, ARCHITECTURE_FR.md)
+- 🌐 Mise à jour interface web pour afficher seulement 2 modes
+- Suppression de l'interface de configuration horaire du tableau de bord
+
 ## [0.4.1] - 2025-12-10 (Patch)
 
 ### Corrigé

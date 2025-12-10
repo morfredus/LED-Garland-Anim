@@ -1,4 +1,4 @@
-# 📚 Architecture - LED-Garland-Anim v0.2.0
+# 📚 Architecture - LED-Garland-Anim v0.5.1
 
 ## 🎯 Overview
 
@@ -6,7 +6,7 @@ The LED-Garland-Anim project uses a modular architecture for controlling a bi-di
 - **Web Interface**: Remote control and configuration
 - **Local Display**: OLED/TFT with real-time information
 - **Physical Control**: Buttons for animation/mode changes
-- **Smart Modes**: Automatic management based on sensors/schedules
+- **Smart Modes**: Automatic management based on sensors
 - **TB6612FNG Module**: Bi-directional garland control
 
 ## Modular Structure
@@ -32,19 +32,9 @@ const char* getGarlandModeName();              // Current mode name
 - `ANIM_CHASE`, `ANIM_HEARTBEAT`, `ANIM_SPARKLE`, `ANIM_RAINBOW`
 - `ANIM_BREATHING`, `ANIM_FIRE`, `ANIM_TWINKLE`, `ANIM_METEOR`, `ANIM_AUTO`
 
-**Modes (4 types)**:
+**Modes (2 types)**:
 - `MODE_PERMANENT`: Always on
-- `MODE_SCHEDULED`: Based on configured schedules
-- `MODE_MOTION_TRIGGER`: Activation by PIR sensor
-- `MODE_NIGHT_OFF`: Shutdown based on LDR brightness
-
-**Schedule Configuration (v0.2.0)**:
-```cpp
-void setSchedule(uint8_t startHour, uint8_t startMinute, 
-                 uint8_t endHour, uint8_t endMinute);
-void getSchedule(uint8_t* startHour, uint8_t* startMinute,
-                 uint8_t* endHour, uint8_t* endMinute);
-```
+- `MODE_MOTION_TRIGGER`: Activation by PIR sensor (motion detection)
 
 ---
 
