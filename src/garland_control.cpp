@@ -475,6 +475,13 @@ const char* getGarlandAnimationName() {
     return animationNames[currentAnimation];
 }
 
+const char* getGarlandAnimationNameById(int id) {
+    if (id >= 0 && id < ANIM_COUNT) {
+        return animationNames[id];
+    }
+    return "?";
+}
+
 void setGarlandMode(GarlandMode mode) {
     currentMode = mode;
     LOG_PRINTF("Mode changé: %s\n", modeNames[mode]);
@@ -486,6 +493,13 @@ GarlandMode getGarlandMode() {
 
 const char* getGarlandModeName() {
     return modeNames[currentMode];
+}
+
+const char* getGarlandModeNameById(int id) {
+    if (id >= 0 && id < MODE_COUNT) {
+        return modeNames[id];
+    }
+    return "?";
 }
 
 void nextGarlandAnimation() {

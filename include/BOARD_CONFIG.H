@@ -1,7 +1,7 @@
 /**
  * @file board_config.h
  * @brief Mapping des pins GPIO pour les différentes cartes ESP32
- * @version 0.5.1
+ * @version 0.6.0
  * @date 2025-12-10
  * 
  * Ce fichier centralise toutes les définitions de pins selon la carte utilisée.

@@ -101,6 +101,13 @@ GarlandAnimation getGarlandAnimation();
 const char* getGarlandAnimationName();
 
 /**
+ * @brief Récupère le nom d'une animation par son identifiant
+ * @param id Identifiant (0..ANIM_COUNT-1)
+ * @return Nom ou "?" si hors bornes
+ */
+const char* getGarlandAnimationNameById(int id);
+
+/**
  * @brief Change le mode de fonctionnement
  * @param mode Nouveau mode
  */
@@ -117,6 +124,13 @@ GarlandMode getGarlandMode();
  * @return Nom du mode en cours
  */
 const char* getGarlandModeName();
+
+/**
+ * @brief Récupère le nom d'un mode par son identifiant
+ * @param id Identifiant (0..MODE_COUNT-1)
+ * @return Nom ou "?" si hors bornes
+ */
+const char* getGarlandModeNameById(int id);
 
 /**
  * @brief Passe à l'animation suivante

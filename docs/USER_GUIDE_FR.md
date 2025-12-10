@@ -1,4 +1,4 @@
-# Guide Utilisateur - LED-Garland-Anim v0.4.0
+# Guide Utilisateur - LED-Garland-Anim v0.6.0
 
 Guide utilisateur complet pour le contrôleur d'animation de guirlande LED LED-Garland-Anim.
 
@@ -46,7 +46,7 @@ Exemple : `192.168.1.100`
 #### ESP32 Classic
 - **Bouton 0 (BOOT)** : Intégré sur la carte
 - **Bouton 1** : GPIO 4 (bouton externe)
-- **Bouton 2** : GPIO 15 (bouton externe)
+- **Bouton 2** : GPIO 16 (bouton externe)
 
 ### Fonctions des Boutons
 
@@ -57,7 +57,7 @@ Exemple : `192.168.1.100`
 
 #### Bouton 2 - Contrôle Mode
 - **Appui court** : Passer au mode de fonctionnement suivant
-- **Séquence** : Permanent → Horaires → Détection Mouvement → Coupure Nuit → (recommencer)
+- **Séquence** : Permanent → Détection Mouvement → (recommencer)
 - **Feedback visuel** : NeoPixel clignote en cyan
 
 #### Bouton 0 (BOOT) - Redémarrage
@@ -83,15 +83,12 @@ Exemple : `192.168.1.100`
 - Cliquer "Appliquer" pour changer
 
 **Sélecteur Mode**
-- 4 modes de fonctionnement
+- 2 modes de fonctionnement (Permanent, Détection Mouvement)
 - Mode actuel en surbrillance
 - Cliquer "Appliquer" pour changer
 
-**Configuration Horaire** (v0.2.0+)
-- Heure début : Entrées Heure et Minute
-- Heure fin : Entrées Heure et Minute
-- Cliquer "Enregistrer Horaire" pour appliquer
-- Popup de confirmation apparaît
+**Configuration Horaire**
+- Supprimée depuis v0.5.1 (modes simplifiés à 2). Pas d'UI horaire dans la version actuelle.
 
 **État Capteurs**
 - Mouvement détecté : Oui/Non
@@ -137,6 +134,15 @@ Exemple : `192.168.1.100`
 ### Boutons d'Action
 - **🔄 Actualiser** : Recharger la page avec données mises à jour
 - **🔴 Redémarrer** : Redémarrer l'ESP32 (demande confirmation)
+
+### Bot Telegram
+- Commandes (chat autorisé) :
+   - `/anim <id|nom>` (ex : `/anim 3`, `/anim auto`)
+   - `/mode <id|nom>` (ex : `/mode 1`, `/mode detect`)
+   - `/nextanim`, `/nextmode`
+   - `/status` (animation, mode, IP courants)
+   - `/liste` (toutes les animations et modes avec IDs)
+- À la connexion WiFi, l'appareil envoie une notification Telegram avec SSID/IP et animation/mode courants.
 
 ---
 
@@ -206,27 +212,8 @@ Chaque animation a une visualisation unique :
 - Bouton 2 jusqu'à affichage "Permanent"
 - Interface web : Sélectionner mode "Permanent"
 
-### 2. Mode Horaires (v0.2.0+)
-**Comportement** : Guirlande s'active uniquement pendant la fenêtre horaire configurée
-
-**Configuration** :
-1. Accéder à l'interface web
-2. Défiler jusqu'à la section "Configuration Horaire"
-3. Définir heure de début (heure et minute)
-4. Définir heure de fin (heure et minute)
-5. Cliquer "Enregistrer Horaire"
-
-**Horaire par défaut** : 18:00 - 23:00
-
-**Cas d'usage** :
-- Décoration automatique en soirée (18h - 23h)
-- Économie d'énergie
-- Fonctionnement sans surveillance
-
-**Important** : Nécessite une heure système précise. Envisager d'ajouter un module RTC pour résistance aux coupures de courant.
-
-### 3. Mode Détection Mouvement
-**Comportement** : S'active pendant 30 secondes après détection de mouvement
+### 2. Mode Détection Mouvement
+**Comportement** : S'active pendant 30 secondes après détection de mouvement (PIR)
 
 **Prérequis** : Capteur PIR connecté
 
@@ -235,33 +222,11 @@ Chaque animation a une visualisation unique :
 - Éclairage de couloir
 - Affichages interactifs
 
-**Durée déclenchement** : 30 secondes (configurable dans le code)
+**Durée déclenchement** : 30 secondes (configurable dans le code via `MOTION_TRIGGER_DURATION`)
 
-**Capteur** : Module PIR HC-SR501
-- Portée détection : ~7 mètres
-- Angle détection : ~120°
-- Sensibilité et délai ajustables
-
-### 4. Mode Coupure Nuit
-**Comportement** : S'éteint automatiquement quand la luminosité ambiante est faible (nuit)
-
-**Prérequis** : Photorésistance LDR connectée
-
-**Fonctionnalités** (v0.4.0+) :
-- **Détection automatique** : Utilise le capteur de lumière pour détecter la nuit
-- **Rétroéclairage OLED off** : L'écran économise de l'énergie en mode nuit
-- **Indicateurs LED silencieux** : LED bleue et NeoPixel arrêtent de clignoter
-- **Affichage minimaliste** : OLED affiche 3 points fixes au lieu de l'animation
-- **Sans configuration manuelle** : Entièrement automatique selon le niveau de lumière
-- **Seuil de nuit** : 500/4095 ADC (configurable)
-  - Valeur plus basse = environnement plus sombre nécessaire
-  - Typique : 300-600 selon éclairage ambiant
-
-**Cas d'usage** :
-- Décoration de jour uniquement
-- Arrêt automatique la nuit
-- Affichages réactifs à la lumière
-- Mode économie d'énergie pendant les heures de sommeil
+**Notes** :
+- Uniquement 2 modes dans la v0.6.0 (Permanent, Détection Mouvement). Les modes Horaires et Coupure Nuit ont été retirés.
+- Ajouter du debounce si nécessaire avec des modules PIR bruyants.
 
 **Quand le Mode Nuit s'Active** :
 1. Rétroéclairage OLED s'éteint
@@ -375,52 +340,8 @@ Parcourt automatiquement les 13 animations.
    - Naviguer vers `http://[IP_ESP32]`
    - Défiler jusqu'à la carte "LED Guirlande"
 
-2. **Localiser Section Horaire**
-   - Sous le sélecteur de mode
-   - Titre "⏰ Configuration Horaire"
-
-3. **Définir Heure Début**
-   - Entrer heure début (0-23)
-   - Entrer minute début (0-59)
-   - Exemple : 18:00 pour 18h
-
-4. **Définir Heure Fin**
-   - Entrer heure fin (0-23)
-   - Entrer minute fin (0-59)
-   - Exemple : 23:00 pour 23h
-
-5. **Enregistrer Configuration**
-   - Cliquer bouton "💾 Enregistrer Horaire"
-   - Popup de confirmation apparaît
-   - Page se recharge avec nouvelles valeurs
-
-### Horaires Courants
-
-**Décoration Soirée** (Par défaut)
-- Début : 18:00 (18h)
-- Fin : 23:00 (23h)
-- Usage : Ambiance soirée automatique
-
-**Toute la Nuit**
-- Début : 18:00 (18h)
-- Fin : 06:00 (6h)
-- Usage : Décoration nocturne prolongée
-
-**Jour Uniquement**
-- Début : 08:00 (8h)
-- Fin : 18:00 (18h)
-- Usage : Heures ouvrables, vitrines magasins
-
-**Événement Court**
-- Début : 19:00 (19h)
-- Fin : 21:00 (21h)
-- Usage : Dîners, événements spécifiques
-
-### Vérification
-Après enregistrement, vérifier :
-- Valeurs horaire mises à jour dans champs
-- Guirlande se comporte selon horaire
-- Vérifier heure système si problèmes
+2. **Mode Horaire**
+   - Supprimé depuis v0.5.1 (modes simplifiés à 2). Aucun réglage horaire disponible.
 
 ---
 
@@ -428,18 +349,18 @@ Après enregistrement, vérifier :
 
 ### Routine Matinale
 1. Vérifier état actuel sur OLED
-2. Aucune action nécessaire en modes Horaires/Mouvement
-3. Utiliser Bouton 1 pour changer animation si désiré
+2. Utiliser Bouton 1 pour changer animation si désiré
+3. Laisser en mode Permanent ou Détection Mouvement selon besoin
 
 ### Routine Soirée
-1. Mode Horaires s'active automatiquement
+1. Choisir mode Permanent (allumé en continu) ou Détection Mouvement
 2. Interface web pour vérifier fonctionnement
-3. Ajuster horaire si nécessaire
+3. Ajuster animation via boutons, web ou Telegram
 
 ### En Quittant la Maison
-1. Régler en mode Horaires pour contrôle automatique
-2. Ou éteindre en mettant en Détection Mouvement (pas de mouvement = éteint)
-3. Vérifier interface web à distance si même réseau
+1. Régler en mode Détection Mouvement pour réduire l'usage (pas de mouvement = éteint)
+2. Ou laisser en mode Permanent si souhaité
+3. Vérifier interface web ou Telegram si nécessaire
 
 ### Actions Rapides Dépannage
 - **Guirlande ne fonctionne pas** : Appuyer Bouton 1 pour cycler animations
@@ -478,6 +399,6 @@ Pour un guide de dépannage détaillé, consultez [TROUBLESHOOTING_FR.md](./TROU
 
 ---
 
-**Version** : 0.2.0  
-**Dernière mise à jour** : 2025-12-09  
+**Version** : 0.6.0  
+**Dernière mise à jour** : 2025-12-10  
 **Suivant** : [Guide de Dépannage](./TROUBLESHOOTING_FR.md)

@@ -5,6 +5,18 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/).
 
+## [0.6.0] - 2025-12-10
+
+### Added
+- 🤖 **Telegram Remote Control**:
+  - Polling bot with commands `/anim <id|name>`, `/mode <id|name>`, `/nextanim`, `/nextmode`, `/status`, `/liste`
+  - `/liste` returns the full list of modes and animations with numeric IDs
+  - Automatic Telegram notification when WiFi connects (SSID, IP, current anim/mode)
+
+### Changed
+- 🔐 **Secrets Layout**: `WIFI_NETWORKS` now defined inline in `secrets.h` (no separate `secrets.cpp`).
+- 📄 **Documentation**: README/README_FR and USER_GUIDE/USER_GUIDE_FR updated for Telegram control and version 0.6.0.
+
 ## [0.5.1] - 2025-12-10 (Patch - Documentation)
 
 ### Updated

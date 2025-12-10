@@ -195,8 +195,8 @@ ESP32-S3           TFT ST7789
 | Composant | Signal | Pin GPIO | Description | Notes |
 |-----------|--------|----------|-------------|-------|
 | **Bouton BOOT** | Button | GPIO 0 | Bouton intégré sur la carte | Déjà présent, redémarrage appui long |
-| **Bouton 1** | Button | GPIO 35 | Bouton externe | Changement animation |
-| **Bouton 2** | Button | GPIO 36 | Bouton externe | Changement mode |
+| **Bouton 1** | Button | GPIO 4 | Bouton externe | Changement animation |
+| **Bouton 2** | Button | GPIO 16 | Bouton externe | Changement mode |
 | **LED Builtin** | LED | GPIO 2 | LED bleue intégrée | Heartbeat visuel |
 | **OLED SSD1306** | SDA | GPIO 21 | Données I2C | Connexion vers la broche SDA de l'OLED |
 | **OLED SSD1306** | SCL | GPIO 22 | Horloge I2C | Connexion vers la broche SCL de l'OLED |
@@ -217,7 +217,7 @@ ESP32-S3           TFT ST7789
 | **TB6612FNG** | VCC | 3.3V | Alimentation logique | Broche 3V3 de l'ESP32 |
 | **TB6612FNG** | VM | 5-15V | Alimentation moteur | Alimentation externe pour guirlande |
 | **TB6612FNG** | GND | GND | Masse | Commun avec GND ESP32 |
-| **Capteur PIR** | OUT | GPIO 15 | Signal détection | HIGH = mouvement détecté |
+| **Capteur PIR** | OUT | GPIO 35 | Signal détection | HIGH = mouvement détecté |
 | **Capteur PIR** | VCC | 5V | Alimentation | Broche 5V de l'ESP32 (via USB) |
 | **Capteur PIR** | GND | GND | Masse | Broche GND de l'ESP32 |
 | **Photorésistance LDR** | Signal | GPIO 34 | Lecture ADC | Diviseur de tension avec R=10kΩ |
