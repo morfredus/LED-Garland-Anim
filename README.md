@@ -1,8 +1,8 @@
 # LED-Garland-Anim
 
-**Version 0.6.0** - Bi-directional LED Garland Animation Controller for ESP32/ESP32-S3
+**Version 0.6.1** - Bi-directional LED Garland Animation Controller for ESP32/ESP32-S3
 
-Control a 2-wire garland with anti-parallel LEDs via TB6612FNG motor driver module. Features 14 animations, 2 smart operating modes, OLED display with animated visualization, web interface, and physical button controls.
+Control a 2-wire garland with anti-parallel LEDs via TB6612FNG motor driver module. Features 6 optimized animations, 2 smart operating modes, OLED display with animated visualization, web interface, and physical button controls.
 
 [🇫🇷 Version française](README_FR.md) | [📝 Changelog](CHANGELOG.md) | [📚 Documentation](docs/)
 

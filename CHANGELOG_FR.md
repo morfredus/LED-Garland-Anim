@@ -5,6 +5,31 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [0.6.1] - 2025-12-12
+
+### 🔧 Correction Critique : Module Telegram Désactivé
+- ❌ **Telegram Bot Retiré** - Cause du gel système identifiée
+  - Le polling Telegram bloquait la boucle principale et causait les resets watchdog
+  - Toutes les fonctionnalités Telegram désactivées (setupTelegramBot, handleTelegramBot, sendTelegramStatus)
+  - `#include "telegram_control.h"` retiré
+  - Système maintenant stable avec animations continues sans gel
+
+### Modifié
+- ⚡ **Boucle principale simplifiée** : Code de throttling Telegram retiré
+- 📉 **Mémoire réduite** : Utilisation flash réduite de 79.3% à 75.9% (~45 KB économisés)
+- 🎯 **Démarrage animation** : Animation par défaut changée de `ANIM_AUTO` à `ANIM_FADE_ALTERNATE`
+  - La guirlande s'allume **immédiatement** au démarrage au lieu d'attendre 30 secondes
+
+### Performance
+- ✅ Système stable - aucun gel observé après suppression Telegram
+- ✅ Les 6 animations fonctionnent en douceur
+- ✅ Interface web réactive
+- ✅ Contrôles bouton réactifs
+
+### ⚠️ Limitation Connue
+- Commande Telegram à distance temporairement indisponible
+- Pour réactiver : décommenter includes et appels fonctions dans main.cpp (nécessite refactorisation)
+
 ## [0.6.0] - 2025-12-12
 
 ### Ajouté

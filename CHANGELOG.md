@@ -5,6 +5,31 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/).
 
+## [0.6.1] - 2025-12-12
+
+### 🔧 Critical Fix: Telegram Module Disabled
+- ❌ **Removed Telegram Bot** - Cause of system freeze identified
+  - Telegram polling was blocking the main loop and causing watchdog timer resets
+  - Disabled all Telegram functionality (setupTelegramBot, handleTelegramBot, sendTelegramStatus)
+  - Removed `#include "telegram_control.h"`
+  - System now stable with animations running continuously without freeze
+
+### Changed
+- ⚡ **Simplified Main Loop**: Removed Telegram polling throttling code
+- 📉 **Reduced Memory**: Flash usage reduced from 79.3% to 75.9% (~45 KB saved)
+- 🎯 **Animation Startup**: Changed default animation from `ANIM_AUTO` to `ANIM_FADE_ALTERNATE`
+  - Guirlande now lights up **immediately** on boot instead of waiting 30 seconds
+
+### Performance
+- ✅ System stable - no freeze observed after Telegram removal
+- ✅ All 6 animations working smoothly
+- ✅ Web interface responsive
+- ✅ Button controls responsive
+
+### ⚠️ Known Limitation
+- Telegram remote control temporarily unavailable
+- To re-enable: uncomment includes and function calls in main.cpp (requires refactoring for stability)
+
 ## [0.6.0] - 2025-12-12
 
 ### Added
