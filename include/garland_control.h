@@ -21,24 +21,15 @@
 
 /**
  * @enum GarlandAnimation
- * @brief Types d'animations disponibles pour la guirlande
+ * @brief Types d'animations disponibles pour la guirlande monochrome 2 fils
  */
 enum GarlandAnimation {
     ANIM_OFF = 0,           ///< Guirlande éteinte
     ANIM_FADE_ALTERNATE,    ///< Fade alterné entre Sens A et B
     ANIM_BLINK_ALTERNATE,   ///< Clignotement alterné
-    ANIM_SMOOTH_WAVE,       ///< Onde douce
-    ANIM_STROBE,            ///< Effet stroboscope
     ANIM_PULSE,             ///< Pulsation simultanée
-    ANIM_CHASE,             ///< Effet de poursuite
-    ANIM_HEARTBEAT,         ///< Battement de coeur
-    ANIM_SPARKLE,           ///< Scintillement aléatoire
-    ANIM_RAINBOW_WAVE,      ///< Vague arc-en-ciel
     ANIM_BREATHING,         ///< Respiration lente
-    ANIM_FIRE,              ///< Effet feu
-    ANIM_TWINKLE,           ///< Clignotement doux
-    ANIM_METEOR,            ///< Effet météore
-    ANIM_AUTO,              ///< Mode automatique (toutes les animations)
+    ANIM_AUTO,              ///< Mode automatique (cycle toutes les animations)
     ANIM_COUNT              ///< Nombre total d'animations
 };
 
