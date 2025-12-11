@@ -41,7 +41,7 @@ Use this guide to debug the ESP32-S3 and ESP32 Classic builds when something doe
 
 ## Garland Output / TB6612FNG
 - STBY must be HIGH (GPIO8 on S3, GPIO14 on Classic).
-- Direction: AIN1/AIN2 (GPIO6/4 on S3, GPIO32/33 on Classic). Intensity: PWMA (GPIO5 on S3, GPIO25 on Classic).
+- Direction: AIN1/AIN2 (GPIO6/4 on S3, GPIO32/33 on Classic). Intensity: PWMA (GPIO5 on S3, GPIO12 on Classic).
 - VM must be powered by an external 5–15V source; never power the garland from USB 5V alone.
 - If one direction fails, swap AO1/AO2 to confirm wiring; check for cold solder joints.
 

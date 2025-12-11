@@ -210,7 +210,7 @@ ESP32-S3           TFT ST7789
 | **TFT ILI9341** | BL | GPIO 13 | Backlight | LED backlight |
 | **TFT ILI9341** | VCC | 3.3V | Power | ESP32 3V3 pin |
 | **TFT ILI9341** | GND | GND | Ground | ESP32 GND pin |
-| **TB6612FNG** | PWMA | GPIO 25 | PWM Direction A | Light intensity control |
+| **TB6612FNG** | PWMA | GPIO 12 | PWM Direction A | Light intensity control |
 | **TB6612FNG** | AIN1 | GPIO 32 | Direction bit 1 | Current direction control |
 | **TB6612FNG** | AIN2 | GPIO 33 | Direction bit 2 | Current direction control |
 | **TB6612FNG** | STBY | GPIO 14 | Standby | Module activation (HIGH=active) |
@@ -230,7 +230,7 @@ ESP32-S3           TFT ST7789
 ESP32 Classic          TB6612FNG              LED Garland
 ┌─────────┐            ┌──────────┐           ┌──────────┐
 │         │            │          │           │          │
-│ GPIO 25 ├───────────►│ PWMA     │           │          │
+│ GPIO 12 ├───────────►│ PWMA     │           │          │
 │ GPIO 32 ├───────────►│ AIN1     │           │          │
 │ GPIO 33 ├───────────►│ AIN2     │           │          │
 │ GPIO 14 ├───────────►│ STBY     │           │          │

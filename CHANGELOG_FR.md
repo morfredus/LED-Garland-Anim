@@ -5,7 +5,7 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 
-## [0.6.0] - 2025-12-10
+## [0.6.0] - 2025-12-12
 
 ### Ajouté
 - 🤖 **Commande Telegram** :
@@ -16,6 +16,12 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 ### Modifié
 - 🔐 **Secrets** : `WIFI_NETWORKS` désormais défini inline dans `secrets.h` (plus de `secrets.cpp`).
 - 📄 **Documentation** : README/README_FR et USER_GUIDE/USER_GUIDE_FR mis à jour pour Telegram et version 0.6.0.
+
+### Corrigé
+- 🐛 **Gel ESP32 Classic** : `PIN_TB6612_PWMA` changé de GPIO 25 à GPIO 12
+  - GPIO 25/26 sont des pins DAC causant des interférences WiFi et resets watchdog
+  - Les animations ne figent plus pendant l'exécution sur ESP32 Classic
+  - Section LED_RGB inutilisée supprimée (conflit GPIO 16 avec BUTTON_2)
 
 ## [0.5.1] - 2025-12-10 (Patch - Documentation)
 
