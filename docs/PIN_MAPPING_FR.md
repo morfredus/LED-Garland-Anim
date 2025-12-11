@@ -210,7 +210,7 @@ ESP32-S3           TFT ST7789
 | **TFT ILI9341** | BL | GPIO 13 | Backlight | Rétroéclairage (LED) |
 | **TFT ILI9341** | VCC | 3.3V | Alimentation | Broche 3V3 de l'ESP32 |
 | **TFT ILI9341** | GND | GND | Masse | Broche GND de l'ESP32 |
-| **TB6612FNG** | PWMA | GPIO 25 | PWM Sens A | Contrôle intensité lumineuse |
+| **TB6612FNG** | PWMA | GPIO 12 | PWM Sens A | Contrôle intensité lumineuse |
 | **TB6612FNG** | AIN1 | GPIO 32 | Direction bit 1 | Contrôle direction courant |
 | **TB6612FNG** | AIN2 | GPIO 33 | Direction bit 2 | Contrôle direction courant |
 | **TB6612FNG** | STBY | GPIO 14 | Standby | Activation module (HIGH=actif) |
@@ -230,7 +230,7 @@ ESP32-S3           TFT ST7789
 ESP32 Classic           TB6612FNG              Guirlande LED
 ┌─────────┐            ┌──────────┐           ┌──────────┐
 │         │            │          │           │          │
-│ GPIO 25 ├───────────►│ PWMA     │           │          │
+│ GPIO 12 ├───────────►│ PWMA     │           │          │
 │ GPIO 32 ├───────────►│ AIN1     │           │          │
 │ GPIO 33 ├───────────►│ AIN2     │           │          │
 │ GPIO 14 ├───────────►│ STBY     │           │          │

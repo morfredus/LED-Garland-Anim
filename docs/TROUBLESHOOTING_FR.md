@@ -41,7 +41,7 @@ Guide rapide pour diagnostiquer les problèmes sur ESP32-S3 et ESP32 Classic.
 
 ## Sortie Guirlande / TB6612FNG
 - STBY doit être HIGH (GPIO8 sur S3, GPIO14 sur Classic).
-- Direction : AIN1/AIN2 (GPIO6/4 sur S3, GPIO32/33 sur Classic). Intensité : PWMA (GPIO5 sur S3, GPIO25 sur Classic).
+- Direction : AIN1/AIN2 (GPIO6/4 sur S3, GPIO32/33 sur Classic). Intensité : PWMA (GPIO5 sur S3, GPIO12 sur Classic).
 - VM doit être alimenté en 5–15V par une source externe ; ne pas alimenter la guirlande via l'USB seul.
 - Si un sens ne fonctionne pas, inverser AO1/AO2 pour tester et inspecter les soudures.
 

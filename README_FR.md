@@ -138,7 +138,7 @@ Affichages:
 #### Résumé Pins ESP32 Classic :
 ```
 TB6612FNG:
-  PWMA  → GPIO 25
+  PWMA  → GPIO 12
   AIN1  → GPIO 32
   AIN2  → GPIO 33
   STBY  → GPIO 14

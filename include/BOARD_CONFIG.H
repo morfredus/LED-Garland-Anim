@@ -214,9 +214,12 @@
      * de contrôler la direction et l'intensité du courant dans la guirlande.
      * Les LEDs étant montées en anti-parallèle, le changement de direction
      * permet d'allumer alternativement les LEDs du Sens A ou du Sens B.
+     * 
+     * @note GPIO 25/26 sont DAC et peuvent causer des interférences WiFi.
+     *       GPIO 12 est utilisé pour éviter ces conflits.
      * @{
      */
-    #define PIN_TB6612_PWMA   25     ///< GPIO 25 : PWM pour contrôler l'intensité du Sens A
+    #define PIN_TB6612_PWMA   12     ///< GPIO 12 : PWM pour contrôler l'intensité du Sens A
     #define PIN_TB6612_AIN1   32     ///< GPIO 32 : Contrôle direction A (bit 1)
     #define PIN_TB6612_AIN2   33     ///< GPIO 33 : Contrôle direction A (bit 2)
     #define PIN_TB6612_STBY   14     ///< GPIO 14 : Standby (HIGH=actif, LOW=veille)
@@ -245,31 +248,13 @@
      * @brief Configuration des pins pour les boutons utilisateur
      * 
      * @note GPIO 34, 35, 36, 39 sont INPUT_ONLY (pas de pull-up interne) !
-     * @note GPIO 25 utilisé par TB6612FNG PWM
+     * @note GPIO 12 utilisé par TB6612FNG PWM
      * @note GPIO 32, 33 utilisés par TB6612FNG direction
-     * @note GPIO 4 et 15 sont libres et supportent pull-up
+     * @note GPIO 4, 15, 16 sont libres et supportent pull-up
      * @{
      */
     #define PIN_BUTTON_1      4      ///< GPIO 4  : Bouton 1 (Changement animation)
     #define PIN_BUTTON_2      16     ///< GPIO 16 : Bouton 2 (Changement mode)
-    /** @} */
-
-    // ========================================================================
-    // LED RGB (en réserve) - 3 canaux PWM séparés
-    // ========================================================================
-    /**
-     * @defgroup LED_RGB LED RGB de statut (optionnel)
-     * @brief Configuration des pins pour une LED RGB cathode commune
-     * 
-     * LED RGB avec 3 broches séparées (R, G, B) et cathode commune (GND)
-     * GPIO libres : 16, 17, 5 (ou 12 si besoin)
-     * 
-     * @note Décommenter HAS_RGB_LED dans config.h pour l'utiliser
-     * @{
-     */
-    #define PIN_RGB_RED       16     ///< GPIO 16 : Canal Rouge (PWM)
-    #define PIN_RGB_GREEN     17     ///< GPIO 17 : Canal Vert (PWM)
-    #define PIN_RGB_BLUE      5      ///< GPIO 5  : Canal Bleu (PWM)
     /** @} */
 
 #else

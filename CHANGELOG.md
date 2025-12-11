@@ -5,7 +5,7 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/).
 
-## [0.6.0] - 2025-12-10
+## [0.6.0] - 2025-12-12
 
 ### Added
 - 🤖 **Telegram Remote Control**:
@@ -16,6 +16,12 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/).
 ### Changed
 - 🔐 **Secrets Layout**: `WIFI_NETWORKS` now defined inline in `secrets.h` (no separate `secrets.cpp`).
 - 📄 **Documentation**: README/README_FR and USER_GUIDE/USER_GUIDE_FR updated for Telegram control and version 0.6.0.
+
+### Fixed
+- 🐛 **ESP32 Classic Freeze Issue**: Changed `PIN_TB6612_PWMA` from GPIO 25 to GPIO 12
+  - GPIO 25/26 are DAC pins that cause WiFi interference and watchdog timer resets
+  - Animations no longer freeze during execution on ESP32 Classic
+  - Removed unused LED_RGB section that conflicted with GPIO 16 (BUTTON_2)
 
 ## [0.5.1] - 2025-12-10 (Patch - Documentation)
 
