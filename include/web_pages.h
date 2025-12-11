@@ -71,17 +71,8 @@ String generateDashboardPage(
             case ANIM_OFF: html += "Off"; break;
             case ANIM_FADE_ALTERNATE: html += "Alternate Fade"; break;
             case ANIM_BLINK_ALTERNATE: html += "Blink"; break;
-            case ANIM_SMOOTH_WAVE: html += "Smooth Wave"; break;
-            case ANIM_STROBE: html += "Strobe"; break;
             case ANIM_PULSE: html += "Pulse"; break;
-            case ANIM_CHASE: html += "Chase"; break;
-            case ANIM_HEARTBEAT: html += "Heartbeat"; break;
-            case ANIM_SPARKLE: html += "Sparkle"; break;
-            case ANIM_RAINBOW_WAVE: html += "Rainbow"; break;
             case ANIM_BREATHING: html += "Breathing"; break;
-            case ANIM_FIRE: html += "Fire"; break;
-            case ANIM_TWINKLE: html += "Twinkle"; break;
-            case ANIM_METEOR: html += "Meteor"; break;
             case ANIM_AUTO: html += "Auto Mode"; break;
         }
         html += "</option>";

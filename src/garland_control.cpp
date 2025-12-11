@@ -30,17 +30,8 @@ static const char* animationNames[] = {
     "Eteint",
     "Fade Alterne",
     "Clignotement",
-    "Onde Douce",
-    "Stroboscope",
     "Pulsation",
-    "Poursuite",
-    "Battement",
-    "Scintillement",
-    "Arc-en-ciel",
     "Respiration",
-    "Feu",
-    "Clignotement Doux",
-    "Meteore",
     "Auto"
 };
 
@@ -143,47 +134,12 @@ static void animateBlinkAlternate() {
 }
 
 /**
- * @brief Animation : Onde douce
- */
-static void animateSmoothWave() {
-    unsigned long elapsed = millis() - animationStartTime;
-    float phase = (elapsed % 3000) / 3000.0 * 2.0 * PI;
-    
-    brightnessA = (uint8_t)((sin(phase) + 1.0) / 2.0 * 255);
-    brightnessB = (uint8_t)((sin(phase + PI) + 1.0) / 2.0 * 255);
-    
-    // Alterner rapidement entre A et B pour simuler l'onde
-    if ((elapsed / 50) % 2 == 0) {
-        setSenseA(brightnessA);
-    } else {
-        setSenseB(brightnessB);
-    }
-}
-
-/**
- * @brief Animation : Stroboscope
- */
-static void animateStrobe() {
-    unsigned long elapsed = millis() - animationStartTime;
-    uint16_t cycleTime = elapsed % 200; // Cycle de 200ms
-    
-    if (cycleTime < 50) {
-        if ((elapsed / 200) % 2 == 0) {
-            setSenseA(255);
-        } else {
-            setSenseB(255);
-        }
-    } else {
-        setDirection(0);
-    }
-}
-
-/**
- * @brief Animation : Pulsation simultanée
+ * @brief Animation : Pulsation simultanée (alterner rapidement entre A et B)
  */
 static void animatePulse() {
     unsigned long elapsed = millis() - animationStartTime;
-    float phase = (elapsed % 2000) / 2000.0;
+    uint16_t cycleTime = elapsed % 2000;
+    float phase = cycleTime / 2000.0;
     
     uint8_t brightness = (phase < 0.5) ? (uint8_t)(phase * 2.0 * 255) : (uint8_t)((1.0 - (phase - 0.5) * 2.0) * 255);
     
@@ -196,147 +152,19 @@ static void animatePulse() {
 }
 
 /**
- * @brief Animation : Effet de poursuite
- */
-static void animateChase() {
-    unsigned long elapsed = millis() - animationStartTime;
-    uint16_t cycleTime = elapsed % 600;
-    
-    if (cycleTime < 100) {
-        setSenseA(255);
-    } else if (cycleTime < 200) {
-        setDirection(0);
-    } else if (cycleTime < 300) {
-        setSenseB(255);
-    } else if (cycleTime < 400) {
-        setDirection(0);
-    } else if (cycleTime < 500) {
-        setSenseA(128);
-    } else {
-        setSenseB(128);
-    }
-}
-
-/**
- * @brief Animation : Battement de coeur
- */
-static void animateHeartbeat() {
-    unsigned long elapsed = millis() - animationStartTime;
-    uint16_t cycleTime = elapsed % 1500;
-    
-    if (cycleTime < 100) {
-        setSenseA(255);
-    } else if (cycleTime < 200) {
-        setDirection(0);
-    } else if (cycleTime < 300) {
-        setSenseA(255);
-    } else {
-        setDirection(0);
-    }
-}
-
-/**
- * @brief Animation : Scintillement aléatoire
- */
-static void animateSparkle() {
-    unsigned long elapsed = millis() - animationStartTime;
-    
-    if (elapsed % 100 < 50) {
-        if (random(0, 2) == 0) {
-            setSenseA(random(150, 255));
-        } else {
-            setSenseB(random(150, 255));
-        }
-    } else {
-        setDirection(0);
-    }
-}
-
-/**
- * @brief Animation : Vague arc-en-ciel
- */
-static void animateRainbowWave() {
-    unsigned long elapsed = millis() - animationStartTime;
-    float phase = (elapsed % 5000) / 5000.0 * 2.0 * PI;
-    
-    brightnessA = (uint8_t)((sin(phase) + 1.0) / 2.0 * 255);
-    brightnessB = (uint8_t)((cos(phase) + 1.0) / 2.0 * 255);
-    
-    if ((elapsed / 20) % 2 == 0) {
-        setSenseA(brightnessA);
-    } else {
-        setSenseB(brightnessB);
-    }
-}
-
-/**
- * @brief Animation : Respiration lente
+ * @brief Animation : Respiration lente (alterner rapidement entre A et B)
  */
 static void animateBreathing() {
     unsigned long elapsed = millis() - animationStartTime;
-    float phase = (elapsed % 4000) / 4000.0 * PI;
+    uint16_t cycleTime = elapsed % 4000;
+    float phase = cycleTime / 4000.0;
     
-    uint8_t brightness = (uint8_t)((sin(phase) + 1.0) / 2.0 * 255);
+    uint8_t brightness = (uint8_t)((1.0 - cos(phase * 2.0 * PI)) / 2.0 * 255);
     
     if ((elapsed / 10) % 2 == 0) {
         setSenseA(brightness);
     } else {
         setSenseB(brightness);
-    }
-}
-
-/**
- * @brief Animation : Effet feu
- */
-static void animateFire() {
-    unsigned long elapsed = millis() - animationStartTime;
-    
-    uint8_t flicker = random(180, 255);
-    
-    if ((elapsed / 30) % 3 == 0) {
-        setSenseA(flicker);
-    } else if ((elapsed / 30) % 3 == 1) {
-        setSenseB(flicker);
-    } else {
-        setDirection(0);
-    }
-}
-
-/**
- * @brief Animation : Clignotement doux
- */
-static void animateTwinkle() {
-    unsigned long elapsed = millis() - animationStartTime;
-    uint16_t cycleTime = elapsed % 2000;
-    
-    float phase = cycleTime / 2000.0;
-    uint8_t brightness = (uint8_t)(pow(sin(phase * PI), 2) * 255);
-    
-    if ((elapsed / 1000) % 2 == 0) {
-        setSenseA(brightness);
-    } else {
-        setSenseB(brightness);
-    }
-}
-
-/**
- * @brief Animation : Effet météore
- */
-static void animateMeteor() {
-    unsigned long elapsed = millis() - animationStartTime;
-    uint16_t cycleTime = elapsed % 1000;
-    
-    if (cycleTime < 800) {
-        float phase = cycleTime / 800.0;
-        uint8_t brightness = (uint8_t)((1.0 - phase) * 255);
-        
-        if ((elapsed / 500) % 2 == 0) {
-            setSenseA(brightness);
-        } else {
-            setSenseB(brightness);
-        }
-    } else {
-        setDirection(0);
     }
 }
 
@@ -423,42 +251,18 @@ void updateGarland() {
         case ANIM_BLINK_ALTERNATE:
             animateBlinkAlternate();
             break;
-        case ANIM_SMOOTH_WAVE:
-            animateSmoothWave();
-            break;
-        case ANIM_STROBE:
-            animateStrobe();
-            break;
         case ANIM_PULSE:
             animatePulse();
-            break;
-        case ANIM_CHASE:
-            animateChase();
-            break;
-        case ANIM_HEARTBEAT:
-            animateHeartbeat();
-            break;
-        case ANIM_SPARKLE:
-            animateSparkle();
-            break;
-        case ANIM_RAINBOW_WAVE:
-            animateRainbowWave();
             break;
         case ANIM_BREATHING:
             animateBreathing();
             break;
-        case ANIM_FIRE:
-            animateFire();
-            break;
-        case ANIM_TWINKLE:
-            animateTwinkle();
-            break;
-        case ANIM_METEOR:
-            animateMeteor();
-            break;
         default:
             break;
     }
+    
+    // Libérer le CPU pour les tâches WiFi et éviter watchdog timer reset
+    yield();
 }
 
 void setGarlandAnimation(GarlandAnimation animation) {
