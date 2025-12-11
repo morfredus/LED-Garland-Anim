@@ -11,7 +11,7 @@
 #include "web_interface.h"
 #include "display.h"
 #include "garland_control.h"
-#include "telegram_control.h"
+// #include "telegram_control.h"  // DÉSACTIVÉ - Cause de freeze
 
 // --- OBJETS ---
 WiFiMulti wifiMulti;
@@ -166,8 +166,8 @@ void setupWifi() {
             pixels.show();
         #endif
 
-        // Notification Telegram de connexion WiFi
-        sendTelegramStatus(WiFi.SSID().c_str(), WiFi.localIP());
+        // Notification Telegram de connexion WiFi (DÉSACTIVÉE)
+        // sendTelegramStatus(WiFi.SSID().c_str(), WiFi.localIP());
     } else {
         LOG_PRINTLN(" Echec !");
         displayWifiFailed();
@@ -211,8 +211,8 @@ void setup() {
     // Démarrage Serveur Web
     if(WiFi.status() == WL_CONNECTED) {
         setupWebServer();
-        setupTelegramBot();
-        sendTelegramStatus(WiFi.SSID().c_str(), WiFi.localIP());
+        // setupTelegramBot();  // DÉSACTIVÉ
+        // sendTelegramStatus(WiFi.SSID().c_str(), WiFi.localIP());  // DÉSACTIVÉ
     }
 }
 
@@ -229,15 +229,12 @@ void loop() {
     // 3. Gestion Serveur Web (non-bloquant)
     server.handleClient();
 
-    // 4. Commandes Telegram (throttled pour éviter blocage)
-    static unsigned long lastTelegramCheck = 0;
-    if (millis() - lastTelegramCheck > 500) {  // Check Telegram max toutes les 500ms
-        lastTelegramCheck = millis();
-        handleTelegramBot();
-    }
-
-    // 5. Libération CPU (CRITIQUE pour watchdog)
-    yield();
+    // 4. Commandes Telegram (DÉSACTIVÉES - Cause de freeze)
+    // static unsigned long lastTelegramCheck = 0;
+    // if (millis() - lastTelegramCheck > 500) {  // Check Telegram max toutes les 500ms
+    //     lastTelegramCheck = millis();
+    //     handleTelegramBot();
+    // }
 
     // 5. Libération CPU (CRITIQUE pour watchdog)
     yield();
