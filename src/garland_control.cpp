@@ -11,7 +11,7 @@
 // VARIABLES GLOBALES
 // =============================================================================
 
-static GarlandAnimation currentAnimation = ANIM_AUTO;
+static GarlandAnimation currentAnimation = ANIM_FADE_ALTERNATE;  // Démarre avec animation par défaut
 static GarlandMode currentMode = MODE_PERMANENT;
 static unsigned long animationStartTime = 0;
 static unsigned long motionDetectedTime = 0;

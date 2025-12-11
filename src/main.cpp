@@ -226,21 +226,24 @@ void loop() {
     // 2. Mise à jour de l'animation de guirlande
     updateGarland();
 
-    // 3. Gestion Serveur Web
+    // 3. Gestion Serveur Web (non-bloquant)
     server.handleClient();
 
-    // 3b. Commandes Telegram (polling léger)
-    handleTelegramBot();
-
-    // 4. Gestion WiFi (Reconnexion auto)
-    if(wifiMulti.run() != WL_CONNECTED) {
-        // Optionnel : Gestion LED rouge si perte de connexion
+    // 4. Commandes Telegram (throttled pour éviter blocage)
+    static unsigned long lastTelegramCheck = 0;
+    if (millis() - lastTelegramCheck > 500) {  // Check Telegram max toutes les 500ms
+        lastTelegramCheck = millis();
+        handleTelegramBot();
     }
 
-    // 5. Heartbeat Non-Bloquant (remplace delay)
-    unsigned long currentMillis = millis();
+    // 5. Libération CPU (CRITIQUE pour watchdog)
+    yield();
+
+    // 5. Libération CPU (CRITIQUE pour watchdog)
+    yield();
     
-    if (currentMillis - previousMillis >= interval) {
+    // 6. Heartbeat Non-Bloquant (remplace delay)
+    unsigned long currentMillis = millis();    if (currentMillis - previousMillis >= interval) {
         previousMillis = currentMillis;
         
         // Clignotement du heartbeat
