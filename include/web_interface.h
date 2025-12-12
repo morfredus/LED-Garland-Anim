@@ -4,7 +4,7 @@
 /**
  * @file web_interface.h
  * @brief Gestion de l'interface web et des handlers du serveur
- * @version 0.5.1
+ * @version 0.6.1
  * 
  * Module dédié à la gestion des routes HTTP et handlers du serveur web.
  * Contient les callbacks pour les différents endpoints de l'API web.
