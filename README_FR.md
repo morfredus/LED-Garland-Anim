@@ -1,8 +1,8 @@
 # LED-Garland-Anim
 
-**Version 0.6.2** - Contrôleur d'animation de guirlande LED bi-directionnelle pour ESP32/ESP32-S3
+**Version 0.6.3** - Contrôleur d'animation de guirlande LED bi-directionnelle pour ESP32/ESP32-S3
 
-Contrôlez une guirlande à 2 fils avec LEDs en anti-parallèle via un module TB6612FNG. Dispose de 6 animations optimisées (incluant le mode Auto avec démarrage instantané), 2 modes de fonctionnement intelligents, affichage OLED avec visualisation animée, interface web, et contrôles physiques par boutons.
+Contrôlez une guirlande à 2 fils avec LEDs en anti-parallèle via un module TB6612FNG. Dispose de 11 animations spectaculaires (incluant 5 nouveaux effets visuels), mode Auto avec démarrage instantané, 2 modes de fonctionnement intelligents, affichage OLED avec visualisation animée, interface web, et contrôles physiques par boutons.
 
 [🇬🇧 English version](README.md) | [📝 Journal des modifications](CHANGELOG_FR.md) | [📚 Documentation](docs/)
 
@@ -10,12 +10,17 @@ Contrôlez une guirlande à 2 fils avec LEDs en anti-parallèle via un module TB
 
 ## ✨ Fonctionnalités Principales
 
-### 🎄 6 Animations de Guirlande
+### 🎄 11 Animations Spectaculaires de Guirlande
 - **Éteint**: Guirlande désactivée
 - **Fade Alterné**: Transition douce entre les deux sens de LEDs
 - **Clignotement Alterné**: Alternance rapide entre Sens A et B
 - **Pulsation**: Battement simultané des deux sens
 - **Respiration**: Montée/descente lente de l'intensité
+- **✨ Strobe**: Flash stroboscopique rapide
+- **✨ Battement Cœur**: Double pulsation caractéristique (♥️ BOM-bom...)
+- **✨ Vague**: Onde sinusoïdale fluide entre les directions
+- **✨ Scintillement**: Effet de scintillement aléatoire
+- **✨ Météore**: Traînée lumineuse avec estompage progressif
 - **Mode Automatique**: Enchaînement de toutes les animations (30s chacune) avec **démarrage instantané** - aucune période vide
 
 ### 🎮 2 Modes de Fonctionnement Intelligents

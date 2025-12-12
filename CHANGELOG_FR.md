@@ -5,6 +5,32 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [0.6.3] - 2025-12-13
+
+### ✨ Ajout : 5 Nouvelles Animations Spectaculaires
+- ⚡ **Strobe**: Effet de flash stroboscopique rapide - flashs intenses alternant entre les directions
+- ♥️ **Battement Cœur**: Effet de double pulsation (BOM-bom... BOM-bom...) imitant un battement de cœur
+- 🌊 **Vague**: Onde sinusoïdale fluide circulant entre les directions de LEDs
+- ✨ **Scintillement**: Effet de scintillement aléatoire avec intensité variable
+- ☄️ **Météore**: Effet de traînée lumineuse avec estompage progressif simulant un météore
+
+### 🎭 Vitrine d'Animations
+**Total animations : 11** (6 originales + 5 nouvelles)
+- Originales : Éteint, Fade Alterné, Clignotement Alterné, Pulsation, Respiration, Auto
+- **Nouvelles** : Strobe, Battement Cœur, Vague, Scintillement, Météore
+
+### Détails Techniques
+- Toutes les animations optimisées pour guirlande monochrome 2 fils avec LEDs en anti-parallèle
+- Le mode Auto cycle maintenant à travers les 10 animations actives (30s chacune)
+- Transitions fluides et effets utilisant le contrôle du pont en H TB6612FNG
+- Ajout d'appels yield() pour éviter les problèmes de watchdog timer
+
+### Expérience Utilisateur
+- 🎵 Plus de variété visuelle pour l'éclairage décoratif
+- 🔄 Mode Auto enrichi avec 5 effets supplémentaires
+- 🕹️ Le Bouton 1 cycle à travers les 11 animations + Auto
+- 💻 Interface web mise à jour avec les nouvelles options d'animation
+
 ## [0.6.2] - 2025-12-12
 
 ### 🐞 Corrigé : Démarrage Mode Auto

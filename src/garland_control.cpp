@@ -1,8 +1,8 @@
 /**
  * @file garland_control.cpp
  * @brief Implémentation du contrôle des animations de guirlande
- * @version 0.6.2
- * @date 2025-12-12
+ * @version 0.6.3
+ * @date 2025-12-13
  */
 
 #include "garland_control.h"
@@ -34,6 +34,11 @@ static const char* animationNames[] = {
     "Clignotement",
     "Pulsation",
     "Respiration",
+    "Strobe",
+    "Battement Coeur",
+    "Vague",
+    "Scintillement",
+    "Meteore",
     "Auto"
 };
 
@@ -170,6 +175,123 @@ static void animateBreathing() {
     }
 }
 
+/**
+ * @brief Animation : Strobe - Flash stroboscopique rapide
+ */
+static void animateStrobe() {
+    unsigned long elapsed = millis() - animationStartTime;
+    uint16_t cycleTime = elapsed % 200;  // Cycle de 200ms
+    
+    // Flash très court (50ms) puis noir
+    if (cycleTime < 50) {
+        // Alterner A et B à chaque flash
+        if ((elapsed / 200) % 2 == 0) {
+            setSenseA(255);
+        } else {
+            setSenseB(255);
+        }
+    } else {
+        garlandOff();
+    }
+}
+
+/**
+ * @brief Animation : Heartbeat - Double pulsation (battement de cœur)
+ */
+static void animateHeartbeat() {
+    unsigned long elapsed = millis() - animationStartTime;
+    uint16_t cycleTime = elapsed % 1500;  // Cycle de 1.5 secondes
+    
+    uint8_t brightness = 0;
+    
+    // Premier battement (0-200ms)
+    if (cycleTime < 100) {
+        brightness = (uint8_t)(cycleTime * 255 / 100);
+    } else if (cycleTime < 200) {
+        brightness = (uint8_t)((200 - cycleTime) * 255 / 100);
+    }
+    // Deuxième battement (250-450ms)
+    else if (cycleTime < 350) {
+        brightness = (uint8_t)((cycleTime - 250) * 255 / 100);
+    } else if (cycleTime < 450) {
+        brightness = (uint8_t)((450 - cycleTime) * 255 / 100);
+    }
+    // Pause jusqu'à la fin du cycle
+    
+    // Alterner rapidement pour illuminer les deux sens
+    if ((elapsed / 10) % 2 == 0) {
+        setSenseA(brightness);
+    } else {
+        setSenseB(brightness);
+    }
+}
+
+/**
+ * @brief Animation : Wave - Vague sinusoïdale fluide
+ */
+static void animateWave() {
+    unsigned long elapsed = millis() - animationStartTime;
+    float time = elapsed / 1000.0;  // Temps en secondes
+    
+    // Calcul d'une onde sinusoïdale qui va de -1 à +1
+    float wave = sin(time * 2.0);  // Période de π secondes
+    
+    // Mapper la vague sur les deux sens
+    if (wave > 0) {
+        // Sens A : proportionnel à wave (0 → 1)
+        setSenseA((uint8_t)(wave * 255));
+    } else {
+        // Sens B : proportionnel à -wave (0 → 1)
+        setSenseB((uint8_t)(-wave * 255));
+    }
+}
+
+/**
+ * @brief Animation : Sparkle - Scintillement aléatoire
+ */
+static void animateSparkle() {
+    unsigned long elapsed = millis() - animationStartTime;
+    
+    // Changer aléatoirement toutes les 50ms
+    if (elapsed % 50 < 5) {
+        uint8_t randomBrightness = random(100, 255);
+        
+        // 50% de chance pour chaque sens
+        if (random(0, 2) == 0) {
+            setSenseA(randomBrightness);
+        } else {
+            setSenseB(randomBrightness);
+        }
+    }
+}
+
+/**
+ * @brief Animation : Meteor - Traînée lumineuse avec estompage
+ */
+static void animateMeteor() {
+    unsigned long elapsed = millis() - animationStartTime;
+    uint16_t cycleTime = elapsed % 2000;  // Cycle de 2 secondes
+    float progress = cycleTime / 2000.0;
+    
+    // Traînée qui traverse de A vers B
+    if (progress < 0.5) {
+        // Phase A : montée rapide
+        uint8_t brightness = (uint8_t)(progress * 2.0 * 255);
+        setSenseA(brightness);
+    } else {
+        // Phase B : montée A qui s'estompe + montée B
+        uint8_t brightnessA = (uint8_t)((1.0 - progress) * 2.0 * 255);
+        uint8_t brightnessB = (uint8_t)((progress - 0.5) * 2.0 * 255);
+        
+        // Alterner rapidement pour créer l'illusion de traînée
+        if ((elapsed / 20) % 2 == 0) {
+            setSenseA(brightnessA);
+        } else {
+            setSenseB(brightnessB);
+        }
+    }
+}
+
 // =============================================================================
 // FONCTIONS PUBLIQUES
 // =============================================================================
@@ -258,6 +380,21 @@ void updateGarland() {
             break;
         case ANIM_BREATHING:
             animateBreathing();
+            break;
+        case ANIM_STROBE:
+            animateStrobe();
+            break;
+        case ANIM_HEARTBEAT:
+            animateHeartbeat();
+            break;
+        case ANIM_WAVE:
+            animateWave();
+            break;
+        case ANIM_SPARKLE:
+            animateSparkle();
+            break;
+        case ANIM_METEOR:
+            animateMeteor();
             break;
         default:
             break;

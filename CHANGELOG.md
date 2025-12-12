@@ -5,6 +5,32 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/).
 
+## [0.6.3] - 2025-12-13
+
+### ✨ Added: 5 New Spectacular Animations
+- ⚡ **Strobe**: Rapid stroboscopic flash effect - short intense flashes alternating between directions
+- ♥️ **Heartbeat**: Double-beat pulsation effect (BOM-bom... BOM-bom...) mimicking a heartbeat
+- 🌊 **Wave**: Smooth sinusoidal wave flowing between LED directions
+- ✨ **Sparkle**: Random twinkling sparkle effect with varying brightness
+- ☄️ **Meteor**: Light trail effect with progressive fade simulating a meteor passing
+
+### 🎭 Animation Showcase
+**Total animations: 11** (6 original + 5 new)
+- Original: Off, Fade Alternate, Blink Alternate, Pulse, Breathing, Auto
+- **New**: Strobe, Heartbeat, Wave, Sparkle, Meteor
+
+### Technical Details
+- All animations optimized for 2-wire monochrome garland with anti-parallel LEDs
+- Auto mode now cycles through all 10 active animations (30s each)
+- Smooth transitions and effects using TB6612FNG H-bridge control
+- Added yield() calls to prevent watchdog timer issues
+
+### User Experience
+- 🎵 More visual variety for decorative lighting
+- 🔄 Auto mode enriched with 5 additional effects
+- 🕹️ Button 1 cycles through all 11 animations + Auto
+- 💻 Web interface updated with new animation options
+
 ## [0.6.2] - 2025-12-12
 
 ### 🐞 Fixed: Auto Mode Startup
