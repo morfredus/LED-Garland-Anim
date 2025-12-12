@@ -135,15 +135,6 @@ Example: `192.168.1.100`
 - **🔄 Refresh**: Reload page with updated data
 - **🔴 Restart**: Restart ESP32 (asks for confirmation)
 
-### Telegram Bot
-- Send commands from the authorized chat:
-   - `/anim <id|name>` (e.g. `/anim 3`, `/anim auto`)
-   - `/mode <id|name>` (e.g. `/mode 1`, `/mode detect`)
-   - `/nextanim`, `/nextmode`
-   - `/status` (current animation, mode, IP)
-   - `/liste` (lists all modes and animations with IDs)
-- On WiFi connection, the device sends a Telegram notification with SSID/IP and current animation/mode.
-
 ---
 
 ## OLED Display

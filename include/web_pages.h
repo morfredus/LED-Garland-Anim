@@ -4,7 +4,7 @@
 /**
  * @file web_pages.h
  * @brief Génération des pages HTML pour l'interface web
- * @version 0.6.1
+ * @version 0.6.3
  * 
  * Module dédié à la génération du contenu HTML de l'interface web.
  * Contient les fonctions pour construire les différentes cartes et sections.
@@ -69,10 +69,15 @@ String generateDashboardPage(
         html += ">";
         switch(i) {
             case ANIM_OFF: html += "Off"; break;
-            case ANIM_FADE_ALTERNATE: html += "Alternate Fade"; break;
-            case ANIM_BLINK_ALTERNATE: html += "Blink"; break;
+            case ANIM_FADE_ALTERNATE: html += "Fade Alternate"; break;
+            case ANIM_BLINK_ALTERNATE: html += "Blink Alternate"; break;
             case ANIM_PULSE: html += "Pulse"; break;
             case ANIM_BREATHING: html += "Breathing"; break;
+            case ANIM_STROBE: html += "⚡ Strobe"; break;
+            case ANIM_HEARTBEAT: html += "❤️ Heartbeat"; break;
+            case ANIM_WAVE: html += "🌊 Wave"; break;
+            case ANIM_SPARKLE: html += "✨ Sparkle"; break;
+            case ANIM_METEOR: html += "☄️ Meteor"; break;
             case ANIM_AUTO: html += "Auto Mode"; break;
         }
         html += "</option>";

@@ -30,14 +30,9 @@ Contrôlez une guirlande à 2 fils avec LEDs en anti-parallèle via un module TB
 ### 🖥️ Affichage OLED en Temps Réel
 - Affichage en direct des noms d'animation et de mode
 - Adresse IP locale pour accès web
-- Barre de visualisation animée (14 motifs distincts)
+- Barre de visualisation animée (11 motifs distincts)
 - Mise en page adaptative pour écrans 128x32 et 128x64
 - Taux de rafraîchissement 10 FPS pour animations fluides
-
-### 📡 Contrôle Telegram
-- Commandes bot : `/anim <id|nom>`, `/mode <id|nom>`, `/nextanim`, `/nextmode`, `/status`, `/liste`
-- `/liste` renvoie toutes les animations et modes avec leurs IDs
-- Notification Telegram automatique à la connexion WiFi (SSID, IP, animation/mode courants)
 
 ### 🌐 Interface Web
 - **Tableau de Bord Complet**: Info système, mémoire, statistiques WiFi
@@ -93,7 +88,13 @@ cd Anim-Guirlande
 ```
 
 ### 2. Configurer `include/secrets.h`
-Éditez `include/secrets.h` pour définir vos réseaux WiFi et les identifiants du bot Telegram (`TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`).
+Éditez `include/secrets.h` pour définir vos réseaux WiFi.
+
+Exemple :
+```cpp
+#define WIFI_SSID_1 "YourNetwork"
+#define WIFI_PASS_1 "YourPassword"
+```
 
 ### 3. Configurer PlatformIO
 Modifiez les chemins de build dans `platformio.ini` (optionnel) :
@@ -171,7 +172,7 @@ pio device monitor
 ### Démarrage
 1. La guirlande démarre en animation **Auto** et mode **Permanent**
 2. L'écran OLED/TFT affiche la progression de connexion WiFi
-3. Une fois connecté, l'adresse IP s'affiche et une notification Telegram est envoyée (SSID/IP/animation/mode)
+3. Une fois connecté, l'adresse IP s'affiche sur l'OLED et l'interface web
 4. Accédez à l'interface web : `http://[IP_ESP32]`
 
 ### Contrôles Physiques
@@ -208,7 +209,7 @@ Anim-Guirlande/
 ├── include/
 │   ├── board_config.h        # Pin mapping ESP32/S3
 │   ├── config.h              # Configuration générale
-│   ├── secrets.h             # Réseaux WiFi + identifiants Telegram
+│   ├── secrets.h             # Réseaux WiFi
 │   ├── display.h             # Gestion écrans OLED/TFT
 │   ├── garland_control.h     # Contrôle guirlande et animations
 │   ├── web_interface.h       # Handlers HTTP

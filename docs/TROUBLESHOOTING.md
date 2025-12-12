@@ -4,7 +4,7 @@ Use this guide to debug the ESP32-S3 and ESP32 Classic builds when something doe
 
 ## Quick Checklist
 - Confirm you flashed the correct environment (`esp32s3_n16r8`, `esp32s3_n8r8`, or `esp32devkitc`).
-- Double-check WiFi credentials and Telegram token/chat in `include/secrets.h`.
+- Double-check WiFi credentials in `include/secrets.h`.
 - Pins must match `include/board_config.h` (S3: PIR 14, LDR 15, buttons 16/17; Classic: PIR 35, LDR 34, buttons 4/16).
 - Common ground between ESP32, TB6612FNG, and external power.
 - Serial monitor at 115200 baud to read logs.
@@ -13,11 +13,6 @@ Use this guide to debug the ESP32-S3 and ESP32 Classic builds when something doe
 - Stuck on "Connecting" or WiFi LED stays purple: verify 2.4 GHz network, SSID/password, and that the router is not blocking new MACs.
 - IP not shown: check router DHCP list; if none, reboot the board and router.
 - Frequent drops: move closer to AP, avoid USB hubs with low power, and reduce metal shielding around the board.
-
-## Telegram Bot
-- No replies: ensure `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` are set and match the authorized chat.
-- TLS errors: keep `client.setInsecure()` in place; verify system time (set by WiFi) is obtained before polling.
-- Bot silent after reboot: confirm the device is on WiFi (check OLED/TFT IP); send `/status` to verify reachability.
 
 ## Web Interface Unreachable
 - Ping the IP shown on OLED/TFT; if ping fails, recheck WiFi or DHCP.
@@ -44,10 +39,6 @@ Use this guide to debug the ESP32-S3 and ESP32 Classic builds when something doe
 - Direction: AIN1/AIN2 (GPIO6/4 on S3, GPIO32/33 on Classic). Intensity: PWMA (GPIO5 on S3, GPIO12 on Classic).
 - VM must be powered by an external 5–15V source; never power the garland from USB 5V alone.
 - If one direction fails, swap AO1/AO2 to confirm wiring; check for cold solder joints.
-
-## Telegram and WiFi Status Messages Missing
-- Ensure WiFi connected before Telegram init (see serial logs for "Connected to").
-- Chat must match `TELEGRAM_CHAT_ID`; other chats are ignored silently.
 
 ## Build / Upload Problems
 - Use `pio run -e <env>` for build; if upload fails, hold BOOT (GPIO0) on Classic during first flash.

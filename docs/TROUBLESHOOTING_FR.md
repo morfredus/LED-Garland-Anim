@@ -4,7 +4,7 @@ Guide rapide pour diagnostiquer les problèmes sur ESP32-S3 et ESP32 Classic.
 
 ## Check-list Express
 - Flasher le bon environnement (`esp32s3_n16r8`, `esp32s3_n8r8` ou `esp32devkitc`).
-- Vérifier les identifiants WiFi et le token/chat Telegram dans `include/secrets.h`.
+- Vérifier les identifiants WiFi dans `include/secrets.h`.
 - Respecter les pins de `include/board_config.h` (S3 : PIR 14, LDR 15, boutons 16/17 ; Classic : PIR 35, LDR 34, boutons 4/16).
 - Masse commune entre ESP32, TB6612FNG et alimentation externe.
 - Ouvrir le moniteur série en 115200 pour lire les logs.
@@ -13,11 +13,6 @@ Guide rapide pour diagnostiquer les problèmes sur ESP32-S3 et ESP32 Classic.
 - Bloqué sur "Connecting" : réseau 2.4 GHz obligatoire, vérifier SSID/mot de passe et filtrage MAC.
 - Pas d'IP affichée : vérifier la liste DHCP du routeur, redémarrer carte + box si besoin.
 - Coupures fréquentes : rapprocher du point d'accès, éviter les hubs USB peu puissants, limiter les obstacles métalliques.
-
-## Bot Telegram
-- Pas de réponse : confirmer `TELEGRAM_BOT_TOKEN` et `TELEGRAM_CHAT_ID` (chat autorisé uniquement).
-- Erreurs TLS : laisser `client.setInsecure()` et attendre que le WiFi ait synchronisé l'heure.
-- Bot muet après reboot : contrôler l'IP sur OLED/TFT, envoyer `/status` pour vérifier la liaison.
 
 ## Interface Web Injoignable
 - Pinger l'IP affichée ; si échec, revoir WiFi/DHCP.
@@ -44,10 +39,6 @@ Guide rapide pour diagnostiquer les problèmes sur ESP32-S3 et ESP32 Classic.
 - Direction : AIN1/AIN2 (GPIO6/4 sur S3, GPIO32/33 sur Classic). Intensité : PWMA (GPIO5 sur S3, GPIO12 sur Classic).
 - VM doit être alimenté en 5–15V par une source externe ; ne pas alimenter la guirlande via l'USB seul.
 - Si un sens ne fonctionne pas, inverser AO1/AO2 pour tester et inspecter les soudures.
-
-## Statuts WiFi / Telegram absents
-- Vérifier la connexion WiFi avant l'init Telegram (log "Connected to").
-- Le chat doit correspondre à `TELEGRAM_CHAT_ID` ; les autres sont ignorés silencieusement.
 
 ## Problèmes de Build / Upload
 - Compiler avec `pio run -e <env>` ; si upload difficile, maintenir BOOT (GPIO0) sur Classic au premier flash.
