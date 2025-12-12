@@ -1,8 +1,8 @@
 # LED-Garland-Anim
 
-**Version 0.6.1** - Bi-directional LED Garland Animation Controller for ESP32/ESP32-S3
+**Version 0.6.2** - Bi-directional LED Garland Animation Controller for ESP32/ESP32-S3
 
-Control a 2-wire garland with anti-parallel LEDs via TB6612FNG motor driver module. Features 6 optimized animations, 2 smart operating modes, OLED display with animated visualization, web interface, and physical button controls.
+Control a 2-wire garland with anti-parallel LEDs via TB6612FNG motor driver module. Features 6 optimized animations (including Auto mode with instant start), 2 smart operating modes, OLED display with animated visualization, web interface, and physical button controls.
 
 [🇫🇷 Version française](README_FR.md) | [📝 Changelog](CHANGELOG.md) | [📚 Documentation](docs/)
 
@@ -10,21 +10,13 @@ Control a 2-wire garland with anti-parallel LEDs via TB6612FNG motor driver modu
 
 ## ✨ Key Features
 
-### 🎄 14 Garland Animations
+### 🎄 6 Garland Animations
+- **Off**: Garland disabled
 - **Alternating Fade**: Smooth transition between both LED directions
-- **Blink**: Fast alternation between Direction A and B
-- **Smooth Wave**: Fluid wave effect
-- **Strobe**: Fast alternating flash
+- **Blink Alternate**: Fast alternation between Direction A and B
 - **Pulse**: Simultaneous beat of both directions
-- **Chase**: Racing effect between LEDs
-- **Heartbeat**: Characteristic double pulse
-- **Sparkle**: Random twinkling
-- **Rainbow**: Simulated multicolor wave
 - **Breathing**: Slow intensity rise/fall
-- **Fire**: Flame effect simulation
-- **Soft Blink**: Sinusoidal transition
-- **Meteor**: Fading light trail
-- **Auto Mode**: Cycle through all animations (30s each)
+- **Auto Mode**: Cycles through all animations (30s each) with **instant start** - no blank period
 
 ### 🎮 2 Smart Operating Modes
 - **Permanent**: Always on (default at startup)

@@ -5,6 +5,29 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/).
 
+## [0.6.2] - 2025-12-12
+
+### 🐞 Fixed: Auto Mode Startup
+- ✅ **Auto Mode Now Starts Instantly**
+  - Fixed: AUTO mode now starts immediately with first animation (Fade Alternate)
+  - Eliminated 30-second blank period when selecting AUTO mode
+  - Auto mode now properly appears in Button 1 animation cycle
+  
+### 🛠️ Technical Changes
+- 💾 **Internal Architecture**: Separated `currentAnimation` (display/UI) and `activeAnimation` (execution)
+  - `currentAnimation`: Stores selected animation including ANIM_AUTO (shown on OLED/web)
+  - `activeAnimation`: Actual running animation (always a concrete animation like FADE, PULSE, etc.)
+  - Added `autoModeActive` flag to track AUTO mode state
+- 🔄 **Auto Mode Logic**: Improved cycle management
+  - First animation starts immediately when AUTO selected
+  - Cycles through animations 1-4 every 30 seconds
+  - Properly resets when exiting/re-entering AUTO mode
+
+### User Experience
+- ✨ Button 1 now correctly shows "Auto" in the cycle
+- ✨ Garland lights up instantly when AUTO mode selected
+- ✨ OLED displays "Auto" while animations cycle automatically
+
 ## [0.6.1] - 2025-12-12
 
 ### 🔧 Critical Fix: Telegram Module Disabled

@@ -5,6 +5,29 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [0.6.2] - 2025-12-12
+
+### 🐞 Corrigé : Démarrage Mode Auto
+- ✅ **Le Mode Auto Démarre Maintenant Instantanément**
+  - Corrigé : Le mode AUTO démarre immédiatement avec la première animation (Fade Alterné)
+  - Éliminé la période vide de 30 secondes lors de la sélection du mode AUTO
+  - Le mode Auto apparaît maintenant correctement dans le cycle du Bouton 1
+  
+### 🛠️ Changements Techniques
+- 💾 **Architecture Interne** : Séparation de `currentAnimation` (affichage/UI) et `activeAnimation` (exécution)
+  - `currentAnimation` : Stocke l'animation sélectionnée incluant ANIM_AUTO (affichée sur OLED/web)
+  - `activeAnimation` : Animation réellement exécutée (toujours concrète comme FADE, PULSE, etc.)
+  - Ajout du flag `autoModeActive` pour suivre l'état du mode AUTO
+- 🔄 **Logique Mode Auto** : Gestion du cycle améliorée
+  - La première animation démarre immédiatement quand AUTO est sélectionné
+  - Cycle entre les animations 1-4 toutes les 30 secondes
+  - Réinitialisation correcte lors de la sortie/rentrée en mode AUTO
+
+### Expérience Utilisateur
+- ✨ Le Bouton 1 affiche maintenant correctement "Auto" dans le cycle
+- ✨ La guirlande s'allume instantanément quand le mode AUTO est sélectionné
+- ✨ L'OLED affiche "Auto" pendant que les animations défilent automatiquement
+
 ## [0.6.1] - 2025-12-12
 
 ### 🔧 Correction Critique : Module Telegram Désactivé

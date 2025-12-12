@@ -1,7 +1,7 @@
 /**
  * @file garland_control.cpp
  * @brief Implémentation du contrôle des animations de guirlande
- * @version 0.6.1
+ * @version 0.6.2
  * @date 2025-12-12
  */
 
@@ -11,11 +11,13 @@
 // VARIABLES GLOBALES
 // =============================================================================
 
-static GarlandAnimation currentAnimation = ANIM_FADE_ALTERNATE;  // Démarre avec animation par défaut
+static GarlandAnimation currentAnimation = ANIM_FADE_ALTERNATE;  // Animation sélectionnée (pour affichage)
+static GarlandAnimation activeAnimation = ANIM_FADE_ALTERNATE;   // Animation réellement exécutée
 static GarlandMode currentMode = MODE_PERMANENT;
 static unsigned long animationStartTime = 0;
 static unsigned long motionDetectedTime = 0;
 static bool garlandEnabled = true;
+static bool autoModeActive = false;  // Flag pour suivre si le mode AUTO est actif
 
 // Paramètres d'animation
 static uint8_t brightnessA = 0;
@@ -226,22 +228,22 @@ void updateGarland() {
     garlandEnabled = true;
     
     // Mode automatique : changer d'animation toutes les 30 secondes
-    if (currentAnimation == ANIM_AUTO) {
+    if (autoModeActive) {
         unsigned long elapsed = millis() - animationStartTime;
         if (elapsed > 30000) {
-            static uint8_t autoAnimIndex = 1;
-            autoAnimIndex++;
-            if (autoAnimIndex >= ANIM_AUTO) {
-                autoAnimIndex = 1;
+            uint8_t nextAnim = (uint8_t)activeAnimation + 1;
+            // Boucler entre ANIM_FADE_ALTERNATE et ANIM_BREATHING
+            if (nextAnim >= ANIM_AUTO) {
+                nextAnim = ANIM_FADE_ALTERNATE;
             }
-            currentAnimation = (GarlandAnimation)autoAnimIndex;
+            activeAnimation = (GarlandAnimation)nextAnim;
             animationStartTime = millis();
-            LOG_PRINTF("Mode Auto: Animation %s\n", animationNames[autoAnimIndex]);
+            LOG_PRINTF("Mode Auto: Animation %s\n", animationNames[nextAnim]);
         }
     }
     
-    // Exécution de l'animation
-    switch (currentAnimation) {
+    // Exécution de l'animation (utiliser activeAnimation)
+    switch (activeAnimation) {
         case ANIM_OFF:
             garlandOff();
             break;
@@ -266,9 +268,20 @@ void updateGarland() {
 }
 
 void setGarlandAnimation(GarlandAnimation animation) {
-    currentAnimation = animation;
-    animationStartTime = millis();
-    LOG_PRINTF("Animation changée: %s\n", animationNames[animation]);
+    currentAnimation = animation;  // Toujours mettre à jour pour l'affichage
+    
+    // Si on passe en mode AUTO, démarrer immédiatement avec la première animation
+    if (animation == ANIM_AUTO) {
+        autoModeActive = true;
+        activeAnimation = ANIM_FADE_ALTERNATE;  // Première animation
+        animationStartTime = millis();
+        LOG_PRINTF("Mode Auto activé: Animation %s\n", animationNames[ANIM_FADE_ALTERNATE]);
+    } else {
+        autoModeActive = false;  // Désactiver le mode AUTO
+        activeAnimation = animation;  // Animation active = animation sélectionnée
+        animationStartTime = millis();
+        LOG_PRINTF("Animation changée: %s\n", animationNames[animation]);
+    }
 }
 
 GarlandAnimation getGarlandAnimation() {
