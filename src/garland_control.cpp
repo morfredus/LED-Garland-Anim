@@ -354,7 +354,7 @@ void updateGarland() {
         unsigned long elapsed = millis() - animationStartTime;
         if (elapsed > 30000) {
             uint8_t nextAnim = (uint8_t)activeAnimation + 1;
-            // Boucler entre ANIM_FADE_ALTERNATE et ANIM_BREATHING
+            // Boucler entre ANIM_FADE_ALTERNATE (1) et ANIM_METEOR (9), avant ANIM_AUTO (10)
             if (nextAnim >= ANIM_AUTO) {
                 nextAnim = ANIM_FADE_ALTERNATE;
             }

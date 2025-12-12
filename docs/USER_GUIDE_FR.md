@@ -135,15 +135,6 @@ Exemple : `192.168.1.100`
 - **🔄 Actualiser** : Recharger la page avec données mises à jour
 - **🔴 Redémarrer** : Redémarrer l'ESP32 (demande confirmation)
 
-### Bot Telegram
-- Commandes (chat autorisé) :
-   - `/anim <id|nom>` (ex : `/anim 3`, `/anim auto`)
-   - `/mode <id|nom>` (ex : `/mode 1`, `/mode detect`)
-   - `/nextanim`, `/nextmode`
-   - `/status` (animation, mode, IP courants)
-   - `/liste` (toutes les animations et modes avec IDs)
-- À la connexion WiFi, l'appareil envoie une notification Telegram avec SSID/IP et animation/mode courants.
-
 ---
 
 ## Affichage OLED

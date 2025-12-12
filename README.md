@@ -30,18 +30,13 @@ Control a 2-wire garland with anti-parallel LEDs via TB6612FNG motor driver modu
 ### 🖥️ OLED Real-time Display
 - Live display of current animation and mode names
 - Local IP address for web access
-- Animated visualization bar (14 distinct patterns)
+- Animated visualization bar (11 distinct patterns)
 - Adaptive layout for 128x32 and 128x64 screens
 - 10 FPS refresh rate for smooth animations
 
-### 📡 Telegram Remote Control
-- Bot commands: `/anim <id|name>`, `/mode <id|name>`, `/nextanim`, `/nextmode`, `/status`, `/liste`
-- `/liste` returns all animations and modes with numeric IDs
-- Automatic Telegram notification on WiFi connect (SSID, IP, current animation/mode)
-
 ### 🌐 Web Interface
 - **Complete Dashboard**: System info, memory, WiFi stats
-- **Garland Control**: Animation and mode selection (2 modes, 15 animations incl. Auto)
+- **Garland Control**: Animation and mode selection (2 modes, 11 animations incl. Auto)
 - **Sensor Visualization**: PIR motion status, light level
 - **Remote Actions**: Refresh and restart
 
