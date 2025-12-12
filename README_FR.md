@@ -1,8 +1,8 @@
 # LED-Garland-Anim
 
-**Version 0.6.1** - Contrôleur d'animation de guirlande LED bi-directionnelle pour ESP32/ESP32-S3
+**Version 0.6.2** - Contrôleur d'animation de guirlande LED bi-directionnelle pour ESP32/ESP32-S3
 
-Contrôlez une guirlande à 2 fils avec LEDs en anti-parallèle via un module TB6612FNG. Dispose de 6 animations optimisées, 2 modes de fonctionnement intelligents, affichage OLED avec visualisation animée, interface web, et contrôles physiques par boutons.
+Contrôlez une guirlande à 2 fils avec LEDs en anti-parallèle via un module TB6612FNG. Dispose de 6 animations optimisées (incluant le mode Auto avec démarrage instantané), 2 modes de fonctionnement intelligents, affichage OLED avec visualisation animée, interface web, et contrôles physiques par boutons.
 
 [🇬🇧 English version](README.md) | [📝 Journal des modifications](CHANGELOG_FR.md) | [📚 Documentation](docs/)
 
@@ -10,21 +10,13 @@ Contrôlez une guirlande à 2 fils avec LEDs en anti-parallèle via un module TB
 
 ## ✨ Fonctionnalités Principales
 
-### 🎄 14 Animations de Guirlande
+### 🎄 6 Animations de Guirlande
+- **Éteint**: Guirlande désactivée
 - **Fade Alterné**: Transition douce entre les deux sens de LEDs
-- **Clignotement**: Alternance rapide entre Sens A et B
-- **Onde Douce**: Effet de vague fluide
-- **Stroboscope**: Flash rapide alterné
+- **Clignotement Alterné**: Alternance rapide entre Sens A et B
 - **Pulsation**: Battement simultané des deux sens
-- **Poursuite**: Effet de course entre les LEDs
-- **Battement de Cœur**: Double pulsation caractéristique
-- **Scintillement**: Clignotement aléatoire
-- **Arc-en-ciel**: Vague multicolore simulée
 - **Respiration**: Montée/descente lente de l'intensité
-- **Feu**: Simulation d'effet flamme
-- **Clignotement Doux**: Transition sinusoïdale
-- **Météore**: Traînée lumineuse qui s'estompe
-- **Mode Automatique**: Enchaînement de toutes les animations (30s chacune)
+- **Mode Automatique**: Enchaînement de toutes les animations (30s chacune) avec **démarrage instantané** - aucune période vide
 
 ### 🎮 2 Modes de Fonctionnement Intelligents
 - **Permanent**: Toujours allumé (par défaut au démarrage)
