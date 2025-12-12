@@ -1,4 +1,4 @@
-# Guide Utilisateur - LED-Garland-Anim v0.6.2
+# Guide Utilisateur - LED-Garland-Anim v0.6.3
 
 Guide utilisateur complet pour le contrôleur d'animation de guirlande LED LED-Garland-Anim.
 
@@ -178,6 +178,11 @@ Chaque animation a une visualisation unique :
 - **Clignotement Alterné** : Blocs alternés gauche/droite
 - **Pulse** : Barre centrale qui grandit/rétrécit
 - **Breathing** : Expansion/contraction
+- **Strobe** : Flashs rapides alternés
+- **Battement Cœur** : Double pulsation caractéristique
+- **Vague** : Onde sinusoïdale fluide
+- **Scintillement** : Pixels aléatoires clignotants
+- **Météore** : Traînée mobile avec estompage
 - **Auto** : Tiret rotatif (indique mode cyclique avec démarrage instantané)
 
 **Quand Aucune Animation n'est Active** (v0.4.0+) :
@@ -217,7 +222,7 @@ Chaque animation a une visualisation unique :
 **Durée déclenchement** : 30 secondes (configurable dans le code via `MOTION_TRIGGER_DURATION`)
 
 **Notes** :
-- Uniquement 2 modes dans la v0.6.2 (Permanent, Détection Mouvement). Les modes Horaires et Coupure Nuit ont été retirés.
+- Uniquement 2 modes dans la v0.6.3 (Permanent, Détection Mouvement). Les modes Horaires et Coupure Nuit ont été retirés.
 - Ajouter du debounce si nécessaire avec des modules PIR bruyants.
 
 **Quand le Mode Nuit s'Active** :

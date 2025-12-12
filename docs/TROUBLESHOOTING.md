@@ -1,4 +1,4 @@
-# Troubleshooting - LED-Garland-Anim v0.6.2
+# Troubleshooting - LED-Garland-Anim v0.6.3
 
 Use this guide to debug the ESP32-S3 and ESP32 Classic builds when something does not work as expected.
 

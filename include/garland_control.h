@@ -1,8 +1,8 @@
 /**
  * @file garland_control.h
  * @brief Contrôle des animations de guirlande LED bi-directionnelle
- * @version 0.6.1
- * @date 2025-12-12
+ * @version 0.6.3
+ * @date 2025-12-13
  * 
  * Module de gestion des animations pour guirlande LED à 2 fils avec LEDs en anti-parallèle.
  * Utilise le module TB6612FNG pour contrôler la direction du courant et l'intensité lumineuse.
@@ -29,6 +29,11 @@ enum GarlandAnimation {
     ANIM_BLINK_ALTERNATE,   ///< Clignotement alterné
     ANIM_PULSE,             ///< Pulsation simultanée
     ANIM_BREATHING,         ///< Respiration lente
+    ANIM_STROBE,            ///< Flash stroboscopique rapide
+    ANIM_HEARTBEAT,         ///< Double pulsation (battement de cœur)
+    ANIM_WAVE,              ///< Vague sinusoïdale fluide
+    ANIM_SPARKLE,           ///< Scintillement aléatoire
+    ANIM_METEOR,            ///< Traînée lumineuse avec estompage
     ANIM_AUTO,              ///< Mode automatique (cycle toutes les animations)
     ANIM_COUNT              ///< Nombre total d'animations
 };
