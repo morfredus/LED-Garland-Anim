@@ -1,4 +1,4 @@
-# 📚 Architecture - LED-Garland-Anim v0.5.2
+# 📚 Architecture - LED-Garland-Anim v0.6.2
 
 ## 🎯 Overview
 
@@ -27,10 +27,13 @@ const char* getGarlandAnimationName();         // Current animation name
 const char* getGarlandModeName();              // Current mode name
 ```
 
-**Animations (14 types)**:
-- `ANIM_FADE`, `ANIM_BLINK`, `ANIM_WAVE`, `ANIM_STROBE`, `ANIM_PULSE`
-- `ANIM_CHASE`, `ANIM_HEARTBEAT`, `ANIM_SPARKLE`, `ANIM_RAINBOW`
-- `ANIM_BREATHING`, `ANIM_FIRE`, `ANIM_TWINKLE`, `ANIM_METEOR`, `ANIM_AUTO`
+**Animations (6 types)**:
+- `ANIM_OFF`: Garland disabled
+- `ANIM_FADE_ALTERNATE`: Smooth transition between direction A and B
+- `ANIM_BLINK_ALTERNATE`: Fast alternation between direction A and B
+- `ANIM_PULSE`: Simultaneous pulsation
+- `ANIM_BREATHING`: Slow breathing
+- `ANIM_AUTO`: Automatic cycle between animations (30s each) with instant start
 
 **Modes (2 types)**:
 - `MODE_PERMANENT`: Always on

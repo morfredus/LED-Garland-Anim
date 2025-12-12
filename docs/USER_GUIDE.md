@@ -1,4 +1,4 @@
-# User Guide - LED-Garland-Anim v0.6.0
+# User Guide - LED-Garland-Anim v0.6.2
 
 Complete user guide for the LED-Garland-Anim LED garland animation controller.
 
@@ -173,20 +173,12 @@ Example: `192.168.1.100`
 
 Each animation has a unique visualization on the OLED:
 
-- **Fade**: Sliding bar with gradient
-- **Blink**: Alternating left/right blocks
-- **Wave**: Smooth wave progression
-- **Strobe**: Fast flashing blocks
+- **Off**: Empty bar
+- **Fade Alternate**: Sliding bar with gradient
+- **Blink Alternate**: Alternating left/right blocks
 - **Pulse**: Growing/shrinking centered bar
-- **Chase**: Running dot pattern
-- **Heartbeat**: Double-beat pulse
-- **Sparkle**: Random pixels
-- **Rainbow**: Moving wave
 - **Breathing**: Expanding/contracting bar
-- **Fire**: Flickering random-height bars
-- **Twinkle**: Random sparse pixels
-- **Meteor**: Moving trail with fade
-- **Auto**: Rotating dash (indicates cycling mode)
+- **Auto**: Rotating dash (indicates cycling mode with instant start)
 
 **When No Animation is Active** (v0.4.0+):
 - Display shows 3 fixed dots at the bottom of screen
@@ -225,7 +217,7 @@ Each animation has a unique visualization on the OLED:
 **Trigger duration**: 30 seconds (configurable in code via `MOTION_TRIGGER_DURATION`)
 
 **Notes**:
-- Only 2 modes exist in v0.6.0 (Permanent, Motion Trigger). Scheduled and Night modes were removed.
+- Only 2 modes exist in v0.6.2 (Permanent, Motion Trigger). Scheduled and Night modes were removed.
 - Consider adding debounce if using noisy PIR modules.
 
 ## Animations
@@ -331,7 +323,7 @@ Automatically cycles through all 13 animations.
 **Trigger duration**: 30 seconds (configurable in code via `MOTION_TRIGGER_DURATION`)
 
 **Notes**:
-- Only 2 modes exist in v0.6.0 (Permanent, Motion Trigger). Scheduled and Night modes were removed.
+- Only 2 modes exist in v0.6.2 (Permanent, Motion Trigger). Scheduled and Night modes were removed.
 - Consider adding debounce if using noisy PIR modules.
 
 ---

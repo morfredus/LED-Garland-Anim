@@ -1,4 +1,4 @@
-# Dépannage - LED-Garland-Anim v0.6.0
+# Dépannage - LED-Garland-Anim v0.6.2
 
 Guide rapide pour diagnostiquer les problèmes sur ESP32-S3 et ESP32 Classic.
 
