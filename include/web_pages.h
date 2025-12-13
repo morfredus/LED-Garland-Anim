@@ -53,7 +53,7 @@ String generateDashboardPage(
 
     // --- Carte unique: Paramètres Guirlande ---
     html += "<div class='card card-full'>";
-    html += "<div class='card-title'>🎄 Paramètres Guirlande</div>";
+    html += "<div class='card-title'>🎄 Paramètres Guirlande <span style='float:right;font-size:0.9em;color:#1b5e20;'>En cours: <span id='current-anim' class='mono'>" + String(getGarlandAnimationName()) + "</span></span></div>";
     // Animation
     html += "<div class='card-item'><span class='card-label'>Animation:</span>";
     html += "<select id='animSelect' style='width:55%;padding:8px;border-radius:8px;border:1px solid #ddd;'>";
@@ -148,6 +148,10 @@ String generateDashboardPage(
     html += "}";
     html += "function applyAutoInterval() { var s = document.getElementById('auto-interval-seconds').value; var ms = Math.round(s*1000); fetch('/auto_interval?ms=' + ms); }";
     html += "function applyMotionDuration() { var s = document.getElementById('motion-duration-seconds').value; var ms = Math.round(s*1000); fetch('/motion_duration?ms=' + ms); }";
+    // Mise à jour périodique du statut pour afficher l'animation en cours
+    html += "function refreshStatus(){ fetch('/status').then(r=>r.json()).then(j=>{ var el=document.getElementById('current-anim'); if(el){ el.textContent=j.animation; } }); }";
+    html += "setInterval(refreshStatus, 2000);";
+    html += "document.addEventListener('DOMContentLoaded', refreshStatus);";
     html += "</script>";
     
     html += "</div></body></html>";
