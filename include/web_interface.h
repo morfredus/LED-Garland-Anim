@@ -4,7 +4,7 @@
 /**
  * @file web_interface.h
  * @brief Gestion de l'interface web et des handlers du serveur
- * @version 0.6.1
+ * @version 0.6.4
  * 
  * Module dédié à la gestion des routes HTTP et handlers du serveur web.
  * Contient les callbacks pour les différents endpoints de l'API web.
@@ -113,9 +113,37 @@ void handleStatus() {
     json += "\"mode\":\"" + String(getGarlandModeName()) + "\",";
     json += "\"mode_id\":" + String((int)getGarlandMode()) + ",";
     json += "\"motion_detected\":" + String(isMotionDetected() ? "true" : "false") + ",";
-    json += "\"light_level\":" + String(getLightLevel());
+    json += "\"light_level\":" + String(getLightLevel()) + ",";
+    json += "\"auto_interval_ms\":" + String(getAutoAnimationIntervalMs()) + ",";
+    json += "\"motion_duration_ms\":" + String(getMotionTriggerDurationMs());
     json += "}";
     server.send(200, "application/json", json);
+}
+
+/**
+ * @brief Handler pour changer l'intervalle du mode AUTO (GET /auto_interval?ms=X)
+ */
+void handleSetAutoInterval() {
+    if (server.hasArg("ms")) {
+        unsigned long val = server.arg("ms").toInt();
+        setAutoAnimationIntervalMs(val);
+        server.send(200, "text/plain", "Auto interval updated");
+    } else {
+        server.send(400, "text/plain", "Paramètre manquant");
+    }
+}
+
+/**
+ * @brief Handler pour changer la durée de déclenchement mouvement (GET /motion_duration?ms=X)
+ */
+void handleSetMotionDuration() {
+    if (server.hasArg("ms")) {
+        unsigned long val = server.arg("ms").toInt();
+        setMotionTriggerDurationMs(val);
+        server.send(200, "text/plain", "Motion duration updated");
+    } else {
+        server.send(400, "text/plain", "Paramètre manquant");
+    }
 }
 
 /**
@@ -134,6 +162,8 @@ void setupWebServer() {
     server.on("/reboot", handleReboot);
     server.on("/animation", handleSetAnimation);
     server.on("/mode", handleSetMode);
+    server.on("/auto_interval", handleSetAutoInterval);
+    server.on("/motion_duration", handleSetMotionDuration);
     server.on("/status", handleStatus);
     server.onNotFound(handleNotFound);
     server.begin();

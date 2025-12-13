@@ -1,4 +1,4 @@
-# User Guide - LED-Garland-Anim v0.6.3
+# User Guide - LED-Garland-Anim v0.6.4
 
 Complete user guide for the LED-Garland-Anim LED garland animation controller.
 
@@ -68,6 +68,12 @@ Example: `192.168.1.100`
 ---
 
 ## Web Interface
+
+### Configurable durations & persistence
+- AUTO mode interval (ms): adjustable from the main card, saved to NVS and restored on reboot.
+- Motion-off duration (ms): adjustable, saved to NVS and restored on reboot.
+- API endpoints: `GET /auto_interval?ms=<millis>` and `GET /motion_duration?ms=<millis>`.
+- Status (`GET /status`): includes `auto_interval_ms` and `motion_duration_ms`.
 
 ### Accessing the Interface
 1. Open a web browser on phone/computer

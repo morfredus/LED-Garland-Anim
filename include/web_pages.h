@@ -4,7 +4,7 @@
 /**
  * @file web_pages.h
  * @brief Génération des pages HTML pour l'interface web
- * @version 0.6.3
+ * @version 0.6.4
  * 
  * Module dédié à la génération du contenu HTML de l'interface web.
  * Contient les fonctions pour construire les différentes cartes et sections.
@@ -58,6 +58,8 @@ String generateDashboardPage(
     html += "<div class='card-item'><span class='card-label'>Mode:</span><span class='card-value'>" + String(getGarlandModeName()) + "</span></div>";
     html += "<div class='card-item'><span class='card-label'>Motion:</span><span class='card-value'>" + String(isMotionDetected() ? "Detected" : "None") + "</span></div>";
     html += "<div class='card-item'><span class='card-label'>Brightness:</span><span class='card-value'>" + String(getLightLevel()) + " / 4095</span></div>";
+    html += "<div class='card-item'><span class='card-label'>Intervalle AUTO (ms):</span><input type='number' id='auto-interval' min='5000' max='300000' step='1000' value='" + String(getAutoAnimationIntervalMs()) + "' onchange='updateAutoInterval(this.value)'></div>";
+    html += "<div class='card-item'><span class='card-label'>Extinction après mouvement (ms):</span><input type='number' id='motion-duration' min='5000' max='600000' step='1000' value='" + String(getMotionTriggerDurationMs()) + "' onchange='updateMotionDuration(this.value)'></div>";
     
     // Sélecteur d'animation
     html += "<div style='margin-top:15px;'>";
@@ -199,6 +201,8 @@ String generateDashboardPage(
     html += "  var id = document.getElementById('modeSelect').value;";
     html += "  fetch('/mode?id=' + id).then(() => setTimeout(() => location.reload(), 500));";
     html += "}";
+    html += "function updateAutoInterval(val) { fetch('/auto_interval?ms=' + val); }";
+    html += "function updateMotionDuration(val) { fetch('/motion_duration?ms=' + val); }";
     html += "</script>";
     
     html += "</div></body></html>";

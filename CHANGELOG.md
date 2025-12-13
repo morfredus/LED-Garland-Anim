@@ -5,6 +5,20 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/).
 
+## [0.6.4] - 2025-12-13
+
+### Settings Persistence (NVS)
+- Automatically saves `mode`, `animation`, `auto_interval_ms`, and `motion_duration_ms` to ESP32 NVS.
+- Restores settings on boot via `loadGarlandSettings()` in `setupGarland()`.
+- NVS initialized early in `setup()` with erase+reinit fallback.
+
+### Web UI & API
+- Web UI: numeric inputs to change Auto interval and Motion-off duration, prefilled with current values.
+- API: new endpoints `GET /auto_interval?ms=...` and `GET /motion_duration?ms=...`; `/status` includes both values.
+
+### Misc
+- Bumped version to 0.6.4 across sources.
+
 ## [0.6.3] - 2025-12-13
 
 ### ✨ Added: 5 New Spectacular Animations

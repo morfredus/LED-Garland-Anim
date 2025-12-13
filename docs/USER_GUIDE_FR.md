@@ -1,4 +1,4 @@
-# Guide Utilisateur - LED-Garland-Anim v0.6.3
+# Guide Utilisateur - LED-Garland-Anim v0.6.4
 
 Guide utilisateur complet pour le contrôleur d'animation de guirlande LED LED-Garland-Anim.
 
@@ -68,6 +68,12 @@ Exemple : `192.168.1.100`
 ---
 
 ## Interface Web
+
+### Durées configurables et persistance
+- Intervalle du mode AUTO (ms): ajustable depuis la carte principale, enregistré en NVS et restauré automatiquement après redémarrage.
+- Durée d’extinction après mouvement (ms): ajustable, enregistrée en NVS et restaurée au démarrage.
+- Endpoints API: `GET /auto_interval?ms=<millis>` et `GET /motion_duration?ms=<millis>`.
+- Statut (`GET /status`): expose `auto_interval_ms` et `motion_duration_ms`.
 
 ### Accès à l'Interface
 1. Ouvrir un navigateur web sur téléphone/ordinateur

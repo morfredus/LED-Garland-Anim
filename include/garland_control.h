@@ -1,7 +1,7 @@
 /**
  * @file garland_control.h
  * @brief Contrôle des animations de guirlande LED bi-directionnelle
- * @version 0.6.3
+ * @version 0.6.4
  * @date 2025-12-13
  * 
  * Module de gestion des animations pour guirlande LED à 2 fils avec LEDs en anti-parallèle.
@@ -14,10 +14,14 @@
 #include <Arduino.h>
 #include "board_config.h"
 #include "config.h"
+#include <nvs_flash.h>
+#include <nvs.h>
 
 // =============================================================================
 // CONSTANTES D'ANIMATION
 // =============================================================================
+
+#define NVS_NAMESPACE "garland"  ///< Espace de noms NVS pour la persistence
 
 /**
  * @enum GarlandAnimation
@@ -57,6 +61,23 @@ enum GarlandMode {
 #define GARLAND_PWM_CHANNEL    0         ///< Canal PWM pour le TB6612FNG
 
 #define MOTION_TRIGGER_DURATION 30000    ///< Durée d'allumage après détection (ms)
+
+// Durées configurables (exposées via l'interface Web)
+unsigned long getAutoAnimationIntervalMs();
+void setAutoAnimationIntervalMs(unsigned long ms);
+unsigned long getMotionTriggerDurationMs();
+void setMotionTriggerDurationMs(unsigned long ms);
+
+// Sauvegarde/restauration NVS
+/**
+ * @brief Charge les paramètres sauvegardés (mode, animation, durées) depuis NVS
+ */
+void loadGarlandSettings();
+
+/**
+ * @brief Sauvegarde les paramètres actuels en NVS
+ */
+void saveGarlandSettings();
 
 // =============================================================================
 // PROTOTYPES DE FONCTIONS

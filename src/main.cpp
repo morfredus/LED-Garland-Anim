@@ -4,6 +4,8 @@
 #include <WebServer.h>
 #include <Adafruit_NeoPixel.h>
 #include <OneButton.h>
+#include <nvs_flash.h>
+#include <nvs.h>
 
 #include "config.h"
 #include "board_config.h"
@@ -178,6 +180,14 @@ void setupWifi() {
 void setup() {
     Serial.begin(SERIAL_BAUD_RATE);
     delay(1000); // Wait for Serial USB
+    
+    // Initialiser NVS pour la persistence
+    esp_err_t err = nvs_flash_init();
+    if (err == ESP_ERR_NVS_NO_FREE_PAGES || err == ESP_ERR_NVS_NEW_VERSION_FOUND) {
+        nvs_flash_erase();
+        nvs_flash_init();
+    }
+    
     // Config Boutons
     btnBoot.attachLongPressStart(handleBootLongPress);
     btnBoot.setPressMs(1000); // Durée pour considérer un appui long (ms)

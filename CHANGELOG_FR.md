@@ -5,6 +5,20 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [0.6.4] - 2025-12-13
+
+### 🔒 Persistance des paramètres (NVS)
+- Sauvegarde automatique du `mode`, de l'`animation`, de `auto_interval_ms` et de `motion_duration_ms` dans la mémoire NVS de l'ESP32.
+- Chargement des paramètres au démarrage via `loadGarlandSettings()` appelé dans `setupGarland()`.
+- Initialisation NVS en début de `setup()` avec gestion d’effacement si nécessaire.
+
+### 🌐 UI et API Web
+- UI Web: ajout de champs numériques pour modifier l’intervalle AUTO et la durée de détection mouvement, pré-remplis avec les valeurs courantes.
+- API Web: nouveaux endpoints `GET /auto_interval?ms=...` et `GET /motion_duration?ms=...` et statut enrichi (`/status`) exposant `auto_interval_ms` et `motion_duration_ms`.
+
+### 🧩 Divers
+- Mise à jour des en-têtes et affichage de version à 0.6.4.
+
 ## [0.6.3] - 2025-12-13
 
 ### ✨ Ajout : 5 Nouvelles Animations Spectaculaires
