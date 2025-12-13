@@ -4,7 +4,7 @@
 /**
  * @file web_interface.h
  * @brief Gestion de l'interface web et des handlers du serveur
- * @version 0.6.4
+ * @version 0.7.0-rc1
  * 
  * Module dédié à la gestion des routes HTTP et handlers du serveur web.
  * Contient les callbacks pour les différents endpoints de l'API web.
@@ -115,7 +115,8 @@ void handleStatus() {
     json += "\"motion_detected\":" + String(isMotionDetected() ? "true" : "false") + ",";
     json += "\"light_level\":" + String(getLightLevel()) + ",";
     json += "\"auto_interval_ms\":" + String(getAutoAnimationIntervalMs()) + ",";
-    json += "\"motion_duration_ms\":" + String(getMotionTriggerDurationMs());
+    json += "\"motion_duration_ms\":" + String(getMotionTriggerDurationMs()) + ",";
+    json += "\"ip\":\"" + WiFi.localIP().toString() + "\"";
     json += "}";
     server.send(200, "application/json", json);
 }
@@ -146,6 +147,26 @@ void handleSetMotionDuration() {
     }
 }
 
+/** Sauvegarde manuelle des paramètres en NVS */
+void handleSaveSettings() {
+    saveGarlandSettings();
+    server.send(200, "text/plain", "Paramètres sauvegardés");
+}
+
+/** Recharge les paramètres depuis NVS */
+void handleLoadSettings() {
+    loadGarlandSettings();
+    server.send(200, "text/plain", "Paramètres rechargés");
+}
+
+/** Efface l'espace NVS de l'application */
+void handleEraseSettings() {
+    // Efface tout NVS (global). Alternative: ouvrir handle et effacer clés.
+    nvs_flash_erase();
+    nvs_flash_init();
+    server.send(200, "text/plain", "Sauvegarde effacée");
+}
+
 /**
  * @brief Handler pour les pages non trouvées (404)
  */
@@ -164,6 +185,9 @@ void setupWebServer() {
     server.on("/mode", handleSetMode);
     server.on("/auto_interval", handleSetAutoInterval);
     server.on("/motion_duration", handleSetMotionDuration);
+    server.on("/save", handleSaveSettings);
+    server.on("/load", handleLoadSettings);
+    server.on("/erase", handleEraseSettings);
     server.on("/status", handleStatus);
     server.onNotFound(handleNotFound);
     server.begin();

@@ -5,6 +5,31 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [0.7.0-rc1] - 2025-12-13
+
+### 🎨 Interface Web Simplifiée et Festive
+- UI épurée avec seulement les paramètres essentiels de la guirlande
+- Thème visuel Noël/Nouvel An : palette rouge-or-vert, bordures dorées
+- Saisie des durées en **secondes** (conversion automatique en millisecondes)
+- Boutons "Valider" pour appliquer les changements de durée
+- Note explicative dynamique pour le calcul du nombre d'animations en mode Détection+Auto
+
+### 💾 Gestion de la Sauvegarde NVS
+- Bouton **Sauvegarder** : enregistrement manuel des paramètres en NVS
+- Bouton **Restaurer** : rechargement depuis la sauvegarde NVS
+- Bouton **Effacer** : suppression de la sauvegarde (confirmation requise)
+- Endpoints API : `/save`, `/load`, `/erase`
+
+### ⚙️ Paramètres Clairs
+- **Durée d'une animation (mode Auto)** : temps d'affichage de chaque animation en mode Auto
+- **Durée d'allumage après détection** : temps total avant extinction après mouvement
+- Affichage du SSID WiFi et de l'IP dans une carte réseau minimaliste
+
+### 🔧 Améliorations Techniques
+- Persistance automatique lors du changement d'animation, mode ou durées
+- Statut API enrichi avec l'adresse IP (`/status` inclut `"ip"`)
+- Labels UI explicites pour différencier les deux types de durée
+
 ## [0.6.4] - 2025-12-13
 
 ### 🔒 Persistance des paramètres (NVS)

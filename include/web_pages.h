@@ -4,7 +4,7 @@
 /**
  * @file web_pages.h
  * @brief Génération des pages HTML pour l'interface web
- * @version 0.6.4
+ * @version 0.7.0-rc1
  * 
  * Module dédié à la génération du contenu HTML de l'interface web.
  * Contient les fonctions pour construire les différentes cartes et sections.
@@ -50,21 +50,13 @@ String generateDashboardPage(
     html += "</div>";
     
     html += "<div class='cards-grid'>";
-    
-    // --- CARTE 1: Guirlande LED (EN PREMIER, PLEINE LARGEUR) ---
+
+    // --- Carte unique: Paramètres Guirlande ---
     html += "<div class='card card-full'>";
-    html += "<div class='card-title'>🎄 LED Garland</div>";
-    html += "<div class='card-item'><span class='card-label'>Animation:</span><span class='card-value'>" + String(getGarlandAnimationName()) + "</span></div>";
-    html += "<div class='card-item'><span class='card-label'>Mode:</span><span class='card-value'>" + String(getGarlandModeName()) + "</span></div>";
-    html += "<div class='card-item'><span class='card-label'>Motion:</span><span class='card-value'>" + String(isMotionDetected() ? "Detected" : "None") + "</span></div>";
-    html += "<div class='card-item'><span class='card-label'>Brightness:</span><span class='card-value'>" + String(getLightLevel()) + " / 4095</span></div>";
-    html += "<div class='card-item'><span class='card-label'>Intervalle AUTO (ms):</span><input type='number' id='auto-interval' min='5000' max='300000' step='1000' value='" + String(getAutoAnimationIntervalMs()) + "' onchange='updateAutoInterval(this.value)'></div>";
-    html += "<div class='card-item'><span class='card-label'>Extinction après mouvement (ms):</span><input type='number' id='motion-duration' min='5000' max='600000' step='1000' value='" + String(getMotionTriggerDurationMs()) + "' onchange='updateMotionDuration(this.value)'></div>";
-    
-    // Sélecteur d'animation
-    html += "<div style='margin-top:15px;'>";
-    html += "<label style='display:block;margin-bottom:5px;font-weight:600;'>Change Animation:</label>";
-    html += "<select id='animSelect' style='width:100%;padding:8px;border-radius:8px;border:1px solid #ddd;'>";
+    html += "<div class='card-title'>🎄 Paramètres Guirlande</div>";
+    // Animation
+    html += "<div class='card-item'><span class='card-label'>Animation:</span>";
+    html += "<select id='animSelect' style='width:55%;padding:8px;border-radius:8px;border:1px solid #ddd;'>";
     for (int i = 0; i < ANIM_COUNT; i++) {
         html += "<option value='" + String(i) + "'";
         if (i == (int)getGarlandAnimation()) html += " selected";
@@ -75,120 +67,73 @@ String generateDashboardPage(
             case ANIM_BLINK_ALTERNATE: html += "Blink Alternate"; break;
             case ANIM_PULSE: html += "Pulse"; break;
             case ANIM_BREATHING: html += "Breathing"; break;
-            case ANIM_STROBE: html += "⚡ Strobe"; break;
-            case ANIM_HEARTBEAT: html += "❤️ Heartbeat"; break;
-            case ANIM_WAVE: html += "🌊 Wave"; break;
-            case ANIM_SPARKLE: html += "✨ Sparkle"; break;
-            case ANIM_METEOR: html += "☄️ Meteor"; break;
-            case ANIM_AUTO: html += "Auto Mode"; break;
+            case ANIM_STROBE: html += "Strobe"; break;
+            case ANIM_HEARTBEAT: html += "Heartbeat"; break;
+            case ANIM_WAVE: html += "Wave"; break;
+            case ANIM_SPARKLE: html += "Sparkle"; break;
+            case ANIM_METEOR: html += "Meteor"; break;
+            case ANIM_AUTO: html += "Auto"; break;
         }
         html += "</option>";
     }
     html += "</select>";
-    html += "<button onclick='changeAnimation()' style='margin-top:10px;width:100%;padding:10px;background:linear-gradient(135deg,#667eea,#764ba2);color:white;border:none;border-radius:8px;cursor:pointer;'>Apply</button>";
+    html += "<button onclick='changeAnimation()' style='margin-left:10px;padding:8px 12px;background:#667eea;color:white;border:none;border-radius:8px;cursor:pointer;'>Appliquer</button>";
     html += "</div>";
-    
-    // Sélecteur de mode
-    html += "<div style='margin-top:15px;'>";
-    html += "<label style='display:block;margin-bottom:5px;font-weight:600;'>Change Mode:</label>";
-    html += "<select id='modeSelect' style='width:100%;padding:8px;border-radius:8px;border:1px solid #ddd;'>";
+
+    // Mode
+    html += "<div class='card-item'><span class='card-label'>Mode:</span>";
+    html += "<select id='modeSelect' style='width:55%;padding:8px;border-radius:8px;border:1px solid #ddd;'>";
     for (int i = 0; i < MODE_COUNT; i++) {
         html += "<option value='" + String(i) + "'";
         if (i == (int)getGarlandMode()) html += " selected";
         html += ">";
         switch(i) {
             case MODE_PERMANENT: html += "Permanent"; break;
-            case MODE_MOTION_TRIGGER: html += "Motion Trigger"; break;
+            case MODE_MOTION_TRIGGER: html += "Détection"; break;
         }
         html += "</option>";
     }
     html += "</select>";
-    html += "<button onclick='changeMode()' style='margin-top:10px;width:100%;padding:10px;background:linear-gradient(135deg,#f093fb,#f5576c);color:white;border:none;border-radius:8px;cursor:pointer;'>Apply</button>";
+    html += "<button onclick='changeMode()' style='margin-left:10px;padding:8px 12px;background:#f093fb;color:white;border:none;border-radius:8px;cursor:pointer;'>Appliquer</button>";
     html += "</div>";
+
+    // Durées (saisies en secondes avec bouton de validation)
+    html += "<div class='card-item'><span class='card-label'>Durée d'une animation (mode Auto) :</span>";
+    html += "<input type='number' id='auto-interval-seconds' min='5' max='300' step='5' value='" + String(getAutoAnimationIntervalMs() / 1000) + "'> secondes ";
+    html += "<button class='apply' onclick=\"applyAutoInterval()\">Valider</button></div>";
+    html += "<div class='card-item'><span class='card-label'>Durée d'allumage après détection :</span>";
+    html += "<input type='number' id='motion-duration-seconds' min='5' max='600' step='5' value='" + String(getMotionTriggerDurationMs() / 1000) + "'> secondes ";
+    html += "<button class='apply' onclick=\"applyMotionDuration()\">Valider</button></div>";
     
-    // --- CARTE 2: Matériel ---
-    html += "<div class='card'>";
-    html += "<div class='card-title'>⚡ Hardware</div>";
-    html += "<div class='card-item'><span class='card-label'>Board:</span><span class='card-value'>" + String(BOARD_NAME) + "</span></div>";
-    html += "<div class='card-item'><span class='card-label'>Chip ID:</span><span class='card-value mono'>0x" + String(chipId, HEX) + "</span></div>";
-    html += "<div class='card-item'><span class='card-label'>SDK:</span><span class='card-value'>" + String(ESP.getSdkVersion()) + "</span></div>";
-    html += "<div class='card-item'><span class='card-label'>CPU:</span><span class='card-value'>" + String(cpuFreq) + " MHz (2 cores)</span></div>";
+    // Note explicative
+    html += "<div style='margin-top:12px;padding:10px;background:#fffde7;border-left:4px solid #fbc02d;font-size:0.9em;color:#555;'>";
+    html += "💡 <strong>Mode Détection + Auto :</strong> Les animations cyclent toutes les <strong>" + String(getAutoAnimationIntervalMs() / 1000) + "s</strong> ";
+    html += "pendant la durée d'allumage (<strong>" + String(getMotionTriggerDurationMs() / 1000) + "s</strong>). ";
+    html += "Ex: 30s/animation × 60s détection = 2 animations affichées.";
     html += "</div>";
-    
-    // --- CARTE 2: Mémoire Flash ---
-    html += "<div class='card'>";
-    html += "<div class='card-title'>💾 Flash</div>";
-    html += "<div class='card-item'><span class='card-label'>Size:</span><span class='card-value'>" + String(flashSize / (1024 * 1024)) + " MB</span></div>";
-    html += "<div class='card-item'><span class='card-label'>Speed:</span><span class='card-value'>" + String(flashSpeed) + " MHz</span></div>";
-    html += "<div class='card-item'><span class='card-label'>Mode:</span><span class='card-value'>QIO</span></div>";
+
+    // Actions de persistance
+    html += "<div class='actions'>";
+    html += "<button onclick=\"fetch('/save')\">💾 Sauvegarder</button>";
+    html += "<button onclick=\"fetch('/load').then(()=>location.reload())\">🔄 Restaurer</button>";
+    html += "<button class='danger' onclick=\"if(confirm('Effacer la sauvegarde ?')) fetch('/erase')\">🗑️ Effacer</button>";
     html += "</div>";
+    html += "</div>"; // card
     
-    // --- CARTE 3: RAM (Heap) ---
+    // --- Carte WiFi minimaliste ---
     html += "<div class='card'>";
-    html += "<div class='card-title'>📊 RAM (Heap)</div>";
-    uint32_t heapUsed = heapSize - freeHeap;
-    float heapPercent = (float)heapUsed / heapSize * 100;
-    html += "<div class='card-item'><span class='card-label'>Total:</span><span class='card-value'>" + String(heapSize / 1024) + " KB</span></div>";
-    html += "<div class='card-item'><span class='card-label'>Free:</span><span class='card-value'>" + String(freeHeap / 1024) + " KB</span></div>";
-    html += "<div class='progress-container'>";
-    html += "<div class='progress-label'><span>Usage</span><span>" + String(heapPercent, 1) + "%</span></div>";
-    html += "<div class='progress-bar'><div class='progress-fill' style='width:" + String(heapPercent) + "%;'></div></div>";
-    html += "</div></div>";
-    
-    // --- CARTE 4: PSRAM (si disponible) ---
-    if(psramSize > 0) {
-        uint32_t psramUsed = psramSize - freePsram;
-        float psramPercent = (float)psramUsed / psramSize * 100;
-        html += "<div class='card'>";
-        html += "<div class='card-title'>🔋 PSRAM</div>";
-        html += "<div class='card-item'><span class='card-label'>Total:</span><span class='card-value'>" + String(psramSize / (1024 * 1024)) + " MB</span></div>";
-        html += "<div class='card-item'><span class='card-label'>Free:</span><span class='card-value'>" + String(freePsram / 1024) + " KB</span></div>";
-        html += "<div class='progress-container'>";
-        html += "<div class='progress-label'><span>Usage</span><span>" + String(psramPercent, 1) + "%</span></div>";
-        html += "<div class='progress-bar'><div class='progress-fill' style='width:" + String(psramPercent) + "%;'></div></div>";
-        html += "</div></div>";
-    }
-    
-    // --- CARTE 5: WiFi ---
-    html += "<div class='card'>";
-    html += "<div class='card-title'>📶 WiFi Network</div>";
+    html += "<div class='card-title'>📶 Réseau WiFi</div>";
     html += "<div class='card-item'><span class='card-label'>SSID:</span><span class='card-value'>" + WiFi.SSID() + "</span></div>";
     html += "<div class='card-item'><span class='card-label'>IP:</span><span class='card-value mono'>" + WiFi.localIP().toString() + "</span></div>";
-    html += "<div class='card-item'><span class='card-label'>MAC:</span><span class='card-value mono'>" + WiFi.macAddress() + "</span></div>";
-    int rssi = WiFi.RSSI();
-    int signalPercent = (rssi + 100) * 2;
-    signalPercent = (signalPercent > 100) ? 100 : (signalPercent < 0) ? 0 : signalPercent;
-    html += "<div class='card-item'><span class='card-label'>Signal:</span><span class='card-value'>" + String(rssi) + " dBm</span></div>";
-    html += "<div class='progress-container'>";
-    html += "<div class='progress-label'><span>Signal Strength</span><span>" + String(signalPercent) + "%</span></div>";
-    html += "<div class='progress-bar'><div class='progress-fill' style='width:" + String(signalPercent) + "%;'></div></div>";
-    html += "</div></div>";
-    
-    // --- CARTE 6: Système ---
-    html += "<div class='card'>";
-    html += "<div class='card-title'>⏱️ System</div>";
-    unsigned long uptime = millis() / 1000;
-    unsigned long hours = uptime / 3600;
-    unsigned long minutes = (uptime % 3600) / 60;
-    unsigned long seconds = uptime % 60;
-    html += "<div class='card-item'><span class='card-label'>Uptime:</span><span class='card-value'>" + String(hours) + "h " + String(minutes) + "m " + String(seconds) + "s</span></div>";
-    html += "<div class='card-item'><span class='card-label'>Temperature:</span><span class='card-value'>" + String(temperatureRead(), 1) + " °C</span></div>";
     html += "</div>";
     
-    html += "</div>";  // Fin de la carte Système
+    // Fin des cartes
     
-    // --- CARTE 7: Réseau Détaillé ---
-    html += "<div class='card'>";
-    html += "<div class='card-title'>🔗 Network Details</div>";
-    html += "<div class='card-item'><span class='card-label'>Subnet Mask:</span><span class='card-value mono'>" + WiFi.subnetMask().toString() + "</span></div>";
-    html += "<div class='card-item'><span class='card-label'>Gateway:</span><span class='card-value mono'>" + WiFi.gatewayIP().toString() + "</span></div>";
-    html += "<div class='card-item'><span class='card-label'>DNS:</span><span class='card-value mono'>" + WiFi.dnsIP().toString() + "</span></div>";
-    html += "</div>";
     
     // --- BOUTONS D'ACTION ---
     html += "<div class='actions'>";
-    html += "<button onclick='location.reload()'>🔄 Refresh</button>";
-    html += "<button class='danger' onclick='if(confirm(\"Are you sure you want to reboot?\")) fetch(\"/reboot\")'>🔴 Reboot</button>";
+    html += "<button onclick='location.reload()'>🔄 Actualiser</button>";
+    html += "<button class='danger' onclick='if(confirm(\"Redémarrer l'ESP32 ?\")) fetch(\"/reboot\")'>🔴 Redémarrer</button>";
     html += "</div>";
     
     // --- SCRIPT JAVASCRIPT ---
@@ -201,8 +146,8 @@ String generateDashboardPage(
     html += "  var id = document.getElementById('modeSelect').value;";
     html += "  fetch('/mode?id=' + id).then(() => setTimeout(() => location.reload(), 500));";
     html += "}";
-    html += "function updateAutoInterval(val) { fetch('/auto_interval?ms=' + val); }";
-    html += "function updateMotionDuration(val) { fetch('/motion_duration?ms=' + val); }";
+    html += "function applyAutoInterval() { var s = document.getElementById('auto-interval-seconds').value; var ms = Math.round(s*1000); fetch('/auto_interval?ms=' + ms); }";
+    html += "function applyMotionDuration() { var s = document.getElementById('motion-duration-seconds').value; var ms = Math.round(s*1000); fetch('/motion_duration?ms=' + ms); }";
     html += "</script>";
     
     html += "</div></body></html>";

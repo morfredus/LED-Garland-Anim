@@ -1,4 +1,4 @@
-# User Guide - LED-Garland-Anim v0.6.4
+# User Guide - LED-Garland-Anim v0.7.0-rc1
 
 Complete user guide for the LED-Garland-Anim LED garland animation controller.
 
