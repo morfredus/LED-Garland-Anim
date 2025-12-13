@@ -1,11 +1,13 @@
 /**
  * @file garland_control.cpp
  * @brief Implémentation du contrôle des animations de guirlande
- * @version 0.6.3
+ * @version 0.6.4
  * @date 2025-12-13
  */
 
 #include "garland_control.h"
+#include <nvs_flash.h>
+#include <nvs.h>
 
 // =============================================================================
 // VARIABLES GLOBALES
@@ -16,6 +18,8 @@ static GarlandAnimation activeAnimation = ANIM_FADE_ALTERNATE;   // Animation r�
 static GarlandMode currentMode = MODE_PERMANENT;
 static unsigned long animationStartTime = 0;
 static unsigned long motionDetectedTime = 0;
+static unsigned long autoAnimationIntervalMs = 30000;   // Intervalle entre changements en mode AUTO
+static unsigned long motionTriggerDurationMs = MOTION_TRIGGER_DURATION; // Durée d'allumage après détection
 static bool garlandEnabled = true;
 static bool autoModeActive = false;  // Flag pour suivre si le mode AUTO est actif
 
@@ -46,6 +50,86 @@ static const char* modeNames[] = {
     "Permanent",
     "Detection"
 };
+
+// =============================================================================
+// FONCTIONS DE PERSISTANCE NVS
+// =============================================================================
+
+/**
+ * @brief Charge les paramètres sauvegardés depuis NVS
+ */
+void loadGarlandSettings() {
+    nvs_handle_t handle;
+    esp_err_t err = nvs_open(NVS_NAMESPACE, NVS_READONLY, &handle);
+    
+    if (err != ESP_OK) {
+        LOG_PRINTLN("⚠ NVS non initialisé ou espace vide");
+        return;
+    }
+    
+    // Charger le mode
+    uint8_t mode = (uint8_t)MODE_PERMANENT;
+    if (nvs_get_u8(handle, "mode", &mode) == ESP_OK) {
+        currentMode = (GarlandMode)mode;
+        LOG_PRINTF("Mode restauré: %s\n", modeNames[currentMode]);
+    }
+    
+    // Charger l'animation
+    uint8_t anim = (uint8_t)ANIM_FADE_ALTERNATE;
+    if (nvs_get_u8(handle, "animation", &anim) == ESP_OK) {
+        currentAnimation = (GarlandAnimation)anim;
+        activeAnimation = currentAnimation;
+        LOG_PRINTF("Animation restaurée: %s\n", animationNames[currentAnimation]);
+    }
+    
+    // Charger l'intervalle AUTO
+    uint32_t autoInterval = 30000;
+    if (nvs_get_u32(handle, "autoInterval", &autoInterval) == ESP_OK) {
+        autoAnimationIntervalMs = autoInterval;
+        LOG_PRINTF("Intervalle AUTO restauré: %lu ms\n", autoAnimationIntervalMs);
+    }
+    
+    // Charger la durée de détection mouvement
+    uint32_t motionDuration = MOTION_TRIGGER_DURATION;
+    if (nvs_get_u32(handle, "motionDuration", &motionDuration) == ESP_OK) {
+        motionTriggerDurationMs = motionDuration;
+        LOG_PRINTF("Durée mouvement restaurée: %lu ms\n", motionTriggerDurationMs);
+    }
+    
+    nvs_close(handle);
+}
+
+/**
+ * @brief Sauvegarde les paramètres actuels en NVS
+ */
+void saveGarlandSettings() {
+    nvs_handle_t handle;
+    esp_err_t err = nvs_open(NVS_NAMESPACE, NVS_READWRITE, &handle);
+    
+    if (err != ESP_OK) {
+        LOG_PRINTLN("✗ Erreur: impossible d'ouvrir NVS");
+        return;
+    }
+    
+    // Sauvegarder le mode
+    nvs_set_u8(handle, "mode", (uint8_t)currentMode);
+    
+    // Sauvegarder l'animation
+    nvs_set_u8(handle, "animation", (uint8_t)currentAnimation);
+    
+    // Sauvegarder les durées
+    nvs_set_u32(handle, "autoInterval", autoAnimationIntervalMs);
+    nvs_set_u32(handle, "motionDuration", motionTriggerDurationMs);
+    
+    err = nvs_commit(handle);
+    nvs_close(handle);
+    
+    if (err == ESP_OK) {
+        LOG_PRINTLN("✓ Paramètres sauvegardés en NVS");
+    } else {
+        LOG_PRINTLN("✗ Erreur lors de la sauvegarde NVS");
+    }
+}
 
 // =============================================================================
 // FONCTIONS DE CONTRÔLE TB6612FNG
@@ -299,6 +383,9 @@ static void animateMeteor() {
 void setupGarland() {
     LOG_PRINTLN("--- Initialisation guirlande ---");
     
+    // Charger les paramètres sauvegardés depuis NVS
+    loadGarlandSettings();
+    
     // Configuration des pins TB6612FNG
     pinMode(PIN_TB6612_PWMA, OUTPUT);
     pinMode(PIN_TB6612_AIN1, OUTPUT);
@@ -336,7 +423,7 @@ void updateGarland() {
             if (isMotionDetected()) {
                 motionDetectedTime = millis();
             }
-            shouldBeOn = (millis() - motionDetectedTime < MOTION_TRIGGER_DURATION);
+            shouldBeOn = (millis() - motionDetectedTime < motionTriggerDurationMs);
             break;
     }
     
@@ -352,7 +439,7 @@ void updateGarland() {
     // Mode automatique : changer d'animation toutes les 30 secondes
     if (autoModeActive) {
         unsigned long elapsed = millis() - animationStartTime;
-        if (elapsed > 30000) {
+        if (elapsed > autoAnimationIntervalMs) {
             uint8_t nextAnim = (uint8_t)activeAnimation + 1;
             // Boucler entre ANIM_FADE_ALTERNATE (1) et ANIM_METEOR (9), avant ANIM_AUTO (10)
             if (nextAnim >= ANIM_AUTO) {
@@ -419,6 +506,8 @@ void setGarlandAnimation(GarlandAnimation animation) {
         animationStartTime = millis();
         LOG_PRINTF("Animation changée: %s\n", animationNames[animation]);
     }
+    // Sauvegarder automatiquement
+    saveGarlandSettings();
 }
 
 GarlandAnimation getGarlandAnimation() {
@@ -436,9 +525,41 @@ const char* getGarlandAnimationNameById(int id) {
     return "?";
 }
 
+// ============================================================================
+// PARAMÈTRES CONFIGURABLES (Durées)
+// ============================================================================
+
+unsigned long getAutoAnimationIntervalMs() {
+    return autoAnimationIntervalMs;
+}
+
+void setAutoAnimationIntervalMs(unsigned long ms) {
+    // Clamp pour éviter des valeurs absurdes : 5s à 5 minutes
+    ms = constrain(ms, 5000UL, 300000UL);
+    autoAnimationIntervalMs = ms;
+    // Réinitialiser le timer pour appliquer immédiatement le nouveau cycle
+    animationStartTime = millis();
+    // Sauvegarder automatiquement
+    saveGarlandSettings();
+}
+
+unsigned long getMotionTriggerDurationMs() {
+    return motionTriggerDurationMs;
+}
+
+void setMotionTriggerDurationMs(unsigned long ms) {
+    // Clamp : 5s à 10 minutes
+    ms = constrain(ms, 5000UL, 600000UL);
+    motionTriggerDurationMs = ms;
+    // Sauvegarder automatiquement
+    saveGarlandSettings();
+}
+
 void setGarlandMode(GarlandMode mode) {
     currentMode = mode;
     LOG_PRINTF("Mode changé: %s\n", modeNames[mode]);
+    // Sauvegarder automatiquement
+    saveGarlandSettings();
 }
 
 GarlandMode getGarlandMode() {
