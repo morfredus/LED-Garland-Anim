@@ -1,4 +1,4 @@
-# Guide Utilisateur - LED-Garland-Anim v0.6.4
+# Guide Utilisateur - LED-Garland-Anim v0.7.0-rc1
 
 Guide utilisateur complet pour le contrôleur d'animation de guirlande LED LED-Garland-Anim.
 

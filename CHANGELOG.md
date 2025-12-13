@@ -5,6 +5,31 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/).
 
+## [0.7.0-rc1] - 2025-12-13
+
+### 🎨 Simplified & Festive Web UI
+- Streamlined UI showing only essential garland parameters
+- Christmas/New Year visual theme: red-gold-green palette, golden borders
+- Duration inputs in **seconds** (auto-converted to milliseconds)
+- "Validate" buttons to apply duration changes
+- Dynamic explanatory note for animation count calculation in Detection+Auto mode
+
+### 💾 NVS Save Management
+- **Save** button: manual save of parameters to NVS
+- **Restore** button: reload from NVS save
+- **Erase** button: delete save (confirmation required)
+- API endpoints: `/save`, `/load`, `/erase`
+
+### ⚙️ Clear Parameters
+- **Animation duration (Auto mode)**: display time for each animation in Auto mode
+- **On-time after detection**: total time before off after motion
+- WiFi SSID and IP shown in minimal network card
+
+### 🔧 Technical Improvements
+- Auto-save on animation, mode, or duration change
+- API status enriched with IP address (`/status` includes `"ip"`)
+- Explicit UI labels to differentiate the two duration types
+
 ## [0.6.4] - 2025-12-13
 
 ### Settings Persistence (NVS)
