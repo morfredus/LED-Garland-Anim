@@ -195,8 +195,14 @@ ESP32-S3           TFT ST7789
 | Component | Signal | GPIO Pin | Description | Notes |
 |-----------|--------|----------|-------------|-------|
 | **BUTTON_BOOT** | Button | GPIO 0 | Integrated button on board | Already present, long press restart |
-| **BUTTON_1** | Button | GPIO 4 | External button | Animation change |
-| **BUTTON_2** | Button | GPIO 16 | External button | Mode change |
+| **BUTTON_1** | Button | GPIO 16 | External button | Animation change <br>🔄 Changement #2 (2025-12-29) |
+| **BUTTON_2** | Button | GPIO 17 | External button | Mode change <br>🔄 Changement #2 (2025-12-29) |
+| **LCD ST7789** | MOSI | GPIO 15 | SPI Data | LCD_MOSI <br>🆕 Changement #1 (2025-12-29) |
+| **LCD ST7789** | SCLK | GPIO 9  | SPI Clock | LCD_SCLK <br>🆕 Changement #1 (2025-12-29) |
+| **LCD ST7789** | CS   | GPIO 3  | Chip Select | LCD_CS <br>🆕 Changement #1 (2025-12-29) |
+| **LCD ST7789** | DC   | GPIO 4  | Data/Command | LCD_DC <br>🆕 Changement #1 (2025-12-29) |
+| **LCD ST7789** | RST  | GPIO 5  | Reset | LCD_RST <br>🆕 Changement #1 (2025-12-29) |
+| **LCD ST7789** | BLK  | GPIO 10 | Backlight | LCD_BLK <br>🆕 Changement #1 (2025-12-29) |
 | **LED_BUILTIN** | LED | GPIO 2 | Integrated blue LED | Visual heartbeat |
 | **OLED SSD1306** | SDA | GPIO 21 | I2C Data | Connection to OLED SDA pin |
 | **OLED SSD1306** | SCL | GPIO 22 | I2C Clock | Connection to OLED SCL pin |
