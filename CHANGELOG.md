@@ -1,3 +1,9 @@
+## [0.7.0] - 2025-12-30
+
+### 🖥️ LCD ST7789 & new buttons (ESP32 Classic)
+- Added LCD_ST7789 pin definitions (LCD_MOSI, LCD_SCLK, LCD_CS, LCD_DC, LCD_RST, LCD_BLK) for ESP32 Classic environment
+- Changed user button pins: BUTTON_1 = GPIO 16, BUTTON_2 = GPIO 17
+- Documented and numbered changes in board_config.h and PIN_MAPPING.md
 
 # Changelog
 

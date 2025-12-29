@@ -1,3 +1,9 @@
+## [0.7.0] - 2025-12-30
+
+### 🖥️ Support LCD ST7789 & nouveaux boutons (ESP32 Classic)
+- Ajout des définitions de pins LCD_ST7789 (LCD_MOSI, LCD_SCLK, LCD_CS, LCD_DC, LCD_RST, LCD_BLK) pour l'environnement ESP32 Classic
+- Modification des pins boutons utilisateur : BUTTON_1 = GPIO 16, BUTTON_2 = GPIO 17
+- Documentation et numérotation des changements dans board_config.h et PIN_MAPPING.md
 
 # Journal des modifications
 

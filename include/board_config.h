@@ -1,8 +1,8 @@
 /**
  * @file board_config.h
  * @brief Mapping des pins GPIO pour les différentes cartes ESP32
- * @version 0.6.0
- * @date 2025-12-10
+ * @version 0.7.0
+ * @date 2025-12-30
  * 
  * Ce fichier centralise toutes les définitions de pins selon la carte utilisée.
  * 
@@ -169,6 +169,33 @@
      */
     #define LED_BUILTIN 2    ///< GPIO 2 : LED bleue intégrée (heartbeat visuel)
     /** @} */
+
+    // ========================================================================
+    // Bus SPI - Pour l'écran LCD ST7789 (ajout custom)
+    // ========================================================================
+    /**
+     * @defgroup LCD_ST7789 Bus SPI pour LCD ST7789 (ajout custom)
+     * @brief Configuration des pins SPI pour l'écran LCD ST7789 (240x240 couleur)
+     *
+     * @note Ces pins sont spécifiques à l'utilisation d'un écran LCD ST7789 sur ESP32 Classic.
+     *
+     * Changement #1 (2025-12-29) : Ajout des pins LCD_*
+     *   - LCD_MOSI : GPIO 15 (Données SPI)
+     *   - LCD_SCLK : GPIO 9  (Horloge SPI)
+     *   - LCD_CS   : GPIO 3  (Chip Select)
+     *   - LCD_DC   : GPIO 4  (Data/Command)
+     *   - LCD_RST  : GPIO 5  (Reset)
+     *   - LCD_BLK  : GPIO 10 (Backlight)
+     *
+     * @{
+     */
+    #define LCD_MOSI 15   ///< GPIO 15 : Données SPI (MOSI) pour LCD ST7789
+    #define LCD_SCLK 9    ///< GPIO 9  : Horloge SPI (SCLK) pour LCD ST7789
+    #define LCD_CS   3    ///< GPIO 3  : Chip Select pour LCD ST7789
+    #define LCD_DC   4    ///< GPIO 4  : Data/Command pour LCD ST7789
+    #define LCD_RST  5    ///< GPIO 5  : Reset pour LCD ST7789
+    #define LCD_BLK 10    ///< GPIO 10 : Backlight pour LCD ST7789
+    /** @} */
     
     // ========================================================================
     // Bus I2C - Pour l'écran OLED SSD1306
@@ -246,15 +273,16 @@
     /**
      * @defgroup BUTTONS Boutons de contrôle
      * @brief Configuration des pins pour les boutons utilisateur
-     * 
-     * @note GPIO 34, 35, 36, 39 sont INPUT_ONLY (pas de pull-up interne) !
-     * @note GPIO 12 utilisé par TB6612FNG PWM
-     * @note GPIO 32, 33 utilisés par TB6612FNG direction
-     * @note GPIO 4, 15, 16 sont libres et supportent pull-up
+     *
+     * Changement #2 (2025-12-29) : Modification des pins boutons pour éviter conflits et harmoniser
+     *   - BUTTON_1 : GPIO 16 (Changement animation)
+     *   - BUTTON_2 : GPIO 17 (Changement mode)
+     *
+     * @note GPIO 16, 17 sont libres et supportent le pull-up interne.
      * @{
      */
-    #define BUTTON_1      4      ///< GPIO 4  : Bouton 1 (Changement animation)
-    #define BUTTON_2      16     ///< GPIO 16 : Bouton 2 (Changement mode)
+    #define BUTTON_1      16     ///< GPIO 16 : Bouton 1 (Changement animation)
+    #define BUTTON_2      17     ///< GPIO 17 : Bouton 2 (Changement mode)
     /** @} */
 
 #else
