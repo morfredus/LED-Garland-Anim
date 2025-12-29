@@ -1,3 +1,9 @@
+## [0.9.0] - 2025-12-30
+
+### 🚮 Suppression des environnements ESP32-S3
+- Suppression complète des environnements esp32s3_n16r8 et esp32s3_n8r8 dans platformio.ini
+- Seul l'environnement esp32devkitc (ESP32 Classic) est conservé et maintenu
+- Synchronisation de la version et documentation
 ## [0.7.0] - 2025-12-30
 
 ### 🖥️ Support LCD ST7789 & nouveaux boutons (ESP32 Classic)
