@@ -1,4 +1,4 @@
-# 📚 Architecture - LED-Garland-Anim v0.6.3
+# 📚 Architecture - LED-Garland-Anim v0.8.0
 
 ## 🎯 Vue d'ensemble
 
@@ -25,6 +25,9 @@ void setGarlandAnimation(GarlandAnimation);    // Changer animation
 void setGarlandMode(GarlandMode);              // Changer mode
 const char* getGarlandAnimationName();         // Nom animation actuelle
 const char* getGarlandModeName();              // Nom mode actuel
+
+// Convention de nommage GPIO (depuis v0.8.0) :
+// BUTTON_BOOT, BUTTON_1, BUTTON_2, NEOPIXEL, I2C_SDA, I2C_SCL, TB6612_PWMA, TB6612_AIN1, TB6612_AIN2, TB6612_STBY, PIR_SENSOR, LDR_SENSOR, LED_BUILTIN
 ```
 
 **Animations (11 types)** :
@@ -255,7 +258,7 @@ Anim-Guirlande/
 │   └── garland_control.cpp   Implémentation animations/modes
 ├── docs/
 │   ├── ARCHITECTURE.md       Ce fichier
-│   ├── PIN_MAPPING.md        Schémas de connexion
+│   ├── PIN_MAPPING.md        Table de correspondance GPIO
 │   ├── USER_GUIDE_FR.md      Guide utilisateur (français)
 │   └── (autres docs...)
 ├── platformio.ini            Configuration PlatformIO
@@ -340,7 +343,7 @@ Anim-Guirlande/
 ## Références
 
 - **[README.md](../README.md)** - Documentation complète du projet
-- **[PIN_MAPPING.md](./PIN_MAPPING.md)** - Schémas de connexion matériel
+- **[PIN_MAPPING.md](./PIN_MAPPING.md)** - Table de correspondance GPIO
 - **[USER_GUIDE_FR.md](./USER_GUIDE_FR.md)** - Guide d'utilisation détaillé
 - **[CHANGELOG.md](../CHANGELOG.md)** - Historique complet des versions
 

@@ -1,9 +1,18 @@
+
 # Changelog
 
 Toutes les modifications notables de ce projet seront documentées dans ce fichier.
 
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/).
+
+## [0.8.0] - 2025-12-29
+
+### 🚦 Migration convention GPIO
+- Suppression du préfixe `PIN_` dans toutes les constantes de configuration GPIO (ex : `BUTTON_BOOT`, `TB6612_PWMA`, `I2C_SDA`...)
+- Mise à jour de tout le code source et de la documentation pour refléter la nouvelle convention
+- Mise à jour de tous les fichiers markdown, tableaux et exemples de code
+- Numérotation de version synchronisée sur tous les fichiers
 
 ## [0.7.0-rc1] - 2025-12-13
 

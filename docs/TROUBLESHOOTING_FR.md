@@ -1,11 +1,11 @@
-# Dépannage - LED-Garland-Anim v0.6.3
+# Dépannage - LED-Garland-Anim v0.8.0
 
 Guide rapide pour diagnostiquer les problèmes sur ESP32-S3 et ESP32 Classic.
 
 ## Check-list Express
 - Flasher le bon environnement (`esp32s3_n16r8`, `esp32s3_n8r8` ou `esp32devkitc`).
 - Vérifier les identifiants WiFi dans `include/secrets.h`.
-- Respecter les pins de `include/board_config.h` (S3 : PIR 14, LDR 15, boutons 16/17 ; Classic : PIR 35, LDR 34, boutons 4/16).
+- Respecter les pins de `include/board_config.h` (S3 : PIR_SENSOR 14, LDR_SENSOR 15, BUTTON_1 16, BUTTON_2 17 ; Classic : PIR_SENSOR 35, LDR_SENSOR 34, BUTTON_1 4, BUTTON_2 16).
 - Masse commune entre ESP32, TB6612FNG et alimentation externe.
 - Ouvrir le moniteur série en 115200 pour lire les logs.
 
@@ -20,13 +20,13 @@ Guide rapide pour diagnostiquer les problèmes sur ESP32-S3 et ESP32 Classic.
 - Si certaines pages répondent mal, redémarrer la carte pour relancer le serveur web interne.
 
 ## Boutons (Animation/Mode)
-- S3 : BTN1 GPIO16, BTN2 GPIO17. Classic : BTN1 GPIO4, BTN2 GPIO16. BOOT sur GPIO0.
+- S3 : BUTTON_1 GPIO16, BUTTON_2 GPIO17. Classic : BUTTON_1 GPIO4, BUTTON_2 GPIO16. BUTTON_BOOT sur GPIO0.
 - Boutons actifs bas avec pull-up interne ; le câblage doit aller à GND à l'appui.
 - Si rebonds, vérifier la longueur des fils et l'état des interrupteurs ; les logs série doivent afficher les pressions.
 
 ## Capteurs
-- PIR : S3 GPIO14 ; Classic GPIO35. Alimentez en 5V + GND, ajustez sensibilité et temporisation.
-- LDR : S3 GPIO15 ; Classic GPIO34. Vérifier le diviseur 10kΩ + LDR et les lectures ADC (0–4095).
+- PIR_SENSOR : S3 GPIO14 ; Classic GPIO35. Alimentez en 5V + GND, ajustez sensibilité et temporisation.
+- LDR_SENSOR : S3 GPIO15 ; Classic GPIO34. Vérifier le diviseur 10kΩ + LDR et les lectures ADC (0–4095).
 - Si détection permanente, éloigner des sources de chaleur/soleil ; si jamais, augmenter la sensibilité.
 
 ## Affichages
@@ -35,8 +35,8 @@ Guide rapide pour diagnostiquer les problèmes sur ESP32-S3 et ESP32 Classic.
 - Couleurs erratiques : raccourcir les câbles, vérifier la masse commune.
 
 ## Sortie Guirlande / TB6612FNG
-- STBY doit être HIGH (GPIO8 sur S3, GPIO14 sur Classic).
-- Direction : AIN1/AIN2 (GPIO6/4 sur S3, GPIO32/33 sur Classic). Intensité : PWMA (GPIO5 sur S3, GPIO12 sur Classic).
+- TB6612_STBY doit être HIGH (GPIO8 sur S3, GPIO14 sur Classic).
+- Direction : TB6612_AIN1/TB6612_AIN2 (GPIO6/4 sur S3, GPIO32/33 sur Classic). Intensité : TB6612_PWMA (GPIO5 sur S3, GPIO12 sur Classic).
 - VM doit être alimenté en 5–15V par une source externe ; ne pas alimenter la guirlande via l'USB seul.
 - Si un sens ne fonctionne pas, inverser AO1/AO2 pour tester et inspecter les soudures.
 
@@ -44,4 +44,4 @@ Guide rapide pour diagnostiquer les problèmes sur ESP32-S3 et ESP32 Classic.
 - Compiler avec `pio run -e <env>` ; si upload difficile, maintenir BOOT (GPIO0) sur Classic au premier flash.
 - Purger le cache `.pio` si changement majeur de framework.
 
-Si le problème persiste, capturez les logs série depuis le boot et comparez le câblage aux tableaux `docs/PIN_MAPPING*.md`.
+Si le problème persiste, capturez les logs série depuis le boot et comparez le câblage aux tableaux de correspondance GPIO dans la documentation.

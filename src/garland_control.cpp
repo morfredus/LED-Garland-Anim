@@ -1,7 +1,7 @@
 /**
  * @file garland_control.cpp
  * @brief Implémentation du contrôle des animations de guirlande
- * @version 0.7.0-rc1
+ * @version 0.8.0
  * @date 2025-12-13
  */
 
@@ -142,20 +142,20 @@ void saveGarlandSettings() {
 static void setDirection(uint8_t direction) {
     switch(direction) {
         case 0: // Off
-            digitalWrite(PIN_TB6612_AIN1, LOW);
-            digitalWrite(PIN_TB6612_AIN2, LOW);
+            digitalWrite(TB6612_AIN1, LOW);
+            digitalWrite(TB6612_AIN2, LOW);
             break;
         case 1: // Sens A (Forward)
-            digitalWrite(PIN_TB6612_AIN1, HIGH);
-            digitalWrite(PIN_TB6612_AIN2, LOW);
+            digitalWrite(TB6612_AIN1, HIGH);
+            digitalWrite(TB6612_AIN2, LOW);
             break;
         case 2: // Sens B (Backward)
-            digitalWrite(PIN_TB6612_AIN1, LOW);
-            digitalWrite(PIN_TB6612_AIN2, HIGH);
+            digitalWrite(TB6612_AIN1, LOW);
+            digitalWrite(TB6612_AIN2, HIGH);
             break;
         case 3: // Brake (court-circuit)
-            digitalWrite(PIN_TB6612_AIN1, HIGH);
-            digitalWrite(PIN_TB6612_AIN2, HIGH);
+            digitalWrite(TB6612_AIN1, HIGH);
+            digitalWrite(TB6612_AIN2, HIGH);
             break;
     }
 }
@@ -387,21 +387,21 @@ void setupGarland() {
     loadGarlandSettings();
     
     // Configuration des pins TB6612FNG
-    pinMode(PIN_TB6612_PWMA, OUTPUT);
-    pinMode(PIN_TB6612_AIN1, OUTPUT);
-    pinMode(PIN_TB6612_AIN2, OUTPUT);
-    pinMode(PIN_TB6612_STBY, OUTPUT);
+    pinMode(TB6612_PWMA, OUTPUT);
+    pinMode(TB6612_AIN1, OUTPUT);
+    pinMode(TB6612_AIN2, OUTPUT);
+    pinMode(TB6612_STBY, OUTPUT);
     
     // Configuration PWM
     ledcSetup(GARLAND_PWM_CHANNEL, GARLAND_PWM_FREQUENCY, GARLAND_PWM_RESOLUTION);
-    ledcAttachPin(PIN_TB6612_PWMA, GARLAND_PWM_CHANNEL);
+    ledcAttachPin(TB6612_PWMA, GARLAND_PWM_CHANNEL);
     
     // Activation du module (sortie de standby)
-    digitalWrite(PIN_TB6612_STBY, HIGH);
+    digitalWrite(TB6612_STBY, HIGH);
     
     // Configuration des capteurs
-    pinMode(PIN_PIR_SENSOR, INPUT);
-    pinMode(PIN_LDR_SENSOR, INPUT);
+    pinMode(PIR_SENSOR, INPUT);
+    pinMode(LDR_SENSOR, INPUT);
     
     // Initialisation
     garlandOff();
@@ -599,11 +599,11 @@ void garlandOff() {
 }
 
 bool isMotionDetected() {
-    return digitalRead(PIN_PIR_SENSOR) == HIGH;
+    return digitalRead(PIR_SENSOR) == HIGH;
 }
 
 int getLightLevel() {
-    return analogRead(PIN_LDR_SENSOR);
+    return analogRead(LDR_SENSOR);
 }
 
 bool isAnimationActive() {

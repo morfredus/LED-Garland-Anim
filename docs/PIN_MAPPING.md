@@ -17,12 +17,12 @@
 
 | Component | Signal | GPIO Pin | Description | Notes |
 |-----------|--------|----------|-------------|-------|
-| **BOOT Button** | Button | GPIO 0 | Integrated button on board | Already present, long press restart |
-| **Button 1** | Button | GPIO 16 | External button | Animation change |
-| **Button 2** | Button | GPIO 17 | External button | Mode change |
-| **RGB LED (NeoPixel)** | Data | GPIO 48 | Integrated addressable RGB LED | Visual status feedback |
-| **OLED SSD1306** | SDA | GPIO 21 | I2C Data | Connection to OLED SDA pin |
-| **OLED SSD1306** | SCL | GPIO 20 | I2C Clock | Connection to OLED SCL pin |
+| **BUTTON_BOOT** | Button | GPIO 0 | Integrated button on board | Already present, long press restart |
+| **BUTTON_1** | Button | GPIO 16 | External button | Animation change |
+| **BUTTON_2** | Button | GPIO 17 | External button | Mode change |
+| **NEOPIXEL** | Data | GPIO 48 | Integrated addressable RGB LED | Visual status feedback |
+| **I2C_SDA (OLED SSD1306)** | SDA | GPIO 21 | I2C Data | Connection to OLED SDA pin |
+| **I2C_SCL (OLED SSD1306)** | SCL | GPIO 20 | I2C Clock | Connection to OLED SCL pin |
 | **OLED SSD1306** | VCC | 3.3V | Power | ESP32 3V3 pin |
 | **OLED SSD1306** | GND | GND | Ground | ESP32 GND pin |
 | **TFT ST7789** | MOSI (SDA) | GPIO 11 | SPI Data | ST7789 SDA pin |
@@ -33,17 +33,17 @@
 | **TFT ST7789** | BL | GPIO 7 | Backlight | LED backlight |
 | **TFT ST7789** | VCC | 3.3V | Power | ESP32 3V3 pin |
 | **TFT ST7789** | GND | GND | Ground | ESP32 GND pin |
-| **TB6612FNG** | PWMA | GPIO 5 | PWM Direction A | Light intensity control |
-| **TB6612FNG** | AIN1 | GPIO 6 | Direction bit 1 | Current direction control |
-| **TB6612FNG** | AIN2 | GPIO 4 | Direction bit 2 | Current direction control |
-| **TB6612FNG** | STBY | GPIO 8 | Standby | Module activation (HIGH=active) |
+| **TB6612_PWMA** | PWMA | GPIO 5 | PWM Direction A | Light intensity control |
+| **TB6612_AIN1** | AIN1 | GPIO 6 | Direction bit 1 | Current direction control |
+| **TB6612_AIN2** | AIN2 | GPIO 4 | Direction bit 2 | Current direction control |
+| **TB6612_STBY** | STBY | GPIO 8 | Standby | Module activation (HIGH=active) |
 | **TB6612FNG** | VCC | 3.3V | Logic power | ESP32 3V3 pin |
 | **TB6612FNG** | VM | 5-15V | Motor power | External power for garland |
 | **TB6612FNG** | GND | GND | Ground | Common with ESP32 GND |
-| **PIR Sensor** | OUT | GPIO 14 | Detection signal | HIGH = motion detected |
+| **PIR_SENSOR** | OUT | GPIO 14 | Detection signal | HIGH = motion detected |
 | **PIR Sensor** | VCC | 5V | Power | ESP32 5V pin (via USB) |
 | **PIR Sensor** | GND | GND | Ground | ESP32 GND pin |
-| **LDR Photoresistor** | Signal | GPIO 15 | ADC Read | Voltage divider with R=10kΩ |
+| **LDR_SENSOR** | Signal | GPIO 15 | ADC Read | Voltage divider with R=10kΩ |
 | **LDR** | VCC | 3.3V | Power | Via 10kΩ resistor |
 | **LDR** | GND | GND | Ground | Via LDR to GND |
 
@@ -194,10 +194,10 @@ ESP32-S3           TFT ST7789
 
 | Component | Signal | GPIO Pin | Description | Notes |
 |-----------|--------|----------|-------------|-------|
-| **BOOT Button** | Button | GPIO 0 | Integrated button on board | Already present, long press restart |
-| **Button 1** | Button | GPIO 4 | External button | Animation change |
-| **Button 2** | Button | GPIO 16 | External button | Mode change |
-| **Builtin LED** | LED | GPIO 2 | Integrated blue LED | Visual heartbeat |
+| **BUTTON_BOOT** | Button | GPIO 0 | Integrated button on board | Already present, long press restart |
+| **BUTTON_1** | Button | GPIO 4 | External button | Animation change |
+| **BUTTON_2** | Button | GPIO 16 | External button | Mode change |
+| **LED_BUILTIN** | LED | GPIO 2 | Integrated blue LED | Visual heartbeat |
 | **OLED SSD1306** | SDA | GPIO 21 | I2C Data | Connection to OLED SDA pin |
 | **OLED SSD1306** | SCL | GPIO 22 | I2C Clock | Connection to OLED SCL pin |
 | **OLED SSD1306** | VCC | 3.3V | Power | ESP32 3V3 pin |
@@ -210,17 +210,17 @@ ESP32-S3           TFT ST7789
 | **TFT ILI9341** | BL | GPIO 13 | Backlight | LED backlight |
 | **TFT ILI9341** | VCC | 3.3V | Power | ESP32 3V3 pin |
 | **TFT ILI9341** | GND | GND | Ground | ESP32 GND pin |
-| **TB6612FNG** | PWMA | GPIO 12 | PWM Direction A | Light intensity control |
-| **TB6612FNG** | AIN1 | GPIO 32 | Direction bit 1 | Current direction control |
-| **TB6612FNG** | AIN2 | GPIO 33 | Direction bit 2 | Current direction control |
-| **TB6612FNG** | STBY | GPIO 14 | Standby | Module activation (HIGH=active) |
+| **TB6612_PWMA** | PWMA | GPIO 12 | PWM Direction A | Light intensity control |
+| **TB6612_AIN1** | AIN1 | GPIO 32 | Direction bit 1 | Current direction control |
+| **TB6612_AIN2** | AIN2 | GPIO 33 | Direction bit 2 | Current direction control |
+| **TB6612_STBY** | STBY | GPIO 14 | Standby | Module activation (HIGH=active) |
 | **TB6612FNG** | VCC | 3.3V | Logic power | ESP32 3V3 pin |
 | **TB6612FNG** | VM | 5-15V | Motor power | External power for garland |
 | **TB6612FNG** | GND | GND | Ground | Common with ESP32 GND |
-| **PIR Sensor** | OUT | GPIO 35 | Detection signal | HIGH = motion detected |
+| **PIR_SENSOR** | OUT | GPIO 35 | Detection signal | HIGH = motion detected |
 | **PIR Sensor** | VCC | 5V | Power | ESP32 5V pin (via USB) |
 | **PIR Sensor** | GND | GND | Ground | ESP32 GND pin |
-| **LDR Photoresistor** | Signal | GPIO 34 | ADC Read | Voltage divider with R=10kΩ |
+| **LDR_SENSOR** | Signal | GPIO 34 | ADC Read | Voltage divider with R=10kΩ |
 | **LDR** | VCC | 3.3V | Power | Via 10kΩ resistor |
 | **LDR** | GND | GND | Ground | Via LDR to GND |
 
@@ -308,16 +308,16 @@ STBY─┤9         16├─ GND
 
 #### Light LEDs Direction A (50% intensity)
 ```cpp
-digitalWrite(AIN1, HIGH);
-digitalWrite(AIN2, LOW);
-analogWrite(PWMA, 128);  // 50% of 255
+digitalWrite(TB6612_AIN1, HIGH);
+digitalWrite(TB6612_AIN2, LOW);
+analogWrite(TB6612_PWMA, 128);  // 50% of 255
 ```
 
 #### Light LEDs Direction B (100% intensity)
 ```cpp
-digitalWrite(AIN1, LOW);
-digitalWrite(AIN2, HIGH);
-analogWrite(PWMA, 255);  // 100%
+digitalWrite(TB6612_AIN1, LOW);
+digitalWrite(TB6612_AIN2, HIGH);
+analogWrite(TB6612_PWMA, 255);  // 100%
 ```
 
 #### Turn off all LEDs

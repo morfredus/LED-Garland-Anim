@@ -1,4 +1,4 @@
-# User Guide - LED-Garland-Anim v0.7.0-rc1
+# User Guide - LED-Garland-Anim v0.8.0
 
 Complete user guide for the LED-Garland-Anim LED garland animation controller.
 
@@ -39,14 +39,14 @@ Example: `192.168.1.100`
 ### Button Locations
 
 #### ESP32-S3
-- **Button 0 (BOOT)**: Integrated on board
-- **Button 1**: GPIO 16 (external button)
-- **Button 2**: GPIO 17 (external button)
+- **BUTTON_BOOT**: Integrated on board (GPIO 0)
+- **BUTTON_1**: GPIO 16 (external button)
+- **BUTTON_2**: GPIO 17 (external button)
 
 #### ESP32 Classic
-- **Button 0 (BOOT)**: Integrated on board
-- **Button 1**: GPIO 4 (external button)
-- **Button 2**: GPIO 16 (external button)
+- **BUTTON_BOOT**: Integrated on board (GPIO 0)
+- **BUTTON_1**: GPIO 4 (external button)
+- **BUTTON_2**: GPIO 16 (external button)
 
 ### Button Functions
 
@@ -219,7 +219,7 @@ Each animation has a unique visualization on the OLED:
 **Trigger duration**: 30 seconds (configurable in code via `MOTION_TRIGGER_DURATION`)
 
 **Notes**:
-- Only 2 modes exist in v0.6.3 (Permanent, Motion Trigger). Scheduled and Night modes were removed.
+- Only 2 modes exist in v0.8.0 (Permanent, Motion Trigger). Scheduled and Night modes were removed.
 - Consider adding debounce if using noisy PIR modules.
 
 ## Animations
@@ -325,7 +325,7 @@ Automatically cycles through all 13 animations.
 **Trigger duration**: 30 seconds (configurable in code via `MOTION_TRIGGER_DURATION`)
 
 **Notes**:
-- Only 2 modes exist in v0.6.3 (Permanent, Motion Trigger). Scheduled and Night modes were removed.
+- Only 2 modes exist in v0.8.0 (Permanent, Motion Trigger). Scheduled and Night modes were removed.
 - Consider adding debounce if using noisy PIR modules.
 
 ---
