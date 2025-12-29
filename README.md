@@ -1,6 +1,6 @@
 # LED-Garland-Anim
 
-**Version 0.6.3** - Bi-directional LED Garland Animation Controller for ESP32/ESP32-S3
+**Version 0.8.0** - Bi-directional LED Garland Animation Controller for ESP32/ESP32-S3
 
 Control a 2-wire garland with anti-parallel LEDs via TB6612FNG motor driver module. Features 11 spectacular animations (including 5 new visual effects), Auto mode with instant start, 2 smart operating modes, OLED display with animated visualization, web interface, and physical button controls.
 
@@ -51,12 +51,11 @@ Control a 2-wire garland with anti-parallel LEDs via TB6612FNG motor driver modu
 - **NeoPixel RGB LED**: Visual status feedback
 - **Multi-display**: OLED and TFT simultaneously
 
-### 🔌 Supported Hardware
 - **Multi-Board**: ESP32-S3 (N16R8, N8R8) and ESP32 Classic (DevKitC)
 - **WiFiMulti**: Automatic connection to multiple networks
-- **TB6612FNG Module**: Bi-directional garland control
-- **PIR Sensor**: HC-SR501 motion detection (optional)
-- **LDR Photoresistor**: Day/night detection (optional)
+- **TB6612FNG Module**: Bi-directional garland control (GPIO: TB6612_PWMA, TB6612_AIN1, TB6612_AIN2, TB6612_STBY)
+- **PIR Sensor**: HC-SR501 motion detection (GPIO: PIR_SENSOR)
+- **LDR Photoresistor**: Day/night detection (GPIO: LDR_SENSOR)
 
 ---
 

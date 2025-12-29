@@ -99,9 +99,8 @@ void displayAnimationMode(IPAddress ip) {
 // FONCTIONS INTERNES - OLED
 // =============================================================================
 
-#ifdef HAS_OLED
 bool setupOled() {
-    Wire.begin(PIN_I2C_SDA, PIN_I2C_SCL);
+    Wire.begin(I2C_SDA, I2C_SCL);
     
     if (!display_oled.begin(SSD1306_SWITCHCAPVCC, OLED_ADDR)) {
         return false;
@@ -170,7 +169,6 @@ void updateOledConnected(const char* ssid, IPAddress ip) {
     
     display_oled.display();
 }
-#endif
 
 // =============================================================================
 // FONCTION PUBLIQUE - MISE À JOUR ANIMATION/MODE (disponible même sans OLED)

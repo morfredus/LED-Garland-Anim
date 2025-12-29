@@ -17,12 +17,12 @@
 
 | Composant | Signal | Pin GPIO | Description | Notes |
 |-----------|--------|----------|-------------|-------|
-| **Bouton BOOT** | Button | GPIO 0 | Bouton intégré sur la carte | Déjà présent, redémarrage appui long |
-| **Bouton 1** | Button | GPIO 16 | Bouton externe | Changement animation |
-| **Bouton 2** | Button | GPIO 17 | Bouton externe | Changement mode |
-| **LED RGB (NeoPixel)** | Data | GPIO 48 | LED RGB adressable intégrée | Feedback visuel d'état |
-| **OLED SSD1306** | SDA | GPIO 21 | Données I2C | Connexion vers la broche SDA de l'OLED |
-| **OLED SSD1306** | SCL | GPIO 20 | Horloge I2C | Connexion vers la broche SCL de l'OLED |
+| **BUTTON_BOOT** | Button | GPIO 0 | Bouton intégré sur la carte | Déjà présent, redémarrage appui long |
+| **BUTTON_1** | Button | GPIO 16 | Bouton externe | Changement animation |
+| **BUTTON_2** | Button | GPIO 17 | Bouton externe | Changement mode |
+| **NEOPIXEL** | Data | GPIO 48 | LED RGB adressable intégrée | Feedback visuel d'état |
+| **I2C_SDA (OLED SSD1306)** | SDA | GPIO 21 | Données I2C | Connexion vers la broche SDA de l'OLED |
+| **I2C_SCL (OLED SSD1306)** | SCL | GPIO 20 | Horloge I2C | Connexion vers la broche SCL de l'OLED |
 | **OLED SSD1306** | VCC | 3.3V | Alimentation | Broche 3V3 de l'ESP32 |
 | **OLED SSD1306** | GND | GND | Masse | Broche GND de l'ESP32 |
 | **TFT ST7789** | MOSI (SDA) | GPIO 11 | Données SPI | Broche SDA du ST7789 |
@@ -33,17 +33,17 @@
 | **TFT ST7789** | BL | GPIO 7 | Backlight | Rétroéclairage (LED) |
 | **TFT ST7789** | VCC | 3.3V | Alimentation | Broche 3V3 de l'ESP32 |
 | **TFT ST7789** | GND | GND | Masse | Broche GND de l'ESP32 |
-| **TB6612FNG** | PWMA | GPIO 5 | PWM Sens A | Contrôle intensité lumineuse |
-| **TB6612FNG** | AIN1 | GPIO 6 | Direction bit 1 | Contrôle direction courant |
-| **TB6612FNG** | AIN2 | GPIO 4 | Direction bit 2 | Contrôle direction courant |
-| **TB6612FNG** | STBY | GPIO 8 | Standby | Activation module (HIGH=actif) |
+| **TB6612_PWMA** | PWMA | GPIO 5 | PWM Sens A | Contrôle intensité lumineuse |
+| **TB6612_AIN1** | AIN1 | GPIO 6 | Direction bit 1 | Contrôle direction courant |
+| **TB6612_AIN2** | AIN2 | GPIO 4 | Direction bit 2 | Contrôle direction courant |
+| **TB6612_STBY** | STBY | GPIO 8 | Standby | Activation module (HIGH=actif) |
 | **TB6612FNG** | VCC | 3.3V | Alimentation logique | Broche 3V3 de l'ESP32 |
 | **TB6612FNG** | VM | 5-15V | Alimentation moteur | Alimentation externe pour guirlande |
 | **TB6612FNG** | GND | GND | Masse | Commun avec GND ESP32 |
-| **Capteur PIR** | OUT | GPIO 14 | Signal détection | HIGH = mouvement détecté |
+| **PIR_SENSOR** | OUT | GPIO 14 | Signal détection | HIGH = mouvement détecté |
 | **Capteur PIR** | VCC | 5V | Alimentation | Broche 5V de l'ESP32 (via USB) |
 | **Capteur PIR** | GND | GND | Masse | Broche GND de l'ESP32 |
-| **Photorésistance LDR** | Signal | GPIO 15 | Lecture ADC | Diviseur de tension avec R=10kΩ |
+| **LDR_SENSOR** | Signal | GPIO 15 | Lecture ADC | Diviseur de tension avec R=10kΩ |
 | **LDR** | VCC | 3.3V | Alimentation | Via résistance 10kΩ |
 | **LDR** | GND | GND | Masse | Via LDR vers GND |
 
@@ -194,10 +194,10 @@ ESP32-S3           TFT ST7789
 
 | Composant | Signal | Pin GPIO | Description | Notes |
 |-----------|--------|----------|-------------|-------|
-| **Bouton BOOT** | Button | GPIO 0 | Bouton intégré sur la carte | Déjà présent, redémarrage appui long |
-| **Bouton 1** | Button | GPIO 4 | Bouton externe | Changement animation |
-| **Bouton 2** | Button | GPIO 16 | Bouton externe | Changement mode |
-| **LED Builtin** | LED | GPIO 2 | LED bleue intégrée | Heartbeat visuel |
+| **BUTTON_BOOT** | Button | GPIO 0 | Bouton intégré sur la carte | Déjà présent, redémarrage appui long |
+| **BUTTON_1** | Button | GPIO 4 | Bouton externe | Changement animation |
+| **BUTTON_2** | Button | GPIO 16 | Bouton externe | Changement mode |
+| **LED_BUILTIN** | LED | GPIO 2 | LED bleue intégrée | Heartbeat visuel |
 | **OLED SSD1306** | SDA | GPIO 21 | Données I2C | Connexion vers la broche SDA de l'OLED |
 | **OLED SSD1306** | SCL | GPIO 22 | Horloge I2C | Connexion vers la broche SCL de l'OLED |
 | **OLED SSD1306** | VCC | 3.3V | Alimentation | Broche 3V3 de l'ESP32 |
@@ -210,17 +210,17 @@ ESP32-S3           TFT ST7789
 | **TFT ILI9341** | BL | GPIO 13 | Backlight | Rétroéclairage (LED) |
 | **TFT ILI9341** | VCC | 3.3V | Alimentation | Broche 3V3 de l'ESP32 |
 | **TFT ILI9341** | GND | GND | Masse | Broche GND de l'ESP32 |
-| **TB6612FNG** | PWMA | GPIO 12 | PWM Sens A | Contrôle intensité lumineuse |
-| **TB6612FNG** | AIN1 | GPIO 32 | Direction bit 1 | Contrôle direction courant |
-| **TB6612FNG** | AIN2 | GPIO 33 | Direction bit 2 | Contrôle direction courant |
-| **TB6612FNG** | STBY | GPIO 14 | Standby | Activation module (HIGH=actif) |
+| **TB6612_PWMA** | PWMA | GPIO 12 | PWM Sens A | Contrôle intensité lumineuse |
+| **TB6612_AIN1** | AIN1 | GPIO 32 | Direction bit 1 | Contrôle direction courant |
+| **TB6612_AIN2** | AIN2 | GPIO 33 | Direction bit 2 | Contrôle direction courant |
+| **TB6612_STBY** | STBY | GPIO 14 | Standby | Activation module (HIGH=actif) |
 | **TB6612FNG** | VCC | 3.3V | Alimentation logique | Broche 3V3 de l'ESP32 |
 | **TB6612FNG** | VM | 5-15V | Alimentation moteur | Alimentation externe pour guirlande |
 | **TB6612FNG** | GND | GND | Masse | Commun avec GND ESP32 |
-| **Capteur PIR** | OUT | GPIO 35 | Signal détection | HIGH = mouvement détecté |
+| **PIR_SENSOR** | OUT | GPIO 35 | Signal détection | HIGH = mouvement détecté |
 | **Capteur PIR** | VCC | 5V | Alimentation | Broche 5V de l'ESP32 (via USB) |
 | **Capteur PIR** | GND | GND | Masse | Broche GND de l'ESP32 |
-| **Photorésistance LDR** | Signal | GPIO 34 | Lecture ADC | Diviseur de tension avec R=10kΩ |
+| **LDR_SENSOR** | Signal | GPIO 34 | Lecture ADC | Diviseur de tension avec R=10kΩ |
 | **LDR** | VCC | 3.3V | Alimentation | Via résistance 10kΩ |
 | **LDR** | GND | GND | Masse | Via LDR vers GND |
 
@@ -308,16 +308,16 @@ STBY─┤9         16├─ GND
 
 #### Allumer LEDs Sens A (intensité 50%)
 ```cpp
-digitalWrite(AIN1, HIGH);
-digitalWrite(AIN2, LOW);
-analogWrite(PWMA, 128);  // 50% de 255
+digitalWrite(TB6612_AIN1, HIGH);
+digitalWrite(TB6612_AIN2, LOW);
+analogWrite(TB6612_PWMA, 128);  // 50% de 255
 ```
 
 #### Allumer LEDs Sens B (intensité 100%)
 ```cpp
-digitalWrite(AIN1, LOW);
-digitalWrite(AIN2, HIGH);
-analogWrite(PWMA, 255);  // 100%
+digitalWrite(TB6612_AIN1, LOW);
+digitalWrite(TB6612_AIN2, HIGH);
+analogWrite(TB6612_PWMA, 255);  // 100%
 ```
 
 #### Éteindre toutes les LEDs

@@ -37,7 +37,7 @@
  * @note Actif bas : L'appui ramène le pin à GND (0V)
  * @see main.cpp pour la gestion (OneButton library)
  */
-#define PIN_BUTTON_BOOT 0 
+#define BUTTON_BOOT 0 
 
 // ============================================================================
 // CONFIGURATION ESP32-S3 DevKitC-1
@@ -59,7 +59,7 @@
      * @{
      */
     #define HAS_NEOPIXEL           ///< Définit que la carte a un NeoPixel
-    #define PIN_NEOPIXEL 48        ///< GPIO 48 : Broche de contrôle de la LED
+    #define NEOPIXEL 48        ///< GPIO 48 : Broche de contrôle de la LED
     #define NEOPIXEL_NUM 1         ///< Nombre de pixels (1 sur la S3 DevKitC)
     /** @} */
     
@@ -76,8 +76,8 @@
      * - Adresse par défaut : 0x3C (voir config.h)
      * @{
      */
-    #define PIN_I2C_SDA 21         ///< GPIO 21 : Données I2C (Serial DAta)
-    #define PIN_I2C_SCL 20         ///< GPIO 20 : Horloge I2C (Serial CLock)
+    #define I2C_SDA 21         ///< GPIO 21 : Données I2C (Serial DAta)
+    #define I2C_SCL 20         ///< GPIO 20 : Horloge I2C (Serial CLock)
     /** @} */
 
     // ========================================================================
@@ -115,10 +115,10 @@
      * permet d'allumer alternativement les LEDs du Sens A ou du Sens B.
      * @{
      */
-    #define PIN_TB6612_PWMA   5      ///< GPIO  5 : PWM pour contrôler l'intensité du Sens A
-    #define PIN_TB6612_AIN1   6      ///< GPIO  6 : Contrôle direction A (bit 1)
-    #define PIN_TB6612_AIN2   4      ///< GPIO  4 : Contrôle direction A (bit 2)
-    #define PIN_TB6612_STBY   8      ///< GPIO  8 : Standby (HIGH=actif, LOW=veille)
+    #define TB6612_PWMA   5      ///< GPIO  5 : PWM pour contrôler l'intensité du Sens A
+    #define TB6612_AIN1   6      ///< GPIO  6 : Contrôle direction A (bit 1)
+    #define TB6612_AIN2   4      ///< GPIO  4 : Contrôle direction A (bit 2)
+    #define TB6612_STBY   8      ///< GPIO  8 : Standby (HIGH=actif, LOW=veille)
     /** @} */
 
     // ========================================================================
@@ -132,8 +132,8 @@
      * - LDR : Photorésistance pour détecter la luminosité ambiante
      * @{
      */
-    #define PIN_PIR_SENSOR    14     ///< GPIO 14 : Entrée détecteur PIR (HIGH=mouvement détecté)
-    #define PIN_LDR_SENSOR    15     ///< GPIO 15 : Entrée analogique pour photorésistance (ADC)
+    #define PIR_SENSOR    14     ///< GPIO 14 : Entrée détecteur PIR (HIGH=mouvement détecté)
+    #define LDR_SENSOR    15     ///< GPIO 15 : Entrée analogique pour photorésistance (ADC)
     /** @} */
 
     // ========================================================================
@@ -144,8 +144,8 @@
      * @brief Configuration des pins pour les boutons utilisateur
      * @{
      */
-    #define PIN_BUTTON_1      16     ///< GPIO 16 : Bouton 1 (Changement animation)
-    #define PIN_BUTTON_2      17     ///< GPIO 17 : Bouton 2 (Changement mode)
+    #define BUTTON_1      16     ///< GPIO 16 : Bouton 1 (Changement animation)
+    #define BUTTON_2      17     ///< GPIO 17 : Bouton 2 (Changement mode)
     /** @} */
 
 // ============================================================================
@@ -167,7 +167,7 @@
      * @brief Configuration de la LED bleue intégrée
      * @{
      */
-    #define PIN_LED_BUILTIN 2    ///< GPIO 2 : LED bleue intégrée (heartbeat visuel)
+    #define LED_BUILTIN 2    ///< GPIO 2 : LED bleue intégrée (heartbeat visuel)
     /** @} */
     
     // ========================================================================
@@ -180,8 +180,8 @@
      * Pins I2C différentes sur ESP32 Classic par rapport à S3
      * @{
      */
-    #define PIN_I2C_SDA 21       ///< GPIO 21 : Données I2C
-    #define PIN_I2C_SCL 22       ///< GPIO 22 : Horloge I2C
+    #define I2C_SDA 21       ///< GPIO 21 : Données I2C
+    #define I2C_SCL 22       ///< GPIO 22 : Horloge I2C
     /** @} */
 
     // ========================================================================
@@ -219,10 +219,10 @@
      *       GPIO 12 est utilisé pour éviter ces conflits.
      * @{
      */
-    #define PIN_TB6612_PWMA   12     ///< GPIO 12 : PWM pour contrôler l'intensité du Sens A
-    #define PIN_TB6612_AIN1   32     ///< GPIO 32 : Contrôle direction A (bit 1)
-    #define PIN_TB6612_AIN2   33     ///< GPIO 33 : Contrôle direction A (bit 2)
-    #define PIN_TB6612_STBY   14     ///< GPIO 14 : Standby (HIGH=actif, LOW=veille)
+    #define TB6612_PWMA   12     ///< GPIO 12 : PWM pour contrôler l'intensité du Sens A
+    #define TB6612_AIN1   32     ///< GPIO 32 : Contrôle direction A (bit 1)
+    #define TB6612_AIN2   33     ///< GPIO 33 : Contrôle direction A (bit 2)
+    #define TB6612_STBY   14     ///< GPIO 14 : Standby (HIGH=actif, LOW=veille)
     /** @} */
 
     // ========================================================================
@@ -236,8 +236,8 @@
      * - LDR : Photorésistance pour détecter la luminosité ambiante
      * @{
      */
-    #define PIN_PIR_SENSOR    35     ///< GPIO 35 : Entrée détecteur PIR (HIGH=mouvement détecté)
-    #define PIN_LDR_SENSOR    34     ///< GPIO 34 : Entrée analogique pour photorésistance (ADC)
+    #define PIR_SENSOR    35     ///< GPIO 35 : Entrée détecteur PIR (HIGH=mouvement détecté)
+    #define LDR_SENSOR    34     ///< GPIO 34 : Entrée analogique pour photorésistance (ADC)
     /** @} */
 
     // ========================================================================
@@ -253,8 +253,8 @@
      * @note GPIO 4, 15, 16 sont libres et supportent pull-up
      * @{
      */
-    #define PIN_BUTTON_1      4      ///< GPIO 4  : Bouton 1 (Changement animation)
-    #define PIN_BUTTON_2      16     ///< GPIO 16 : Bouton 2 (Changement mode)
+    #define BUTTON_1      4      ///< GPIO 4  : Bouton 1 (Changement animation)
+    #define BUTTON_2      16     ///< GPIO 16 : Bouton 2 (Changement mode)
     /** @} */
 
 #else

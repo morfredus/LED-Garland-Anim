@@ -1,4 +1,4 @@
-# Guide Utilisateur - LED-Garland-Anim v0.7.0-rc1
+# Guide Utilisateur - LED-Garland-Anim v0.8.0
 
 Guide utilisateur complet pour le contrôleur d'animation de guirlande LED LED-Garland-Anim.
 
@@ -39,14 +39,14 @@ Exemple : `192.168.1.100`
 ### Emplacements des Boutons
 
 #### ESP32-S3
-- **Bouton 0 (BOOT)** : Intégré sur la carte
-- **Bouton 1** : GPIO 16 (bouton externe)
-- **Bouton 2** : GPIO 17 (bouton externe)
+- **BUTTON_BOOT** : Intégré sur la carte (GPIO 0)
+- **BUTTON_1** : GPIO 16 (bouton externe)
+- **BUTTON_2** : GPIO 17 (bouton externe)
 
 #### ESP32 Classic
-- **Bouton 0 (BOOT)** : Intégré sur la carte
-- **Bouton 1** : GPIO 4 (bouton externe)
-- **Bouton 2** : GPIO 16 (bouton externe)
+- **BUTTON_BOOT** : Intégré sur la carte (GPIO 0)
+- **BUTTON_1** : GPIO 4 (bouton externe)
+- **BUTTON_2** : GPIO 16 (bouton externe)
 
 ### Fonctions des Boutons
 
@@ -219,7 +219,7 @@ Chaque animation a une visualisation unique :
 **Durée déclenchement** : 30 secondes (configurable dans le code via `MOTION_TRIGGER_DURATION`)
 
 **Notes** :
-- Uniquement 2 modes dans la v0.6.3 (Permanent, Détection Mouvement). Les modes Horaires et Coupure Nuit ont été retirés.
+- Uniquement 2 modes dans la v0.8.0 (Permanent, Détection Mouvement). Les modes Horaires et Coupure Nuit ont été retirés.
 - Ajouter du debounce si nécessaire avec des modules PIR bruyants.
 
 **Quand le Mode Nuit s'Active** :

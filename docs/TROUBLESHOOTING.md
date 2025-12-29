@@ -1,11 +1,11 @@
-# Troubleshooting - LED-Garland-Anim v0.6.3
+# Troubleshooting - LED-Garland-Anim v0.8.0
 
 Use this guide to debug the ESP32-S3 and ESP32 Classic builds when something does not work as expected.
 
 ## Quick Checklist
 - Confirm you flashed the correct environment (`esp32s3_n16r8`, `esp32s3_n8r8`, or `esp32devkitc`).
 - Double-check WiFi credentials in `include/secrets.h`.
-- Pins must match `include/board_config.h` (S3: PIR 14, LDR 15, buttons 16/17; Classic: PIR 35, LDR 34, buttons 4/16).
+- Pins must match `include/board_config.h` (S3: PIR_SENSOR 14, LDR_SENSOR 15, BUTTON_1 16, BUTTON_2 17; Classic: PIR_SENSOR 35, LDR_SENSOR 34, BUTTON_1 4, BUTTON_2 16).
 - Common ground between ESP32, TB6612FNG, and external power.
 - Serial monitor at 115200 baud to read logs.
 
@@ -20,13 +20,13 @@ Use this guide to debug the ESP32-S3 and ESP32 Classic builds when something doe
 - If only some endpoints fail, reboot to reset the internal web server.
 
 ## Buttons (Animation/Mode)
-- S3: BTN1 GPIO16, BTN2 GPIO17. Classic: BTN1 GPIO4, BTN2 GPIO16. BOOT on GPIO0.
+- S3: BUTTON_1 GPIO16, BUTTON_2 GPIO17. Classic: BUTTON_1 GPIO4, BUTTON_2 GPIO16. BUTTON_BOOT on GPIO0.
 - Buttons are active-low with internal pull-ups; ensure wiring goes to GND on press.
 - If bouncy, inspect cabling length and switch quality; logs should show presses.
 
 ## Sensors
-- PIR: S3 GPIO14; Classic GPIO35. Verify module has 5V and GND, adjust sensitivity and delay pots.
-- LDR: S3 GPIO15; Classic GPIO34. Check the 10kΩ voltage divider wiring and that ADC pin reads 0–4095.
+- PIR_SENSOR: S3 GPIO14; Classic GPIO35. Verify module has 5V and GND, adjust sensitivity and delay pots.
+- LDR_SENSOR: S3 GPIO15; Classic GPIO34. Check the 10kΩ voltage divider wiring and that ADC pin reads 0–4095.
 - If motion always true, move the PIR away from heaters/sunlight; if never true, increase sensitivity.
 
 ## Displays
@@ -35,8 +35,8 @@ Use this guide to debug the ESP32-S3 and ESP32 Classic builds when something doe
 - For ghosting or random colors, lower cable length and check that GND is common.
 
 ## Garland Output / TB6612FNG
-- STBY must be HIGH (GPIO8 on S3, GPIO14 on Classic).
-- Direction: AIN1/AIN2 (GPIO6/4 on S3, GPIO32/33 on Classic). Intensity: PWMA (GPIO5 on S3, GPIO12 on Classic).
+- TB6612_STBY must be HIGH (GPIO8 on S3, GPIO14 on Classic).
+- Direction: TB6612_AIN1/TB6612_AIN2 (GPIO6/4 on S3, GPIO32/33 on Classic). Intensity: TB6612_PWMA (GPIO5 on S3, GPIO12 on Classic).
 - VM must be powered by an external 5–15V source; never power the garland from USB 5V alone.
 - If one direction fails, swap AO1/AO2 to confirm wiring; check for cold solder joints.
 
@@ -44,4 +44,4 @@ Use this guide to debug the ESP32-S3 and ESP32 Classic builds when something doe
 - Use `pio run -e <env>` for build; if upload fails, hold BOOT (GPIO0) on Classic during first flash.
 - Delete `.pio` build cache if you changed frameworks drastically.
 
-If issues persist, capture serial logs from boot to the failure point and compare against the pin tables in `docs/PIN_MAPPING*.md`.
+If issues persist, capture serial logs from boot to the failure point and compare against the GPIO mapping tables in the documentation.

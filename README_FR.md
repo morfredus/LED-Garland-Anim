@@ -1,6 +1,6 @@
 # LED-Garland-Anim
 
-**Version 0.6.3** - Contrôleur d'animation de guirlande LED bi-directionnelle pour ESP32/ESP32-S3
+**Version 0.8.0** - Contrôleur d'animation de guirlande LED bi-directionnelle pour ESP32/ESP32-S3
 
 Contrôlez une guirlande à 2 fils avec LEDs en anti-parallèle via un module TB6612FNG. Dispose de 11 animations spectaculaires (incluant 5 nouveaux effets visuels), mode Auto avec démarrage instantané, 2 modes de fonctionnement intelligents, affichage OLED avec visualisation animée, interface web, et contrôles physiques par boutons.
 
@@ -51,12 +51,11 @@ Contrôlez une guirlande à 2 fils avec LEDs en anti-parallèle via un module TB
 - **LED RGB NeoPixel**: Feedback visuel d'état
 - **Multi-affichage**: OLED et TFT simultanément
 
-### 🔌 Matériel Supporté
 - **Multi-Cartes**: ESP32-S3 (N16R8, N8R8) et ESP32 Classic (DevKitC)
 - **WiFiMulti**: Connexion automatique à plusieurs réseaux
-- **Module TB6612FNG**: Contrôle bi-directionnel de la guirlande
-- **Capteur PIR**: Détection de mouvement HC-SR501 (optionnel)
-- **Photorésistance LDR**: Détection jour/nuit (optionnel)
+- **Module TB6612FNG**: Contrôle bi-directionnel de la guirlande (GPIO : TB6612_PWMA, TB6612_AIN1, TB6612_AIN2, TB6612_STBY)
+- **Capteur PIR**: Détection de mouvement HC-SR501 (GPIO : PIR_SENSOR)
+- **Photorésistance LDR**: Détection jour/nuit (GPIO : LDR_SENSOR)
 
 ---
 

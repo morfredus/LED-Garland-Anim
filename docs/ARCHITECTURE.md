@@ -1,4 +1,4 @@
-# 📚 Architecture - LED-Garland-Anim v0.6.3
+# 📚 Architecture - LED-Garland-Anim v0.8.0
 
 ## 🎯 Overview
 
@@ -25,6 +25,9 @@ void setGarlandAnimation(GarlandAnimation);    // Change animation
 void setGarlandMode(GarlandMode);              // Change mode
 const char* getGarlandAnimationName();         // Current animation name
 const char* getGarlandModeName();              // Current mode name
+
+// GPIO naming convention (since v0.8.0):
+// BUTTON_BOOT, BUTTON_1, BUTTON_2, NEOPIXEL, I2C_SDA, I2C_SCL, TB6612_PWMA, TB6612_AIN1, TB6612_AIN2, TB6612_STBY, PIR_SENSOR, LDR_SENSOR, LED_BUILTIN
 ```
 
 **Animations (11 types)**:
@@ -256,7 +259,7 @@ Anim-Guirlande/
 ├── docs/
 │   ├── ARCHITECTURE.md       This file
 │   ├── ARCHITECTURE_FR.md    French version
-│   ├── PIN_MAPPING.md        Connection schematics
+│   ├── PIN_MAPPING.md        GPIO mapping table
 │   ├── PIN_MAPPING_FR.md     French version
 │   ├── USER_GUIDE.md         User guide (English)
 │   └── USER_GUIDE_FR.md      User guide (French)
@@ -343,7 +346,7 @@ Anim-Guirlande/
 
 - **[README.md](../README.md)** - Complete project documentation
 - **[README_FR.md](../README_FR.md)** - French version
-- **[PIN_MAPPING.md](./PIN_MAPPING.md)** - Hardware connection schematics
+- **[PIN_MAPPING.md](./PIN_MAPPING.md)** - GPIO mapping table
 - **[PIN_MAPPING_FR.md](./PIN_MAPPING_FR.md)** - French version
 - **[USER_GUIDE.md](./USER_GUIDE.md)** - Detailed user guide
 - **[USER_GUIDE_FR.md](./USER_GUIDE_FR.md)** - French version
