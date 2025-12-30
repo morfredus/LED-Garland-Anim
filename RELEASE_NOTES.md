@@ -1,10 +1,23 @@
-# Release Notes - Version 1.0.0
+## [1.1.0] - 2024-06-XX
+
+### Added
+- Automatic save/restore of user configuration (mode, animation, intervals) using NVS. Settings persist across reboots and power cycles.
+# Release Notes - Version 1.1.0
 
 **Release Date:** December 30, 2025
 
 ## 🎉 Major Release: ESP32 IdeaSpark Platform Unification
 
 Version 1.0.0 represents a complete platform modernization, focusing exclusively on the ESP32 IdeaSpark board with integrated 1.14" ST7789 LCD display.
+
+---
+
+## ♻️ What’s New in 1.1.0
+
+- All LDR/photoresistor references removed (project is now PIR-only)
+- All documentation (EN + FR) fully rewritten and updated for hardware, wiring, configuration, and usage
+- Version numbers updated everywhere (SEMVER)
+- Full consistency between code, documentation, and hardware mapping
 
 ---
 

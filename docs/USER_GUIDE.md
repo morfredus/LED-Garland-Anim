@@ -1,4 +1,19 @@
-# User Guide - LED-Garland-Anim v1.0.0
+## Saving and Restoring Configuration (NVS)
+
+The system uses ESP32's NVS (Non-Volatile Storage) to automatically save and restore user settings:
+
+- **Mode** (permanent or motion-triggered)
+- **Current animation**
+- **Auto mode interval**
+- **Motion trigger duration**
+
+**How it works:**
+- On startup, the system loads the last saved configuration if available; otherwise, it uses default values.
+- Any change made via the web interface or buttons is saved immediately.
+- Settings are persistent across reboots and power cycles.
+
+**No user action is required**: configuration is managed automatically.
+# User Guide - LED-Garland-Anim v1.1.0
 
 Complete user guide for the LED-Garland-Anim LED garland animation controller (ESP32 IdeaSpark + ST7789).
 
@@ -81,4 +96,4 @@ See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for help.
 
 ---
 
-**Document version: v1.0.0 (2025-12-30)**
+**Document version: v1.1.0 (2025-12-30)**

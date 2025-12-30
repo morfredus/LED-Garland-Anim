@@ -1,4 +1,19 @@
-# Guide Utilisateur - LED-Garland-Anim v1.0.0
+## Sauvegarde et restauration de la configuration (NVS)
+
+Le système utilise la NVS (mémoire non-volatile) de l’ESP32 pour sauvegarder et restaurer automatiquement les paramètres utilisateur :
+
+- **Mode** (permanent ou détection de mouvement)
+- **Animation en cours**
+- **Intervalle du mode auto**
+- **Durée d’animation sur détection**
+
+**Fonctionnement :**
+- Au démarrage, la dernière configuration sauvegardée est chargée si elle existe, sinon les valeurs par défaut sont utilisées.
+- Toute modification via l’interface web ou les boutons est sauvegardée immédiatement.
+- Les réglages sont conservés même après redémarrage ou coupure d’alimentation.
+
+**Aucune action requise de l’utilisateur** : la gestion est entièrement automatique.
+# Guide Utilisateur - LED-Garland-Anim v1.1.0
 
 Guide utilisateur complet pour le contrôleur d'animation de guirlande LED (ESP32 IdeaSpark + ST7789).
 
@@ -6,14 +21,19 @@ Guide utilisateur complet pour le contrôleur d'animation de guirlande LED (ESP3
 
 ## Table des Matières
 
-1. [Premier démarrage](#premier-démarrage)
-2. [Contrôles physiques](#contrôles-physiques)
-3. [Interface web](#interface-web)
-4. [Affichage LCD ST7789](#affichage-lcd-st7789)
-5. [Modes de fonctionnement](#modes-de-fonctionnement)
-6. [Animations](#animations)
-7. [Utilisation quotidienne](#utilisation-quotidienne)
-8. [Dépannage](#dépannage)
+- [Guide Utilisateur - LED-Garland-Anim v1.1.0](#guide-utilisateur---led-garland-anim-v110)
+  - [Table des Matières](#table-des-matières)
+  - [Premier Démarrage](#premier-démarrage)
+    - [À Quoi S'attendre](#à-quoi-sattendre)
+    - [Notez Votre Adresse IP](#notez-votre-adresse-ip)
+  - [Contrôles Physiques](#contrôles-physiques)
+    - [Emplacements des Boutons](#emplacements-des-boutons)
+  - [Interface Web](#interface-web)
+  - [Affichage LCD ST7789](#affichage-lcd-st7789)
+  - [Modes de Fonctionnement](#modes-de-fonctionnement)
+  - [Animations](#animations)
+  - [Utilisation Quotidienne](#utilisation-quotidienne)
+  - [Dépannage](#dépannage)
 
 ---
 
@@ -81,4 +101,4 @@ Voir [TROUBLESHOOTING_FR.md](TROUBLESHOOTING_FR.md) pour l'aide.
 
 ---
 
-**Version du document : v1.0.0 (2025-12-30)**
+**Version du document : v1.1.0 (2025-12-30)**

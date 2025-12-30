@@ -1,6 +1,16 @@
+## 💾 Sauvegarde & Restauration Automatique (NVS)
+
+Le projet sauvegarde et restaure automatiquement les paramètres suivants dans la mémoire non-volatile (NVS) :
+- Mode actuel (permanent / détection mouvement)
+- Animation en cours
+- Intervalle du mode auto
+- Durée d’animation sur détection
+
+Au démarrage, si une configuration existe, elle est chargée automatiquement. Sinon, les valeurs par défaut sont utilisées. Tout changement via l’interface web ou les boutons est sauvegardé pour le prochain redémarrage.
+
 # LED-Garland-Anim
 
-**Version 1.0.0** - Contrôleur d'animation de guirlande LED bi-directionnelle pour ESP32 IdeaSpark (ST7789)
+**Version 1.1.0** - Contrôleur d'animation de guirlande LED bi-directionnelle pour ESP32 IdeaSpark (ST7789)
 
 Contrôlez une guirlande à 2 fils avec LEDs en anti-parallèle via un module TB6612FNG. 11 animations spectaculaires, mode Auto, 2 modes intelligents, affichage LCD ST7789, interface web, et contrôles physiques par boutons.
 
@@ -55,7 +65,7 @@ Contrôlez une guirlande à 2 fils avec LEDs en anti-parallèle via un module TB
 - **WiFiMulti**: Connexion automatique à plusieurs réseaux
 - **Module TB6612FNG**: Contrôle bi-directionnel de la guirlande (GPIO : TB6612_PWMA, TB6612_AIN1, TB6612_AIN2, TB6612_STBY)
 - **Capteur PIR**: Détection de mouvement HC-SR501 (GPIO : PIR_SENSOR)
-- **Photorésistance LDR**: Détection jour/nuit (GPIO : LDR_SENSOR)
+
 
 ---
 
@@ -83,7 +93,7 @@ Contrôlez une guirlande à 2 fils avec LEDs en anti-parallèle via un module TB
 ### 1. Cloner le Projet
 ```bash
 git clone <votre-repo>
-cd Anim-Guirlande
+cd LED-Garland-Anim
 ```
 
 ### 2. Configurer `include/secrets.h`
@@ -330,7 +340,7 @@ static GarlandMode currentMode = MODE_PERMANENT;         // Ou MODE_MOTION_TRIGG
 
 ## 📝 Versions
 
-**Version Actuelle : v1.0.0** (2025-12-30)
+**Version Actuelle : v1.1.0** (2025-12-30)
 
 Voir [CHANGELOG_FR.md](./CHANGELOG_FR.md) pour l'historique complet.
 

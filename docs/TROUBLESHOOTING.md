@@ -1,4 +1,18 @@
-# Troubleshooting - LED-Garland-Anim v1.0.0
+## Configuration Not Saved or Restored
+
+**Symptoms:**
+- Settings (mode, animation, intervals) are lost after reboot or power cycle.
+
+**Possible Causes:**
+- NVS partition is corrupted or full
+- ESP32 flash is defective
+- Firmware bug (see logs for NVS errors)
+
+**Solutions:**
+- Erase flash and re-upload firmware
+- Check for error messages on serial console
+- If problem persists, file an issue with logs
+# Troubleshooting - LED-Garland-Anim v1.1.0
 
 Use this guide to debug the ESP32 IdeaSpark build when something does not work as expected.
 
@@ -39,4 +53,4 @@ Use this guide to debug the ESP32 IdeaSpark build when something does not work a
 
 ---
 
-**Document version: v1.0.0 (2025-12-30)**
+**Document version: v1.1.0 (2025-12-30)**

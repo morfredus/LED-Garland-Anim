@@ -4,7 +4,7 @@
 /**
  * @file web_interface.h
  * @brief Gestion de l'interface web et des handlers du serveur
- * @version 1.0.0
+ * @version 1.1.0
  * 
  * Module dédié à la gestion des routes HTTP et handlers du serveur web.
  * Contient les callbacks pour les différents endpoints de l'API web.
@@ -111,7 +111,6 @@ void handleStatus() {
     json += "\"mode\":\"" + String(getGarlandModeName()) + "\",";
     json += "\"mode_id\":" + String((int)getGarlandMode()) + ",";
     json += "\"motion_detected\":" + String(isMotionDetected() ? "true" : "false") + ",";
-    json += "\"light_level\":" + String(getLightLevel()) + ",";
     json += "\"auto_interval_ms\":" + String(getAutoAnimationIntervalMs()) + ",";
     json += "\"motion_duration_ms\":" + String(getMotionTriggerDurationMs()) + ",";
     json += "\"ip\":\"" + WiFi.localIP().toString() + "\"";
