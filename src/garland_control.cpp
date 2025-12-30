@@ -401,7 +401,6 @@ void setupGarland() {
     
     // Configuration des capteurs
     pinMode(PIR_SENSOR, INPUT);
-    pinMode(LDR_SENSOR, INPUT);
     
     // Initialisation
     garlandOff();
@@ -603,7 +602,8 @@ bool isMotionDetected() {
 }
 
 int getLightLevel() {
-    return analogRead(LDR_SENSOR);
+    // LDR sensor removed - return default value
+    return 0;
 }
 
 bool isAnimationActive() {
