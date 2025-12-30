@@ -1,442 +1,420 @@
-# Pin Connection Guide - LED-Garland-Anim
+# Pin Connection Guide - LED-Garland-Anim v1.0.0
 
-> 📌 **Beginner's Guide**: This document explains how to physically connect components to your ESP32-S3 or ESP32 Classic board for the LED-Garland-Anim project.
+> 📌 **Beginner's Guide**: This document explains how to physically connect components to your **ESP32 IdeaSpark 1.14" LCD** board for the LED-Garland-Anim project.
 
-## 🎯 Table of Contents
-- [ESP32-S3 DevKitC-1](#esp32-s3-devkitc-1)
-- [ESP32 Classic DevKitC](#esp32-classic-devkitc)
-- [Detailed Connection Schematics](#detailed-connection-schematics)
-- [TB6612FNG Module](#tb6612fng-module---garland-controller)
-- [Beginner Tips](#beginner-tips)
+## 🎯 Version Information
+
+- **Version**: 1.0.0
+- **Platform**: ESP32 IdeaSpark with integrated ST7789 1.14" LCD
+- **Board Name**: ESP32 IdeaSpark 1.14 LCD
+- **Display**: Hardwired ST7789 TFT LCD (135×240 pixels)
 
 ---
 
-## ESP32-S3 DevKitC-1
+## 📋 ESP32 IdeaSpark 1.14" LCD - Complete Pin Mapping
 
-### 📋 Pin Summary Table
+### Quick Reference Table
 
 | Component | Signal | GPIO Pin | Description | Notes |
 |-----------|--------|----------|-------------|-------|
-| **BUTTON_BOOT** | Button | GPIO 0 | Integrated button on board | Already present, long press restart |
+| **LCD ST7789** | MOSI | GPIO 23 | SPI Data | Hardwired on PCB |
+| **LCD ST7789** | SCLK | GPIO 18 | SPI Clock | Hardwired on PCB |
+| **LCD ST7789** | CS | GPIO 15 | Chip Select | Hardwired on PCB |
+| **LCD ST7789** | DC | GPIO 2 | Data/Command | Hardwired on PCB |
+| **LCD ST7789** | RST | GPIO 4 | Reset | Hardwired on PCB |
+| **LCD ST7789** | BLK | GPIO 32 | Backlight | **MUST be HIGH to see image** |
+| **TB6612_PWMA** | PWMA | GPIO 12 | PWM Control | Light intensity (0-255) |
+| **TB6612_AIN1** | AIN1 | GPIO 25 | Direction bit 1 | Current direction control |
+| **TB6612_AIN2** | AIN2 | GPIO 33 | Direction bit 2 | Current direction control |
+| **TB6612_STBY** | STBY | GPIO 14 | Standby | Module enable (HIGH=active) |
+| **PIR_SENSOR** | OUT | GPIO 35 | Detection signal | HIGH = motion detected |
 | **BUTTON_1** | Button | GPIO 16 | External button | Animation change |
 | **BUTTON_2** | Button | GPIO 17 | External button | Mode change |
-| **NEOPIXEL** | Data | GPIO 48 | Integrated addressable RGB LED | Visual status feedback |
-| **I2C_SDA (OLED SSD1306)** | SDA | GPIO 21 | I2C Data | Connection to OLED SDA pin |
-| **I2C_SCL (OLED SSD1306)** | SCL | GPIO 20 | I2C Clock | Connection to OLED SCL pin |
-| **OLED SSD1306** | VCC | 3.3V | Power | ESP32 3V3 pin |
-| **OLED SSD1306** | GND | GND | Ground | ESP32 GND pin |
-| **TFT ST7789** | MOSI (SDA) | GPIO 11 | SPI Data | ST7789 SDA pin |
-| **TFT ST7789** | SCLK (SCL) | GPIO 12 | SPI Clock | ST7789 SCL pin |
-| **TFT ST7789** | CS | GPIO 10 | Chip Select | Device selection |
-| **TFT ST7789** | DC | GPIO 9 | Data/Command | Data/command indicator |
-| **TFT ST7789** | RST | GPIO 13 | Reset | Screen reset |
-| **TFT ST7789** | BL | GPIO 7 | Backlight | LED backlight |
-| **TFT ST7789** | VCC | 3.3V | Power | ESP32 3V3 pin |
-| **TFT ST7789** | GND | GND | Ground | ESP32 GND pin |
-| **TB6612_PWMA** | PWMA | GPIO 5 | PWM Direction A | Light intensity control |
-| **TB6612_AIN1** | AIN1 | GPIO 6 | Direction bit 1 | Current direction control |
-| **TB6612_AIN2** | AIN2 | GPIO 4 | Direction bit 2 | Current direction control |
-| **TB6612_STBY** | STBY | GPIO 8 | Standby | Module activation (HIGH=active) |
-| **TB6612FNG** | VCC | 3.3V | Logic power | ESP32 3V3 pin |
-| **TB6612FNG** | VM | 5-15V | Motor power | External power for garland |
-| **TB6612FNG** | GND | GND | Ground | Common with ESP32 GND |
-| **PIR_SENSOR** | OUT | GPIO 14 | Detection signal | HIGH = motion detected |
-| **PIR Sensor** | VCC | 5V | Power | ESP32 5V pin (via USB) |
-| **PIR Sensor** | GND | GND | Ground | ESP32 GND pin |
-| **LDR_SENSOR** | Signal | GPIO 15 | ADC Read | Voltage divider with R=10kΩ |
-| **LDR** | VCC | 3.3V | Power | Via 10kΩ resistor |
-| **LDR** | GND | GND | Ground | Via LDR to GND |
-
-### 🎄 TB6612FNG + Garland Connection Schematic
-
-```
-ESP32-S3                TB6612FNG              LED Garland
-┌─────────┐            ┌──────────┐           ┌──────────┐
-│         │            │          │           │          │
-│ GPIO 5  ├───────────►│ PWMA     │           │          │
-│ GPIO 6  ├───────────►│ AIN1     │           │          │
-│ GPIO 4  ├───────────►│ AIN2     │           │          │
-│ GPIO 8  ├───────────►│ STBY     │           │          │
-│         │            │          │           │          │
-│   3V3   ├───────────►│ VCC      │           │          │
-│   GND   ├───────────►│ GND      ├──────────►│ GND (-)  │
-│         │            │          │           │          │
-│         │    ┌──────►│ VM       │           │          │
-│         │    │       │          │           │          │
-│         │    │       │ AO1      ├──────────►│ Wire 1   │
-│         │    │       │ AO2      ├──────────►│ Wire 2   │
-│         │    │       │          │           │          │
-└─────────┘    │       └──────────┘           └──────────┘
-               │
-        External Power
-        (5V-15V)
-        ┌──────┐
-        │  +   ├──────┘
-        │  -   ├────────────────────────────►Common GND
-        └──────┘
-```
-
-**⚠️ IMPORTANT - TB6612FNG Power Supply**:
-- **VCC** (3.3V): Control logic from ESP32
-- **VM** (5-15V): Power supply for garland (from external source)
-- **GND**: Common ground between ESP32, TB6612FNG and external power
-
-**💡 Operating Principle**:
-- LEDs are mounted in anti-parallel (2 groups back-to-back)
-- Current direction change = change of lit LED group
-- PWM controls light intensity (0-255)
-
-### 🚶 PIR Sensor Connection Schematic
-
-```
-ESP32-S3           PIR HC-SR501
-┌─────────┐        ┌──────────┐
-│         │        │          │
-│ GPIO 14 ├───────►│ OUT      │
-│    5V   ├───────►│ VCC      │
-│   GND   ├───────►│ GND      │
-│         │        │          │
-└─────────┘        └──────────┘
-```
-
-**PIR Configuration**:
-- Adjust sensitivity via module potentiometer
-- Adjust timeout delay (typically 3s-5min)
-- HIGH signal when motion detected
-
-### 💡 LDR Photoresistor Connection Schematic
-
-```
-ESP32-S3           LDR + Resistor
-┌─────────┐        
-│         │        3.3V
-│         │          │
-│         │         ┌┴┐
-│         │         │ │ R = 10kΩ
-│         │         └┬┘
-│         │          │
-│ GPIO 15 ├──────────┼───┐
-│         │          │   │
-│         │         ┌┴┐  │
-│         │         │ │ LDR (Photoresistor)
-│         │         └┬┘  │
-│         │          │   │
-│   GND   ├──────────┴───┘
-│         │
-└─────────┘
-```
-
-**Principle**:
-- Voltage divider: 10kΩ resistor in series with LDR
-- More light → low LDR resistance → high voltage
-- Less light → high LDR resistance → low voltage
-- 12-bit ADC reading: 0-4095
-
-### 🔘 Button Connection Schematic
-
-```
-ESP32-S3           Button 1              Button 2
-┌─────────┐        ┌──────┐              ┌──────┐
-│         │        │      │              │      │
-│ GPIO 16 ├────┬───┤  ○   ├───┐      ┌───┤  ○   ├───┐
-│         │    │   │      │   │      │   │      │   │
-│ GPIO 17 ├────┼───┘──────┘   │      │   └──────┴───┘
-│         │    │              │      │              │
-│   GND   ├────┴──────────────┴──────┴──────────────┘
-│         │
-└─────────┘
-```
-
-**Configuration**:
-- Active-low buttons (press = GND)
-- Internal pull-up enabled in code
-- Debounce handled by OneButton library
-
-### 🔌 OLED SSD1306 Connection Schematic (I2C)
-
-```
-ESP32-S3           OLED SSD1306
-┌─────────┐        ┌──────────┐
-│         │        │          │
-│ GPIO 21 ├───────►│ SDA      │
-│ GPIO 20 ├───────►│ SCL      │
-│    3V3  ├───────►│ VCC      │
-│    GND  ├───────►│ GND      │
-│         │        │          │
-└─────────┘        └──────────┘
-```
-
-**Default I2C Address**: `0x3C` (sometimes `0x3D`)
-
-### 🖥️ TFT ST7789 Connection Schematic (SPI)
-
-```
-ESP32-S3           TFT ST7789
-┌─────────┐        ┌──────────┐
-│         │        │          │
-│ GPIO 11 ├───────►│ MOSI/SDA │
-│ GPIO 12 ├───────►│ SCLK/SCL │
-│ GPIO 10 ├───────►│ CS       │
-│ GPIO  9 ├───────►│ DC       │
-│ GPIO 13 ├───────►│ RST      │
-│ GPIO  7 ├───────►│ BL       │
-│    3V3  ├───────►│ VCC      │
-│    GND  ├───────►│ GND      │
-│         │        │          │
-└─────────┘        └──────────┘
-```
+| **BUTTON_BOOT** | Button | GPIO 0 | Integrated BOOT button | Long press = restart |
+| **I2C_SDA** | SDA | GPIO 21 | I2C Data | Available for expansion |
+| **I2C_SCL** | SCL | GPIO 22 | I2C Clock | Available for expansion |
 
 ---
 
-## ESP32 Classic DevKitC
+## 🖥️ LCD ST7789 Display (Integrated)
 
-### 📋 Pin Summary Table
+### Display Specifications
+- **Resolution**: 135×240 pixels
+- **Color Depth**: RGB565 (16-bit, 65K colors)
+- **Interface**: SPI (hardware pins)
+- **Orientation**: Landscape (rotation = 1)
+- **Refresh Rate**: 10 FPS for animations
 
-| Component | Signal | GPIO Pin | Description | Notes |
-|-----------|--------|----------|-------------|-------|
-| **BUTTON_BOOT** | Button | GPIO 0 | Integrated button on board | Already present, long press restart |
-| **BUTTON_1** | Button | GPIO 16 | External button | Animation change <br>🔄 Changement #2 (2025-12-29) |
-| **BUTTON_2** | Button | GPIO 17 | External button | Mode change <br>🔄 Changement #2 (2025-12-29) |
-| **LCD ST7789** | MOSI | GPIO 15 | SPI Data | LCD_MOSI <br>🆕 Changement #1 (2025-12-29) |
-| **LCD ST7789** | SCLK | GPIO 9  | SPI Clock | LCD_SCLK <br>🆕 Changement #1 (2025-12-29) |
-| **LCD ST7789** | CS   | GPIO 3  | Chip Select | LCD_CS <br>🆕 Changement #1 (2025-12-29) |
-| **LCD ST7789** | DC   | GPIO 4  | Data/Command | LCD_DC <br>🆕 Changement #1 (2025-12-29) |
-| **LCD ST7789** | RST  | GPIO 5  | Reset | LCD_RST <br>🆕 Changement #1 (2025-12-29) |
-| **LCD ST7789** | BLK  | GPIO 10 | Backlight | LCD_BLK <br>🆕 Changement #1 (2025-12-29) |
-| **LED_BUILTIN** | LED | GPIO 2 | Integrated blue LED | Visual heartbeat |
-| **OLED SSD1306** | SDA | GPIO 21 | I2C Data | Connection to OLED SDA pin |
-| **OLED SSD1306** | SCL | GPIO 22 | I2C Clock | Connection to OLED SCL pin |
-| **OLED SSD1306** | VCC | 3.3V | Power | ESP32 3V3 pin |
-| **OLED SSD1306** | GND | GND | Ground | ESP32 GND pin |
-| **TFT ILI9341** | MOSI | GPIO 23 | SPI Data | TFT SDA pin |
-| **TFT ILI9341** | SCLK | GPIO 18 | SPI Clock | TFT SCL pin |
-| **TFT ILI9341** | CS | GPIO 19 | Chip Select | Device selection |
-| **TFT ILI9341** | DC | GPIO 27 | Data/Command | Data/command indicator |
-| **TFT ILI9341** | RST | GPIO 26 | Reset | Screen reset |
-| **TFT ILI9341** | BL | GPIO 13 | Backlight | LED backlight |
-| **TFT ILI9341** | VCC | 3.3V | Power | ESP32 3V3 pin |
-| **TFT ILI9341** | GND | GND | Ground | ESP32 GND pin |
-| **TB6612_PWMA** | PWMA | GPIO 12 | PWM Direction A | Light intensity control |
-| **TB6612_AIN1** | AIN1 | GPIO 32 | Direction bit 1 | Current direction control |
-| **TB6612_AIN2** | AIN2 | GPIO 33 | Direction bit 2 | Current direction control |
-| **TB6612_STBY** | STBY | GPIO 14 | Standby | Module activation (HIGH=active) |
-| **TB6612FNG** | VCC | 3.3V | Logic power | ESP32 3V3 pin |
-| **TB6612FNG** | VM | 5-15V | Motor power | External power for garland |
-| **TB6612FNG** | GND | GND | Ground | Common with ESP32 GND |
-| **PIR_SENSOR** | OUT | GPIO 35 | Detection signal | HIGH = motion detected |
-| **PIR Sensor** | VCC | 5V | Power | ESP32 5V pin (via USB) |
-| **PIR Sensor** | GND | GND | Ground | ESP32 GND pin |
-| **LDR_SENSOR** | Signal | GPIO 34 | ADC Read | Voltage divider with R=10kΩ |
-| **LDR** | VCC | 3.3V | Power | Via 10kΩ resistor |
-| **LDR** | GND | GND | Ground | Via LDR to GND |
-
-### 🎄 TB6612FNG + Garland Connection Schematic (ESP32 Classic)
+### Hardwired Connections
 
 ```
-ESP32 Classic          TB6612FNG              LED Garland
-┌─────────┐            ┌──────────┐           ┌──────────┐
-│         │            │          │           │          │
-│ GPIO 12 ├───────────►│ PWMA     │           │          │
-│ GPIO 32 ├───────────►│ AIN1     │           │          │
-│ GPIO 33 ├───────────►│ AIN2     │           │          │
-│ GPIO 14 ├───────────►│ STBY     │           │          │
-│         │            │          │           │          │
-│   3V3   ├───────────►│ VCC      │           │          │
-│   GND   ├───────────►│ GND      ├──────────►│ GND (-)  │
-│         │            │          │           │          │
-│         │    ┌──────►│ VM       │           │          │
-│         │    │       │          │           │          │
-│         │    │       │ AO1      ├──────────►│ Wire 1   │
-│         │    │       │ AO2      ├──────────►│ Wire 2   │
-│         │    │       │          │           │          │
-└─────────┘    │       └──────────┘           └──────────┘
-               │
-        External Power
-        (5V-15V)
-        ┌──────┐
-        │  +   ├──────┘
-        │  -   ├────────────────────────────►Common GND
-        └──────┘
+ESP32 IdeaSpark Board
+┌─────────────────────────────────┐
+│                                 │
+│  ┌───────────────────────────┐  │
+│  │   ST7789 1.14" LCD        │  │
+│  │   (135×240 pixels)        │  │
+│  │   Hardwired on PCB        │  │
+│  └───────────────────────────┘  │
+│                                 │
+│  GPIO 23 ──► MOSI (SPI Data)    │
+│  GPIO 18 ──► SCLK (SPI Clock)   │
+│  GPIO 15 ──► CS (Chip Select)   │
+│  GPIO  2 ──► DC (Data/Command)  │
+│  GPIO  4 ──► RST (Reset)        │
+│  GPIO 32 ──► BLK (Backlight)    │ ⚠️ MUST BE HIGH
+│                                 │
+└─────────────────────────────────┘
 ```
+
+**⚠️ CRITICAL - Backlight Control**:
+- **GPIO 32 (BLK)** controls display backlight
+- **Must be set HIGH** to see any image on screen
+- Configured automatically in `setupDisplay()` function
 
 ---
 
-## TB6612FNG Module - Garland Controller
+## 🎄 TB6612FNG Motor Driver + LED Garland
 
-### 📚 Module Description
+### Pin Configuration
 
-The **TB6612FNG** is a dual H-bridge that allows control of direction and intensity of current in two DC motors or, in our case, a bi-directional LED garland.
+| Signal | ESP32 GPIO | TB6612FNG Pin | Function |
+|--------|------------|---------------|----------|
+| PWMA | GPIO 12 | PWMA | PWM intensity control (0-255) |
+| AIN1 | GPIO 25 | AIN1 | Direction control bit 1 |
+| AIN2 | GPIO 33 | AIN2 | Direction control bit 2 |
+| STBY | GPIO 14 | STBY | Standby (HIGH = active) |
+| VCC | 3.3V | VCC | Logic power |
+| VM | 5-15V | VM | Motor/garland power |
+| GND | GND | GND | Common ground |
 
-**Specifications**:
-- Logic voltage: 2.7V - 5.5V (3.3V ESP32 compatible)
-- Motor voltage (VM): 4.5V - 13.5V (15V max)
-- Continuous current per channel: 1.2A
-- Peak current: 3.2A (10ms)
-- Supported PWM frequency: up to 100 kHz
-
-### 🔌 TB6612FNG Pinout
+### Connection Schematic
 
 ```
-        TB6612FNG
-    ┌──────────────┐
-VM ─┤1          24├─ VCC (3.3V)
-GND─┤2          23├─ AO1 (Motor output A1)
-AO2─┤3          22├─ AO2 (Motor output A2)
-BO1─┤4          21├─ BO1 (Motor output B1)
-BO2─┤5          20├─ BO2 (Motor output B2)
-    │              │
-PWMA─┤6         19├─ PWMB
-AIN1─┤7         18├─ BIN1
-AIN2─┤8         17├─ BIN2
-STBY─┤9         16├─ GND
-    │              │
-    └──────────────┘
+ESP32 IdeaSpark         TB6612FNG              LED Garland
+┌─────────────┐         ┌──────────┐           ┌──────────┐
+│             │         │          │           │          │
+│  GPIO 12    ├────────►│ PWMA     │           │          │
+│  GPIO 25    ├────────►│ AIN1     │           │          │
+│  GPIO 33    ├────────►│ AIN2     │           │          │
+│  GPIO 14    ├────────►│ STBY     │           │          │
+│             │         │          │           │          │
+│    3.3V     ├────────►│ VCC      │           │          │
+│    GND      ├────────►│ GND      ├──────────►│ GND (-)  │
+│             │         │          │           │          │
+│             │   ┌────►│ VM       │           │          │
+│             │   │     │          │           │          │
+│             │   │     │ AO1      ├──────────►│ Wire 1   │
+│             │   │     │ AO2      ├──────────►│ Wire 2   │
+│             │   │     │          │           │          │
+└─────────────┘   │     └──────────┘           └──────────┘
+                  │
+           External Power
+           (5V-15V DC)
+           ┌───────┐
+           │   +   ├──────┘
+           │   -   ├────────────────────────────►Common GND
+           └───────┘
 ```
 
-**For our project**, we use only **Channel A**:
-- **PWMA**: PWM signal for intensity control
-- **AIN1, AIN2**: Current direction control
-- **STBY**: Module enable/disable
-- **AO1, AO2**: Outputs to garland's 2 wires
+### TB6612FNG Power Requirements
 
-### ⚡ Truth Table
+**⚠️ IMPORTANT - Dual Power Supply**:
+- **VCC (3.3V)**: Control logic from ESP32 3V3 pin
+- **VM (5-15V)**: Motor power for LED garland (external source)
+- **GND**: **MUST BE COMMON** between ESP32, TB6612FNG, and external power supply
 
-| AIN1 | AIN2 | PWMA | Channel A State |
-|------|------|------|-----------------|
-| LOW  | LOW  | X    | Off (short to GND) |
-| HIGH | LOW  | PWM  | Direction A (Forward) - LED group A |
-| LOW  | HIGH | PWM  | Direction B (Backward) - LED group B |
-| HIGH | HIGH | X    | Brake (internal short) |
+### TB6612FNG Truth Table
 
-**STBY** must be **HIGH** to activate the module.
+| AIN1 | AIN2 | STBY | Output | Garland State |
+|------|------|------|--------|---------------|
+| LOW | LOW | HIGH | OFF | LEDs off (brake) |
+| HIGH | LOW | HIGH | Forward | Direction A LEDs on |
+| LOW | HIGH | HIGH | Reverse | Direction B LEDs on |
+| HIGH | HIGH | HIGH | Brake | Short brake |
+| X | X | LOW | Disabled | Module disabled |
 
-### 🎨 Control Examples
+### LED Garland Operating Principle
 
-#### Light LEDs Direction A (50% intensity)
-```cpp
-digitalWrite(TB6612_AIN1, HIGH);
-digitalWrite(TB6612_AIN2, LOW);
-analogWrite(TB6612_PWMA, 128);  // 50% of 255
+```
+Anti-Parallel LED Configuration:
+
+Wire 1 ──┬──►|──►|──►|── (Direction A: ~25 LEDs)
+         │
+Wire 2 ──┼──◄|──◄|──◄|── (Direction B: ~25 LEDs)
+         │
+        GND
 ```
 
-#### Light LEDs Direction B (100% intensity)
-```cpp
-digitalWrite(TB6612_AIN1, LOW);
-digitalWrite(TB6612_AIN2, HIGH);
-analogWrite(TB6612_PWMA, 255);  // 100%
-```
-
-#### Turn off all LEDs
-```cpp
-digitalWrite(AIN1, LOW);
-digitalWrite(AIN2, LOW);
-// or
-digitalWrite(STBY, LOW);  // Put entire module to sleep
-```
+- **Forward (AIN1=HIGH, AIN2=LOW)**: Direction A LEDs light up
+- **Reverse (AIN1=LOW, AIN2=HIGH)**: Direction B LEDs light up
+- **PWM (PWMA 0-255)**: Controls brightness of active LEDs
+- **Frequency**: 5000 Hz for smooth dimming
 
 ---
 
-## Beginner Tips
+## 🚶 PIR Motion Sensor (HC-SR501)
 
-### ⚠️ Electrical Safety
+### Pin Configuration
 
-1. **Always disconnect** power before modifying wiring
-2. **Check polarity**: VCC = positive, GND = negative
-3. **Don't reverse** power supply (risk of component destruction)
-4. **Correct voltage**: ESP32 = 3.3V logic (not 5V on GPIO!)
-5. **Garland current**: Ensure TB6612FNG can supply required current
-6. **External power**: Use suitable power supply for VM (not ESP32 USB)
+| ESP32 GPIO | PIR Pin | Function |
+|------------|---------|----------|
+| GPIO 35 | OUT | Digital signal (HIGH = motion detected) |
+| 5V | VCC | Power supply |
+| GND | GND | Ground |
 
-### 🔧 Wiring Verification
+### Connection Schematic
 
-**Checklist before powering on**:
-- [ ] All grounds (GND) connected together
-- [ ] No short circuit between VCC and GND
-- [ ] GPIO pins match code (`board_config.h`)
-- [ ] External power has correct voltage (5-15V for VM)
-- [ ] Cables properly inserted (no loose connections)
-- [ ] Buttons correctly oriented
-
-### 🧪 Progressive Testing
-
-1. **Test ESP32 alone**: Upload code, check serial logs
-2. **Test WiFi**: Check connection and IP acquisition
-3. **Test displays**: Check OLED/TFT display
-4. **Test buttons**: Press Btn1/Btn2, observe logs
-5. **Test sensors**: Check PIR and LDR readings in serial monitor
-6. **Test TB6612FNG**: Connect module (without garland), test directions
-7. **Test garland**: Connect garland and test animations
-
-### 🔍 Common Troubleshooting
-
-#### ESP32 Won't Start
-- Check USB power supply (defective cable?)
-- Try another USB port
-- Hold BOOT while uploading
-
-#### OLED Won't Turn On
-- Check I2C address (0x3C or 0x3D)
-- Test with I2C scanner
-- Check SDA/SCL connections (don't reverse)
-
-#### TFT Shows Wrong Colors
-- Check all SPI connections
-- Ensure BL (backlight) is powered
-- Test with library example sketch
-
-#### Garland Won't Light
-- Check that STBY is HIGH
-- Check VM power supply (5-15V)
-- Test AO1/AO2 outputs with multimeter
-- Ensure code sends proper signals
-
-#### PIR Continuously Detects
-- Adjust sensitivity potentiometer
-- Move away from heat sources (radiator, direct sun)
-- Increase timeout delay on module
-
-#### LDR Doesn't Vary
-- Check voltage divider (10kΩ resistor)
-- Test LDR resistance with multimeter
-- Ensure GPIO 15/34 is in ADC mode
-
-### 📐 Useful Calculations
-
-**Garland current calculation**:
-- Number of LEDs: ~50 (25 per direction)
-- Current per LED: ~20mA (typical)
-- Max total current: 25 × 20mA = 500mA = 0.5A
-- ✅ TB6612FNG supports 1.2A continuous → OK
-
-**LDR voltage divider**:
 ```
-Vadc = 3.3V × (R / (R + Rldr))
+ESP32 IdeaSpark      PIR HC-SR501
+┌─────────────┐      ┌──────────┐
+│             │      │          │
+│  GPIO 35    ├─────►│ OUT      │ (Input-only pin)
+│     5V      ├─────►│ VCC      │
+│    GND      ├─────►│ GND      │
+│             │      │          │
+└─────────────┘      └──────────┘
 ```
-- R = 10kΩ (fixed resistor)
-- Rldr = variable (100Ω in full light, 10MΩ in dark)
-- More light → low Rldr → high Vadc
+
+**📌 Pin Selection Notes**:
+- **GPIO 35** is an input-only pin (perfect for sensors)
+- Cannot be used for outputs
+- No internal pull-up/pull-down resistors
+
+### PIR Sensor Settings
+- **Sensitivity**: Adjustable via potentiometer (3-7 meters range)
+- **Delay Time**: Adjustable via potentiometer (5s - 300s)
+- **Trigger Mode**: Repeatable (H) or Non-repeatable (L) - jumper setting
+
+---
+
+## 🔘 User Buttons
+
+### Pin Configuration
+
+| Button | ESP32 GPIO | Function | Trigger |
+|--------|------------|----------|---------|
+| BUTTON_BOOT | GPIO 0 | System restart | Long press (1s) |
+| BUTTON_1 | GPIO 16 | Change animation | Short press |
+| BUTTON_2 | GPIO 17 | Change mode | Short press |
+
+### Connection Schematic
+
+```
+       ESP32 IdeaSpark
+       ┌─────────────┐
+       │             │
+       │  GPIO 0     ├────┐  BUTTON_BOOT
+       │  (BOOT)     │    │  (integrated)
+       │             │    │
+       │  GPIO 16    ├────┤  BUTTON_1
+       │             │    │  (external)
+       │             │    │
+       │  GPIO 17    ├────┤  BUTTON_2
+       │             │    │  (external)
+       │             │    │
+       │    GND      ├────┴─── Common GND
+       │             │
+       └─────────────┘
+
+External Button Wiring (BUTTON_1 and BUTTON_2):
+
+    GPIO 16/17 ──────┤   ├───── GND
+                     │   │
+                   Button
+
+Note: Internal pull-up resistors enabled in software
+```
+
+### Button Configuration
+- **Pull-up Mode**: Internal pull-up resistors enabled
+- **Active State**: LOW (pressed = GND connection)
+- **Debounce**: Handled by OneButton library
+
+---
+
+## 🔌 I2C Bus (Available for Expansion)
+
+### Pin Configuration
+
+| ESP32 GPIO | I2C Signal | Function |
+|------------|------------|----------|
+| GPIO 21 | SDA | I2C Data |
+| GPIO 22 | SCL | I2C Clock |
+
+**Available for**:
+- External sensors (BME280, BMP180, etc.)
+- RTC modules (DS3231, DS1307)
+- I2C OLED displays (if needed)
+- Other I2C peripherals
+
+---
+
+## ⚡ Power Supply Guide
+
+### ESP32 IdeaSpark Power Options
+
+1. **USB-C (Recommended for development)**
+   - Voltage: 5V
+   - Current: 500mA typical
+   - Provides: 5V and 3.3V rails
+
+2. **VIN Pin**
+   - Voltage: 5V-12V DC
+   - Current: Up to 1A
+   - Regulated to 3.3V on-board
+
+### TB6612FNG Power Requirements
+
+- **VCC**: 2.7V - 5.5V (connect to ESP32 3.3V)
+- **VM**: 4.5V - 13.5V (connect to external power supply)
+- **Output Current**: Up to 1.2A per channel (peak 3.2A)
+
+### Recommended Power Setup
+
+```
+┌─────────────────────┐
+│  USB Power Bank     │ 5V, 2A
+│  or Wall Adapter    │
+└──────┬──────────────┘
+       │
+       ├──────────► ESP32 IdeaSpark (USB-C)
+       │                 │
+       │                 ├──► 3.3V logic
+       │                 └──► LCD display
+       │
+       └──────────► TB6612FNG (VM pin)
+                        │
+                        └──► LED Garland
+```
+
+**⚠️ Power Warnings**:
+- **Always** connect GND between ESP32 and TB6612FNG
+- **Never** exceed 13.5V on TB6612FNG VM pin
+- **Ensure** power supply can provide enough current for garland
+
+---
+
+## 🛠️ Pin Conflicts Resolution
+
+### v1.0.0 Pin Changes
+
+| Signal | Old GPIO (v0.x) | New GPIO (v1.0.0) | Reason |
+|--------|----------------|-------------------|---------|
+| TB6612_AIN1 | GPIO 32 | **GPIO 25** | GPIO 32 needed for LCD backlight |
+| PIR_SENSOR | GPIO 14 | **GPIO 35** | GPIO 35 is input-only (ideal for sensors) |
+
+### Shared Pins (Acceptable)
+
+- **GPIO 2 (LED_BUILTIN + LCD_DC)**: Shared usage acceptable
+  - LED_BUILTIN blinks during boot
+  - LCD_DC used for display data/command signaling
+  - No conflict as LCD_DC is output-only
+
+---
+
+## 📊 Complete GPIO Allocation Map
+
+| GPIO | Function | Direction | Notes |
+|------|----------|-----------|-------|
+| 0 | BUTTON_BOOT | Input | Boot button (integrated) |
+| 2 | LCD_DC | Output | Display data/command + LED_BUILTIN |
+| 4 | LCD_RST | Output | Display reset |
+| 12 | TB6612_PWMA | Output | PWM garland control |
+| 14 | TB6612_STBY | Output | TB6612 standby |
+| 15 | LCD_CS | Output | Display chip select |
+| 16 | BUTTON_1 | Input | User button 1 |
+| 17 | BUTTON_2 | Input | User button 2 |
+| 18 | LCD_SCLK | Output | Display SPI clock |
+| 21 | I2C_SDA | I/O | I2C data (expansion) |
+| 22 | I2C_SCL | Output | I2C clock (expansion) |
+| 23 | LCD_MOSI | Output | Display SPI data |
+| 25 | TB6612_AIN1 | Output | Direction control 1 |
+| 32 | LCD_BLK | Output | Display backlight (MUST be HIGH) |
+| 33 | TB6612_AIN2 | Output | Direction control 2 |
+| 35 | PIR_SENSOR | Input | Motion detection (input-only) |
+
+**Total GPIOs Used**: 16 / 34 available
+
+---
+
+## 🧰 Beginner Tips
+
+### 1. Start with Display Test
+```cpp
+void setup() {
+    pinMode(LCD_BLK, OUTPUT);
+    digitalWrite(LCD_BLK, HIGH);  // Turn on backlight!
+
+    display.init(135, 240);
+    display.setRotation(1);
+    display.fillScreen(ST77XX_WHITE);
+}
+```
+
+### 2. Test TB6612FNG Separately
+- Connect LEDs first
+- Test forward/reverse directions
+- Verify PWM brightness control
+- Check external power supply
+
+### 3. Verify PIR Sensor
+- Adjust sensitivity and delay pots
+- Test in Serial Monitor
+- Ensure 5V power supply
+
+### 4. Button Testing
+```cpp
+void loop() {
+    if (digitalRead(BUTTON_1) == LOW) {
+        Serial.println("Button 1 pressed!");
+    }
+}
+```
+
+### 5. Common Mistakes to Avoid
+- ❌ Forgetting to set LCD_BLK HIGH (screen stays black)
+- ❌ Missing common GND between ESP32 and TB6612FNG
+- ❌ Using GPIO 35 as output (it's input-only!)
+- ❌ Exceeding 13.5V on TB6612FNG VM pin
 
 ---
 
 ## 📚 Additional Resources
 
-### Datasheets
-- **TB6612FNG**: [Toshiba TB6612FNG Datasheet](https://www.sparkfun.com/datasheets/Robotics/TB6612FNG.pdf)
-- **HC-SR501**: [PIR Motion Sensor Datasheet](https://www.epitran.it/ebayDrive/datasheet/44.pdf)
-- **ESP32-S3**: [Espressif ESP32-S3 Datasheet](https://www.espressif.com/sites/default/files/documentation/esp32-s3_datasheet_en.pdf)
-
-### Tutorials
-- [TB6612FNG Guide on SparkFun](https://learn.sparkfun.com/tutorials/tb6612fng-hookup-guide)
-- [Using PIR Sensor](https://randomnerdtutorials.com/esp32-pir-motion-sensor/)
-- [Reading LDR Photoresistor](https://randomnerdtutorials.com/esp32-adc-analog-read-arduino-ide/)
-
-### Testing Tools
-- **I2C Scanner**: To find OLED address
-- **Multimeter**: To check voltages and continuity
-- **Oscilloscope**: To observe PWM signals (optional)
+- **ESP32 Pinout**: [Espressif Official Docs](https://docs.espressif.com/)
+- **ST7789 Datasheet**: Adafruit ST7789 library documentation
+- **TB6612FNG Datasheet**: [Toshiba Official](https://www.sparkfun.com/datasheets/Robotics/TB6612FNG.pdf)
+- **HC-SR501 PIR**: Standard motion sensor module
 
 ---
 
-**Note**: This guide accompanies the LED-Garland-Anim v0.2.0 project. For questions or issues, consult README.md and the commented source code.
+## 🔍 Troubleshooting
 
-**Document Version**: v0.2.0 - 2025-12-09
+### LCD Display Not Working
+1. Check LCD_BLK is set to HIGH
+2. Verify SPI connections (MOSI, SCLK, CS)
+3. Test with simple fill screen command
+4. Check 3.3V power supply
+
+### Garland Not Lighting
+1. Verify TB6612FNG STBY is HIGH
+2. Check VM external power supply (5-15V)
+3. Verify common GND connection
+4. Test AIN1/AIN2 logic levels
+5. Measure PWMA PWM signal
+
+### PIR Sensor Always Triggering
+1. Adjust sensitivity potentiometer
+2. Move sensor away from heat sources
+3. Check for air currents/vibrations
+4. Verify 5V power supply voltage
+
+### Buttons Not Responding
+1. Check wiring to GND
+2. Verify internal pull-up enabled in code
+3. Test with multimeter (should read 3.3V when not pressed)
+
+---
+
+**LED-Garland-Anim v1.0.0** - ESP32 IdeaSpark 1.14" LCD Platform 🎄✨

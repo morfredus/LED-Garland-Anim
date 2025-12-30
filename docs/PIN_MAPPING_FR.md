@@ -1,436 +1,420 @@
-# Guide de Connexion des Pins - Anim-Guirlande
+# Guide de Connexion des Pins - LED-Garland-Anim v1.0.0
 
-> 📌 **Guide débutant** : Ce document explique comment connecter physiquement les composants à votre carte ESP32-S3 ou ESP32 Classic pour le projet Anim-Guirlande.
+> 📌 **Guide Débutant** : Ce document explique comment connecter physiquement les composants à votre carte **ESP32 IdeaSpark LCD 1.14"** pour le projet LED-Garland-Anim.
 
-## 🎯 Table des matières
-- [ESP32-S3 DevKitC-1](#esp32-s3-devkitc-1)
-- [ESP32 Classic DevKitC](#esp32-classic-devkitc)
-- [Schémas de connexion détaillés](#schémas-de-connexion-détaillés)
-- [Module TB6612FNG](#module-tb6612fng-contrôleur-de-guirlande)
-- [Conseils pour débutants](#conseils-pour-débutants)
+## 🎯 Informations de Version
 
----
-
-## ESP32-S3 DevKitC-1
-
-### 📋 Tableau récapitulatif des pins
-
-| Composant | Signal | Pin GPIO | Description | Notes |
-|-----------|--------|----------|-------------|-------|
-| **BUTTON_BOOT** | Button | GPIO 0 | Bouton intégré sur la carte | Déjà présent, redémarrage appui long |
-| **BUTTON_1** | Button | GPIO 16 | Bouton externe | Changement animation |
-| **BUTTON_2** | Button | GPIO 17 | Bouton externe | Changement mode |
-| **NEOPIXEL** | Data | GPIO 48 | LED RGB adressable intégrée | Feedback visuel d'état |
-| **I2C_SDA (OLED SSD1306)** | SDA | GPIO 21 | Données I2C | Connexion vers la broche SDA de l'OLED |
-| **I2C_SCL (OLED SSD1306)** | SCL | GPIO 20 | Horloge I2C | Connexion vers la broche SCL de l'OLED |
-| **OLED SSD1306** | VCC | 3.3V | Alimentation | Broche 3V3 de l'ESP32 |
-| **OLED SSD1306** | GND | GND | Masse | Broche GND de l'ESP32 |
-| **TFT ST7789** | MOSI (SDA) | GPIO 11 | Données SPI | Broche SDA du ST7789 |
-| **TFT ST7789** | SCLK (SCL) | GPIO 12 | Horloge SPI | Broche SCL du ST7789 |
-| **TFT ST7789** | CS | GPIO 10 | Chip Select | Sélection du périphérique |
-| **TFT ST7789** | DC | GPIO 9 | Data/Command | Indicateur données/commande |
-| **TFT ST7789** | RST | GPIO 13 | Reset | Réinitialisation de l'écran |
-| **TFT ST7789** | BL | GPIO 7 | Backlight | Rétroéclairage (LED) |
-| **TFT ST7789** | VCC | 3.3V | Alimentation | Broche 3V3 de l'ESP32 |
-| **TFT ST7789** | GND | GND | Masse | Broche GND de l'ESP32 |
-| **TB6612_PWMA** | PWMA | GPIO 5 | PWM Sens A | Contrôle intensité lumineuse |
-| **TB6612_AIN1** | AIN1 | GPIO 6 | Direction bit 1 | Contrôle direction courant |
-| **TB6612_AIN2** | AIN2 | GPIO 4 | Direction bit 2 | Contrôle direction courant |
-| **TB6612_STBY** | STBY | GPIO 8 | Standby | Activation module (HIGH=actif) |
-| **TB6612FNG** | VCC | 3.3V | Alimentation logique | Broche 3V3 de l'ESP32 |
-| **TB6612FNG** | VM | 5-15V | Alimentation moteur | Alimentation externe pour guirlande |
-| **TB6612FNG** | GND | GND | Masse | Commun avec GND ESP32 |
-| **PIR_SENSOR** | OUT | GPIO 14 | Signal détection | HIGH = mouvement détecté |
-| **Capteur PIR** | VCC | 5V | Alimentation | Broche 5V de l'ESP32 (via USB) |
-| **Capteur PIR** | GND | GND | Masse | Broche GND de l'ESP32 |
-| **LDR_SENSOR** | Signal | GPIO 15 | Lecture ADC | Diviseur de tension avec R=10kΩ |
-| **LDR** | VCC | 3.3V | Alimentation | Via résistance 10kΩ |
-| **LDR** | GND | GND | Masse | Via LDR vers GND |
-
-### 🎄 Schéma de connexion TB6612FNG + Guirlande
-
-```
-ESP32-S3                TB6612FNG              Guirlande LED
-┌─────────┐            ┌──────────┐           ┌──────────┐
-│         │            │          │           │          │
-│ GPIO 5  ├───────────►│ PWMA     │           │          │
-│ GPIO 6  ├───────────►│ AIN1     │           │          │
-│ GPIO 4  ├───────────►│ AIN2     │           │          │
-│ GPIO 8  ├───────────►│ STBY     │           │          │
-│         │            │          │           │          │
-│   3V3   ├───────────►│ VCC      │           │          │
-│   GND   ├───────────►│ GND      ├──────────►│ GND (-)  │
-│         │            │          │           │          │
-│         │    ┌──────►│ VM       │           │          │
-│         │    │       │          │           │          │
-│         │    │       │ AO1      ├──────────►│ Fil 1    │
-│         │    │       │ AO2      ├──────────►│ Fil 2    │
-│         │    │       │          │           │          │
-└─────────┘    │       └──────────┘           └──────────┘
-               │
-        Alim Externe
-        (5V-15V)
-        ┌──────┐
-        │  +   ├──────┘
-        │  -   ├────────────────────────────►GND commun
-        └──────┘
-```
-
-**⚠️ IMPORTANT - Alimentation TB6612FNG** :
-- **VCC** (3.3V) : Logique de contrôle depuis ESP32
-- **VM** (5-15V) : Alimentation puissance pour la guirlande (depuis source externe)
-- **GND** : Masse commune entre ESP32, TB6612FNG et alimentation externe
-
-**💡 Principe de fonctionnement** :
-- Les LEDs sont montées en anti-parallèle (2 groupes dos-à-dos)
-- Changement de direction du courant = changement de groupe de LEDs allumées
-- PWM contrôle l'intensité lumineuse (0-255)
-
-### 🚶 Schéma de connexion Capteur PIR
-
-```
-ESP32-S3           PIR HC-SR501
-┌─────────┐        ┌──────────┐
-│         │        │          │
-│ GPIO 14 ├───────►│ OUT      │
-│    5V   ├───────►│ VCC      │
-│   GND   ├───────►│ GND      │
-│         │        │          │
-└─────────┘        └──────────┘
-```
-
-**Configuration PIR** :
-- Ajuster la sensibilité via potentiomètre du module
-- Ajuster le délai de temporisation (généralement 3s-5min)
-- Signal HIGH quand mouvement détecté
-
-### 💡 Schéma de connexion Photorésistance LDR
-
-```
-ESP32-S3           LDR + Résistance
-┌─────────┐        
-│         │        3.3V
-│         │          │
-│         │         ┌┴┐
-│         │         │ │ R = 10kΩ
-│         │         └┬┘
-│         │          │
-│ GPIO 15 ├──────────┼───┐
-│         │          │   │
-│         │         ┌┴┐  │
-│         │         │ │ LDR (Photorésistance)
-│         │         └┬┘  │
-│         │          │   │
-│   GND   ├──────────┴───┘
-│         │
-└─────────┘
-```
-
-**Principe** :
-- Diviseur de tension : résistance 10kΩ en série avec LDR
-- Plus de lumière → résistance LDR faible → tension élevée
-- Moins de lumière → résistance LDR élevée → tension faible
-- Lecture ADC 12 bits : 0-4095
-
-### 🔘 Schéma de connexion Boutons
-
-```
-ESP32-S3           Bouton 1              Bouton 2
-┌─────────┐        ┌──────┐              ┌──────┐
-│         │        │      │              │      │
-│ GPIO 16 ├────┬───┤  ○   ├───┐      ┌───┤  ○   ├───┐
-│         │    │   │      │   │      │   │      │   │
-│ GPIO 17 ├────┼───┘──────┘   │      │   └──────┴───┘
-│         │    │              │      │              │
-│   GND   ├────┴──────────────┴──────┴──────────────┘
-│         │
-└─────────┘
-```
-
-**Configuration** :
-- Boutons actifs bas (appui = GND)
-- Pull-up interne activé dans le code
-- Antibounce géré par bibliothèque OneButton
-
-### 🔌 Schéma de connexion OLED SSD1306 (I2C)
-
-```
-ESP32-S3           OLED SSD1306
-┌─────────┐        ┌──────────┐
-│         │        │          │
-│ GPIO 21 ├───────►│ SDA      │
-│ GPIO 20 ├───────►│ SCL      │
-│    3V3  ├───────►│ VCC      │
-│    GND  ├───────►│ GND      │
-│         │        │          │
-└─────────┘        └──────────┘
-```
-
-**Adresse I2C par défaut** : `0x3C` (parfois `0x3D`)
-
-### 🖥️ Schéma de connexion TFT ST7789 (SPI)
-
-```
-ESP32-S3           TFT ST7789
-┌─────────┐        ┌──────────┐
-│         │        │          │
-│ GPIO 11 ├───────►│ MOSI/SDA │
-│ GPIO 12 ├───────►│ SCLK/SCL │
-│ GPIO 10 ├───────►│ CS       │
-│ GPIO  9 ├───────►│ DC       │
-│ GPIO 13 ├───────►│ RST      │
-│ GPIO  7 ├───────►│ BL       │
-│    3V3  ├───────►│ VCC      │
-│    GND  ├───────►│ GND      │
-│         │        │          │
-└─────────┘        └──────────┘
-```
+- **Version** : 1.0.0
+- **Plateforme** : ESP32 IdeaSpark avec écran LCD ST7789 1.14" intégré
+- **Nom de Carte** : ESP32 IdeaSpark 1.14 LCD
+- **Affichage** : LCD TFT ST7789 câblé sur PCB (135×240 pixels)
 
 ---
 
-## ESP32 Classic DevKitC
+## 📋 ESP32 IdeaSpark LCD 1.14" - Mapping Complet des Pins
 
-### 📋 Tableau récapitulatif des pins
+### Tableau de Référence Rapide
 
 | Composant | Signal | Pin GPIO | Description | Notes |
 |-----------|--------|----------|-------------|-------|
-| **BUTTON_BOOT** | Button | GPIO 0 | Bouton intégré sur la carte | Déjà présent, redémarrage appui long |
-| **BUTTON_1** | Button | GPIO 4 | Bouton externe | Changement animation |
-| **BUTTON_2** | Button | GPIO 16 | Bouton externe | Changement mode |
-| **LED_BUILTIN** | LED | GPIO 2 | LED bleue intégrée | Heartbeat visuel |
-| **OLED SSD1306** | SDA | GPIO 21 | Données I2C | Connexion vers la broche SDA de l'OLED |
-| **OLED SSD1306** | SCL | GPIO 22 | Horloge I2C | Connexion vers la broche SCL de l'OLED |
-| **OLED SSD1306** | VCC | 3.3V | Alimentation | Broche 3V3 de l'ESP32 |
-| **OLED SSD1306** | GND | GND | Masse | Broche GND de l'ESP32 |
-| **TFT ILI9341** | MOSI | GPIO 23 | Données SPI | Broche SDA du TFT |
-| **TFT ILI9341** | SCLK | GPIO 18 | Horloge SPI | Broche SCL du TFT |
-| **TFT ILI9341** | CS | GPIO 19 | Chip Select | Sélection du périphérique |
-| **TFT ILI9341** | DC | GPIO 27 | Data/Command | Indicateur données/commande |
-| **TFT ILI9341** | RST | GPIO 26 | Reset | Réinitialisation de l'écran |
-| **TFT ILI9341** | BL | GPIO 13 | Backlight | Rétroéclairage (LED) |
-| **TFT ILI9341** | VCC | 3.3V | Alimentation | Broche 3V3 de l'ESP32 |
-| **TFT ILI9341** | GND | GND | Masse | Broche GND de l'ESP32 |
-| **TB6612_PWMA** | PWMA | GPIO 12 | PWM Sens A | Contrôle intensité lumineuse |
-| **TB6612_AIN1** | AIN1 | GPIO 32 | Direction bit 1 | Contrôle direction courant |
-| **TB6612_AIN2** | AIN2 | GPIO 33 | Direction bit 2 | Contrôle direction courant |
+| **LCD ST7789** | MOSI | GPIO 23 | Données SPI | Câblé sur PCB |
+| **LCD ST7789** | SCLK | GPIO 18 | Horloge SPI | Câblé sur PCB |
+| **LCD ST7789** | CS | GPIO 15 | Chip Select | Câblé sur PCB |
+| **LCD ST7789** | DC | GPIO 2 | Data/Command | Câblé sur PCB |
+| **LCD ST7789** | RST | GPIO 4 | Reset | Câblé sur PCB |
+| **LCD ST7789** | BLK | GPIO 32 | Rétroéclairage | **DOIT être HIGH pour voir l'image** |
+| **TB6612_PWMA** | PWMA | GPIO 12 | Contrôle PWM | Intensité lumineuse (0-255) |
+| **TB6612_AIN1** | AIN1 | GPIO 25 | Contrôle direction 1 | Contrôle sens courant |
+| **TB6612_AIN2** | AIN2 | GPIO 33 | Contrôle direction 2 | Contrôle sens courant |
 | **TB6612_STBY** | STBY | GPIO 14 | Standby | Activation module (HIGH=actif) |
-| **TB6612FNG** | VCC | 3.3V | Alimentation logique | Broche 3V3 de l'ESP32 |
-| **TB6612FNG** | VM | 5-15V | Alimentation moteur | Alimentation externe pour guirlande |
-| **TB6612FNG** | GND | GND | Masse | Commun avec GND ESP32 |
 | **PIR_SENSOR** | OUT | GPIO 35 | Signal détection | HIGH = mouvement détecté |
-| **Capteur PIR** | VCC | 5V | Alimentation | Broche 5V de l'ESP32 (via USB) |
-| **Capteur PIR** | GND | GND | Masse | Broche GND de l'ESP32 |
-| **LDR_SENSOR** | Signal | GPIO 34 | Lecture ADC | Diviseur de tension avec R=10kΩ |
-| **LDR** | VCC | 3.3V | Alimentation | Via résistance 10kΩ |
-| **LDR** | GND | GND | Masse | Via LDR vers GND |
-
-### 🎄 Schéma de connexion TB6612FNG + Guirlande (ESP32 Classic)
-
-```
-ESP32 Classic           TB6612FNG              Guirlande LED
-┌─────────┐            ┌──────────┐           ┌──────────┐
-│         │            │          │           │          │
-│ GPIO 12 ├───────────►│ PWMA     │           │          │
-│ GPIO 32 ├───────────►│ AIN1     │           │          │
-│ GPIO 33 ├───────────►│ AIN2     │           │          │
-│ GPIO 14 ├───────────►│ STBY     │           │          │
-│         │            │          │           │          │
-│   3V3   ├───────────►│ VCC      │           │          │
-│   GND   ├───────────►│ GND      ├──────────►│ GND (-)  │
-│         │            │          │           │          │
-│         │    ┌──────►│ VM       │           │          │
-│         │    │       │          │           │          │
-│         │    │       │ AO1      ├──────────►│ Fil 1    │
-│         │    │       │ AO2      ├──────────►│ Fil 2    │
-│         │    │       │          │           │          │
-└─────────┘    │       └──────────┘           └──────────┘
-               │
-        Alim Externe
-        (5V-15V)
-        ┌──────┐
-        │  +   ├──────┘
-        │  -   ├────────────────────────────►GND commun
-        └──────┘
-```
+| **BUTTON_1** | Bouton | GPIO 16 | Bouton externe | Changement animation |
+| **BUTTON_2** | Bouton | GPIO 17 | Bouton externe | Changement mode |
+| **BUTTON_BOOT** | Bouton | GPIO 0 | Bouton BOOT intégré | Appui long = redémarrage |
+| **I2C_SDA** | SDA | GPIO 21 | Données I2C | Disponible pour extension |
+| **I2C_SCL** | SCL | GPIO 22 | Horloge I2C | Disponible pour extension |
 
 ---
 
-## Module TB6612FNG - Contrôleur de Guirlande
+## 🖥️ Écran LCD ST7789 (Intégré)
 
-### 📚 Description du Module
+### Spécifications Affichage
+- **Résolution** : 135×240 pixels
+- **Profondeur Couleur** : RGB565 (16-bit, 65K couleurs)
+- **Interface** : SPI (pins matérielles)
+- **Orientation** : Paysage (rotation = 1)
+- **Fréquence Rafraîchissement** : 10 FPS pour animations
 
-Le **TB6612FNG** est un double pont H (dual H-bridge) qui permet de contrôler le sens et l'intensité du courant dans deux moteurs DC ou, dans notre cas, une guirlande LED bi-directionnelle.
-
-**Caractéristiques** :
-- Tension logique : 2.7V - 5.5V (compatible 3.3V ESP32)
-- Tension moteur (VM) : 4.5V - 13.5V (jusqu'à 15V max)
-- Courant continu par canal : 1.2A
-- Courant crête : 3.2A (10ms)
-- Fréquence PWM supportée : jusqu'à 100 kHz
-
-### 🔌 Pinout du TB6612FNG
+### Connexions Câblées
 
 ```
-        TB6612FNG
-    ┌──────────────┐
-VM ─┤1          24├─ VCC (3.3V)
-GND─┤2          23├─ AO1 (Sortie moteur A1)
-AO2─┤3          22├─ AO2 (Sortie moteur A2)
-BO1─┤4          21├─ BO1 (Sortie moteur B1)
-BO2─┤5          20├─ BO2 (Sortie moteur B2)
-    │              │
-PWMA─┤6         19├─ PWMB
-AIN1─┤7         18├─ BIN1
-AIN2─┤8         17├─ BIN2
-STBY─┤9         16├─ GND
-    │              │
-    └──────────────┘
+Carte ESP32 IdeaSpark
+┌─────────────────────────────────┐
+│                                 │
+│  ┌───────────────────────────┐  │
+│  │   LCD ST7789 1.14"        │  │
+│  │   (135×240 pixels)        │  │
+│  │   Câblé sur PCB           │  │
+│  └───────────────────────────┘  │
+│                                 │
+│  GPIO 23 ──► MOSI (Données SPI) │
+│  GPIO 18 ──► SCLK (Horloge SPI) │
+│  GPIO 15 ──► CS (Chip Select)   │
+│  GPIO  2 ──► DC (Data/Command)  │
+│  GPIO  4 ──► RST (Reset)        │
+│  GPIO 32 ──► BLK (Rétroéclairage) │ ⚠️ DOIT ÊTRE HIGH
+│                                 │
+└─────────────────────────────────┘
 ```
 
-**Pour notre projet**, nous utilisons uniquement le **Canal A** :
-- **PWMA** : Signal PWM pour contrôler l'intensité
-- **AIN1, AIN2** : Contrôle de la direction du courant
-- **STBY** : Activation/désactivation du module
-- **AO1, AO2** : Sorties vers les 2 fils de la guirlande
+**⚠️ CRITIQUE - Contrôle Rétroéclairage** :
+- **GPIO 32 (BLK)** contrôle le rétroéclairage de l'écran
+- **Doit être mis à HIGH** pour voir une image à l'écran
+- Configuré automatiquement dans la fonction `setupDisplay()`
 
-### ⚡ Table de Vérité
+---
 
-| AIN1 | AIN2 | PWMA | État du Canal A |
-|------|------|------|-----------------|
-| LOW  | LOW  | X    | Off (court-circuit à GND) |
-| HIGH | LOW  | PWM  | Sens A (Forward) - LEDs groupe A |
-| LOW  | HIGH | PWM  | Sens B (Backward) - LEDs groupe B |
-| HIGH | HIGH | X    | Brake (court-circuit interne) |
+## 🎄 Pilote Moteur TB6612FNG + Guirlande LED
 
-**STBY** doit être à **HIGH** pour activer le module.
+### Configuration des Pins
 
-### 🎨 Exemples de Contrôle
+| Signal | ESP32 GPIO | Pin TB6612FNG | Fonction |
+|--------|------------|---------------|----------|
+| PWMA | GPIO 12 | PWMA | Contrôle intensité PWM (0-255) |
+| AIN1 | GPIO 25 | AIN1 | Bit contrôle direction 1 |
+| AIN2 | GPIO 33 | AIN2 | Bit contrôle direction 2 |
+| STBY | GPIO 14 | STBY | Standby (HIGH = actif) |
+| VCC | 3.3V | VCC | Alimentation logique |
+| VM | 5-15V | VM | Alimentation moteur/guirlande |
+| GND | GND | GND | Masse commune |
 
-#### Allumer LEDs Sens A (intensité 50%)
+### Schéma de Connexion
+
+```
+ESP32 IdeaSpark         TB6612FNG              Guirlande LED
+┌─────────────┐         ┌──────────┐           ┌──────────┐
+│             │         │          │           │          │
+│  GPIO 12    ├────────►│ PWMA     │           │          │
+│  GPIO 25    ├────────►│ AIN1     │           │          │
+│  GPIO 33    ├────────►│ AIN2     │           │          │
+│  GPIO 14    ├────────►│ STBY     │           │          │
+│             │         │          │           │          │
+│    3.3V     ├────────►│ VCC      │           │          │
+│    GND      ├────────►│ GND      ├──────────►│ GND (-)  │
+│             │         │          │           │          │
+│             │   ┌────►│ VM       │           │          │
+│             │   │     │          │           │          │
+│             │   │     │ AO1      ├──────────►│ Fil 1    │
+│             │   │     │ AO2      ├──────────►│ Fil 2    │
+│             │   │     │          │           │          │
+└─────────────┘   │     └──────────┘           └──────────┘
+                  │
+        Alimentation Externe
+           (5V-15V DC)
+           ┌───────┐
+           │   +   ├──────┘
+           │   -   ├────────────────────────────►GND Commun
+           └───────┘
+```
+
+### Alimentation TB6612FNG
+
+**⚠️ IMPORTANT - Double Alimentation** :
+- **VCC (3.3V)** : Logique de contrôle depuis pin 3V3 de l'ESP32
+- **VM (5-15V)** : Alimentation moteur pour guirlande LED (source externe)
+- **GND** : **DOIT ÊTRE COMMUN** entre ESP32, TB6612FNG et alimentation externe
+
+### Table de Vérité TB6612FNG
+
+| AIN1 | AIN2 | STBY | Sortie | État Guirlande |
+|------|------|------|--------|----------------|
+| LOW | LOW | HIGH | OFF | LEDs éteintes (frein) |
+| HIGH | LOW | HIGH | Avant | LEDs Direction A allumées |
+| LOW | HIGH | HIGH | Arrière | LEDs Direction B allumées |
+| HIGH | HIGH | HIGH | Frein | Court-circuit frein |
+| X | X | LOW | Désactivé | Module désactivé |
+
+### Principe Fonctionnement Guirlande LED
+
+```
+Configuration LEDs Anti-Parallèle :
+
+Fil 1 ──┬──►|──►|──►|── (Direction A : ~25 LEDs)
+        │
+Fil 2 ──┼──◄|──◄|──◄|── (Direction B : ~25 LEDs)
+        │
+       GND
+```
+
+- **Avant (AIN1=HIGH, AIN2=LOW)** : LEDs Direction A s'allument
+- **Arrière (AIN1=LOW, AIN2=HIGH)** : LEDs Direction B s'allument
+- **PWM (PWMA 0-255)** : Contrôle luminosité des LEDs actives
+- **Fréquence** : 5000 Hz pour gradation douce
+
+---
+
+## 🚶 Capteur Mouvement PIR (HC-SR501)
+
+### Configuration des Pins
+
+| ESP32 GPIO | Pin PIR | Fonction |
+|------------|---------|----------|
+| GPIO 35 | OUT | Signal digital (HIGH = mouvement détecté) |
+| 5V | VCC | Alimentation |
+| GND | GND | Masse |
+
+### Schéma de Connexion
+
+```
+ESP32 IdeaSpark      PIR HC-SR501
+┌─────────────┐      ┌──────────┐
+│             │      │          │
+│  GPIO 35    ├─────►│ OUT      │ (Pin input-only)
+│     5V      ├─────►│ VCC      │
+│    GND      ├─────►│ GND      │
+│             │      │          │
+└─────────────┘      └──────────┘
+```
+
+**📌 Notes Sélection Pin** :
+- **GPIO 35** est une pin input-only (parfaite pour capteurs)
+- Ne peut pas être utilisée en sortie
+- Pas de résistances pull-up/pull-down internes
+
+### Réglages Capteur PIR
+- **Sensibilité** : Ajustable via potentiomètre (portée 3-7 mètres)
+- **Temps Délai** : Ajustable via potentiomètre (5s - 300s)
+- **Mode Déclenchement** : Répétable (H) ou Non-répétable (L) - réglage jumper
+
+---
+
+## 🔘 Boutons Utilisateur
+
+### Configuration des Pins
+
+| Bouton | ESP32 GPIO | Fonction | Déclenchement |
+|--------|------------|----------|---------------|
+| BUTTON_BOOT | GPIO 0 | Redémarrage système | Appui long (1s) |
+| BUTTON_1 | GPIO 16 | Changement animation | Appui court |
+| BUTTON_2 | GPIO 17 | Changement mode | Appui court |
+
+### Schéma de Connexion
+
+```
+       ESP32 IdeaSpark
+       ┌─────────────┐
+       │             │
+       │  GPIO 0     ├────┐  BUTTON_BOOT
+       │  (BOOT)     │    │  (intégré)
+       │             │    │
+       │  GPIO 16    ├────┤  BUTTON_1
+       │             │    │  (externe)
+       │             │    │
+       │  GPIO 17    ├────┤  BUTTON_2
+       │             │    │  (externe)
+       │             │    │
+       │    GND      ├────┴─── GND Commun
+       │             │
+       └─────────────┘
+
+Câblage Boutons Externes (BUTTON_1 et BUTTON_2) :
+
+    GPIO 16/17 ──────┤   ├───── GND
+                     │   │
+                   Bouton
+
+Note : Résistances pull-up internes activées dans le logiciel
+```
+
+### Configuration Boutons
+- **Mode Pull-up** : Résistances pull-up internes activées
+- **État Actif** : LOW (pressé = connexion GND)
+- **Anti-rebond** : Géré par bibliothèque OneButton
+
+---
+
+## 🔌 Bus I2C (Disponible pour Extension)
+
+### Configuration des Pins
+
+| ESP32 GPIO | Signal I2C | Fonction |
+|------------|------------|----------|
+| GPIO 21 | SDA | Données I2C |
+| GPIO 22 | SCL | Horloge I2C |
+
+**Disponible pour** :
+- Capteurs externes (BME280, BMP180, etc.)
+- Modules RTC (DS3231, DS1307)
+- Écrans OLED I2C (si nécessaire)
+- Autres périphériques I2C
+
+---
+
+## ⚡ Guide Alimentation
+
+### Options Alimentation ESP32 IdeaSpark
+
+1. **USB-C (Recommandé pour développement)**
+   - Tension : 5V
+   - Courant : 500mA typique
+   - Fournit : Rails 5V et 3.3V
+
+2. **Pin VIN**
+   - Tension : 5V-12V DC
+   - Courant : Jusqu'à 1A
+   - Régulé à 3.3V sur carte
+
+### Besoins Alimentation TB6612FNG
+
+- **VCC** : 2.7V - 5.5V (connecter au 3.3V ESP32)
+- **VM** : 4.5V - 13.5V (connecter à alimentation externe)
+- **Courant Sortie** : Jusqu'à 1.2A par canal (pic 3.2A)
+
+### Configuration Alimentation Recommandée
+
+```
+┌─────────────────────┐
+│  Batterie USB       │ 5V, 2A
+│  ou Adaptateur Mural│
+└──────┬──────────────┘
+       │
+       ├──────────► ESP32 IdeaSpark (USB-C)
+       │                 │
+       │                 ├──► Logique 3.3V
+       │                 └──► Écran LCD
+       │
+       └──────────► TB6612FNG (pin VM)
+                        │
+                        └──► Guirlande LED
+```
+
+**⚠️ Avertissements Alimentation** :
+- **Toujours** connecter GND entre ESP32 et TB6612FNG
+- **Jamais** dépasser 13.5V sur pin VM du TB6612FNG
+- **Assurer** que l'alimentation peut fournir assez de courant pour la guirlande
+
+---
+
+## 🛠️ Résolution Conflits de Pins
+
+### Changements Pins v1.0.0
+
+| Signal | Ancien GPIO (v0.x) | Nouveau GPIO (v1.0.0) | Raison |
+|--------|-------------------|----------------------|---------|
+| TB6612_AIN1 | GPIO 32 | **GPIO 25** | GPIO 32 nécessaire pour rétroéclairage LCD |
+| PIR_SENSOR | GPIO 14 | **GPIO 35** | GPIO 35 est input-only (idéale pour capteurs) |
+
+### Pins Partagées (Acceptable)
+
+- **GPIO 2 (LED_BUILTIN + LCD_DC)** : Usage partagé acceptable
+  - LED_BUILTIN clignote au démarrage
+  - LCD_DC utilisée pour signalisation données/commande écran
+  - Pas de conflit car LCD_DC est output uniquement
+
+---
+
+## 📊 Carte Complète Allocation GPIO
+
+| GPIO | Fonction | Direction | Notes |
+|------|----------|-----------|-------|
+| 0 | BUTTON_BOOT | Entrée | Bouton boot (intégré) |
+| 2 | LCD_DC | Sortie | Data/command écran + LED_BUILTIN |
+| 4 | LCD_RST | Sortie | Reset écran |
+| 12 | TB6612_PWMA | Sortie | Contrôle PWM guirlande |
+| 14 | TB6612_STBY | Sortie | Standby TB6612 |
+| 15 | LCD_CS | Sortie | Chip select écran |
+| 16 | BUTTON_1 | Entrée | Bouton utilisateur 1 |
+| 17 | BUTTON_2 | Entrée | Bouton utilisateur 2 |
+| 18 | LCD_SCLK | Sortie | Horloge SPI écran |
+| 21 | I2C_SDA | E/S | Données I2C (extension) |
+| 22 | I2C_SCL | Sortie | Horloge I2C (extension) |
+| 23 | LCD_MOSI | Sortie | Données SPI écran |
+| 25 | TB6612_AIN1 | Sortie | Contrôle direction 1 |
+| 32 | LCD_BLK | Sortie | Rétroéclairage écran (DOIT être HIGH) |
+| 33 | TB6612_AIN2 | Sortie | Contrôle direction 2 |
+| 35 | PIR_SENSOR | Entrée | Détection mouvement (input-only) |
+
+**Total GPIOs Utilisées** : 16 / 34 disponibles
+
+---
+
+## 🧰 Conseils Débutants
+
+### 1. Commencer par Test Écran
 ```cpp
-digitalWrite(TB6612_AIN1, HIGH);
-digitalWrite(TB6612_AIN2, LOW);
-analogWrite(TB6612_PWMA, 128);  // 50% de 255
+void setup() {
+    pinMode(LCD_BLK, OUTPUT);
+    digitalWrite(LCD_BLK, HIGH);  // Allumer le rétroéclairage !
+
+    display.init(135, 240);
+    display.setRotation(1);
+    display.fillScreen(ST77XX_WHITE);
+}
 ```
 
-#### Allumer LEDs Sens B (intensité 100%)
+### 2. Tester TB6612FNG Séparément
+- Connecter les LEDs d'abord
+- Tester directions avant/arrière
+- Vérifier contrôle luminosité PWM
+- Vérifier alimentation externe
+
+### 3. Vérifier Capteur PIR
+- Ajuster potentiomètres sensibilité et délai
+- Tester dans Moniteur Série
+- Assurer alimentation 5V
+
+### 4. Test Boutons
 ```cpp
-digitalWrite(TB6612_AIN1, LOW);
-digitalWrite(TB6612_AIN2, HIGH);
-analogWrite(TB6612_PWMA, 255);  // 100%
+void loop() {
+    if (digitalRead(BUTTON_1) == LOW) {
+        Serial.println("Bouton 1 pressé !");
+    }
+}
 ```
 
-#### Éteindre toutes les LEDs
-```cpp
-digitalWrite(AIN1, LOW);
-digitalWrite(AIN2, LOW);
-// ou
-digitalWrite(STBY, LOW);  // Met tout le module en veille
-```
+### 5. Erreurs Courantes à Éviter
+- ❌ Oublier de mettre LCD_BLK à HIGH (écran reste noir)
+- ❌ GND manquant entre ESP32 et TB6612FNG
+- ❌ Utiliser GPIO 35 en sortie (c'est input-only !)
+- ❌ Dépasser 13.5V sur pin VM du TB6612FNG
 
 ---
 
-## Conseils pour Débutants
+## 📚 Ressources Additionnelles
 
-### ⚠️ Sécurité Électrique
-
-1. **Toujours débrancher** l'alimentation avant de modifier le câblage
-2. **Vérifier la polarité** : VCC = positif, GND = négatif
-3. **Ne pas inverser** l'alimentation (risque de destruction du composant)
-4. **Tension correcte** : ESP32 = 3.3V logique (pas 5V sur les GPIO!)
-5. **Courant de la guirlande** : S'assurer que le TB6612FNG peut fournir le courant nécessaire
-6. **Alimentation externe** : Utiliser une alimentation adaptée pour VM (pas l'USB de l'ESP32)
-
-### 🔧 Vérification du Câblage
-
-**Checklist avant de mettre sous tension** :
-- [ ] Toutes les masses (GND) sont reliées ensemble
-- [ ] Pas de court-circuit entre VCC et GND
-- [ ] Les pins GPIO correspondent au code (`board_config.h`)
-- [ ] L'alimentation externe est de la bonne tension (5-15V pour VM)
-- [ ] Les câbles sont bien insérés (pas de faux contacts)
-- [ ] Les boutons sont correctement orientés
-
-### 🧪 Tests Progressifs
-
-1. **Test ESP32 seul** : Téléverser le code, vérifier les logs série
-2. **Test WiFi** : Vérifier la connexion et l'obtention d'une IP
-3. **Test écrans** : Vérifier affichage OLED/TFT
-4. **Test boutons** : Appuyer sur Btn1/Btn2, observer les logs
-5. **Test capteurs** : Vérifier lectures PIR et LDR dans le moniteur série
-6. **Test TB6612FNG** : Brancher module (sans guirlande), tester directions
-7. **Test guirlande** : Connecter la guirlande et tester animations
-
-### 🔍 Dépannage Commun
-
-#### ESP32 ne démarre pas
-- Vérifier alimentation USB (câble défectueux?)
-- Essayer un autre port USB
-- Maintenir BOOT enfoncé pendant upload
-
-#### OLED ne s'allume pas
-- Vérifier adresse I2C (0x3C ou 0x3D)
-- Tester avec un scanner I2C
-- Vérifier connexions SDA/SCL (ne pas inverser)
-
-#### TFT affiche des couleurs bizarres
-- Vérifier toutes les connexions SPI
-- S'assurer que BL (backlight) est alimenté
-- Tester avec un sketch exemple de la bibliothèque
-
-#### Guirlande ne s'allume pas
-- Vérifier que STBY est à HIGH
-- Vérifier alimentation VM (5-15V)
-- Tester avec un multimètre les sorties AO1/AO2
-- S'assurer que le code envoie bien les signaux
-
-#### PIR détecte en continu
-- Ajuster le potentiomètre de sensibilité
-- Éloigner des sources de chaleur (radiateur, soleil direct)
-- Augmenter le délai de temporisation sur le module
-
-#### LDR ne varie pas
-- Vérifier le diviseur de tension (résistance 10kΩ)
-- Tester la résistance de la LDR avec multimètre
-- S'assurer que GPIO 15/34 est bien en mode ADC
-
-### 📐 Calculs Utiles
-
-**Calcul du courant de la guirlande** :
-- Nombre de LEDs : ~50 (25 par sens)
-- Courant par LED : ~20mA (typique)
-- Courant total max : 25 × 20mA = 500mA = 0.5A
-- ✅ TB6612FNG supporte 1.2A continu → OK
-
-**Diviseur de tension LDR** :
-```
-Vadc = 3.3V × (R / (R + Rldr))
-```
-- R = 10kΩ (résistance fixe)
-- Rldr = variable (100Ω en pleine lumière, 10MΩ dans le noir)
-- Plus de lumière → Rldr faible → Vadc élevé
+- **Pinout ESP32** : [Documentation Officielle Espressif](https://docs.espressif.com/)
+- **Datasheet ST7789** : Documentation bibliothèque Adafruit ST7789
+- **Datasheet TB6612FNG** : [Toshiba Officiel](https://www.sparkfun.com/datasheets/Robotics/TB6612FNG.pdf)
+- **PIR HC-SR501** : Module capteur mouvement standard
 
 ---
 
-## 📚 Ressources Complémentaires
+## 🔍 Dépannage
 
-### Datasheets
-- **TB6612FNG** : [Toshiba TB6612FNG Datasheet](https://www.sparkfun.com/datasheets/Robotics/TB6612FNG.pdf)
-- **HC-SR501** : [PIR Motion Sensor Datasheet](https://www.epitran.it/ebayDrive/datasheet/44.pdf)
-- **ESP32-S3** : [Espressif ESP32-S3 Datasheet](https://www.espressif.com/sites/default/files/documentation/esp32-s3_datasheet_en.pdf)
+### Écran LCD Ne Fonctionne Pas
+1. Vérifier que LCD_BLK est mis à HIGH
+2. Vérifier connexions SPI (MOSI, SCLK, CS)
+3. Tester avec commande simple fill screen
+4. Vérifier alimentation 3.3V
 
-### Tutoriels
-- [Guide TB6612FNG sur SparkFun](https://learn.sparkfun.com/tutorials/tb6612fng-hookup-guide)
-- [Utilisation capteur PIR](https://randomnerdtutorials.com/esp32-pir-motion-sensor/)
-- [Lecture photorésistance LDR](https://randomnerdtutorials.com/esp32-adc-analog-read-arduino-ide/)
+### Guirlande Ne S'Allume Pas
+1. Vérifier que TB6612FNG STBY est à HIGH
+2. Vérifier alimentation externe VM (5-15V)
+3. Vérifier connexion GND commune
+4. Tester niveaux logiques AIN1/AIN2
+5. Mesurer signal PWM PWMA
 
-### Outils de Test
-- **Scanner I2C** : Pour trouver l'adresse de l'OLED
-- **Multimètre** : Pour vérifier tensions et continuité
-- **Oscilloscope** : Pour observer les signaux PWM (optionnel)
+### Capteur PIR Toujours Déclenché
+1. Ajuster potentiomètre sensibilité
+2. Éloigner capteur des sources de chaleur
+3. Vérifier courants d'air/vibrations
+4. Vérifier tension alimentation 5V
+
+### Boutons Ne Répondent Pas
+1. Vérifier câblage vers GND
+2. Vérifier pull-up interne activée dans code
+3. Tester avec multimètre (devrait lire 3.3V quand non pressé)
 
 ---
 
-**Note** : Ce guide accompagne le projet LED-Garland-Anim v0.2.0. Pour toute question ou problème, consultez le README.md et le code source commenté.
-
-**Version du document** : v0.2.0 - 2025-12-09
+**LED-Garland-Anim v1.0.0** - Plateforme ESP32 IdeaSpark LCD 1.14" 🎄✨
