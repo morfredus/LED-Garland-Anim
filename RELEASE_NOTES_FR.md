@@ -1,10 +1,23 @@
-# Notes de Version - Version 1.0.0
+## [1.1.0] - 2024-06-XX
+
+### Ajouté
+- Sauvegarde et restauration automatique de la configuration utilisateur (mode, animation, intervalles) via NVS. Les réglages sont conservés après redémarrage ou coupure d’alimentation.
+# Notes de Version - Version 1.1.0
 
 **Date de Sortie :** 30 Décembre 2025
 
 ## 🎉 Version Majeure : Unification Plateforme ESP32 IdeaSpark
 
 La version 1.0.0 représente une modernisation complète de la plateforme, se concentrant exclusivement sur la carte ESP32 IdeaSpark avec écran LCD ST7789 1.14" intégré.
+
+---
+
+## ♻️ Nouveautés 1.1.0
+
+- Suppression de toutes les références à la LDR/photorésistance (projet désormais PIR uniquement)
+- Documentation (FR + EN) entièrement réécrite et mise à jour : matériel, câblage, configuration, utilisation
+- Numéros de version mis à jour partout (SEMVER)
+- Cohérence totale entre code, documentation et mapping matériel
 
 ---
 

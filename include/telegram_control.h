@@ -1,7 +1,7 @@
 /**
  * @file telegram_control.h
  * @brief Interface du module Telegram (fonctionnalité à venir)
- * @version 1.0.0
+ * @version 1.1.0
  * @date 2025-12-30
  */
 

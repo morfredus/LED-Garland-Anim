@@ -1,9 +1,23 @@
+### [1.1.0] - 2024-06-XX
+#### Ajouté
+- Sauvegarde et restauration automatique de la configuration utilisateur (mode, animation, intervalles) via NVS. Les réglages sont conservés après redémarrage ou coupure d’alimentation.
 # Journal des modifications
 
 Toutes les modifications notables de ce projet seront documentées dans ce fichier.
 
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
+
+
+## [1.1.0] - 2025-12-30
+
+### ♻️ Nettoyage & Documentation
+- Suppression de toutes les références à la LDR/photorésistance dans le code et la documentation (projet désormais PIR uniquement)
+- Mise à jour complète de toute la documentation utilisateur et technique (FR + EN) : matériel, câblage, utilisation, cohérence
+- Numéros de version mis à jour partout (SEMVER)
+- Cohérence totale entre code, docs et mapping matériel
+
+---
 
 ## [1.0.0] - 2025-12-30
 

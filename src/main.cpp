@@ -1,7 +1,7 @@
 /**
  * @file main.cpp
  * @brief Point d'entrée principal du projet LED-Garland-Anim
- * @version 1.0.0
+ * @version 1.1.0
  * @date 2025-12-30
  */
 
@@ -148,8 +148,13 @@ void setup() {
     setupDisplay();
     displayBootScreen(PROJECT_NAME, PROJECT_VERSION, -1);
 
+
     // Initialisation de la guirlande
     setupGarland();
+
+    // Chargement de la configuration sauvegardée (mode, animation, durées) depuis NVS
+    // Si aucune sauvegarde, valeurs par défaut utilisées
+    loadGarlandSettings();
 
     // Connexion WiFi (affiche la progression sur l'écran)
     setupWifi();

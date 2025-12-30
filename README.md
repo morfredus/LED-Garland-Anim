@@ -1,6 +1,16 @@
+## 💾 Persistent Configuration (NVS)
+
+The project automatically saves and restores the following settings in non-volatile storage (NVS):
+- Current mode (permanent / motion trigger)
+- Current animation
+- Auto mode interval
+- Motion trigger duration
+
+On startup, if a configuration exists, it is loaded automatically. If not, default values are used. Any change via the web interface or buttons is saved for the next reboot.
+
 # LED-Garland-Anim
 
-**Version 1.0.0** - LED Garland Animation Controller for ESP32 IdeaSpark (ST7789)
+**Version 1.1.0** - LED Garland Animation Controller for ESP32 IdeaSpark (ST7789)
 
 Control a 2-wire garland with anti-parallel LEDs via TB6612FNG motor driver module. Features 11 spectacular animations, Auto mode, 2 smart operating modes, ST7789 LCD display, web interface, and physical button controls.
 
@@ -37,7 +47,7 @@ Control a 2-wire garland with anti-parallel LEDs via TB6612FNG motor driver modu
 ### 🌐 Web Interface
 - **Complete Dashboard**: System info, memory, WiFi stats
 - **Garland Control**: Animation and mode selection (2 modes, 11 animations incl. Auto)
-- **Sensor Visualization**: PIR motion status, light level
+- **Sensor Visualization**: PIR motion status
 - **Remote Actions**: Refresh and restart
 
 ### 🔘 Physical Controls
@@ -55,7 +65,7 @@ Control a 2-wire garland with anti-parallel LEDs via TB6612FNG motor driver modu
  Animated visualization bar (11 distinct patterns)
  Adaptive layout for 135x240 screens
  10 FPS refresh rate for smooth animations
-- **LDR Photoresistor**: Day/night detection (GPIO: LDR_SENSOR)
+
 
 ---
 - **Git** (for version control)
@@ -68,7 +78,7 @@ Control a 2-wire garland with anti-parallel LEDs via TB6612FNG motor driver modu
 ### 1. Clone the Project
 ```bash
 git clone <your-repo>
-cd Anim-Guirlande
+cd LED-Garland-Anim
 ```
 
 ### 2. Configure `include/secrets.h`
@@ -238,7 +248,6 @@ In `include/garland_control.h`:
 
 ### Sensors
 - **PIR**: Digital signal (HIGH = motion detected)
-- **LDR**: 12-bit analog (0-4095)
 
 ### Memory (ESP32-S3 N16R8)
 - Flash: 16 MB (huge_app partition)
@@ -302,7 +311,7 @@ static GarlandMode currentMode = MODE_PERMANENT;         // Or MODE_MOTION_TRIGG
 
 ## 📝 Versions
 
-**Current Version: v1.0.0** (2025-12-30)
+**Current Version: v1.1.0** (2025-12-30)
 
 See [CHANGELOG.md](./CHANGELOG.md) for complete history.
 

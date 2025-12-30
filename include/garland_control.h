@@ -1,7 +1,7 @@
 /**
  * @file garland_control.h
  * @brief Contrôle des animations de guirlande LED bi-directionnelle
- * @version 1.0.0
+ * @version 1.1.0
  * @date 2025-12-13
  * 
  * Module de gestion des animations pour guirlande LED à 2 fils avec LEDs en anti-parallèle.
@@ -87,7 +87,7 @@ void saveGarlandSettings();
  * @brief Initialise le module TB6612FNG et les capteurs
  * 
  * Configure les pins GPIO et le PWM pour contrôler la guirlande.
- * Initialise également les capteurs PIR et LDR.
+ * Initialise le capteur PIR.
  */
 void setupGarland();
 
@@ -171,11 +171,7 @@ void garlandOff();
 bool isMotionDetected();
 
 /**
-/**
- * @brief Récupère la valeur brute du capteur de luminosité
- * @return Valeur ADC du LDR (0-4095 pour ESP32)
- */
-int getLightLevel();
+
 
 /**
  * @brief Indique si une animation est actuellement active (non OFF et guirlande activée)

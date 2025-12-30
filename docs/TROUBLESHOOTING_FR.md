@@ -1,4 +1,18 @@
-# Dépannage - LED-Garland-Anim v1.0.0
+## Problème de sauvegarde/restauration de configuration
+
+**Symptômes :**
+- Les réglages (mode, animation, intervalles) sont perdus après redémarrage ou coupure d’alimentation.
+
+**Causes possibles :**
+- Partition NVS corrompue ou pleine
+- Mémoire flash ESP32 défectueuse
+- Bug firmware (voir logs pour erreurs NVS)
+
+**Solutions :**
+- Effacer la flash et reprogrammer le firmware
+- Vérifier les messages d’erreur sur la console série
+- Si le problème persiste, ouvrir un ticket avec les logs
+# Dépannage - LED-Garland-Anim v1.1.0
 
 Guide rapide pour diagnostiquer les problèmes sur ESP32 IdeaSpark.
 
@@ -39,4 +53,4 @@ Guide rapide pour diagnostiquer les problèmes sur ESP32 IdeaSpark.
 
 ---
 
-**Version du document : v1.0.0 (2025-12-30)**
+**Version du document : v1.1.0 (2025-12-30)**

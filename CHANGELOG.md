@@ -1,9 +1,23 @@
+### [1.1.0] - 2024-06-XX
+#### Added
+- Automatic save/restore of user configuration (mode, animation, intervals) using NVS. Settings persist across reboots and power cycles.
 # Changelog
 
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
+
+
+## [1.1.0] - 2025-12-30
+
+### ♻️ Clean & Documentation
+- Removed all LDR/photoresistor references from code and documentation (project now PIR-only)
+- Updated all user and technical documentation (EN + FR) for full hardware, wiring, and usage clarity
+- Version numbers updated everywhere (SEMVER)
+- Full consistency between code, docs, and hardware mapping
+
+---
 
 ## [1.0.0] - 2025-12-30
 

@@ -1,4 +1,13 @@
-# 📚 Architecture - LED-Garland-Anim v1.0.0
+### Persistance de la configuration (NVS)
+
+La configuration (mode, animation, intervalles) est stockée dans la NVS de l’ESP32 via les fonctions `loadGarlandSettings()` et `saveGarlandSettings()` (voir `garland_control.cpp`).
+
+- Au démarrage, `loadGarlandSettings()` est appelée après l’initialisation matérielle pour restaurer l’état précédent.
+- Toute modification via l’interface ou les boutons déclenche `saveGarlandSettings()`.
+- Si la NVS est vide ou corrompue, les valeurs par défaut sont utilisées puis sauvegardées.
+
+Ceci garantit la restauration automatique des réglages utilisateur après redémarrage ou coupure d’alimentation.
+# 📚 Architecture - LED-Garland-Anim v1.1.0
 
 ## 🎯 Vue d'ensemble
 
@@ -69,5 +78,5 @@ Voir [PIN_MAPPING_FR.md](PIN_MAPPING_FR.md) pour le détail. Seule la carte ESP3
 
 ## Versionnement
 
-- Ce document : v1.0.0 (2025-12-30)
+- Ce document : v1.1.0 (2025-12-30)
 - Voir CHANGELOG_FR.md pour le détail

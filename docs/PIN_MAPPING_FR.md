@@ -1,4 +1,4 @@
-# Guide de Connexion des Pins - LED-Garland-Anim v1.0.0
+# Guide de Connexion des Pins - LED-Garland-Anim v1.1.0
 
 > 📌 **Guide débutant** : Ce document explique comment connecter physiquement les composants à votre carte ESP32 IdeaSpark pour le projet LED-Garland-Anim.
 
@@ -178,7 +178,7 @@ digitalWrite(STBY, LOW);  // Met tout le module en veille
 2. **Test WiFi** : Vérifier la connexion et l'obtention d'une IP
 3. **Test écrans** : Vérifier affichage OLED/TFT
 4. **Test boutons** : Appuyer sur Btn1/Btn2, observer les logs
-5. **Test capteurs** : Vérifier lectures PIR et LDR dans le moniteur série
+5. **Test capteur PIR** : Vérifier lecture PIR dans le moniteur série
 6. **Test TB6612FNG** : Brancher module (sans guirlande), tester directions
 7. **Test guirlande** : Connecter la guirlande et tester animations
 
@@ -210,10 +210,7 @@ digitalWrite(STBY, LOW);  // Met tout le module en veille
 - Éloigner des sources de chaleur (radiateur, soleil direct)
 - Augmenter le délai de temporisation sur le module
 
-#### LDR ne varie pas
-- Vérifier le diviseur de tension (résistance 10kΩ)
-- Tester la résistance de la LDR avec multimètre
-- S'assurer que GPIO 15/34 est bien en mode ADC
+
 
 ### 📐 Calculs Utiles
 
@@ -223,13 +220,7 @@ digitalWrite(STBY, LOW);  // Met tout le module en veille
 - Courant total max : 25 × 20mA = 500mA = 0.5A
 - ✅ TB6612FNG supporte 1.2A continu → OK
 
-**Diviseur de tension LDR** :
-```
-Vadc = 3.3V × (R / (R + Rldr))
-```
-- R = 10kΩ (résistance fixe)
-- Rldr = variable (100Ω en pleine lumière, 10MΩ dans le noir)
-- Plus de lumière → Rldr faible → Vadc élevé
+
 
 ---
 
@@ -247,7 +238,7 @@ Vous pouvez utiliser n'importe quelle carte ESP32 avec un écran ST7789 compatib
 ### Tutoriels
 - [Guide TB6612FNG sur SparkFun](https://learn.sparkfun.com/tutorials/tb6612fng-hookup-guide)
 - [Utilisation capteur PIR](https://randomnerdtutorials.com/esp32-pir-motion-sensor/)
-- [Lecture photorésistance LDR](https://randomnerdtutorials.com/esp32-adc-analog-read-arduino-ide/)
+
 
 ### Outils de Test
 - **Scanner I2C** : Pour trouver l'adresse de l'OLED
