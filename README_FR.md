@@ -1,3 +1,26 @@
+## 🔧 Réglage du capteur PIR
+
+Le capteur PIR (HC-SR501) permet de détecter les mouvements pour déclencher la guirlande.
+
+### Réglages physiques sur le module PIR :
+- **Sensibilité** :
+  - Potentiomètre marqué "Sx" ou "Sens" sur le module.
+  - Tourner dans le sens horaire pour augmenter la portée (jusqu’à ~6m), antihoraire pour réduire.
+  - Adapter selon la taille de la pièce ou la distance souhaitée.
+- **Temporisation** :
+  - Potentiomètre marqué "Tx" ou "Time".
+  - Permet de régler la durée pendant laquelle le signal reste actif après détection (de quelques secondes à plusieurs minutes).
+  - Pour ce projet, la durée logicielle est gérée par le firmware, mais le réglage physique peut influencer le comportement.
+- **Cavalier (Jumper)** :
+  - Permet de choisir le mode de déclenchement :
+    - **H** (répétition) : le signal reste actif tant qu’un mouvement est détecté.
+    - **L** (non-répétitif) : le signal s’active une seule fois puis attend la fin de la temporisation avant de se réarmer.
+  - Pour une détection continue, placer le cavalier sur "H".
+
+### Conseils d’installation :
+- Éviter les sources de chaleur ou de lumière directe (soleil, radiateur).
+- Placer le capteur à hauteur d’homme pour une détection optimale.
+- Tester la sensibilité et la temporisation selon l’environnement pour éviter les déclenchements intempestifs.
 ## 💾 Sauvegarde & Restauration Automatique (NVS)
 
 Le projet sauvegarde et restaure automatiquement les paramètres suivants dans la mémoire non-volatile (NVS) :
