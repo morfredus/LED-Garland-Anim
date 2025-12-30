@@ -99,73 +99,61 @@ void displayBootScreen(const char* projectName, const char* projectVersion, int 
 void displayMainScreen(const char* ssid, IPAddress ip, const char* modeName, const char* animationName) {
     display.fillScreen(COLOR_BLACK);
 
-    // --- EN-TÊTE CENTRÉ : Nom + Version ---
-    display.setTextSize(1);
-    display.setTextColor(COLOR_CYAN);
-
-    String header = String(PROJECT_NAME) + " v" + String(PROJECT_VERSION);
     int16_t x1, y1;
     uint16_t w, h;
-    display.getTextBounds(header.c_str(), 0, 0, &x1, &y1, &w, &h);
+
+    // --- NOM DE L'APPLICATION (ligne 1, centré) ---
+    display.setTextSize(1);
+    display.setTextColor(COLOR_CYAN);
+    display.getTextBounds(PROJECT_NAME, 0, 0, &x1, &y1, &w, &h);
     int centerX = (ST7789_WIDTH - w) / 2;
     display.setCursor(centerX, 2);
-    display.println(header);
+    display.println(PROJECT_NAME);
+
+    // --- VERSION (ligne 2, centrée) ---
+    String versionStr = "v" + String(PROJECT_VERSION);
+    display.setTextColor(COLOR_WHITE);
+    display.getTextBounds(versionStr.c_str(), 0, 0, &x1, &y1, &w, &h);
+    centerX = (ST7789_WIDTH - w) / 2;
+    display.setCursor(centerX, 12);
+    display.println(versionStr);
 
     // --- LIGNE DE SÉPARATION ---
-    display.drawLine(0, 12, ST7789_WIDTH, 12, COLOR_CYAN);
+    display.drawLine(0, 22, ST7789_WIDTH, 22, COLOR_CYAN);
 
-    // --- SSID + IP (plus compact) ---
-    display.setTextSize(1);
-    display.setTextColor(COLOR_YELLOW);
-    display.setCursor(3, 16);
-    display.print("WiFi:");
-    display.setTextColor(COLOR_WHITE);
-    display.setCursor(32, 16);
-    display.println(ssid);
-
-    display.setTextColor(COLOR_YELLOW);
-    display.setCursor(3, 26);
-    display.print("IP:");
-    display.setTextColor(COLOR_WHITE);
-    display.setCursor(20, 26);
-    display.println(ip);
-
-    // --- LIGNE DE SÉPARATION ---
-    display.drawLine(0, 36, ST7789_WIDTH, 36, COLOR_CYAN);
-
-    // --- MODE + ANIMATION (plus compact) ---
+    // --- MODE + ANIMATION (très compact) ---
     display.setTextSize(1);
     display.setTextColor(COLOR_MAGENTA);
-    display.setCursor(3, 40);
+    display.setCursor(3, 26);
     display.print("Mode:");
     display.setTextColor(COLOR_WHITE);
-    display.setCursor(35, 40);
+    display.setCursor(35, 26);
     display.println(modeName);
 
     display.setTextColor(COLOR_ORANGE);
-    display.setCursor(3, 50);
+    display.setCursor(3, 36);
     display.print("Anim:");
     display.setTextColor(COLOR_WHITE);
-    display.setCursor(35, 50);
+    display.setCursor(35, 36);
     display.println(animationName);
 
     // --- LIGNE DE SÉPARATION ---
-    display.drawLine(0, 60, ST7789_WIDTH, 60, COLOR_CYAN);
+    display.drawLine(0, 46, ST7789_WIDTH, 46, COLOR_CYAN);
 
-    // --- ZONE GRAPHIQUE D'ANIMATION (beaucoup plus grande) ---
-    // Rectangle de la zone d'animation : de Y=63 à Y=132 (hauteur=69 pixels)
-    display.drawRect(2, 63, ST7789_WIDTH - 4, ST7789_HEIGHT - 66, COLOR_WHITE);
+    // --- ZONE GRAPHIQUE D'ANIMATION (maximale) ---
+    // Rectangle de la zone d'animation : de Y=49 à Y=132 (hauteur=83 pixels)
+    display.drawRect(2, 49, ST7789_WIDTH - 4, ST7789_HEIGHT - 52, COLOR_WHITE);
 
     // Affichage visuel de l'animation
     updateAnimationVisual(animationName);
 }
 
 void updateAnimationVisual(const char* animationName) {
-    // Zone d'animation (intérieur du rectangle) : X=3, Y=64, Width=234, Height=67
+    // Zone d'animation (intérieur du rectangle) : X=3, Y=50, Width=234, Height=81
     int animX = 3;
-    int animY = 64;
+    int animY = 50;
     int animWidth = ST7789_WIDTH - 6;  // 240 - 6 = 234
-    int animHeight = ST7789_HEIGHT - 68;  // 135 - 68 = 67
+    int animHeight = ST7789_HEIGHT - 54;  // 135 - 54 = 81 (zone beaucoup plus grande !)
 
     // Effacer la zone d'animation (garder le rectangle)
     display.fillRect(animX + 1, animY + 1, animWidth - 2, animHeight - 2, COLOR_BLACK);
