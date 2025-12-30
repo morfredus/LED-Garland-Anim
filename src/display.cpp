@@ -118,10 +118,10 @@ void displayMainScreen(const char* ssid, IPAddress ip, const char* modeName, con
     display.setCursor(centerX, 12);
     display.println(versionStr);
 
-    // --- LIGNE DE SÉPARATION ---
+    // --- LIGNE DE SÉPARATION 1 ---
     display.drawLine(0, 22, ST7789_WIDTH, 22, COLOR_CYAN);
 
-    // --- MODE + ANIMATION (très compact) ---
+    // --- MODE + ANIMATION (compact) ---
     display.setTextSize(1);
     display.setTextColor(COLOR_MAGENTA);
     display.setCursor(3, 26);
@@ -137,23 +137,42 @@ void displayMainScreen(const char* ssid, IPAddress ip, const char* modeName, con
     display.setCursor(35, 36);
     display.println(animationName);
 
-    // --- LIGNE DE SÉPARATION ---
+    // --- LIGNE DE SÉPARATION 2 ---
     display.drawLine(0, 46, ST7789_WIDTH, 46, COLOR_CYAN);
 
-    // --- ZONE GRAPHIQUE D'ANIMATION (maximale) ---
-    // Rectangle de la zone d'animation : de Y=49 à Y=132 (hauteur=83 pixels)
-    display.drawRect(2, 49, ST7789_WIDTH - 4, ST7789_HEIGHT - 52, COLOR_WHITE);
+    // --- RÉSEAU WiFi : SSID + IP ---
+    display.setTextSize(1);
+    display.setTextColor(COLOR_YELLOW);
+    display.setCursor(3, 50);
+    display.print("SSID:");
+    display.setTextColor(COLOR_WHITE);
+    display.setCursor(35, 50);
+    display.println(ssid);
+
+    display.setTextColor(COLOR_GREEN);
+    display.setCursor(3, 60);
+    display.print("IP:");
+    display.setTextColor(COLOR_WHITE);
+    display.setCursor(35, 60);
+    display.println(ip.toString().c_str());
+
+    // --- LIGNE DE SÉPARATION 3 ---
+    display.drawLine(0, 70, ST7789_WIDTH, 70, COLOR_CYAN);
+
+    // --- ZONE GRAPHIQUE D'ANIMATION (réduite) ---
+    // Rectangle de la zone d'animation : de Y=73 à Y=132 (hauteur=59 pixels)
+    display.drawRect(2, 73, ST7789_WIDTH - 4, ST7789_HEIGHT - 76, COLOR_WHITE);
 
     // Affichage visuel de l'animation
     updateAnimationVisual(animationName);
 }
 
 void updateAnimationVisual(const char* animationName) {
-    // Zone d'animation (intérieur du rectangle) : X=3, Y=50, Width=234, Height=81
+    // Zone d'animation (intérieur du rectangle) : X=3, Y=74, Width=234, Height=59
     int animX = 3;
-    int animY = 50;
+    int animY = 74;
     int animWidth = ST7789_WIDTH - 6;  // 240 - 6 = 234
-    int animHeight = ST7789_HEIGHT - 54;  // 135 - 54 = 81 (zone beaucoup plus grande !)
+    int animHeight = ST7789_HEIGHT - 78;  // 135 - 78 = 57 (zone réduite pour afficher réseau)
 
     // Effacer la zone d'animation (garder le rectangle)
     display.fillRect(animX + 1, animY + 1, animWidth - 2, animHeight - 2, COLOR_BLACK);
