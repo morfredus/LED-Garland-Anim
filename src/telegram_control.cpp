@@ -1,3 +1,10 @@
+/**
+ * @file telegram_control.cpp
+ * @brief Module de contrôle Telegram (fonctionnalité à venir)
+ * @version 1.0.0
+ * @date 2025-12-30
+ */
+
 #include "telegram_control.h"
 
 #include <HTTPClient.h>

@@ -1,8 +1,8 @@
 # LED-Garland-Anim
 
-**Version 0.8.0** - Contrôleur d'animation de guirlande LED bi-directionnelle pour ESP32/ESP32-S3
+**Version 1.0.0** - Contrôleur d'animation de guirlande LED bi-directionnelle pour ESP32 IdeaSpark (ST7789)
 
-Contrôlez une guirlande à 2 fils avec LEDs en anti-parallèle via un module TB6612FNG. Dispose de 11 animations spectaculaires (incluant 5 nouveaux effets visuels), mode Auto avec démarrage instantané, 2 modes de fonctionnement intelligents, affichage OLED avec visualisation animée, interface web, et contrôles physiques par boutons.
+Contrôlez une guirlande à 2 fils avec LEDs en anti-parallèle via un module TB6612FNG. 11 animations spectaculaires, mode Auto, 2 modes intelligents, affichage LCD ST7789, interface web, et contrôles physiques par boutons.
 
 [🇬🇧 English version](README.md) | [📝 Journal des modifications](CHANGELOG_FR.md) | [📚 Documentation](docs/)
 
@@ -330,7 +330,7 @@ static GarlandMode currentMode = MODE_PERMANENT;         // Ou MODE_MOTION_TRIGG
 
 ## 📝 Versions
 
-**Version Actuelle : v0.2.0** (2025-12-09)
+**Version Actuelle : v1.0.0** (2025-12-30)
 
 Voir [CHANGELOG_FR.md](./CHANGELOG_FR.md) pour l'historique complet.
 

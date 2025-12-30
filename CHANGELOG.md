@@ -278,15 +278,9 @@ This release represents a complete platform unification focusing exclusively on 
   - System now stable with animations running continuously without freeze
 
 ### Changed
-- ⚡ **Simplified Main Loop**: Removed Telegram polling throttling code
-- 📉 **Reduced Memory**: Flash usage reduced from 79.3% to 75.9% (~45 KB saved)
-- 🎯 **Animation Startup**: Changed default animation from `ANIM_AUTO` to `ANIM_FADE_ALTERNATE`
-  - Guirlande now lights up **immediately** on boot instead of waiting 30 seconds
-
-### Performance
-- ✅ System stable - no freeze observed after Telegram removal
-- ✅ All 6 animations working smoothly
-- ✅ Web interface responsive
+  - Removed all code and configuration related to OLED, SSD1306, TFT, ILI9341, ESP32-S3, multi-board and multi-environment.
+  - Kept only `esp32devkitc` environment with ESP32 Classic configuration.
+  - Updated PlatformIO configuration for single-board focus and ST7789 display.
 - ✅ Button controls responsive
 
 ### ⚠️ Known Limitation
@@ -405,4 +399,58 @@ This release represents a complete platform unification focusing exclusively on 
   - Improved readability by prioritizing mode information
 
 - 🎯 **Default Animation Mode** :
-  - Changed startup animation from `ANIM
+  - Changed startup animation from `ANIM_AUTO` to `ANIM_FADE_ALTERNATE`
+  - Guirlande now lights up **immediately** on boot instead of waiting 30 seconds
+
+- 🔧 **Code Cleanup** :
+  - Removed unused variables and functions related to old modes
+  - Simplified mode handling logic in `loop()` function
+  - Optimized display update logic for faster refresh
+
+## [0.2.0] - 2025-12-08
+
+### Added
+- 🎉 **New Animation: Breathing Effect** :
+  - Smooth breathing effect with adjustable speed and intensity
+  - Configurable via `BREATHING_SPEED` and `BREATHING_INTENSITY` constants
+
+- 📱 **Web Interface Enhancements** :
+  - Added sliders for real-time adjustment of animation parameters
+  - Improved layout and styling for better user experience
+  - Live preview of animation changes on the web interface
+
+### Changed
+- ⚙️ **Configuration Parameters** :
+  - Renamed and reorganized configuration parameters for clarity
+  - Deprecated old parameters with warnings in the logs
+  - Migration guide provided for transitioning to new parameters
+
+- 🎨 **Animation Color Palette** :
+  - Updated color palette for animations for more vibrant and varied colors
+  - Added configuration options for custom color palettes
+
+## [0.1.0] - 2025-12-07
+
+### Added
+- 🌟 **Initial Release** :
+  - Basic garland functionality with manual mode and animation selection
+  - Support for LED strip configuration and basic effects
+  - Initial documentation and example configurations
+
+### Changed
+- 🎛️ **Configuration System** :
+  - Switched to a new configuration system with `config.h` and `secrets.h`
+  - Deprecated old configuration methods with warnings
+
+- 📚 **Documentation Structure** :
+  - Restructured documentation for clarity and completeness
+  - Added example configurations and troubleshooting tips
+
+### Fixed
+- 🐛 **LED Strip Initialization** :
+  - Fixed issues with LED strip not initializing correctly on some ESP32 boards
+  - Improved compatibility with different LED strip types and configurations
+
+- 🔧 **Miscellaneous Bugs** :
+  - Fixed various minor bugs and issues reported by early users
+  - Improved stability and performance of the garland system

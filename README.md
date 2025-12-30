@@ -1,8 +1,8 @@
 # LED-Garland-Anim
 
-**Version 0.8.0** - Bi-directional LED Garland Animation Controller for ESP32/ESP32-S3
+**Version 1.0.0** - LED Garland Animation Controller for ESP32 IdeaSpark (ST7789)
 
-Control a 2-wire garland with anti-parallel LEDs via TB6612FNG motor driver module. Features 11 spectacular animations (including 5 new visual effects), Auto mode with instant start, 2 smart operating modes, OLED display with animated visualization, web interface, and physical button controls.
+Control a 2-wire garland with anti-parallel LEDs via TB6612FNG motor driver module. Features 11 spectacular animations, Auto mode, 2 smart operating modes, ST7789 LCD display, web interface, and physical button controls.
 
 [🇫🇷 Version française](README_FR.md) | [📝 Changelog](CHANGELOG.md) | [📚 Documentation](docs/)
 
@@ -48,38 +48,23 @@ Control a 2-wire garland with anti-parallel LEDs via TB6612FNG motor driver modu
 ### 📱 Display & Feedback
 - **OLED SSD1306 Support**: WiFi progress, IP, real-time info
 - **TFT ST7789 Support**: High-resolution color display
-- **NeoPixel RGB LED**: Visual status feedback
-- **Multi-display**: OLED and TFT simultaneously
-
-- **Multi-Board**: ESP32-S3 (N16R8, N8R8) and ESP32 Classic (DevKitC)
-- **WiFiMulti**: Automatic connection to multiple networks
 - **TB6612FNG Module**: Bi-directional garland control (GPIO: TB6612_PWMA, TB6612_AIN1, TB6612_AIN2, TB6612_STBY)
 - **PIR Sensor**: HC-SR501 motion detection (GPIO: PIR_SENSOR)
+ Live display of current animation and mode names
+ Local IP address for web access
+ Animated visualization bar (11 distinct patterns)
+ Adaptive layout for 135x240 screens
+ 10 FPS refresh rate for smooth animations
 - **LDR Photoresistor**: Day/night detection (GPIO: LDR_SENSOR)
 
 ---
-
-## 📋 Requirements
-
-### Software
-- **PlatformIO** (VS Code extension or CLI)
-- **Python 3.x** (for PlatformIO)
 - **Git** (for version control)
 
-### Hardware
-- **ESP32-S3 DevKitC-1** or **ESP32 DevKitC** board
-- **TB6612FNG** module (dual H-bridge motor controller)
 - 2-wire LED garland (anti-parallel LEDs, ~50 LEDs total)
 - **PIR HC-SR501** sensor (optional, for motion trigger mode)
-- **OLED SSD1306** 128x32 or 128x64 display (optional)
-- **TFT ST7789** 240x240 display (optional)
-- **NeoPixel RGB LED** WS2812B (optional)
-- Suitable power supply for garland (check voltage/current)
-
 ---
 
 ## 🛠️ Installation
-
 ### 1. Clone the Project
 ```bash
 git clone <your-repo>
@@ -112,7 +97,6 @@ TB6612FNG:
   PWMA  → GPIO 5
   AIN1  → GPIO 6
   AIN2  → GPIO 4
-  STBY  → GPIO 8
 
 Sensors:
   PIR   → GPIO 14
@@ -127,7 +111,6 @@ Displays:
 ```
 
 #### ESP32 Classic Pin Summary:
-```
 TB6612FNG:
   PWMA  → GPIO 12
   AIN1  → GPIO 32
@@ -142,7 +125,6 @@ Buttons:
   BTN2  → GPIO 16
 
 Displays:
-  OLED SDA → GPIO 21
   OLED SCL → GPIO 22
 ```
 
@@ -151,25 +133,15 @@ Displays:
 # Build
 pio run -e esp32s3_n16r8
 
-# Upload
 pio run -e esp32s3_n16r8 -t upload
 
 # Serial Monitor
 pio device monitor
 ```
 
----
 
 ## 📡 Usage
-
-### Startup
-1. Garland starts in **Auto** animation and **Permanent** mode
-2. OLED/TFT display shows WiFi connection progress
-3. Once connected, IP address is displayed and a Telegram notification is sent (SSID/IP/animation/mode)
-4. Access web interface: `http://[ESP32_IP]`
-
 ### Physical Controls
-- **Button 1**: Cycle through animations (or enter auto mode)
 - **Button 2**: Change operating mode
 - **BOOT Button (long press)**: Restart ESP32
 
@@ -179,19 +151,25 @@ pio device monitor
 - **Refresh Button**: Update system information
 - **Restart Button**: Remote restart
 
-### Telegram Bot
 - Commands (from authorized chat):
   - `/anim <id|name>` (e.g. `/anim 3`, `/anim auto`)
   - `/mode <id|name>` (e.g. `/mode 1`, `/mode detect`)
   - `/nextanim`, `/nextmode`
-  - `/status` (current animation, mode, IP)
   - `/liste` (lists all modes and animations with IDs)
 
 ### OLED Display
 - Shows current animation name
-- Shows current operating mode
 - Shows IP address
 - Animated visualization bar at bottom (14 distinct patterns)
+
+You can use either the ESP32 IdeaSpark board (recommended) or any ESP32 board with a compatible ST7789 display. You must respect the default pin mapping:
+- LCD_MOSI 23
+- LCD_SCLK 18
+- LCD_DC    2
+- LCD_RST   4
+- LCD_BLK  32
+
+See [docs/PIN_MAPPING.md](docs/PIN_MAPPING.md) for details.
 
 ---
 
@@ -324,7 +302,7 @@ static GarlandMode currentMode = MODE_PERMANENT;         // Or MODE_MOTION_TRIGG
 
 ## 📝 Versions
 
-**Current Version: v0.2.0** (2025-12-09)
+**Current Version: v1.0.0** (2025-12-30)
 
 See [CHANGELOG.md](./CHANGELOG.md) for complete history.
 

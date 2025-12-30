@@ -1,3 +1,10 @@
+/**
+ * @file main.cpp
+ * @brief Point d'entrée principal du projet LED-Garland-Anim
+ * @version 1.0.0
+ * @date 2025-12-30
+ */
+
 #include <Arduino.h>
 #include <WiFi.h>
 #include <WiFiMulti.h>
