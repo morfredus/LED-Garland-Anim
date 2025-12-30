@@ -3,8 +3,9 @@
 
 /**
  * @file web_styles.h
- * @brief Feuille de styles CSS pour l'interface web
- * @version 0.6.0
+ * @brief Feuilles de style pour l'interface web
+ * @version 1.0.0
+ * @date 2025-12-30
  * 
  * Module dédié à la gestion des styles CSS de l'interface web.
  * Contient tous les styles pour les cartouches, grille responsive, animations, etc.

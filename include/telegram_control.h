@@ -1,3 +1,10 @@
+/**
+ * @file telegram_control.h
+ * @brief Interface du module Telegram (fonctionnalité à venir)
+ * @version 1.0.0
+ * @date 2025-12-30
+ */
+
 #ifndef TELEGRAM_CONTROL_H
 #define TELEGRAM_CONTROL_H
 

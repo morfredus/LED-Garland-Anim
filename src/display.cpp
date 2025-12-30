@@ -1,7 +1,7 @@
 /**
  * @file display.cpp
  * @brief Implémentation du module de gestion de l'écran ST7789
- * @version 0.9.1
+ * @version 1.0.0
  * @date 2025-12-30
  */
 
