@@ -15,7 +15,7 @@ Use this guide to debug the ESP32-S3 and ESP32 Classic builds when something doe
 - Frequent drops: move closer to AP, avoid USB hubs with low power, and reduce metal shielding around the board.
 
 ## Web Interface Unreachable
-- Ping the IP shown on OLED/TFT; if ping fails, recheck WiFi or DHCP.
+- Ping the IP shown on LCD/OLED; if ping fails, recheck WiFi or DHCP.
 - Clear browser cache or try incognito; ensure you use `http://<ip>` (not HTTPS).
 - If only some endpoints fail, reboot to reset the internal web server.
 
@@ -31,7 +31,7 @@ Use this guide to debug the ESP32-S3 and ESP32 Classic builds when something doe
 
 ## Displays
 - OLED (I2C 0x3C/0x3D): SDA/SCL per board_config, pull-ups usually on the module. Swap SDA/SCL if screen is blank.
-- TFT (ST7789 on S3 / ILI9341 on Classic): verify all SPI lines plus BL (backlight) are powered; reseat jumpers.
+- LCD ST7789: verify all SPI lines plus BL (backlight) are powered; reseat jumpers.
 - For ghosting or random colors, lower cable length and check that GND is common.
 
 ## Garland Output / TB6612FNG

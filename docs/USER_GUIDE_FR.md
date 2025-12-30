@@ -1,3 +1,34 @@
+
+## 🖥️ Schéma de connexion LCD ST7789 (ESP32 Classic)
+
+```
+ESP32 Classic         LCD ST7789
+┌─────────┐        ┌──────────┐
+│         │        │          │
+│ GPIO 23 ├───────►│ MOSI/SDA │
+│ GPIO 18 ├───────►│ SCLK/SCL │
+│ GPIO 15 ├───────►│ CS       │
+│ GPIO  2 ├───────►│ DC       │
+│ GPIO  4 ├───────►│ RST      │
+│ GPIO 32 ├───────►│ BL       │
+│   3V3   ├───────►│ VCC      │
+│   GND   ├───────►│ GND      │
+│         │        │          │
+└─────────┘        └──────────┘
+```
+
+| Signal | Pin GPIO | Description | Macro C | Changement |
+|--------|----------|-------------|---------|------------|
+| MOSI   | GPIO 23  | Données SPI | LCD_MOSI| 🔄 #2 (2025-12-30) |
+| SCLK   | GPIO 18  | Horloge SPI | LCD_SCLK| 🔄 #2 (2025-12-30) |
+| CS     | GPIO 15  | Chip Select | LCD_CS  | 🔄 #2 (2025-12-30) |
+| DC     | GPIO 2   | Data/Command| LCD_DC  | 🔄 #2 (2025-12-30) |
+| RST    | GPIO 4   | Reset       | LCD_RST | 🔄 #2 (2025-12-30) |
+| BLK    | GPIO 32  | Backlight   | LCD_BLK | 🔄 #2 (2025-12-30) |
+
+> **Historique des changements LCD ST7789 :**
+> - #2 (2025-12-30) : Nouveau mapping (MOSI=23, SCLK=18, CS=15, DC=2, RST=4, BLK=32)
+> - #1 (2025-12-29) : Mapping initial
 # Guide Utilisateur - LED-Garland-Anim v0.8.0
 
 Guide utilisateur complet pour le contrôleur d'animation de guirlande LED LED-Garland-Anim.

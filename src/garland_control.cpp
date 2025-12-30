@@ -1,3 +1,69 @@
+int getActiveGuirlandeAnimation(void) {
+    return (int)activeAnimation;
+}
+// Fonctions Guirlande* (API publique)
+GuirlandeAnimation getGuirlandeAnimation() {
+    return currentAnimation;
+}
+
+const char* getGuirlandeAnimationName() {
+    static const char* guirlandeAnimationNames[] = {
+        "Eteint",
+        "Fade Alterne",
+        "Clignotement",
+        "Pulsation",
+        "Respiration",
+        "Strobe",
+        "Battement Coeur",
+        "Vague",
+        "Scintillement",
+        "Meteore",
+        "Auto"
+    };
+    if ((int)currentAnimation >= 0 && (int)currentAnimation < 11) {
+        return guirlandeAnimationNames[(int)currentAnimation];
+    }
+    return "?";
+}
+
+const char* getGuirlandeAnimationNameById(int id) {
+    static const char* guirlandeAnimationNames[] = {
+        "Eteint",
+        "Fade Alterne",
+        "Clignotement",
+        "Pulsation",
+        "Respiration",
+        "Strobe",
+        "Battement Coeur",
+        "Vague",
+        "Scintillement",
+        "Meteore",
+        "Auto"
+    };
+    if (id >= 0 && id < 11) {
+        return guirlandeAnimationNames[id];
+    }
+    return "?";
+}
+// Wrappers C pour l'affichage (display.cpp)
+int getGuirlandeAnimationInt(void) {
+    return (int)currentAnimation;
+}
+int getGuirlandeModeInt(void) {
+    return (int)currentMode;
+}
+// Définitions externes pour l'affichage (centrage et graphe)
+GuirlandeAnimation getGuirlandeAnimation() {
+    return currentAnimation;
+}
+
+GuirlandeMode getGuirlandeMode() {
+    return currentMode;
+}
+// Permet d'obtenir l'animation réellement active (utile pour l'affichage du graphe en mode AUTO)
+extern "C" int getActiveGuirlandeAnimation(void) {
+    return (int)activeAnimation;
+}
 /**
  * @file garland_control.cpp
  * @brief Implémentation du contrôle des animations de guirlande
@@ -13,9 +79,9 @@
 // VARIABLES GLOBALES
 // =============================================================================
 
-static GarlandAnimation currentAnimation = ANIM_FADE_ALTERNATE;  // Animation sélectionnée (pour affichage)
-static GarlandAnimation activeAnimation = ANIM_FADE_ALTERNATE;   // Animation réellement exécutée
-static GarlandMode currentMode = MODE_PERMANENT;
+static GuirlandeAnimation currentAnimation = G_ANIM_FADE_ALTERNATE;  // Animation sélectionnée (pour affichage)
+static GuirlandeAnimation activeAnimation = G_ANIM_FADE_ALTERNATE;   // Animation réellement exécutée
+static GuirlandeMode currentMode = G_MODE_PERMANENT;
 static unsigned long animationStartTime = 0;
 static unsigned long motionDetectedTime = 0;
 static unsigned long autoAnimationIntervalMs = 30000;   // Intervalle entre changements en mode AUTO
@@ -68,16 +134,16 @@ void loadGarlandSettings() {
     }
     
     // Charger le mode
-    uint8_t mode = (uint8_t)MODE_PERMANENT;
+    uint8_t mode = (uint8_t)G_MODE_PERMANENT;
     if (nvs_get_u8(handle, "mode", &mode) == ESP_OK) {
-        currentMode = (GarlandMode)mode;
+        currentMode = (GuirlandeMode)mode;
         LOG_PRINTF("Mode restauré: %s\n", modeNames[currentMode]);
     }
     
     // Charger l'animation
-    uint8_t anim = (uint8_t)ANIM_FADE_ALTERNATE;
+    uint8_t anim = (uint8_t)G_ANIM_FADE_ALTERNATE;
     if (nvs_get_u8(handle, "animation", &anim) == ESP_OK) {
-        currentAnimation = (GarlandAnimation)anim;
+        currentAnimation = (GuirlandeAnimation)anim;
         activeAnimation = currentAnimation;
         LOG_PRINTF("Animation restaurée: %s\n", animationNames[currentAnimation]);
     }
@@ -401,7 +467,6 @@ void setupGarland() {
     
     // Configuration des capteurs
     pinMode(PIR_SENSOR, INPUT);
-    pinMode(LDR_SENSOR, INPUT);
     
     // Initialisation
     garlandOff();
@@ -562,38 +627,42 @@ void setGarlandMode(GarlandMode mode) {
     saveGarlandSettings();
 }
 
-GarlandMode getGarlandMode() {
+GuirlandeMode getGuirlandeMode() {
     return currentMode;
 }
 
-const char* getGarlandModeName() {
+const char* getGuirlandeModeName() {
     return modeNames[currentMode];
 }
 
-const char* getGarlandModeNameById(int id) {
-    if (id >= 0 && id < MODE_COUNT) {
+const char* getGuirlandeModeNameById(int id) {
+    if (id >= 0 && id < G_MODE_COUNT) {
         return modeNames[id];
     }
     return "?";
 }
 
-void nextGarlandAnimation() {
+void nextGuirlandeAnimation() {
     uint8_t next = (uint8_t)currentAnimation + 1;
-    if (next >= ANIM_COUNT) {
-        next = 0;
+    // En mode AUTO, ne pas proposer G_ANIM_OFF (0) ni G_ANIM_AUTO (10)
+    if (getGuirlandeMode() == 2) { // G_MODE_AUTO
+        if (next == 0) next = 1;
+        if (next >= (uint8_t)G_ANIM_AUTO) next = 1;
+    } else {
+        if (next >= G_ANIM_COUNT) next = 0;
     }
-    setGarlandAnimation((GarlandAnimation)next);
+    setGuirlandeAnimation((GuirlandeAnimation)next);
 }
 
-void nextGarlandMode() {
+void nextGuirlandeMode() {
     uint8_t next = (uint8_t)currentMode + 1;
-    if (next >= MODE_COUNT) {
+    if (next >= G_MODE_COUNT) {
         next = 0;
     }
-    setGarlandMode((GarlandMode)next);
+    setGuirlandeMode((GuirlandeMode)next);
 }
 
-void garlandOff() {
+void guirlandeOff() {
     setDirection(0);
     setIntensity(0);
 }
@@ -602,10 +671,15 @@ bool isMotionDetected() {
     return digitalRead(PIR_SENSOR) == HIGH;
 }
 
-int getLightLevel() {
-    return analogRead(LDR_SENSOR);
+bool isAnimationActive() {
+    return (currentAnimation != G_ANIM_OFF) && garlandEnabled;
 }
 
-bool isAnimationActive() {
-    return (currentAnimation != ANIM_OFF) && garlandEnabled;
+// Retourne la valeur brute du capteur LDR (niveau de lumière ambiante)
+int getLightLevel() {
+#ifdef LDR_SENSOR
+    return analogRead(LDR_SENSOR);
+#else
+    return -1; // Non disponible
+#endif
 }

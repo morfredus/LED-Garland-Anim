@@ -148,22 +148,20 @@ static void sendTelegramMessage(const String& text) {
 }
 
 static void applyAnimationCommand(const String& arg) {
-    GarlandAnimation anim;
+    GuirlandeAnimation anim;
     if (tryParseAnimation(arg, anim)) {
-        setGarlandAnimation(anim);
-        updateOledAnimationStatus(getGarlandAnimationName(), getGarlandModeName(), WiFi.localIP());
-        sendTelegramMessage(String("Animation -> ") + getGarlandAnimationName());
+        setGuirlandeAnimation(anim);
+        sendTelegramMessage(String("Animation -> ") + getGuirlandeAnimationName());
     } else {
         sendTelegramMessage("Animation inconnue. Exemple: /anim 3 ou /anim auto");
     }
 }
 
 static void applyModeCommand(const String& arg) {
-    GarlandMode mode;
+    GuirlandeMode mode;
     if (tryParseMode(arg, mode)) {
-        setGarlandMode(mode);
-        updateOledAnimationStatus(getGarlandAnimationName(), getGarlandModeName(), WiFi.localIP());
-        sendTelegramMessage(String("Mode -> ") + getGarlandModeName());
+        setGuirlandeMode(mode);
+        sendTelegramMessage(String("Mode -> ") + getGuirlandeModeName());
     } else {
         sendTelegramMessage("Mode inconnu. Exemple: /mode 1 ou /mode detect");
     }
@@ -171,13 +169,13 @@ static void applyModeCommand(const String& arg) {
 
 static void sendList() {
     String msg = "Modes:\n";
-    for (int i = 0; i < MODE_COUNT; i++) {
-        msg += String(i) + ": " + getGarlandModeNameById(i) + "\n";
+    for (int i = 0; i < G_MODE_COUNT; i++) {
+        msg += String(i) + ": " + getGuirlandeModeNameById(i) + "\n";
     }
 
     msg += "\nAnimations:\n";
-    for (int i = 0; i < ANIM_COUNT; i++) {
-        msg += String(i) + ": " + getGarlandAnimationNameById(i) + "\n";
+    for (int i = 0; i < G_ANIM_COUNT; i++) {
+        msg += String(i) + ": " + getGuirlandeAnimationNameById(i) + "\n";
     }
 
     sendTelegramMessage(msg);
@@ -201,22 +199,20 @@ static void processCommand(const String& text) {
     }
 
     if (lower.startsWith("/nextanim")) {
-        nextGarlandAnimation();
-        updateOledAnimationStatus(getGarlandAnimationName(), getGarlandModeName(), WiFi.localIP());
-        sendTelegramMessage(String("Animation -> ") + getGarlandAnimationName());
+        nextGuirlandeAnimation();
+        sendTelegramMessage(String("Animation -> ") + getGuirlandeAnimationName());
         return;
     }
 
     if (lower.startsWith("/nextmode")) {
-        nextGarlandMode();
-        updateOledAnimationStatus(getGarlandAnimationName(), getGarlandModeName(), WiFi.localIP());
-        sendTelegramMessage(String("Mode -> ") + getGarlandModeName());
+        nextGuirlandeMode();
+        sendTelegramMessage(String("Mode -> ") + getGuirlandeModeName());
         return;
     }
 
     if (lower.startsWith("/status")) {
-        String status = String("Anim: ") + getGarlandAnimationName() + " (" + (int)getGarlandAnimation() + ")";
-        status += "\nMode: " + String(getGarlandModeName()) + " (" + (int)getGarlandMode() + ")";
+        String status = String("Anim: ") + getGuirlandeAnimationName() + " (" + (int)getGuirlandeAnimation() + ")";
+        status += "\nMode: " + String(getGuirlandeModeName()) + " (" + (int)getGuirlandeMode() + ")";
         status += String("\nWiFi: ") + (WiFi.isConnected() ? WiFi.localIP().toString() : "offline");
         sendTelegramMessage(status);
         return;
@@ -264,8 +260,8 @@ void setupTelegramBot() {
 
 void sendTelegramStatus(const char* ssid, IPAddress ip) {
     String status = String("WiFi: ") + ssid + "\nIP: " + ip.toString();
-    status += "\nAnim: " + String(getGarlandAnimationName()) + " (" + (int)getGarlandAnimation() + ")";
-    status += "\nMode: " + String(getGarlandModeName()) + " (" + (int)getGarlandMode() + ")";
+    status += "\nAnim: " + String(getGuirlandeAnimationName()) + " (" + (int)getGuirlandeAnimation() + ")";
+    status += "\nMode: " + String(getGuirlandeModeName()) + " (" + (int)getGuirlandeMode() + ")";
     sendTelegramMessage(status);
 }
 

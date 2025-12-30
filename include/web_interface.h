@@ -12,9 +12,9 @@
 
 #include "web_pages.h"
 #include "garland_control.h"
+#include "display.h"
 
 // Forward declaration pour éviter les dépendances circulaires
-void updateOledAnimationStatus(const char* animationName, const char* modeName, IPAddress ip);
 
 // Déclaration du serveur web (défini dans main.cpp)
 extern WebServer server;
@@ -69,10 +69,8 @@ void handleSetAnimation() {
         int animId = server.arg("id").toInt();
         if (animId >= 0 && animId < ANIM_COUNT) {
             setGarlandAnimation((GarlandAnimation)animId);
-            
-            // Mise à jour OLED après changement (fonction vide si HAS_OLED non défini)
-            updateOledAnimationStatus(getGarlandAnimationName(), getGarlandModeName(), WiFi.localIP());
-            
+            // Rafraîchir l'affichage LCD après changement d'animation
+            displayLCDConnected(WiFi.SSID().c_str(), WiFi.localIP());
             server.send(200, "text/plain", "Animation changée");
         } else {
             server.send(400, "text/plain", "ID animation invalide");
@@ -90,10 +88,8 @@ void handleSetMode() {
         int modeId = server.arg("id").toInt();
         if (modeId >= 0 && modeId < MODE_COUNT) {
             setGarlandMode((GarlandMode)modeId);
-            
-            // Mise à jour OLED après changement (fonction vide si HAS_OLED non défini)
-            updateOledAnimationStatus(getGarlandAnimationName(), getGarlandModeName(), WiFi.localIP());
-            
+            // Rafraîchir l'affichage LCD après changement de mode
+            displayLCDConnected(WiFi.SSID().c_str(), WiFi.localIP());
             server.send(200, "text/plain", "Mode changé");
         } else {
             server.send(400, "text/plain", "ID mode invalide");

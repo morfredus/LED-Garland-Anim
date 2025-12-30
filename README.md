@@ -1,6 +1,38 @@
 # LED-Garland-Anim
 
-**Version 0.8.0** - Bi-directional LED Garland Animation Controller for ESP32/ESP32-S3
+## 🖥️ LCD ST7789 Wiring Diagram (ESP32 Classic)
+
+```
+ESP32 Classic         LCD ST7789
+┌─────────┐        ┌──────────┐
+│         │        │          │
+│ GPIO 23 ├───────►│ MOSI/SDA │
+│ GPIO 18 ├───────►│ SCLK/SCL │
+│ GPIO 15 ├───────►│ CS       │
+│ GPIO  2 ├───────►│ DC       │
+│ GPIO  4 ├───────►│ RST      │
+│ GPIO 32 ├───────►│ BL       │
+│   3V3   ├───────►│ VCC      │
+│   GND   ├───────►│ GND      │
+│         │        │          │
+└─────────┘        └──────────┘
+```
+
+| Signal | GPIO Pin | Description | C Macro   | Change     |
+|--------|----------|-------------|-----------|------------|
+| MOSI   | GPIO 23  | SPI Data    | LCD_MOSI  | 🔄 #2 (2025-12-30) |
+| SCLK   | GPIO 18  | SPI Clock   | LCD_SCLK  | 🔄 #2 (2025-12-30) |
+| CS     | GPIO 15  | Chip Select | LCD_CS    | 🔄 #2 (2025-12-30) |
+| DC     | GPIO 2   | Data/Command| LCD_DC    | 🔄 #2 (2025-12-30) |
+| RST    | GPIO 4   | Reset       | LCD_RST   | 🔄 #2 (2025-12-30) |
+| BLK    | GPIO 32  | Backlight   | LCD_BLK   | 🔄 #2 (2025-12-30) |
+
+> **LCD ST7789 Change History:**
+> - #3 (2025-12-30): LCD ST7789 is now the only supported color display (TFT/ILI9341 removed, OLED as backup)
+> - #2 (2025-12-30): New mapping (MOSI=23, SCLK=18, CS=15, DC=2, RST=4, BLK=32)
+> - #1 (2025-12-29): Initial mapping
+
+**Version 0.9.1** - Bi-directional LED Garland Animation Controller for ESP32 Classic
 
 Control a 2-wire garland with anti-parallel LEDs via TB6612FNG motor driver module. Features 11 spectacular animations (including 5 new visual effects), Auto mode with instant start, 2 smart operating modes, OLED display with animated visualization, web interface, and physical button controls.
 
@@ -45,13 +77,13 @@ Control a 2-wire garland with anti-parallel LEDs via TB6612FNG motor driver modu
 - **Button 1**: Animation change + auto mode access
 - **Button 2**: Operating mode change
 
-### 📱 Display & Feedback
-- **OLED SSD1306 Support**: WiFi progress, IP, real-time info
-- **TFT ST7789 Support**: High-resolution color display
-- **NeoPixel RGB LED**: Visual status feedback
-- **Multi-display**: OLED and TFT simultaneously
 
-- **Multi-Board**: ESP32-S3 (N16R8, N8R8) and ESP32 Classic (DevKitC)
+### 📱 Display & Feedback
+- **LCD ST7789 Support**: High-resolution color display (main display)
+- **OLED SSD1306 Support**: WiFi progress, IP, real-time info (backup display)
+- **NeoPixel RGB LED**: Visual status feedback
+
+
 - **WiFiMulti**: Automatic connection to multiple networks
 - **TB6612FNG Module**: Bi-directional garland control (GPIO: TB6612_PWMA, TB6612_AIN1, TB6612_AIN2, TB6612_STBY)
 - **PIR Sensor**: HC-SR501 motion detection (GPIO: PIR_SENSOR)
@@ -67,12 +99,12 @@ Control a 2-wire garland with anti-parallel LEDs via TB6612FNG motor driver modu
 - **Git** (for version control)
 
 ### Hardware
-- **ESP32-S3 DevKitC-1** or **ESP32 DevKitC** board
+- **ESP32 DevKitC** board (ESP32 Classic)
 - **TB6612FNG** module (dual H-bridge motor controller)
 - 2-wire LED garland (anti-parallel LEDs, ~50 LEDs total)
 - **PIR HC-SR501** sensor (optional, for motion trigger mode)
 - **OLED SSD1306** 128x32 or 128x64 display (optional)
-- **TFT ST7789** 240x240 display (optional)
+- **LCD ST7789** 240x240 display (main, required)
 - **NeoPixel RGB LED** WS2812B (optional)
 - Suitable power supply for garland (check voltage/current)
 
@@ -98,33 +130,11 @@ build_cache_dir = C:/pio_builds/LED-Garland-Anim/cache
 ```
 
 ### 4. Select Environment
-Choose your board in `platformio.ini`:
-- `esp32s3_n16r8`: ESP32-S3 with 16MB Flash / 8MB PSRAM (default)
-- `esp32s3_n8r8`: ESP32-S3 with 8MB Flash / 8MB PSRAM
+Use the default environment in `platformio.ini`:
 - `esp32devkitc`: ESP32 Classic (4MB Flash)
 
 ### 5. Wire Components
 Consult **[docs/PIN_MAPPING.md](./docs/PIN_MAPPING.md)** for detailed connection schematics.
-
-#### ESP32-S3 Pin Summary:
-```
-TB6612FNG:
-  PWMA  → GPIO 5
-  AIN1  → GPIO 6
-  AIN2  → GPIO 4
-  STBY  → GPIO 8
-
-Sensors:
-  PIR   → GPIO 14
-
-Buttons:
-  BTN1  → GPIO 16
-  BTN2  → GPIO 17
-
-Displays:
-  OLED SDA → GPIO 21
-  OLED SCL → GPIO 22
-```
 
 #### ESP32 Classic Pin Summary:
 ```
@@ -149,10 +159,10 @@ Displays:
 ### 6. Compile and Upload
 ```bash
 # Build
-pio run -e esp32s3_n16r8
+pio run -e esp32devkitc
 
 # Upload
-pio run -e esp32s3_n16r8 -t upload
+pio run -e esp32devkitc -t upload
 
 # Serial Monitor
 pio device monitor
@@ -164,7 +174,7 @@ pio device monitor
 
 ### Startup
 1. Garland starts in **Auto** animation and **Permanent** mode
-2. OLED/TFT display shows WiFi connection progress
+2. LCD/OLED display shows WiFi connection progress
 3. Once connected, IP address is displayed and a Telegram notification is sent (SSID/IP/animation/mode)
 4. Access web interface: `http://[ESP32_IP]`
 
@@ -200,10 +210,10 @@ pio device monitor
 ```
 Anim-Guirlande/
 ├── include/
-│   ├── board_config.h        # ESP32/S3 pin mapping
+│   ├── board_config.h        # ESP32 Classic pin mapping
 │   ├── config.h              # General configuration
 │   ├── secrets.h             # WiFi networks + Telegram credentials
-│   ├── display.h             # OLED/TFT display management
+│   ├── display.h             # LCD/OLED display management
 │   ├── garland_control.h     # Garland control and animations
 │   ├── web_interface.h       # HTTP handlers
 │   ├── web_pages.h           # HTML generator
@@ -232,7 +242,7 @@ Anim-Guirlande/
 In `include/config.h`:
 ```cpp
 // #define HAS_OLED        // Comment to disable
-// #define HAS_ST7789      // Comment to disable
+// #define HAS_LCD         // Comment to disable
 ```
 
 ### Adjust Motion Detection Duration
@@ -262,10 +272,7 @@ In `include/garland_control.h`:
 - **PIR**: Digital signal (HIGH = motion detected)
 - **LDR**: 12-bit analog (0-4095)
 
-### Memory (ESP32-S3 N16R8)
-- Flash: 16 MB (huge_app partition)
-- PSRAM: 8 MB (80 MHz Octal)
-- RAM: ~500 KB (heap + PSRAM)
+
 
 ### WiFi
 - Multi-network automatic (WiFiMulti)

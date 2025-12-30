@@ -1,6 +1,6 @@
 # LED-Garland-Anim
 
-**Version 0.8.0** - Contrôleur d'animation de guirlande LED bi-directionnelle pour ESP32/ESP32-S3
+**Version 0.9.1** - Contrôleur d'animation de guirlande LED bi-directionnelle pour ESP32 Classic
 
 Contrôlez une guirlande à 2 fils avec LEDs en anti-parallèle via un module TB6612FNG. Dispose de 11 animations spectaculaires (incluant 5 nouveaux effets visuels), mode Auto avec démarrage instantané, 2 modes de fonctionnement intelligents, affichage OLED avec visualisation animée, interface web, et contrôles physiques par boutons.
 
@@ -45,13 +45,13 @@ Contrôlez une guirlande à 2 fils avec LEDs en anti-parallèle via un module TB
 - **Bouton 1**: Changement d'animation + accès mode auto
 - **Bouton 2**: Changement de mode de fonctionnement
 
-### 📱 Affichage & Feedback
-- **Support OLED SSD1306**: Progression WiFi, IP, infos temps réel
-- **Support TFT ST7789**: Écran couleur haute résolution
-- **LED RGB NeoPixel**: Feedback visuel d'état
-- **Multi-affichage**: OLED et TFT simultanément
 
-- **Multi-Cartes**: ESP32-S3 (N16R8, N8R8) et ESP32 Classic (DevKitC)
+### 📱 Affichage & Feedback
+- **Support LCD ST7789**: Écran couleur haute résolution (écran principal)
+- **Support OLED SSD1306**: Progression WiFi, IP, infos temps réel (secours)
+- **LED RGB NeoPixel**: Feedback visuel d'état
+
+  
 - **WiFiMulti**: Connexion automatique à plusieurs réseaux
 - **Module TB6612FNG**: Contrôle bi-directionnel de la guirlande (GPIO : TB6612_PWMA, TB6612_AIN1, TB6612_AIN2, TB6612_STBY)
 - **Capteur PIR**: Détection de mouvement HC-SR501 (GPIO : PIR_SENSOR)
@@ -61,21 +61,51 @@ Contrôlez une guirlande à 2 fils avec LEDs en anti-parallèle via un module TB
 
 ## 📋 Prérequis
 
+### 🖥️ Schéma de connexion LCD ST7789 (ESP32 Classic)
+
+```
+ESP32 Classic         LCD ST7789
+┌─────────┐        ┌──────────┐
+│         │        │          │
+│ GPIO 23 ├───────►│ MOSI/SDA │
+│ GPIO 18 ├───────►│ SCLK/SCL │
+│ GPIO 15 ├───────►│ CS       │
+│ GPIO  2 ├───────►│ DC       │
+│ GPIO  4 ├───────►│ RST      │
+│ GPIO 32 ├───────►│ BL       │
+│   3V3   ├───────►│ VCC      │
+│   GND   ├───────►│ GND      │
+│         │        │          │
+└─────────┘        └──────────┘
+```
+
+| Signal | Pin GPIO | Description | Macro C | Changement |
+|--------|----------|-------------|---------|------------|
+| MOSI   | GPIO 23  | Données SPI | LCD_MOSI| 🔄 #2 (2025-12-30) |
+| SCLK   | GPIO 18  | Horloge SPI | LCD_SCLK| 🔄 #2 (2025-12-30) |
+| CS     | GPIO 15  | Chip Select | LCD_CS  | 🔄 #2 (2025-12-30) |
+| DC     | GPIO 2   | Data/Command| LCD_DC  | 🔄 #2 (2025-12-30) |
+| RST    | GPIO 4   | Reset       | LCD_RST | 🔄 #2 (2025-12-30) |
+| BLK    | GPIO 32  | Backlight   | LCD_BLK | 🔄 #2 (2025-12-30) |
+
+> **Historique des changements LCD ST7789 :**
+> - #2 (2025-12-30) : Nouveau mapping (MOSI=23, SCLK=18, CS=15, DC=2, RST=4, BLK=32)
+> - #1 (2025-12-29) : Mapping initial
+
 ### Logiciels
 - **PlatformIO** (extension VS Code ou CLI)
 - **Python 3.x** (pour PlatformIO)
 - **Git** (pour contrôle de version)
 
 ### Matériel
-- Carte **ESP32-S3 DevKitC-1** ou **ESP32 DevKitC**
+- Carte **ESP32 DevKitC** (ESP32 Classic)
 - Module **TB6612FNG** (contrôleur moteur double pont H)
 - Guirlande LED à 2 fils (LEDs en anti-parallèle, ~50 LEDs total)
 - Capteur **PIR HC-SR501** (optionnel, pour mode détection mouvement)
 - Écran **OLED SSD1306** 128x32 ou 128x64 (optionnel)
-- Écran **TFT ST7789** 240x240 (optionnel)
+- Écran **LCD ST7789** 240x240 (principal, requis)
 - **LED RGB NeoPixel** WS2812B (optionnel)
 - Alimentation adaptée pour la guirlande (vérifier tension/courant)
-
 ---
 
 ## 🛠️ Installation

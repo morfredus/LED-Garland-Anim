@@ -1,3 +1,7 @@
+// ---
+// Changelog :
+// #3 (2025-12-30) : Harmonisation LCD ST7789 unique, suppression TFT/ILI9341, OLED secours, cohérence affichage
+// ---
 #include <Arduino.h>
 #include <WiFi.h>
 #include <WiFiMulti.h>
@@ -31,18 +35,14 @@ unsigned long previousMillis = 0;
 const long interval = 1000;      // Vitesse du clignotement Heartbeat
 bool ledState = false;
 
-// Variables pour l'animation OLED
-unsigned long lastOledAnimUpdate = 0;
-const long oledAnimInterval = 100;  // Mise à jour animation OLED toutes les 100ms
-const char* lastDisplayedAnim = "";
-const char* lastDisplayedMode = "";
+//
 
 // --- FONCTIONS SERVEUR WEB (DÉLÉGUÉES AUX MODULES) ---
 // Les fonctions handleRoot(), handleReboot(), handleNotFound() et setupWebServer()
 // sont maintenant définies dans web_interface.h
 // Voir : include/web_interface.h
 
-// Les fonctions d'affichage OLED et ST7789 sont maintenant dans display.h / display.cpp
+// Les fonctions d'affichage sont maintenant dans display.h / display.cpp
 
 // --- CALLBACKS BOUTONS ---
 
@@ -54,39 +54,17 @@ void handleBootLongPress() {
         pixels.setPixelColor(0, pixels.Color(255, 0, 255)); // Flash Violet pour confirmer
         pixels.show();
     #endif
-    
-    #if defined(HAS_OLED) || defined(HAS_ST7789)
-        // Afficher message de redémarrage sur les écrans
-        #ifdef HAS_OLED
-            display_oled.clearDisplay();
-            display_oled.setTextSize(2);
-            display_oled.setCursor(0, 15);
-            display_oled.println("REBOOT...");
-            display_oled.display();
-        #endif
-        #ifdef HAS_ST7789
-            display_tft.fillScreen(COLOR_BLACK);
-            display_tft.setTextSize(3);
-            display_tft.setTextColor(COLOR_RED);
-            display_tft.setCursor(50, 100);
-            display_tft.println("REBOOT...");
-        #endif
-    #endif
-    
+    display_lcd.fillScreen(COLOR_BLACK);
+    display_lcd.setTextSize(3);
+    display_lcd.setTextColor(COLOR_RED);
+    display_lcd.setCursor(50, 100);
+    display_lcd.println("REBOOT...");
     delay(1000); // Pause pour afficher le message
     ESP.restart();
 }
 
 // Bouton 1 : Changement d'animation
 void handleBtn1Click() {
-    nextGarlandAnimation();
-    LOG_PRINTF(">> Bouton 1 : Animation changée -> %s\n", getGarlandAnimationName());
-    
-    // Mise à jour OLED
-    #ifdef HAS_OLED
-        updateOledAnimationStatus(getGarlandAnimationName(), getGarlandModeName(), WiFi.localIP());
-    #endif
-    
     #ifdef HAS_NEOPIXEL
         pixels.setPixelColor(0, pixels.Color(0, 255, 255)); // Cyan
         pixels.show();
@@ -94,18 +72,15 @@ void handleBtn1Click() {
         pixels.setPixelColor(0, pixels.Color(0, 50, 0)); // Retour vert
         pixels.show();
     #endif
+    // Changement d'animation
+    nextGuirlandeAnimation();
+    // Rafraîchir l'affichage LCD après changement d'animation
+    displayLCDConnected(WiFi.SSID().c_str(), WiFi.localIP());
 }
+
 
 // Bouton 2 : Changement de mode
 void handleBtn2Click() {
-    nextGarlandMode();
-    LOG_PRINTF(">> Bouton 2 : Mode changé -> %s\n", getGarlandModeName());
-    
-    // Mise à jour OLED
-    #ifdef HAS_OLED
-        updateOledAnimationStatus(getGarlandAnimationName(), getGarlandModeName(), WiFi.localIP());
-    #endif
-    
     #ifdef HAS_NEOPIXEL
         pixels.setPixelColor(0, pixels.Color(255, 255, 0)); // Jaune
         pixels.show();
@@ -113,6 +88,10 @@ void handleBtn2Click() {
         pixels.setPixelColor(0, pixels.Color(0, 50, 0)); // Retour vert
         pixels.show();
     #endif
+    // Changement de mode
+    nextGuirlandeMode();
+    // Rafraîchir l'affichage LCD après changement de mode
+    displayLCDConnected(WiFi.SSID().c_str(), WiFi.localIP());
 }
 
 // --- FONCTIONS WIFI ---
@@ -126,8 +105,8 @@ void setupWifi() {
 
     LOG_PRINT("Connexion WiFi en cours...");
     
-    // Affichage initial sur les écrans
-    displayWifiProgress(0);
+    // Affichage initial sur l'écran LCD
+    displayLCDProgress(0);
     
     #ifdef HAS_NEOPIXEL
         pixels.setPixelColor(0, pixels.Color(50, 50, 0)); // Jaune
@@ -143,8 +122,8 @@ void setupWifi() {
         attempts++;
         int progress = (attempts * 100) / maxAttempts;
         
-        // Mise à jour de la progression sur les écrans
-        displayWifiProgress(progress);
+        // Mise à jour de la progression sur l'écran LCD
+        displayLCDProgress(progress);
         
         LOG_PRINT(".");
     }
@@ -153,26 +132,16 @@ void setupWifi() {
         LOG_PRINTLN(" OK !");
         LOG_PRINT("SSID: "); LOG_PRINTLN(WiFi.SSID());
         LOG_PRINT("IP: "); LOG_PRINTLN(WiFi.localIP());
-        
-        // Affichage des infos de connexion sur les écrans
-        displayWifiConnected(WiFi.SSID().c_str(), WiFi.localIP());
-        
-        // Affichage OLED de l'animation et du mode après connexion
-        #ifdef HAS_OLED
-            delay(2000); // Pause pour laisser voir l'info WiFi
-            updateOledAnimationStatus(getGarlandAnimationName(), getGarlandModeName(), WiFi.localIP());
-        #endif
-        
+        displayLCDConnected(WiFi.SSID().c_str(), WiFi.localIP());
         #ifdef HAS_NEOPIXEL
             pixels.setPixelColor(0, pixels.Color(0, 50, 0)); // Vert
             pixels.show();
         #endif
-
         // Notification Telegram de connexion WiFi (DÉSACTIVÉE)
         // sendTelegramStatus(WiFi.SSID().c_str(), WiFi.localIP());
     } else {
         LOG_PRINTLN(" Echec !");
-        displayWifiFailed();
+        displayLCDFailed();
     }
 }
 
@@ -197,13 +166,17 @@ void setup() {
 
     // Initialisation des affichages (OLED et/ou ST7789) - AVANT WiFi pour afficher la progression
     setupDisplays();
-    displayStartup(PROJECT_NAME, PROJECT_VERSION);
+    displayLCDStartup(PROJECT_NAME, PROJECT_VERSION);
 
     // Initialisation de la guirlande
     setupGarland();
 
-    // Connexion WiFi (affiche la progression sur les écrans)
+
+    // Connexion WiFi (affiche la progression sur l'écran LCD)
     setupWifi();
+
+    // Démarrage du serveur web
+    setupWebServer();
 
     // Init NeoPixel
     #ifdef HAS_NEOPIXEL
@@ -218,20 +191,6 @@ void setup() {
             pinMode(LED_BUILTIN, OUTPUT);
         #endif
     
-    // Démarrage Serveur Web
-    if(WiFi.status() == WL_CONNECTED) {
-        setupWebServer();
-        // setupTelegramBot();  // DÉSACTIVÉ
-        // sendTelegramStatus(WiFi.SSID().c_str(), WiFi.localIP());  // DÉSACTIVÉ
-    }
-}
-
-// --- LOOP (DOIT TOURNER VITE) ---
-void loop() {
-    // 1. Surveillance Boutons (CRITIQUE : doit être appelé tout le temps)
-    btnBoot.tick();
-    btn1.tick();
-    btn2.tick();
 
     // 2. Mise à jour de l'animation de guirlande
     updateGarland();
@@ -249,42 +208,41 @@ void loop() {
     // 5. Libération CPU (CRITIQUE pour watchdog)
     yield();
     
-    // 6. Heartbeat Non-Bloquant (remplace delay)
-    unsigned long currentMillis = millis();    if (currentMillis - previousMillis >= interval) {
-        previousMillis = currentMillis;
-        
-        // Clignotement du heartbeat
-        ledState = !ledState;
-        
-        // Action visuelle selon la carte
-            #ifdef LED_BUILTIN
-                digitalWrite(LED_BUILTIN, ledState);
-            #endif
+    // 6. Heartbeat déplacé dans loop()
+}
 
+void loop() {
+    // Gestion Serveur Web (non-bloquant)
+    server.handleClient();
+    // Mise à jour de la guirlande
+    updateGarland();
+
+    // Rafraîchissement du graphe d'animation LCD (zone dédiée)
+    #ifdef HAS_LCD
+    drawAnimationGraph(12, 162, LCD_WIDTH-24, 36);
+    #endif
+
+    // Tick boutons physiques (OneButton)
+    btnBoot.tick();
+    btn1.tick();
+    btn2.tick();
+
+    // Heartbeat LED/NeoPixel
+    unsigned long currentMillis = millis();
+    if (currentMillis - previousMillis >= interval) {
+        previousMillis = currentMillis;
+        ledState = !ledState;
+        #ifdef LED_BUILTIN
+            digitalWrite(LED_BUILTIN, ledState);
+        #endif
         #ifdef HAS_NEOPIXEL
-            // Petit battement de coeur : vert si connecté, rouge sinon
             if(wifiMulti.run() == WL_CONNECTED) {
-                pixels.setPixelColor(0, ledState ? pixels.Color(0, 50, 0) : pixels.Color(0, 10, 0)); // Vert fort / Vert faible
+                pixels.setPixelColor(0, ledState ? pixels.Color(0, 50, 0) : pixels.Color(0, 10, 0));
             } else {
-                pixels.setPixelColor(0, ledState ? pixels.Color(50, 0, 0) : pixels.Color(10, 0, 0)); // Rouge fort / faible
+                pixels.setPixelColor(0, ledState ? pixels.Color(50, 0, 0) : pixels.Color(10, 0, 0));
             }
             pixels.show();
         #endif
     }
-    
-    // 6. Rafraîchissement de l'animation OLED
-    #ifdef HAS_OLED
-        if (currentMillis - lastOledAnimUpdate >= oledAnimInterval) {
-            lastOledAnimUpdate = currentMillis;
-            // Redessiner l'écran avec la barre d'animation mise à jour
-            if (WiFi.status() == WL_CONNECTED) {
-                if (isAnimationActive()) {
-                    updateOledAnimationStatus(getGarlandAnimationName(), getGarlandModeName(), WiFi.localIP());
-                } else {
-                    // Si pas d'animation active : afficher points fixes
-                    displayOledSleepMode();
-                }
-            }
-        }
-    #endif
+    yield();
 }

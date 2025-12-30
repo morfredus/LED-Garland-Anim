@@ -1,3 +1,35 @@
+
+## 🖥️ LCD ST7789 Wiring Diagram (ESP32 Classic)
+
+```
+ESP32 Classic         LCD ST7789
+┌─────────┐        ┌──────────┐
+│         │        │          │
+│ GPIO 23 ├───────►│ MOSI/SDA │
+│ GPIO 18 ├───────►│ SCLK/SCL │
+│ GPIO 15 ├───────►│ CS       │
+│ GPIO  2 ├───────►│ DC       │
+│ GPIO  4 ├───────►│ RST      │
+│ GPIO 32 ├───────►│ BL       │
+│   3V3   ├───────►│ VCC      │
+│   GND   ├───────►│ GND      │
+│         │        │          │
+└─────────┘        └──────────┘
+```
+
+| Signal | GPIO Pin | Description | C Macro   | Change     |
+|--------|----------|-------------|-----------|------------|
+| MOSI   | GPIO 23  | SPI Data    | LCD_MOSI  | 🔄 #2 (2025-12-30) |
+| SCLK   | GPIO 18  | SPI Clock   | LCD_SCLK  | 🔄 #2 (2025-12-30) |
+| CS     | GPIO 15  | Chip Select | LCD_CS    | 🔄 #2 (2025-12-30) |
+| DC     | GPIO 2   | Data/Command| LCD_DC    | 🔄 #2 (2025-12-30) |
+| RST    | GPIO 4   | Reset       | LCD_RST   | 🔄 #2 (2025-12-30) |
+| BLK    | GPIO 32  | Backlight   | LCD_BLK   | 🔄 #2 (2025-12-30) |
+
+> **LCD ST7789 Change History:**
+> - #3 (2025-12-30): LCD ST7789 is now the only supported color display (TFT/ILI9341 removed, OLED as backup)
+> - #2 (2025-12-30): New mapping (MOSI=23, SCLK=18, CS=15, DC=2, RST=4, BLK=32)
+> - #1 (2025-12-29): Initial mapping
 # 📚 Architecture - LED-Garland-Anim v0.8.0
 
 ## 🎯 Overview
@@ -245,7 +277,7 @@ Alternating Fade Animation:
 Anim-Guirlande/
 ├── include/
 │   ├── config.h              General configuration (HAS_OLED, HAS_ST7789, etc.)
-│   ├── board_config.h        ESP32-S3 / ESP32 Classic pin mapping
+│   ├── board_config.h        ESP32 Classic pin mapping
 │   ├── secrets.h             WiFi credentials (not versioned)
 │   ├── display.h             OLED/TFT management + animation bar
 │   ├── garland_control.h     Animations + modes + sensors
@@ -278,7 +310,7 @@ Anim-Guirlande/
 - Use `F()` macro for constant strings in PROGMEM
 - Avoid `String` for large data (use `char*` or buffers)
 - Monitor heap with `ESP.getFreeHeap()`
-- ESP32-S3: Take advantage of PSRAM (8 MB)
+
 
 ### 🔒 Security
 - WiFi credentials in `secrets.h` (ignored by Git)

@@ -36,9 +36,10 @@ String generateDashboardPage(
     uint32_t cpuFreq
 ) {
     String html = "<!DOCTYPE html><html><head>";
-    html += "<meta charset='utf-8'>";
-    html += "<meta name='viewport' content='width=device-width, initial-scale=1'>";
+    html += "<meta charset=\"utf-8\">";
+    html += "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">";
     html += "<title>" + String(PROJECT_NAME) + "</title>";
+    html += "<link rel=\"icon\" href=\"data:image/x-icon;,\">"; // favicon vide pour éviter 404
     html += "<style>" + String(WEB_STYLES) + "</style>";
     html += "</head><body>";
     html += "<div class='container'>";
@@ -133,7 +134,7 @@ String generateDashboardPage(
     // --- BOUTONS D'ACTION ---
     html += "<div class='actions'>";
     html += "<button onclick='location.reload()'>🔄 Actualiser</button>";
-    html += "<button class='danger' onclick='if(confirm(\"Redémarrer l'ESP32 ?\")) fetch(\"/reboot\")'>🔴 Redémarrer</button>";
+    html += "<button class='danger' onclick=\"if(confirm('Redémarrer l\\'ESP32 ?')){fetch('/reboot').then(function(){setTimeout(function(){location.reload();},2000);});}\">🔴 Redémarrer</button>";
     html += "</div>";
     
     // --- SCRIPT JAVASCRIPT ---

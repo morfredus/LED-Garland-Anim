@@ -1,83 +1,16 @@
-# Guide de Connexion des Pins - Anim-Guirlande
 
-> 📌 **Guide débutant** : Ce document explique comment connecter physiquement les composants à votre carte ESP32-S3 ou ESP32 Classic pour le projet Anim-Guirlande.
+# Guide de Connexion des Pins - Anim-Guirlande (ESP32 Classic uniquement)
 
-## 🎯 Table des matières
-- [ESP32-S3 DevKitC-1](#esp32-s3-devkitc-1)
+> 📌 **Guide débutant** : Ce document explique comment connecter physiquement les composants à votre carte ESP32 Classic pour le projet Anim-Guirlande.
+
+## Table des matières
 - [ESP32 Classic DevKitC](#esp32-classic-devkitc)
-- [Schémas de connexion détaillés](#schémas-de-connexion-détaillés)
 - [Module TB6612FNG](#module-tb6612fng-contrôleur-de-guirlande)
 - [Conseils pour débutants](#conseils-pour-débutants)
 
 ---
 
-## ESP32-S3 DevKitC-1
-
-### 📋 Tableau récapitulatif des pins
-
-| Composant | Signal | Pin GPIO | Description | Notes |
-|-----------|--------|----------|-------------|-------|
-| **BUTTON_BOOT** | Button | GPIO 0 | Bouton intégré sur la carte | Déjà présent, redémarrage appui long |
-| **BUTTON_1** | Button | GPIO 16 | Bouton externe | Changement animation |
-| **BUTTON_2** | Button | GPIO 17 | Bouton externe | Changement mode |
-| **NEOPIXEL** | Data | GPIO 48 | LED RGB adressable intégrée | Feedback visuel d'état |
-| **I2C_SDA (OLED SSD1306)** | SDA | GPIO 21 | Données I2C | Connexion vers la broche SDA de l'OLED |
-| **I2C_SCL (OLED SSD1306)** | SCL | GPIO 20 | Horloge I2C | Connexion vers la broche SCL de l'OLED |
-| **OLED SSD1306** | VCC | 3.3V | Alimentation | Broche 3V3 de l'ESP32 |
-| **OLED SSD1306** | GND | GND | Masse | Broche GND de l'ESP32 |
-| **TFT ST7789** | MOSI (SDA) | GPIO 11 | Données SPI | Broche SDA du ST7789 |
-| **TFT ST7789** | SCLK (SCL) | GPIO 12 | Horloge SPI | Broche SCL du ST7789 |
-| **TFT ST7789** | CS | GPIO 10 | Chip Select | Sélection du périphérique |
-| **TFT ST7789** | DC | GPIO 9 | Data/Command | Indicateur données/commande |
-| **TFT ST7789** | RST | GPIO 13 | Reset | Réinitialisation de l'écran |
-| **TFT ST7789** | BL | GPIO 7 | Backlight | Rétroéclairage (LED) |
-| **TFT ST7789** | VCC | 3.3V | Alimentation | Broche 3V3 de l'ESP32 |
-| **TFT ST7789** | GND | GND | Masse | Broche GND de l'ESP32 |
-| **TB6612_PWMA** | PWMA | GPIO 5 | PWM Sens A | Contrôle intensité lumineuse |
-| **TB6612_AIN1** | AIN1 | GPIO 6 | Direction bit 1 | Contrôle direction courant |
-| **TB6612_AIN2** | AIN2 | GPIO 4 | Direction bit 2 | Contrôle direction courant |
-| **TB6612_STBY** | STBY | GPIO 8 | Standby | Activation module (HIGH=actif) |
-| **TB6612FNG** | VCC | 3.3V | Alimentation logique | Broche 3V3 de l'ESP32 |
-| **TB6612FNG** | VM | 5-15V | Alimentation moteur | Alimentation externe pour guirlande |
-| **TB6612FNG** | GND | GND | Masse | Commun avec GND ESP32 |
-| **PIR_SENSOR** | OUT | GPIO 14 | Signal détection | HIGH = mouvement détecté |
-| **Capteur PIR** | VCC | 5V | Alimentation | Broche 5V de l'ESP32 (via USB) |
-| **Capteur PIR** | GND | GND | Masse | Broche GND de l'ESP32 |
-| **LDR_SENSOR** | Signal | GPIO 15 | Lecture ADC | Diviseur de tension avec R=10kΩ |
-| **LDR** | VCC | 3.3V | Alimentation | Via résistance 10kΩ |
-| **LDR** | GND | GND | Masse | Via LDR vers GND |
-
-### 🎄 Schéma de connexion TB6612FNG + Guirlande
-
-```
-ESP32-S3                TB6612FNG              Guirlande LED
-┌─────────┐            ┌──────────┐           ┌──────────┐
-│         │            │          │           │          │
-│ GPIO 5  ├───────────►│ PWMA     │           │          │
-│ GPIO 6  ├───────────►│ AIN1     │           │          │
-│ GPIO 4  ├───────────►│ AIN2     │           │          │
-│ GPIO 8  ├───────────►│ STBY     │           │          │
-│         │            │          │           │          │
-│   3V3   ├───────────►│ VCC      │           │          │
-│   GND   ├───────────►│ GND      ├──────────►│ GND (-)  │
-│         │            │          │           │          │
-│         │    ┌──────►│ VM       │           │          │
-│         │    │       │          │           │          │
-│         │    │       │ AO1      ├──────────►│ Fil 1    │
-│         │    │       │ AO2      ├──────────►│ Fil 2    │
-│         │    │       │          │           │          │
-└─────────┘    │       └──────────┘           └──────────┘
-               │
-        Alim Externe
-        (5V-15V)
-        ┌──────┐
-        │  +   ├──────┘
-        │  -   ├────────────────────────────►GND commun
-        └──────┘
-```
-
-**⚠️ IMPORTANT - Alimentation TB6612FNG** :
-- **VCC** (3.3V) : Logique de contrôle depuis ESP32
+## ESP32 Classic DevKitC
 - **VM** (5-15V) : Alimentation puissance pour la guirlande (depuis source externe)
 - **GND** : Masse commune entre ESP32, TB6612FNG et alimentation externe
 
@@ -170,21 +103,38 @@ ESP32-S3           OLED SSD1306
 
 ### 🖥️ Schéma de connexion TFT ST7789 (SPI)
 
+
 ```
-ESP32-S3           TFT ST7789
+ESP32 Classic         LCD ST7789
 ┌─────────┐        ┌──────────┐
 │         │        │          │
-│ GPIO 11 ├───────►│ MOSI/SDA │
-│ GPIO 12 ├───────►│ SCLK/SCL │
-│ GPIO 10 ├───────►│ CS       │
-│ GPIO  9 ├───────►│ DC       │
-│ GPIO 13 ├───────►│ RST      │
-│ GPIO  7 ├───────►│ BL       │
-│    3V3  ├───────►│ VCC      │
-│    GND  ├───────►│ GND      │
+│ GPIO 23 ├───────►│ MOSI/SDA │
+│ GPIO 18 ├───────►│ SCLK/SCL │
+│ GPIO 15 ├───────►│ CS       │
+│ GPIO  2 ├───────►│ DC       │
+│ GPIO  4 ├───────►│ RST      │
+│ GPIO 32 ├───────►│ BL       │
+│   3V3   ├───────►│ VCC      │
+│   GND   ├───────►│ GND      │
 │         │        │          │
 └─────────┘        └──────────┘
 ```
+
+#### Tableau récapitulatif LCD ST7789
+
+| Signal | Pin GPIO | Description | Macro C | Changement |
+|--------|----------|-------------|---------|------------|
+| MOSI   | GPIO 23  | Données SPI | LCD_MOSI| 🔄 #2 (2025-12-30) |
+| SCLK   | GPIO 18  | Horloge SPI | LCD_SCLK| 🔄 #2 (2025-12-30) |
+| CS     | GPIO 15  | Chip Select | LCD_CS  | 🔄 #2 (2025-12-30) |
+| DC     | GPIO 2   | Data/Command| LCD_DC  | 🔄 #2 (2025-12-30) |
+| RST    | GPIO 4   | Reset       | LCD_RST | 🔄 #2 (2025-12-30) |
+| BLK    | GPIO 32  | Backlight   | LCD_BLK | 🔄 #2 (2025-12-30) |
+
+> **Historique des changements LCD ST7789 :**
+> - #3 (2025-12-30) : LCD ST7789 est désormais le seul écran couleur supporté (TFT/ILI9341 supprimé, OLED en secours)
+> - #2 (2025-12-30) : Nouveau mapping (MOSI=23, SCLK=18, CS=15, DC=2, RST=4, BLK=32)
+> - #1 (2025-12-29) : Mapping initial
 
 ---
 

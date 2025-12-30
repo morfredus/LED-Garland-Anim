@@ -1,190 +1,44 @@
-# Pin Connection Guide - LED-Garland-Anim
 
-> 📌 **Beginner's Guide**: This document explains how to physically connect components to your ESP32-S3 or ESP32 Classic board for the LED-Garland-Anim project.
-
-## 🎯 Table of Contents
-- [ESP32-S3 DevKitC-1](#esp32-s3-devkitc-1)
-- [ESP32 Classic DevKitC](#esp32-classic-devkitc)
-- [Detailed Connection Schematics](#detailed-connection-schematics)
-- [TB6612FNG Module](#tb6612fng-module---garland-controller)
-- [Beginner Tips](#beginner-tips)
-
----
-
-## ESP32-S3 DevKitC-1
-
-### 📋 Pin Summary Table
-
-| Component | Signal | GPIO Pin | Description | Notes |
-|-----------|--------|----------|-------------|-------|
-| **BUTTON_BOOT** | Button | GPIO 0 | Integrated button on board | Already present, long press restart |
-| **BUTTON_1** | Button | GPIO 16 | External button | Animation change |
-| **BUTTON_2** | Button | GPIO 17 | External button | Mode change |
-| **NEOPIXEL** | Data | GPIO 48 | Integrated addressable RGB LED | Visual status feedback |
-| **I2C_SDA (OLED SSD1306)** | SDA | GPIO 21 | I2C Data | Connection to OLED SDA pin |
-| **I2C_SCL (OLED SSD1306)** | SCL | GPIO 20 | I2C Clock | Connection to OLED SCL pin |
-| **OLED SSD1306** | VCC | 3.3V | Power | ESP32 3V3 pin |
-| **OLED SSD1306** | GND | GND | Ground | ESP32 GND pin |
-| **TFT ST7789** | MOSI (SDA) | GPIO 11 | SPI Data | ST7789 SDA pin |
-| **TFT ST7789** | SCLK (SCL) | GPIO 12 | SPI Clock | ST7789 SCL pin |
-| **TFT ST7789** | CS | GPIO 10 | Chip Select | Device selection |
-| **TFT ST7789** | DC | GPIO 9 | Data/Command | Data/command indicator |
-| **TFT ST7789** | RST | GPIO 13 | Reset | Screen reset |
-| **TFT ST7789** | BL | GPIO 7 | Backlight | LED backlight |
-| **TFT ST7789** | VCC | 3.3V | Power | ESP32 3V3 pin |
-| **TFT ST7789** | GND | GND | Ground | ESP32 GND pin |
-| **TB6612_PWMA** | PWMA | GPIO 5 | PWM Direction A | Light intensity control |
-| **TB6612_AIN1** | AIN1 | GPIO 6 | Direction bit 1 | Current direction control |
-| **TB6612_AIN2** | AIN2 | GPIO 4 | Direction bit 2 | Current direction control |
-| **TB6612_STBY** | STBY | GPIO 8 | Standby | Module activation (HIGH=active) |
-| **TB6612FNG** | VCC | 3.3V | Logic power | ESP32 3V3 pin |
-| **TB6612FNG** | VM | 5-15V | Motor power | External power for garland |
-| **TB6612FNG** | GND | GND | Ground | Common with ESP32 GND |
-| **PIR_SENSOR** | OUT | GPIO 14 | Detection signal | HIGH = motion detected |
-| **PIR Sensor** | VCC | 5V | Power | ESP32 5V pin (via USB) |
-| **PIR Sensor** | GND | GND | Ground | ESP32 GND pin |
-| **LDR_SENSOR** | Signal | GPIO 15 | ADC Read | Voltage divider with R=10kΩ |
-| **LDR** | VCC | 3.3V | Power | Via 10kΩ resistor |
-| **LDR** | GND | GND | Ground | Via LDR to GND |
-
-### 🎄 TB6612FNG + Garland Connection Schematic
+## 🖥️ LCD ST7789 Wiring Diagram (ESP32 Classic)
 
 ```
-ESP32-S3                TB6612FNG              LED Garland
-┌─────────┐            ┌──────────┐           ┌──────────┐
-│         │            │          │           │          │
-│ GPIO 5  ├───────────►│ PWMA     │           │          │
-│ GPIO 6  ├───────────►│ AIN1     │           │          │
-│ GPIO 4  ├───────────►│ AIN2     │           │          │
-│ GPIO 8  ├───────────►│ STBY     │           │          │
-│         │            │          │           │          │
-│   3V3   ├───────────►│ VCC      │           │          │
-│   GND   ├───────────►│ GND      ├──────────►│ GND (-)  │
-│         │            │          │           │          │
-│         │    ┌──────►│ VM       │           │          │
-│         │    │       │          │           │          │
-│         │    │       │ AO1      ├──────────►│ Wire 1   │
-│         │    │       │ AO2      ├──────────►│ Wire 2   │
-│         │    │       │          │           │          │
-└─────────┘    │       └──────────┘           └──────────┘
-               │
-        External Power
-        (5V-15V)
-        ┌──────┐
-        │  +   ├──────┘
-        │  -   ├────────────────────────────►Common GND
-        └──────┘
-```
-
-**⚠️ IMPORTANT - TB6612FNG Power Supply**:
-- **VCC** (3.3V): Control logic from ESP32
-- **VM** (5-15V): Power supply for garland (from external source)
-- **GND**: Common ground between ESP32, TB6612FNG and external power
-
-**💡 Operating Principle**:
-- LEDs are mounted in anti-parallel (2 groups back-to-back)
-- Current direction change = change of lit LED group
-- PWM controls light intensity (0-255)
-
-### 🚶 PIR Sensor Connection Schematic
-
-```
-ESP32-S3           PIR HC-SR501
+ESP32 Classic         LCD ST7789
 ┌─────────┐        ┌──────────┐
 │         │        │          │
-│ GPIO 14 ├───────►│ OUT      │
-│    5V   ├───────►│ VCC      │
+│ GPIO 23 ├───────►│ MOSI/SDA │
+│ GPIO 18 ├───────►│ SCLK/SCL │
+│ GPIO 15 ├───────►│ CS       │
+│ GPIO  2 ├───────►│ DC       │
+│ GPIO  4 ├───────►│ RST      │
+│ GPIO 32 ├───────►│ BL       │
+│   3V3   ├───────►│ VCC      │
 │   GND   ├───────►│ GND      │
 │         │        │          │
 └─────────┘        └──────────┘
 ```
 
-**PIR Configuration**:
-- Adjust sensitivity via module potentiometer
-- Adjust timeout delay (typically 3s-5min)
-- HIGH signal when motion detected
+| Signal | GPIO Pin | Description | C Macro   | Change     |
+|--------|----------|-------------|-----------|------------|
+| MOSI   | GPIO 23  | SPI Data    | LCD_MOSI  | 🔄 #2 (2025-12-30) |
+| SCLK   | GPIO 18  | SPI Clock   | LCD_SCLK  | 🔄 #2 (2025-12-30) |
+| CS     | GPIO 15  | Chip Select | LCD_CS    | 🔄 #2 (2025-12-30) |
+| DC     | GPIO 2   | Data/Command| LCD_DC    | 🔄 #2 (2025-12-30) |
+| RST    | GPIO 4   | Reset       | LCD_RST   | 🔄 #2 (2025-12-30) |
+| BLK    | GPIO 32  | Backlight   | LCD_BLK   | 🔄 #2 (2025-12-30) |
 
-### 💡 LDR Photoresistor Connection Schematic
+> **LCD ST7789 Change History:**
+> - #3 (2025-12-30): LCD ST7789 is now the only supported color display (TFT/ILI9341 removed, OLED as backup)
+> - #2 (2025-12-30): New mapping (MOSI=23, SCLK=18, CS=15, DC=2, RST=4, BLK=32)
+> - #1 (2025-12-29): Initial mapping
 
-```
-ESP32-S3           LDR + Resistor
-┌─────────┐        
-│         │        3.3V
-│         │          │
-│         │         ┌┴┐
-│         │         │ │ R = 10kΩ
-│         │         └┬┘
-│         │          │
-│ GPIO 15 ├──────────┼───┐
-│         │          │   │
-│         │         ┌┴┐  │
-│         │         │ │ LDR (Photoresistor)
-│         │         └┬┘  │
-│         │          │   │
-│   GND   ├──────────┴───┘
-│         │
-└─────────┘
-```
+# Pin Connection Guide - LED-Garland-Anim (ESP32 Classic uniquement)
 
-**Principle**:
-- Voltage divider: 10kΩ resistor in series with LDR
-- More light → low LDR resistance → high voltage
-- Less light → high LDR resistance → low voltage
-- 12-bit ADC reading: 0-4095
+> 📌 **Beginner's Guide**: This document explains how to physically connect components to your ESP32 Classic board for the LED-Garland-Anim project.
 
-### 🔘 Button Connection Schematic
-
-```
-ESP32-S3           Button 1              Button 2
-┌─────────┐        ┌──────┐              ┌──────┐
-│         │        │      │              │      │
-│ GPIO 16 ├────┬───┤  ○   ├───┐      ┌───┤  ○   ├───┐
-│         │    │   │      │   │      │   │      │   │
-│ GPIO 17 ├────┼───┘──────┘   │      │   └──────┴───┘
-│         │    │              │      │              │
-│   GND   ├────┴──────────────┴──────┴──────────────┘
-│         │
-└─────────┘
-```
-
-**Configuration**:
-- Active-low buttons (press = GND)
-- Internal pull-up enabled in code
-- Debounce handled by OneButton library
-
-### 🔌 OLED SSD1306 Connection Schematic (I2C)
-
-```
-ESP32-S3           OLED SSD1306
-┌─────────┐        ┌──────────┐
-│         │        │          │
-│ GPIO 21 ├───────►│ SDA      │
-│ GPIO 20 ├───────►│ SCL      │
-│    3V3  ├───────►│ VCC      │
-│    GND  ├───────►│ GND      │
-│         │        │          │
-└─────────┘        └──────────┘
-```
-
-**Default I2C Address**: `0x3C` (sometimes `0x3D`)
-
-### 🖥️ TFT ST7789 Connection Schematic (SPI)
-
-```
-ESP32-S3           TFT ST7789
-┌─────────┐        ┌──────────┐
-│         │        │          │
-│ GPIO 11 ├───────►│ MOSI/SDA │
-│ GPIO 12 ├───────►│ SCLK/SCL │
-│ GPIO 10 ├───────►│ CS       │
-│ GPIO  9 ├───────►│ DC       │
-│ GPIO 13 ├───────►│ RST      │
-│ GPIO  7 ├───────►│ BL       │
-│    3V3  ├───────►│ VCC      │
-│    GND  ├───────►│ GND      │
-│         │        │          │
-└─────────┘        └──────────┘
-```
+## Table of Contents
+- [ESP32 Classic DevKitC](#esp32-classic-devkitc)
+- [TB6612FNG Module](#tb6612fng-module---garland-controller)
+- [Beginner Tips](#beginner-tips)
 
 ---
 
@@ -197,12 +51,12 @@ ESP32-S3           TFT ST7789
 | **BUTTON_BOOT** | Button | GPIO 0 | Integrated button on board | Already present, long press restart |
 | **BUTTON_1** | Button | GPIO 16 | External button | Animation change <br>🔄 Changement #2 (2025-12-29) |
 | **BUTTON_2** | Button | GPIO 17 | External button | Mode change <br>🔄 Changement #2 (2025-12-29) |
-| **LCD ST7789** | MOSI | GPIO 15 | SPI Data | LCD_MOSI <br>🆕 Changement #1 (2025-12-29) |
-| **LCD ST7789** | SCLK | GPIO 9  | SPI Clock | LCD_SCLK <br>🆕 Changement #1 (2025-12-29) |
-| **LCD ST7789** | CS   | GPIO 3  | Chip Select | LCD_CS <br>🆕 Changement #1 (2025-12-29) |
-| **LCD ST7789** | DC   | GPIO 4  | Data/Command | LCD_DC <br>🆕 Changement #1 (2025-12-29) |
-| **LCD ST7789** | RST  | GPIO 5  | Reset | LCD_RST <br>🆕 Changement #1 (2025-12-29) |
-| **LCD ST7789** | BLK  | GPIO 10 | Backlight | LCD_BLK <br>🆕 Changement #1 (2025-12-29) |
+| **LCD ST7789** | MOSI | GPIO 23 | SPI Data | LCD_MOSI <br>🔄 Changement #2 (2025-12-30) |
+| **LCD ST7789** | SCLK | GPIO 18 | SPI Clock | LCD_SCLK <br>🔄 Changement #2 (2025-12-30) |
+| **LCD ST7789** | CS   | GPIO 15 | Chip Select | LCD_CS <br>🔄 Changement #2 (2025-12-30) |
+| **LCD ST7789** | DC   | GPIO 2  | Data/Command | LCD_DC <br>🔄 Changement #2 (2025-12-30) |
+| **LCD ST7789** | RST  | GPIO 4  | Reset | LCD_RST <br>🔄 Changement #2 (2025-12-30) |
+| **LCD ST7789** | BLK  | GPIO 32 | Backlight | LCD_BLK <br>🔄 Changement #2 (2025-12-30) |
 | **LED_BUILTIN** | LED | GPIO 2 | Integrated blue LED | Visual heartbeat |
 | **OLED SSD1306** | SDA | GPIO 21 | I2C Data | Connection to OLED SDA pin |
 | **OLED SSD1306** | SCL | GPIO 22 | I2C Clock | Connection to OLED SCL pin |
