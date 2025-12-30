@@ -22,6 +22,7 @@ static unsigned long autoAnimationIntervalMs = 30000;   // Intervalle entre chan
 static unsigned long motionTriggerDurationMs = MOTION_TRIGGER_DURATION; // Durée d'allumage après détection
 static bool garlandEnabled = true;
 static bool autoModeActive = false;  // Flag pour suivre si le mode AUTO est actif
+static bool lastMotionState = false;  // État précédent du capteur PIR pour détecter les fronts
 
 // Paramètres d'animation
 static uint8_t brightnessA = 0;
@@ -401,28 +402,50 @@ void setupGarland() {
     
     // Configuration des capteurs
     pinMode(PIR_SENSOR, INPUT);
-    
+
     // Initialisation
     garlandOff();
     animationStartTime = millis();
-    
+
+    // Initialiser motionDetectedTime dans le passé pour que le timer soit expiré au démarrage
+    // Évite que les animations s'allument automatiquement au boot en mode détection
+    if (motionDetectedTime == 0) {
+        motionDetectedTime = 0 - motionTriggerDurationMs - 1000;  // Débordement intentionnel
+    }
+
     LOG_PRINTLN("✓ Guirlande initialisée");
 }
 
 void updateGarland() {
     // Gestion des modes
     bool shouldBeOn = false;
-    
+
     switch (currentMode) {
         case MODE_PERMANENT:
             shouldBeOn = true;
             break;
-            
+
         case MODE_MOTION_TRIGGER:
-            if (isMotionDetected()) {
+            // Détecter seulement les fronts montants (nouveau mouvement)
+            bool currentMotionState = isMotionDetected();
+            if (currentMotionState && !lastMotionState) {
+                // Front montant détecté : nouveau mouvement
                 motionDetectedTime = millis();
+                LOG_PRINTLN("🔔 Mouvement détecté ! Timer activé.");
             }
-            shouldBeOn = (millis() - motionDetectedTime < motionTriggerDurationMs);
+            lastMotionState = currentMotionState;
+
+            // Vérifier si on est dans la fenêtre de temps après détection
+            unsigned long elapsed = millis() - motionDetectedTime;
+            shouldBeOn = (elapsed < motionTriggerDurationMs);
+
+            // Log pour debug (toutes les 5 secondes)
+            static unsigned long lastLogTime = 0;
+            if (millis() - lastLogTime > 5000) {
+                lastLogTime = millis();
+                LOG_PRINTF("Mode Détection: %s (temps écoulé: %lu ms / %lu ms)\n",
+                    shouldBeOn ? "ON" : "OFF", elapsed, motionTriggerDurationMs);
+            }
             break;
     }
     
