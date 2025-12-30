@@ -69,10 +69,10 @@ void handleSetAnimation() {
         int animId = server.arg("id").toInt();
         if (animId >= 0 && animId < ANIM_COUNT) {
             setGarlandAnimation((GarlandAnimation)animId);
-            
-            // Mise à jour OLED après changement (fonction vide si HAS_OLED non défini)
-            updateOledAnimationStatus(getGarlandAnimationName(), getGarlandModeName(), WiFi.localIP());
-            
+
+            // Mise à jour de l'écran ST7789 après changement
+            displayMainScreen(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName());
+
             server.send(200, "text/plain", "Animation changée");
         } else {
             server.send(400, "text/plain", "ID animation invalide");
@@ -90,10 +90,10 @@ void handleSetMode() {
         int modeId = server.arg("id").toInt();
         if (modeId >= 0 && modeId < MODE_COUNT) {
             setGarlandMode((GarlandMode)modeId);
-            
-            // Mise à jour OLED après changement (fonction vide si HAS_OLED non défini)
-            updateOledAnimationStatus(getGarlandAnimationName(), getGarlandModeName(), WiFi.localIP());
-            
+
+            // Mise à jour de l'écran ST7789 après changement
+            displayMainScreen(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName());
+
             server.send(200, "text/plain", "Mode changé");
         } else {
             server.send(400, "text/plain", "ID mode invalide");
