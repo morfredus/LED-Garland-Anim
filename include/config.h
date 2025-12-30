@@ -18,20 +18,11 @@
     #define LOG_PRINTF(...)
 #endif
 
-// --- Configuration OLED (SSD1306) ---
-// Décommenter pour activer l'affichage OLED
-#define HAS_OLED
-#define OLED_WIDTH       128
-#define OLED_HEIGHT      32   // 64 pour 128x64, 32 pour 128x32
-#define OLED_ADDR        0x3C  // Adresse I2C standard (0x3D sur certains modèles)
-#define OLED_RESET       -1    // Pas de pin de reset (-1)
-
-// --- Configuration ST7789 (TFT couleur) ---
-// Décommenter pour activer l'affichage ST7789
+// --- Configuration ST7789 (Écran LCD intégré IdeaSpark) ---
 #define HAS_ST7789
-#define ST7789_WIDTH     240   // Largeur de l'écran en pixels
-#define ST7789_HEIGHT    240   // Hauteur de l'écran (240 pour carré, 135 pour rectangulaire)
-#define ST7789_ROTATION  2     // Rotation de l'écran (0, 1, 2, 3)
+#define ST7789_WIDTH     135   // Largeur de l'écran 1.14" (135x240)
+#define ST7789_HEIGHT    240   // Hauteur de l'écran 1.14"
+#define ST7789_ROTATION  1     // Rotation de l'écran (0, 1, 2, 3)
 
 // Couleurs de base pour ST7789 (RGB565)
 #define COLOR_BLACK      0x0000
