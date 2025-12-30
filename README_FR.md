@@ -1,80 +1,99 @@
 # LED-Garland-Anim
 
-**Version 0.8.0** - Contrôleur d'animation de guirlande LED bi-directionnelle pour ESP32/ESP32-S3
+**Version 1.0.0** - Contrôleur d'Animation de Guirlande LED Bi-directionnelle pour ESP32 IdeaSpark
 
-Contrôlez une guirlande à 2 fils avec LEDs en anti-parallèle via un module TB6612FNG. Dispose de 11 animations spectaculaires (incluant 5 nouveaux effets visuels), mode Auto avec démarrage instantané, 2 modes de fonctionnement intelligents, affichage OLED avec visualisation animée, interface web, et contrôles physiques par boutons.
+Contrôlez une guirlande à 2 fils avec LEDs en anti-parallèle via un module pilote moteur TB6612FNG. Dispose de 11 animations spectaculaires avec visualisations LCD vibrantes, mode Auto avec démarrage instantané, 2 modes de fonctionnement intelligents, écran couleur ST7789 1.14" intégré, interface web, et contrôles physiques par boutons.
 
-[🇬🇧 English version](README.md) | [📝 Journal des modifications](CHANGELOG_FR.md) | [📚 Documentation](docs/)
+[🇬🇧 English version](README.md) | [📝 Changelog](CHANGELOG_FR.md) | [📚 Documentation](docs/) | [📋 Notes de Version](docs/RELEASE_NOTES_FR.md)
+
+---
+
+## 🎯 Version 1.0.0 - Plateforme ESP32 IdeaSpark
+
+Cette version majeure se concentre exclusivement sur la carte **ESP32 IdeaSpark** avec écran **LCD ST7789 1.14"** intégré (135×240 pixels). Tout support ESP32-S3 et affichages obsolètes (OLED/TFT) a été supprimé pour une plateforme moderne et simplifiée.
+
+### 🆕 Nouveau dans v1.0.0
+- ✨ **Interface LCD ST7789 Moderne** - Affichage couleur vibrant avec animations fluides
+- 🎨 **11 Visualisations Animées** - Chaque animation a sa représentation visuelle unique
+- 📱 **Affichage Réseau WiFi** - SSID et IP toujours visibles à l'écran principal
+- 🐛 **Correction Détection Mouvement** - Timer à déclenchement front montant fonctionnel
+- 🔧 **Plateforme Simplifiée** - ESP32 IdeaSpark uniquement, réduction code 15%
 
 ---
 
 ## ✨ Fonctionnalités Principales
 
-### 🎄 11 Animations Spectaculaires de Guirlande
-- **Éteint**: Guirlande désactivée
-- **Fade Alterné**: Transition douce entre les deux sens de LEDs
-- **Clignotement Alterné**: Alternance rapide entre Sens A et B
-- **Pulsation**: Battement simultané des deux sens
-- **Respiration**: Montée/descente lente de l'intensité
-- **✨ Strobe**: Flash stroboscopique rapide
-- **✨ Battement Cœur**: Double pulsation caractéristique (♥️ BOM-bom...)
-- **✨ Vague**: Onde sinusoïdale fluide entre les directions
-- **✨ Scintillement**: Effet de scintillement aléatoire
-- **✨ Météore**: Traînée lumineuse avec estompage progressif
-- **Mode Automatique**: Enchaînement de toutes les animations (30s chacune) avec **démarrage instantané** - aucune période vide
+### 🎄 11 Animations Spectaculaires
+- **Éteint** : Guirlande désactivée (texte rouge "OFF")
+- **Fade Alterné** : Transition douce avec barres dégradé jaune/bleu
+- **Clignotement Alterné** : Alternance rapide entre Direction A et B
+- **Pulsation** : Battement simultané avec cercle violet qui grandit
+- **Respiration** : Montée/descente lente avec fade cyan
+- **Strobe** : Flashs stroboscopiques blancs rapides
+- **Battement Cœur** : Double pulsation rouge (♥️ BOM-bom...)
+- **Vague** : Onde sinusoïdale cyan fluide
+- **Scintillement** : 15 points jaunes clignotant aléatoirement
+- **Météore** : Effet traînée lumineuse orange/jaune
+- **Mode Auto** : Cycle à travers toutes les animations (30s chacune) avec doubles cercles en orbite
 
 ### 🎮 2 Modes de Fonctionnement Intelligents
-- **Permanent**: Toujours allumé (par défaut au démarrage)
-- **Détection Mouvement**: Déclenchement par capteur PIR (30s après détection mouvement)
+- **Permanent** : Toujours allumé (par défaut au démarrage)
+- **Déclenchement Mouvement** : Activation capteur PIR (30s après détection avec détection front)
 
-### 🖥️ Affichage OLED en Temps Réel
-- Affichage en direct des noms d'animation et de mode
-- Adresse IP locale pour accès web
-- Barre de visualisation animée (11 motifs distincts)
-- Mise en page adaptative pour écrans 128x32 et 128x64
-- Taux de rafraîchissement 10 FPS pour animations fluides
+### 🖥️ Écran LCD ST7789 1.14" (135×240 pixels)
+- **Écran Démarrage** : Nom projet, version, barre progression connexion WiFi
+- **Écran Principal** :
+  - Nom application et version (centrés)
+  - Infos réseau WiFi (SSID + adresse IP)
+  - Noms mode et animation actuels
+  - Grande zone visualisation animée (234×57 pixels)
+- **11 Animations Visuelles Distinctes** : Effets fluides, colorés et modernes à 10 FPS
+- **Interface Professionnelle** : Séparateurs cyan, labels colorés, layout optimisé
 
 ### 🌐 Interface Web
-- **Tableau de Bord Complet**: Info système, mémoire, statistiques WiFi
-- **Contrôle Guirlande**: Sélection animation et mode (2 modes, 15 animations dont Auto)
-- **Visualisation Capteurs**: État PIR, niveau luminosité
-- **Actions à Distance**: Actualisation et redémarrage
+- **Tableau de Bord Complet** : Infos système, mémoire, statistiques WiFi
+- **Contrôle Guirlande** : Sélection animation et mode (2 modes, 11 animations incl. Auto)
+- **Visualisation Capteurs** : État capteur mouvement PIR
+- **Actions Distantes** : Rafraîchir et redémarrer
+- **Mises à Jour Temps Réel** : Affichage mis à jour via interface web
 
 ### 🔘 Contrôles Physiques
-- **Bouton 0 (BOOT)**: Redémarrage en appui long (1s)
-- **Bouton 1**: Changement d'animation + accès mode auto
-- **Bouton 2**: Changement de mode de fonctionnement
+- **Bouton BOOT (GPIO 0)** : Redémarrage sur appui long (1s)
+- **Bouton 1 (GPIO 16)** : Changement animation + accès mode auto
+- **Bouton 2 (GPIO 17)** : Changement mode fonctionnement
 
-### 📱 Affichage & Feedback
-- **Support OLED SSD1306**: Progression WiFi, IP, infos temps réel
-- **Support TFT ST7789**: Écran couleur haute résolution
-- **LED RGB NeoPixel**: Feedback visuel d'état
-- **Multi-affichage**: OLED et TFT simultanément
-
-- **Multi-Cartes**: ESP32-S3 (N16R8, N8R8) et ESP32 Classic (DevKitC)
-- **WiFiMulti**: Connexion automatique à plusieurs réseaux
-- **Module TB6612FNG**: Contrôle bi-directionnel de la guirlande (GPIO : TB6612_PWMA, TB6612_AIN1, TB6612_AIN2, TB6612_STBY)
-- **Capteur PIR**: Détection de mouvement HC-SR501 (GPIO : PIR_SENSOR)
-- **Photorésistance LDR**: Détection jour/nuit (GPIO : LDR_SENSOR)
+### 🔧 Caractéristiques Techniques
+- **Plateforme Unique** : ESP32 IdeaSpark LCD 1.14" uniquement
+- **WiFiMulti** : Connexion automatique à plusieurs réseaux
+- **Module TB6612FNG** : Contrôle guirlande bi-directionnelle (PWM 0-255, 5000 Hz)
+- **Capteur PIR** : Détection mouvement HC-SR501 avec déclenchement front
+- **Paramètres Persistants** : Stockage NVS pour mode, animation et durées
+- **Code Optimisé** : Réduction 15% depuis v0.x.x multi-plateforme
 
 ---
 
 ## 📋 Prérequis
 
 ### Logiciels
-- **PlatformIO** (extension VS Code ou CLI)
+- **PlatformIO** (extension VS Code ou CLI recommandé)
 - **Python 3.x** (pour PlatformIO)
-- **Git** (pour contrôle de version)
+- **Git** (pour contrôle version)
 
 ### Matériel
-- Carte **ESP32-S3 DevKitC-1** ou **ESP32 DevKitC**
-- Module **TB6612FNG** (contrôleur moteur double pont H)
-- Guirlande LED à 2 fils (LEDs en anti-parallèle, ~50 LEDs total)
-- Capteur **PIR HC-SR501** (optionnel, pour mode détection mouvement)
-- Écran **OLED SSD1306** 128x32 ou 128x64 (optionnel)
-- Écran **TFT ST7789** 240x240 (optionnel)
-- **LED RGB NeoPixel** WS2812B (optionnel)
-- Alimentation adaptée pour la guirlande (vérifier tension/courant)
+- Carte **ESP32 IdeaSpark LCD 1.14"** (avec écran ST7789 intégré)
+- Module **TB6612FNG** (contrôleur dual pont-H)
+- Guirlande LED 2 fils (LEDs anti-parallèle, ~50 LEDs total)
+- Capteur **PIR HC-SR501** (pour mode déclenchement mouvement)
+- 2x **Boutons poussoirs** (pour contrôles utilisateur)
+- Alimentation appropriée :
+  - ESP32 : 5V via USB-C (500mA+)
+  - TB6612FNG : 5-15V externe (1-2A selon guirlande)
+
+### Non Supporté en v1.0.0
+- ❌ Cartes ESP32-S3 (supprimées)
+- ❌ Affichages OLED (SSD1306)
+- ❌ Autres affichages TFT (ILI9341, etc.)
+- ❌ Capteur lumière LDR
 
 ---
 
@@ -82,298 +101,331 @@ Contrôlez une guirlande à 2 fils avec LEDs en anti-parallèle via un module TB
 
 ### 1. Cloner le Projet
 ```bash
-git clone <votre-repo>
-cd Anim-Guirlande
+git clone https://github.com/votre-utilisateur/LED-Garland-Anim.git
+cd LED-Garland-Anim
 ```
 
 ### 2. Configurer `include/secrets.h`
-Éditez `include/secrets.h` pour définir vos réseaux WiFi.
+Créer ou éditer `include/secrets.h` pour configurer vos réseaux WiFi :
 
-Exemple :
 ```cpp
-#define WIFI_SSID_1 "YourNetwork"
-#define WIFI_PASS_1 "YourPassword"
+#ifndef SECRETS_H
+#define SECRETS_H
+
+// Réseaux WiFi (connexion au premier disponible)
+const char* WIFI_NETWORKS[][2] = {
+    {"VotreSSID1", "VotreMotDePasse1"},
+    {"VotreSSID2", "VotreMotDePasse2"},
+    {nullptr, nullptr}  // Terminateur
+};
+
+// Optionnel : Bot Telegram (si utilisation telegram_control.cpp)
+#define TELEGRAM_BOT_TOKEN "votre_token_bot"
+#define TELEGRAM_CHAT_ID "votre_chat_id"
+
+#endif
 ```
 
-### 3. Configurer PlatformIO
-Modifiez les chemins de build dans `platformio.ini` (optionnel) :
+### 3. Câblage Matériel
 
-```ini
-build_dir       = C:/pio_builds/LED-Garland-Anim/build
-build_cache_dir = C:/pio_builds/LED-Garland-Anim/cache
+Consultez **[docs/PIN_MAPPING_FR.md](./docs/PIN_MAPPING_FR.md)** pour schémas détaillés.
+
+#### Résumé Pins ESP32 IdeaSpark :
 ```
+LCD ST7789 (Intégré sur PCB) :
+  MOSI  → GPIO 23
+  SCLK  → GPIO 18
+  CS    → GPIO 15
+  DC    → GPIO 2
+  RST   → GPIO 4
+  BLK   → GPIO 32  ⚠️ DOIT ÊTRE HIGH
 
-### 4. Sélectionner l'Environnement
-Choisissez votre carte dans `platformio.ini` :
-- `esp32s3_n16r8`: ESP32-S3 avec 16MB Flash / 8MB PSRAM (par défaut)
-- `esp32s3_n8r8`: ESP32-S3 avec 8MB Flash / 8MB PSRAM
-- `esp32devkitc`: ESP32 Classic (4MB Flash)
-
-### 5. Câbler les Composants
-Consultez **[docs/PIN_MAPPING.md](./docs/PIN_MAPPING.md)** pour les schémas de connexion détaillés.
-
-#### Résumé Pins ESP32-S3 :
-```
-TB6612FNG:
-  PWMA  → GPIO 5
-  AIN1  → GPIO 6
-  AIN2  → GPIO 4
-  STBY  → GPIO 8
-
-Capteurs:
-  PIR   → GPIO 14
-
-Boutons:
-  BTN1  → GPIO 16
-  BTN2  → GPIO 17
-
-Affichages:
-  OLED SDA → GPIO 21
-  OLED SCL → GPIO 22
-```
-
-#### Résumé Pins ESP32 Classic :
-```
-TB6612FNG:
+Pilote Moteur TB6612FNG :
   PWMA  → GPIO 12
-  AIN1  → GPIO 32
+  AIN1  → GPIO 25
   AIN2  → GPIO 33
   STBY  → GPIO 14
 
-Capteurs:
-  PIR   → GPIO 35
+Capteurs :
+  PIR   → GPIO 35 (pin input-only)
 
-Boutons:
-  BTN1  → GPIO 4
-  BTN2  → GPIO 16
+Boutons :
+  BTN1  → GPIO 16
+  BTN2  → GPIO 17
+  BOOT  → GPIO 0 (intégré)
 
-Affichages:
-  OLED SDA → GPIO 21
-  OLED SCL → GPIO 22
+I2C (disponible pour extension) :
+  SDA   → GPIO 21
+  SCL   → GPIO 22
 ```
 
-### 6. Compiler et Téléverser
-```bash
-# Compilation
-pio run -e esp32s3_n16r8
+**⚠️ Critique** : GPIO 32 (LCD_BLK) doit être mis à HIGH pour voir l'affichage !
 
-# Upload
-pio run -e esp32s3_n16r8 -t upload
+### 4. Compiler et Téléverser
+
+```bash
+# Compiler pour ESP32 IdeaSpark (seule plateforme supportée)
+pio run -e esp32devkitc
+
+# Téléverser sur la carte
+pio run -e esp32devkitc -t upload
 
 # Moniteur série
 pio device monitor
 ```
 
+**Note** : L'environnement par défaut est `esp32devkitc` configuré pour ESP32 IdeaSpark.
+
 ---
 
 ## 📡 Utilisation
 
-### Démarrage
-1. La guirlande démarre en animation **Auto** et mode **Permanent**
-2. L'écran OLED/TFT affiche la progression de connexion WiFi
-3. Une fois connecté, l'adresse IP s'affiche sur l'OLED et l'interface web
-4. Accédez à l'interface web : `http://[IP_ESP32]`
+### Séquence Démarrage
+1. **Écran Démarrage** : Affiche nom projet, version et progression connexion WiFi
+2. **Connexion WiFi** : Se connecte au premier réseau disponible de secrets.h
+3. **Écran Principal** : Affiche infos WiFi (SSID + IP), mode, animation et visuel
+4. **Notification Telegram** : Envoie message démarrage avec détails réseau (si configuré)
+5. **Interface Web** : Disponible à `http://[IP_ESP32]`
 
 ### Contrôles Physiques
-- **Bouton 1**: Passer à l'animation suivante (ou entrer en mode auto)
-- **Bouton 2**: Changer de mode de fonctionnement
-- **Bouton BOOT (appui long)**: Redémarrer l'ESP32
+- **Bouton 1 (GPIO 16)** :
+  - Appui court : Animation suivante
+  - Cycle : Éteint → Fade → Clignotement → Pulsation → Respiration → Strobe → Battement → Vague → Scintillement → Météore → Auto → Éteint...
+- **Bouton 2 (GPIO 17)** :
+  - Appui court : Mode suivant
+  - Cycle : Permanent → Déclenchement Mouvement → Permanent...
+- **Bouton BOOT (GPIO 0)** :
+  - Appui long (1s) : Redémarrage ESP32
 
 ### Interface Web
-- **Sélecteur Animation**: Choisir parmi 15 animations (dont Auto)
-- **Sélecteur Mode**: Basculer entre 2 modes de fonctionnement
-- **Bouton Actualiser**: Mettre à jour les informations système
-- **Bouton Redémarrer**: Redémarrage à distance
+Naviguez vers `http://[IP_ESP32]` pour :
+- **Tableau de Bord** : Informations système (mémoire libre, uptime, signal WiFi)
+- **Contrôle Guirlande** : Sélection animation (11 options) et mode (2 options)
+- **État Capteurs** : État capteur mouvement PIR
+- **Actions** : Rafraîchir données ou redémarrer appareil
 
-### Bot Telegram
-- Commandes (depuis le chat autorisé) :
-  - `/anim <id|nom>` (ex : `/anim 3`, `/anim auto`)
-  - `/mode <id|nom>` (ex : `/mode 1`, `/mode detect`)
-  - `/nextanim`, `/nextmode`
-  - `/status` (animation, mode, IP courants)
-  - `/liste` (toutes les animations et modes avec IDs)
+### Affichage LCD Principal
+```
+┌──────────────────────────────┐
+│ LED-Garland-Anim   (centré)  │  ← Nom appli
+│ v1.0.0             (centré)  │  ← Version
+├──────────────────────────────┤
+│ Mode: Permanent              │  ← Mode actuel
+│ Anim: Fade Alterne           │  ← Animation actuelle
+├──────────────────────────────┤
+│ SSID: MonWiFi                │  ← Réseau WiFi
+│ IP: 192.168.1.100            │  ← Adresse IP
+├──────────────────────────────┤
+│ ┌──────────────────────────┐ │
+│ │  [Visuel Animé]          │ │  ← Zone 234×57px
+│ └──────────────────────────┘ │
+└──────────────────────────────┘
+```
 
-### Affichage OLED
-- Affiche le nom de l'animation courante
-- Affiche le nom du mode de fonctionnement courant
-- Affiche l'adresse IP
-- Barre de visualisation animée en bas (14 motifs distincts)
+Chaque animation a son visuel unique :
+- **Fade Alterné** : Barres dégradé jaune/bleu
+- **Pulsation** : Cercle violet qui grandit/rétrécit
+- **Battement Cœur** : Effet double pulsation rouge
+- **Auto** : Texte vert avec cercles en orbite
+- Et 7 autres...
 
 ---
 
-## 📁 Structure du Projet
+## 📊 Changements Mapping Pins (v1.0.0)
+
+| Signal | Ancien (v0.x) | Nouveau (v1.0.0) | Raison |
+|--------|--------------|------------------|---------|
+| TB6612_AIN1 | GPIO 32 | **GPIO 25** | GPIO 32 nécessaire pour rétroéclairage LCD |
+| PIR_SENSOR | GPIO 14 | **GPIO 35** | GPIO 35 est input-only (optimal capteurs) |
+| LDR_SENSOR | GPIO 15 | **Supprimé** | Capteur lumière non utilisé en v1.0.0 |
+
+**Mapping complet** : Voir [docs/PIN_MAPPING_FR.md](./docs/PIN_MAPPING_FR.md)
+
+---
+
+## 🔧 Configuration
+
+### Durée Animation (Mode Auto)
+Par défaut : 30 secondes par animation
+
+Changer via interface web ou éditer dans `include/garland_control.h` :
+```cpp
+#define AUTO_MODE_INTERVAL 30000  // millisecondes
+```
+
+### Durée Détection Mouvement
+Par défaut : 30 secondes après détection mouvement
+
+Changer via interface web ou éditer dans `include/garland_control.h` :
+```cpp
+#define MOTION_TRIGGER_DURATION 30000  // millisecondes
+```
+
+### Rétroéclairage Affichage
+Le rétroéclairage LCD est contrôlé par GPIO 32 et mis HIGH automatiquement dans `setupDisplay()`. Pour ajuster :
+
+```cpp
+pinMode(LCD_BLK, OUTPUT);
+digitalWrite(LCD_BLK, HIGH);  // ON (requis pour voir affichage)
+// digitalWrite(LCD_BLK, LOW);  // OFF (écran noir)
+```
+
+---
+
+## 📁 Structure Projet
 
 ```
-Anim-Guirlande/
+LED-Garland-Anim/
 ├── include/
-│   ├── board_config.h        # Pin mapping ESP32/S3
-│   ├── config.h              # Configuration générale
-│   ├── secrets.h             # Réseaux WiFi
-│   ├── display.h             # Gestion écrans OLED/TFT
-│   ├── garland_control.h     # Contrôle guirlande et animations
+│   ├── board_config.h        # Mapping pins ESP32 IdeaSpark
+│   ├── config.h              # Configuration générale (ST7789, couleurs)
+│   ├── secrets.h             # Réseaux WiFi (créé par utilisateur)
+│   ├── display.h             # Gestion affichage ST7789
+│   ├── garland_control.h     # Animations & modes guirlande
 │   ├── web_interface.h       # Handlers HTTP
 │   ├── web_pages.h           # Générateur HTML
-│   └── web_styles.h          # Styles CSS
+│   └── telegram_control.h    # Bot Telegram (optionnel)
 ├── src/
 │   ├── main.cpp              # Point d'entrée
 │   ├── display.cpp           # Implémentation affichage
-│   └── garland_control.cpp   # Implémentation animations
+│   ├── garland_control.cpp   # Logique animations
+│   └── telegram_control.cpp  # Implémentation bot Telegram
 ├── docs/
-│   ├── PIN_MAPPING.md        # Schémas de connexion
-│   ├── ARCHITECTURE.md       # Documentation technique
-│   ├── USER_GUIDE_FR.md      # Guide utilisateur
-│   └── TROUBLESHOOTING_FR.md # Guide de dépannage
+│   ├── PIN_MAPPING_FR.md     # Guide câblage complet
+│   ├── ARCHITECTURE_FR.md    # Documentation technique
+│   ├── USER_GUIDE_FR.md      # Manuel utilisateur
+│   ├── TROUBLESHOOTING_FR.md # Problèmes & solutions
+│   ├── RELEASE_NOTES_FR.md   # Points forts v1.0.0
+│   └── *.md                  # Versions anglaises
 ├── platformio.ini            # Configuration PlatformIO
-├── README.md                 # Version anglaise
-├── README_FR.md              # Ce fichier
-├── CHANGELOG.md              # Historique versions (anglais)
-└── CHANGELOG_FR.md           # Historique versions (français)
-```
-
----
-
-## 🔧 Configuration Avancée
-
-### Désactiver les Écrans
-Dans `include/config.h` :
-```cpp
-// #define HAS_OLED        // Commenter pour désactiver
-// #define HAS_ST7789      // Commenter pour désactiver
-```
-
-### Ajuster la Durée de Détection Mouvement
-Dans `include/garland_control.h` :
-```cpp
-#define MOTION_TRIGGER_DURATION 30000  // Durée en ms après détection
-```
-
----
-
-## 📊 Spécifications Techniques
-
-### Guirlande LED
-- Type : 2 fils avec LEDs en anti-parallèle
-- Configuration : ~25 LEDs Sens A + ~25 LEDs Sens B
-- Contrôle : PWM 8 bits (0-255) à 5000 Hz
-- Module : TB6612FNG (double pont H)
-
-### Logique de Contrôle TB6612FNG
-- Direction 0 (Off) : AIN1=LOW, AIN2=LOW
-- Direction 1 (Forward A) : AIN1=HIGH, AIN2=LOW
-- Direction 2 (Backward B) : AIN1=LOW, AIN2=HIGH
-- Direction 3 (Brake) : AIN1=HIGH, AIN2=HIGH
-- STBY doit être à HIGH pour activer
-
-### Capteurs
-- **PIR** : Signal digital (HIGH = mouvement détecté)
-- **LDR** : Analogique 12 bits (0-4095)
-
-### Mémoire (ESP32-S3 N16R8)
-- Flash : 16 MB (partition huge_app)
-- PSRAM : 8 MB (80 MHz Octal)
-- RAM : ~500 KB (heap + PSRAM)
-
-### WiFi
-- Multi-réseau automatique (WiFiMulti)
-- Auto-reconnexion en cas de perte
-- Serveur Web sur port 80
-
----
-
-## 🚀 Comportement au Démarrage
-
-Au démarrage, le système s'initialise avec :
-- **Mode Animation** : `AUTO` - Enchaîne les 14 animations (30 sec chacune)
-- **Mode Fonctionnement** : `PERMANENT` - Guirlande toujours allumée
-- **Affichage** : Affiche le nom de l'animation et l'adresse IP sur l'OLED
-
-Modifiez ces valeurs par défaut dans `src/garland_control.cpp` :
-```cpp
-static GarlandAnimation currentAnimation = ANIM_AUTO;    // Changer vers une animation
-static GarlandMode currentMode = MODE_PERMANENT;         // Ou MODE_MOTION_TRIGGER
+├── CHANGELOG_FR.md           # Historique versions
+└── README_FR.md              # Ce fichier
 ```
 
 ---
 
 ## 🐛 Dépannage
 
-### La Guirlande Ne S'Allume Pas
-- Vérifier le câblage du TB6612FNG (VCC, GND, VM)
-- S'assurer que STBY est à HIGH
-- Tester avec animation simple (ex: Clignotement)
-- Vérifier tension/courant de l'alimentation
+### Écran LCD Noir
+1. **Vérifier rétroéclairage** : GPIO 32 (LCD_BLK) doit être HIGH
+2. **Vérifier câblage** : Pins SPI (MOSI, SCLK, CS, DC, RST)
+3. **Alimentation** : Assurer 3.3V stable
+4. **Code test** :
+```cpp
+pinMode(LCD_BLK, OUTPUT);
+digitalWrite(LCD_BLK, HIGH);
+display.fillScreen(ST77XX_WHITE);  // Devrait afficher écran blanc
+```
 
-### Le Capteur PIR Détecte en Continu
-- Ajuster la sensibilité (potentiomètre sur module)
-- Vérifier le délai de temporisation du PIR
-- Éloigner des sources de chaleur
+### Guirlande Ne S'Allume Pas
+1. **TB6612FNG STBY** : Doit être HIGH pour activer module
+2. **Alimentation externe** : Vérifier 5-15V sur pin VM
+3. **GND commun** : Vérifier connexion GND entre ESP32 et TB6612FNG
+4. **Animation test** : Essayer "Pulsation" (simple, facile debug)
 
-### L'ESP32 Ne Se Connecte Pas au WiFi
-- Vérifier `secrets.h` (SSID et mot de passe corrects)
-- S'assurer d'être en WiFi 2.4 GHz (pas 5 GHz)
-- Consulter le moniteur série pour erreurs
-- Essayer de se rapprocher du routeur
+### Détection Mouvement Ne Fonctionne Pas
+1. **Sensibilité PIR** : Ajuster potentiomètre sur HC-SR501
+2. **Alimentation** : Assurer PIR a 5V
+3. **Problème timer** : Vérifier moniteur série pour logs debug (toutes les 5s)
+4. **Pin** : Vérifier connexion GPIO 35 (pin input-only)
 
-### Écran OLED Noir
-- Vérifier l'adresse I2C (0x3C ou 0x3D)
-- Tester avec scanner I2C
-- Contrôler les connexions SDA/SCL
-- Vérifier alimentation 3.3V
+### WiFi Ne Se Connecte Pas
+1. **secrets.h** : Vérifier SSID et mot de passe
+2. **2.4GHz** : ESP32 supporte seulement 2.4GHz WiFi (pas 5GHz)
+3. **Moniteur série** : Vérifier tentatives connexion et erreurs
+4. **Signal** : Se rapprocher du routeur
 
-### Les Boutons Ne Répondent Pas
-- Vérifier que les pins GPIO ne sont pas INPUT_ONLY
-- Contrôler la configuration pull-up
-- Tester avec multimètre
-- S'assurer de la mise à la masse
+### Boutons Ne Répondent Pas
+1. **Câblage** : Vérifier connexion vers GND
+2. **Pull-up** : Résistances pull-up internes activées dans logiciel
+3. **Test** : Devrait lire 3.3V quand non pressé, 0V quand pressé
+4. **GPIO** : Assurer pins correctes (16, 17, 0)
 
----
-
-## 📝 Versions
-
-**Version Actuelle : v0.2.0** (2025-12-09)
-
-Voir [CHANGELOG_FR.md](./CHANGELOG_FR.md) pour l'historique complet.
-
----
-
-## 📚 Documentation
-
-- **[README.md](./README.md)** - Version anglaise
-- **[CHANGELOG.md](./CHANGELOG.md)** - Historique versions (anglais)
-- **[CHANGELOG_FR.md](./CHANGELOG_FR.md)** - Historique versions (français)
-- **[docs/PIN_MAPPING.md](./docs/PIN_MAPPING.md)** - Schémas de connexion détaillés
-- **[docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md)** - Architecture du code
-- **[docs/USER_GUIDE_FR.md](./docs/USER_GUIDE_FR.md)** - Guide utilisateur complet
-- **[docs/TROUBLESHOOTING_FR.md](./docs/TROUBLESHOOTING_FR.md)** - Dépannage détaillé
+Pour plus de solutions, voir [docs/TROUBLESHOOTING_FR.md](./docs/TROUBLESHOOTING_FR.md)
 
 ---
 
-## 🤝 Contribution
+## 📊 Spécifications Techniques
 
-Les contributions sont les bienvenues ! Merci de :
-1. Fork le projet
-2. Créer une branche (`git checkout -b feature/amelioration`)
-3. Commit les changements (`git commit -m 'Ajout fonctionnalité'`)
-4. Push sur la branche (`git push origin feature/amelioration`)
+### Affichage
+- **Modèle** : LCD TFT ST7789 1.14"
+- **Résolution** : 135×240 pixels
+- **Couleur** : RGB565 (16-bit, 65K couleurs)
+- **Interface** : SPI matériel
+- **Taux Rafraîchissement** : 10 FPS pour animations
+- **Orientation** : Paysage (rotation = 1)
+
+### Contrôle Guirlande LED
+- **Type** : 2 fils avec LEDs anti-parallèle
+- **Configuration** : ~25 LEDs par direction (50 total)
+- **Contrôleur** : Pont-H dual TB6612FNG
+- **PWM** : 8-bit (0-255) à 5000 Hz
+- **Directions** : Avant (A), Arrière (B), Éteint, Frein
+
+### Mémoire & Performance
+- **Flash** : 4MB (ESP32 Classic)
+- **RAM** : ~320KB
+- **Heap Libre** : ~200KB typique
+- **Taille Code** : ~800KB compilé
+- **CPU** : 240 MHz dual-core
+
+### Consommation Énergie
+- **ESP32 + LCD** : ~150mA @ 5V (USB)
+- **Guirlande LED** : Variable (dépend luminosité et alimentation)
+- **Total** : Recommandé 2A @ 5V pour sécurité
+
+---
+
+## 🚀 Feuille de Route / Idées Futures
+
+- 🔮 Effets animation additionnels
+- 🔮 Intégration MQTT pour domotique
+- 🔮 Synchronisation multi-guirlandes
+- 🔮 Effets réactifs capteur température/humidité
+- 🔮 Mode réactif musique (entrée microphone)
+- 🔮 Éditeur animation personnalisée via interface web
+
+---
+
+## 📝 Historique Versions
+
+**Actuelle** : v1.0.0 (2025-12-30)
+
+Voir [CHANGELOG_FR.md](./CHANGELOG_FR.md) pour historique complet.
+
+Versions majeures :
+- **v1.0.0** (2025-12-30) : Plateforme ESP32 IdeaSpark, LCD ST7789, affichage WiFi
+- **v0.8.0** (2025-12-29) : Mise à jour convention nommage GPIO
+- **v0.7.0** (2025-12-30) : LCD ST7789 et mises à jour pins boutons
+- **v0.6.3** (2025-12-13) : 5 nouvelles animations (Strobe, Battement, Vague, Scintillement, Météore)
+- **v0.1.0** (2025-12-09) : Version initiale avec contrôle guirlande
+
+---
+
+## 🤝 Contribuer
+
+Les contributions sont bienvenues ! Merci de :
+1. Forker le projet
+2. Créer une branche fonctionnalité (`git checkout -b feature/amelioration`)
+3. Committer vos changements (`git commit -m 'Ajout fonctionnalité'`)
+4. Pousser vers la branche (`git push origin feature/amelioration`)
 5. Ouvrir une Pull Request
 
 ---
 
 ## 📄 Licence
 
-Ce projet est fourni tel quel à des fins éducatives et personnelles.
-
----
-
-## 👤 Auteur
-
-Créé en tant que projet ESP32 spécialisé pour contrôler des guirlandes LED bi-directionnelles avec animations avancées et modes de fonctionnement intelligents.
+Ce projet est fourni tel quel pour usage éducatif et personnel.
 
 ---
 
 ## 🙏 Remerciements
 
-- Équipe PlatformIO pour l'excellente plateforme de développement
-- Adafruit pour les bibliothèques d'affichage et capteurs
-- Communauté ESP32 pour le support du framework Arduino
-- Module TB6612FNG pour le contrôle fiable moteur/LED
+- **Adafruit** - Bibliothèques GFX, NeoPixel et ST7789
+- **PlatformIO** - Excellente plateforme développement
+- **Communauté ESP32** - Support framework Arduino
+- **Toshiba** - IC pilote moteur TB6612FNG
+
+---
+
+**LED-Garland-Anim v1.0.0** - Contrôleur Moderne de Guirlande LED pour ESP32 IdeaSpark 🎄✨
