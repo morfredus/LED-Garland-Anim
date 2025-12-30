@@ -22,7 +22,7 @@
 #define HAS_ST7789
 #define ST7789_WIDTH     135   // Largeur de l'écran 1.14" (135x240)
 #define ST7789_HEIGHT    240   // Hauteur de l'écran 1.14"
-#define ST7789_ROTATION  1     // Rotation de l'écran (0, 1, 2, 3)
+#define ST7789_ROTATION  0     // Rotation de l'écran (0, 1, 2, 3)
 
 // Couleurs de base pour ST7789 (RGB565)
 #define COLOR_BLACK      0x0000
