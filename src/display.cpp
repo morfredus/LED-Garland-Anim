@@ -99,66 +99,61 @@ void displayBootScreen(const char* projectName, const char* projectVersion, int 
 void displayMainScreen(const char* ssid, IPAddress ip, const char* modeName, const char* animationName) {
     display.fillScreen(COLOR_BLACK);
 
-    // --- EN-TÊTE : Nom + Version ---
+    int16_t x1, y1;
+    uint16_t w, h;
+
+    // --- NOM DE L'APPLICATION (ligne 1, centré) ---
     display.setTextSize(1);
     display.setTextColor(COLOR_CYAN);
-    display.setCursor(5, 5);
-    display.print(PROJECT_NAME);
-    display.print(" v");
-    display.println(PROJECT_VERSION);
+    display.getTextBounds(PROJECT_NAME, 0, 0, &x1, &y1, &w, &h);
+    int centerX = (ST7789_WIDTH - w) / 2;
+    display.setCursor(centerX, 2);
+    display.println(PROJECT_NAME);
+
+    // --- VERSION (ligne 2, centrée) ---
+    String versionStr = "v" + String(PROJECT_VERSION);
+    display.setTextColor(COLOR_WHITE);
+    display.getTextBounds(versionStr.c_str(), 0, 0, &x1, &y1, &w, &h);
+    centerX = (ST7789_WIDTH - w) / 2;
+    display.setCursor(centerX, 12);
+    display.println(versionStr);
 
     // --- LIGNE DE SÉPARATION ---
-    display.drawLine(0, 18, ST7789_WIDTH, 18, COLOR_CYAN);
+    display.drawLine(0, 22, ST7789_WIDTH, 22, COLOR_CYAN);
 
-    // --- SSID + IP ---
-    display.setTextSize(1);
-    display.setTextColor(COLOR_YELLOW);
-    display.setCursor(5, 25);
-    display.print("SSID: ");
-    display.setTextColor(COLOR_WHITE);
-    display.println(ssid);
-
-    display.setTextColor(COLOR_YELLOW);
-    display.setCursor(5, 38);
-    display.print("IP: ");
-    display.setTextColor(COLOR_WHITE);
-    display.println(ip);
-
-    // --- LIGNE DE SÉPARATION ---
-    display.drawLine(0, 52, ST7789_WIDTH, 52, COLOR_CYAN);
-
-    // --- MODE ---
+    // --- MODE + ANIMATION (très compact) ---
     display.setTextSize(1);
     display.setTextColor(COLOR_MAGENTA);
-    display.setCursor(5, 58);
-    display.print("Mode: ");
+    display.setCursor(3, 26);
+    display.print("Mode:");
     display.setTextColor(COLOR_WHITE);
+    display.setCursor(35, 26);
     display.println(modeName);
 
-    // --- ANIMATION ---
     display.setTextColor(COLOR_ORANGE);
-    display.setCursor(5, 71);
-    display.print("Anim: ");
+    display.setCursor(3, 36);
+    display.print("Anim:");
     display.setTextColor(COLOR_WHITE);
+    display.setCursor(35, 36);
     display.println(animationName);
 
     // --- LIGNE DE SÉPARATION ---
-    display.drawLine(0, 85, ST7789_WIDTH, 85, COLOR_CYAN);
+    display.drawLine(0, 46, ST7789_WIDTH, 46, COLOR_CYAN);
 
-    // --- ZONE GRAPHIQUE D'ANIMATION ---
-    // Rectangle de la zone d'animation
-    display.drawRect(5, 90, ST7789_WIDTH - 10, ST7789_HEIGHT - 95, COLOR_WHITE);
+    // --- ZONE GRAPHIQUE D'ANIMATION (maximale) ---
+    // Rectangle de la zone d'animation : de Y=49 à Y=132 (hauteur=83 pixels)
+    display.drawRect(2, 49, ST7789_WIDTH - 4, ST7789_HEIGHT - 52, COLOR_WHITE);
 
     // Affichage visuel de l'animation
     updateAnimationVisual(animationName);
 }
 
 void updateAnimationVisual(const char* animationName) {
-    // Zone d'animation : X=5, Y=90, Width=ST7789_WIDTH-10, Height=ST7789_HEIGHT-95
-    int animX = 5;
-    int animY = 90;
-    int animWidth = ST7789_WIDTH - 10;
-    int animHeight = ST7789_HEIGHT - 95;
+    // Zone d'animation (intérieur du rectangle) : X=3, Y=50, Width=234, Height=81
+    int animX = 3;
+    int animY = 50;
+    int animWidth = ST7789_WIDTH - 6;  // 240 - 6 = 234
+    int animHeight = ST7789_HEIGHT - 54;  // 135 - 54 = 81 (zone beaucoup plus grande !)
 
     // Effacer la zone d'animation (garder le rectangle)
     display.fillRect(animX + 1, animY + 1, animWidth - 2, animHeight - 2, COLOR_BLACK);
@@ -185,7 +180,7 @@ void updateAnimationVisual(const char* animationName) {
 
     // Animations visuelles selon le type
     if (strcmp(animationName, "Fade Alterne") == 0) {
-        // Deux barres qui s'alternent
+        // Deux barres horizontales qui s'alternent (amélioration visuelle)
         int barHeight = animHeight / 3;
         int barY1 = animY + barHeight / 2;
         int barY2 = animY + animHeight - barHeight - barHeight / 2;
@@ -193,48 +188,63 @@ void updateAnimationVisual(const char* animationName) {
         int brightness1 = (animFrame < 128) ? animFrame * 2 : (255 - animFrame) * 2;
         int brightness2 = 255 - brightness1;
 
-        // Map brightness to color intensity (simple grayscale approximation)
-        uint16_t color1 = display.color565(brightness1, brightness1, brightness1);
-        uint16_t color2 = display.color565(brightness2, brightness2, brightness2);
+        // Couleurs plus vives (jaune/bleu au lieu de grayscale)
+        uint16_t color1 = display.color565(brightness1, brightness1, 0);  // Jaune
+        uint16_t color2 = display.color565(0, 0, brightness2);  // Bleu
 
-        display.fillRect(animX + 10, barY1, animWidth - 20, barHeight, color1);
-        display.fillRect(animX + 10, barY2, animWidth - 20, barHeight, color2);
+        display.fillRoundRect(animX + 5, barY1, animWidth - 10, barHeight, 4, color1);
+        display.fillRoundRect(animX + 5, barY2, animWidth - 10, barHeight, 4, color2);
     }
     else if (strcmp(animationName, "Clignotement") == 0) {
-        // Rectangle qui clignote
+        // Rectangle qui clignote avec coins arrondis
         if (animFrame < 128) {
-            display.fillRect(animX + 10, animY + 10, animWidth - 20, animHeight - 20, COLOR_YELLOW);
+            display.fillRoundRect(animX + 5, animY + 5, animWidth - 10, animHeight - 10, 8, COLOR_YELLOW);
         }
     }
     else if (strcmp(animationName, "Pulsation") == 0) {
-        // Cercle qui grossit et rétrécit
-        int radius = 10 + (animFrame % 40);
+        // Cercle qui grossit et rétrécit (plus grand rayon)
+        int maxRadius = min(animWidth, animHeight) / 2 - 10;
+        int radius = 5 + ((animFrame * maxRadius) / 128) % maxRadius;
         display.fillCircle(centerX, centerY, radius, COLOR_PURPLE);
     }
     else if (strcmp(animationName, "Respiration") == 0) {
-        // Rectangle avec fade in/out
+        // Rectangle avec fade in/out (couleur cyan plus douce)
         int brightness = (animFrame < 128) ? animFrame * 2 : (255 - animFrame) * 2;
         uint16_t color = display.color565(0, brightness, brightness);
-        display.fillRect(animX + 10, animY + 10, animWidth - 20, animHeight - 20, color);
+        display.fillRoundRect(animX + 5, animY + 5, animWidth - 10, animHeight - 10, 8, color);
     }
     else if (strcmp(animationName, "Strobe") == 0) {
         // Flash stroboscopique
         if (animFrame % 20 < 3) {
-            display.fillRect(animX + 10, animY + 10, animWidth - 20, animHeight - 20, COLOR_WHITE);
+            display.fillRoundRect(animX + 5, animY + 5, animWidth - 10, animHeight - 10, 8, COLOR_WHITE);
         }
     }
     else if (strcmp(animationName, "Battement Coeur") == 0) {
-        // Double pulsation
-        if ((animFrame % 60 < 15) || (animFrame % 60 >= 20 && animFrame % 60 < 35)) {
-            display.fillCircle(centerX, centerY, 20, COLOR_RED);
+        // Double pulsation (plus grande et plus visible)
+        int beat = animFrame % 60;
+        int radius = 0;
+
+        if (beat < 10) {
+            radius = (beat * 3);  // Premier battement : montée rapide
+        } else if (beat < 15) {
+            radius = ((15 - beat) * 3);  // Premier battement : descente
+        } else if (beat >= 20 && beat < 30) {
+            radius = ((beat - 20) * 3);  // Deuxième battement : montée
+        } else if (beat >= 30 && beat < 35) {
+            radius = ((35 - beat) * 3);  // Deuxième battement : descente
+        }
+
+        if (radius > 0) {
+            display.fillCircle(centerX, centerY, radius, COLOR_RED);
         }
     }
     else if (strcmp(animationName, "Vague") == 0) {
-        // Onde sinusoïdale
-        for (int x = 0; x < animWidth - 2; x += 3) {
-            int y = centerY + (int)(20 * sin((x + animFrame * 2) * 0.1));
-            if (y >= animY + 1 && y < animY + animHeight - 1) {
-                display.fillCircle(animX + 1 + x, y, 2, COLOR_CYAN);
+        // Onde sinusoïdale fluide (plus grande amplitude)
+        for (int x = 0; x < animWidth - 4; x += 2) {
+            int amplitude = animHeight / 3;
+            int y = centerY + (int)(amplitude * sin((x + animFrame * 3) * 0.08));
+            if (y >= animY + 2 && y < animY + animHeight - 2) {
+                display.fillCircle(animX + 2 + x, y, 3, COLOR_CYAN);
             }
         }
     }
@@ -249,22 +259,22 @@ void updateAnimationVisual(const char* animationName) {
         }
     }
     else if (strcmp(animationName, "Meteore") == 0) {
-        // Traînée qui se déplace
-        int tailLength = 40;
-        int pos = (animFrame * 2) % (animWidth + tailLength);
+        // Traînée qui se déplace (amélioration visuelle)
+        int tailLength = 60;
+        int pos = (animFrame * 3) % (animWidth + tailLength);
 
         for (int i = 0; i < tailLength; i++) {
             int x = animX + pos - i;
-            if (x >= animX + 1 && x < animX + animWidth - 1) {
+            if (x >= animX + 2 && x < animX + animWidth - 2) {
                 int brightness = 255 - (i * 255 / tailLength);
-                uint16_t color = display.color565(brightness, brightness / 2, 0);
-                display.drawFastVLine(x, animY + 10, animHeight - 20, color);
+                uint16_t color = display.color565(brightness, brightness / 2, 0);  // Orange/jaune
+                display.drawFastVLine(x, animY + 5, animHeight - 10, color);
             }
         }
     }
     else if (strcmp(animationName, "Auto") == 0) {
-        // Afficher "AUTO" avec une animation de rotation
-        display.setTextSize(2);
+        // Afficher "AUTO" centré avec cercles tournants
+        display.setTextSize(3);
         display.setTextColor(COLOR_GREEN);
         int16_t x1, y1;
         uint16_t w, h;
@@ -274,15 +284,22 @@ void updateAnimationVisual(const char* animationName) {
         display.setCursor(textX, textY);
         display.println("AUTO");
 
-        // Cercle tournant autour
-        float angle = animFrame * 0.05;
-        int circleX = centerX + (int)(30 * cos(angle));
-        int circleY = centerY + (int)(30 * sin(angle));
-        display.fillCircle(circleX, circleY, 3, COLOR_YELLOW);
+        // Deux cercles tournants en orbite
+        float angle1 = animFrame * 0.08;
+        float angle2 = angle1 + PI;
+        int orbitRadius = 40;
+
+        int circleX1 = centerX + (int)(orbitRadius * cos(angle1));
+        int circleY1 = centerY + (int)(orbitRadius * sin(angle1));
+        int circleX2 = centerX + (int)(orbitRadius * cos(angle2));
+        int circleY2 = centerY + (int)(orbitRadius * sin(angle2));
+
+        display.fillCircle(circleX1, circleY1, 4, COLOR_YELLOW);
+        display.fillCircle(circleX2, circleY2, 4, COLOR_CYAN);
     }
     else {
-        // Animation par défaut : barre horizontale
-        display.fillRect(animX + 10, centerY - 10, animWidth - 20, 20, COLOR_WHITE);
+        // Animation par défaut : barre horizontale avec coins arrondis
+        display.fillRoundRect(animX + 10, centerY - 10, animWidth - 20, 20, 5, COLOR_WHITE);
     }
 }
 
