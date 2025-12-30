@@ -151,7 +151,7 @@ static void applyAnimationCommand(const String& arg) {
     GarlandAnimation anim;
     if (tryParseAnimation(arg, anim)) {
         setGarlandAnimation(anim);
-        updateOledAnimationStatus(getGarlandAnimationName(), getGarlandModeName(), WiFi.localIP());
+        displayMainScreen(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName());
         sendTelegramMessage(String("Animation -> ") + getGarlandAnimationName());
     } else {
         sendTelegramMessage("Animation inconnue. Exemple: /anim 3 ou /anim auto");
@@ -162,7 +162,7 @@ static void applyModeCommand(const String& arg) {
     GarlandMode mode;
     if (tryParseMode(arg, mode)) {
         setGarlandMode(mode);
-        updateOledAnimationStatus(getGarlandAnimationName(), getGarlandModeName(), WiFi.localIP());
+        displayMainScreen(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName());
         sendTelegramMessage(String("Mode -> ") + getGarlandModeName());
     } else {
         sendTelegramMessage("Mode inconnu. Exemple: /mode 1 ou /mode detect");
@@ -202,14 +202,14 @@ static void processCommand(const String& text) {
 
     if (lower.startsWith("/nextanim")) {
         nextGarlandAnimation();
-        updateOledAnimationStatus(getGarlandAnimationName(), getGarlandModeName(), WiFi.localIP());
+        displayMainScreen(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName());
         sendTelegramMessage(String("Animation -> ") + getGarlandAnimationName());
         return;
     }
 
     if (lower.startsWith("/nextmode")) {
         nextGarlandMode();
-        updateOledAnimationStatus(getGarlandAnimationName(), getGarlandModeName(), WiFi.localIP());
+        displayMainScreen(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName());
         sendTelegramMessage(String("Mode -> ") + getGarlandModeName());
         return;
     }
