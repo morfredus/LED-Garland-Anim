@@ -12,9 +12,7 @@
 
 #include "web_pages.h"
 #include "garland_control.h"
-
-// Forward declaration pour éviter les dépendances circulaires
-void updateOledAnimationStatus(const char* animationName, const char* modeName, IPAddress ip);
+#include "display.h"
 
 // Déclaration du serveur web (défini dans main.cpp)
 extern WebServer server;
