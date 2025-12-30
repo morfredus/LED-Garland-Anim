@@ -8,6 +8,7 @@
 
 #include <Arduino.h>
 #include "display.h"
+#include "garland_control.h"
 
 #include <Wire.h>
 // Plus de support OLED, uniquement LCD ST7789
@@ -109,9 +110,7 @@ void displayLCDConnected(const char* ssid, IPAddress ip) {
     // Remonter les infos : tout de suite sous SSID+IP
     int yInfo = centerY + h + 32;
     // Mode (centré, sauf si AUTO)
-    extern int getGuirlandeMode();
-    extern const char* getGuirlandeModeName();
-    int mode = getGuirlandeMode();
+    int mode = (int)getGuirlandeMode();
     String modeStr = "Mode: " + String(getGuirlandeModeName());
     if (mode != 2) { // 2 = MODE_AUTO
         display_lcd.setTextColor(COLOR_YELLOW);
@@ -133,9 +132,7 @@ void displayLCDConnected(const char* ssid, IPAddress ip) {
     }
 
     // Animation (centré, sauf si mode AUTO)
-    extern int getGuirlandeAnimation();
-    extern const char* getGuirlandeAnimationName();
-    int anim = getGuirlandeAnimation();
+    int anim = (int)getGuirlandeAnimation();
     if (mode != 2) {
         const char* animLabel = "Anim: ";
         String animStr = String(animLabel) + String(getGuirlandeAnimationName());
@@ -165,13 +162,12 @@ void displayLCDConnected(const char* ssid, IPAddress ip) {
 
 // Dessine un graphe d'animation selon l'animation courante
 void drawAnimationGraph(int x, int y, int w, int h) {
-    #include "garland_control.h"
     // En mode AUTO, afficher le graphe de l'animation active réelle
-        int anim = getGuirlandeAnimationInt();
-        int mode = getGuirlandeModeInt();
-        // En mode AUTO, afficher le graphe de l'animation active réelle
-        if (mode == 2 /* G_MODE_AUTO */) {
-            anim = getActiveGuirlandeAnimation();
+    int anim = getGuirlandeAnimationInt();
+    int mode = getGuirlandeModeInt();
+    // En mode AUTO, afficher le graphe de l'animation active réelle
+    if (mode == 2 /* G_MODE_AUTO */) {
+        anim = getActiveGuirlandeAnimation();
     }
     display_lcd.fillRect(x, y, w, h, COLOR_BLACK);
     // Correction : ne pas dessiner sur la ligne du bas du rectangle (h-2 -> h-3)

@@ -1,69 +1,3 @@
-int getActiveGuirlandeAnimation(void) {
-    return (int)activeAnimation;
-}
-// Fonctions Guirlande* (API publique)
-GuirlandeAnimation getGuirlandeAnimation() {
-    return currentAnimation;
-}
-
-const char* getGuirlandeAnimationName() {
-    static const char* guirlandeAnimationNames[] = {
-        "Eteint",
-        "Fade Alterne",
-        "Clignotement",
-        "Pulsation",
-        "Respiration",
-        "Strobe",
-        "Battement Coeur",
-        "Vague",
-        "Scintillement",
-        "Meteore",
-        "Auto"
-    };
-    if ((int)currentAnimation >= 0 && (int)currentAnimation < 11) {
-        return guirlandeAnimationNames[(int)currentAnimation];
-    }
-    return "?";
-}
-
-const char* getGuirlandeAnimationNameById(int id) {
-    static const char* guirlandeAnimationNames[] = {
-        "Eteint",
-        "Fade Alterne",
-        "Clignotement",
-        "Pulsation",
-        "Respiration",
-        "Strobe",
-        "Battement Coeur",
-        "Vague",
-        "Scintillement",
-        "Meteore",
-        "Auto"
-    };
-    if (id >= 0 && id < 11) {
-        return guirlandeAnimationNames[id];
-    }
-    return "?";
-}
-// Wrappers C pour l'affichage (display.cpp)
-int getGuirlandeAnimationInt(void) {
-    return (int)currentAnimation;
-}
-int getGuirlandeModeInt(void) {
-    return (int)currentMode;
-}
-// Définitions externes pour l'affichage (centrage et graphe)
-GuirlandeAnimation getGuirlandeAnimation() {
-    return currentAnimation;
-}
-
-GuirlandeMode getGuirlandeMode() {
-    return currentMode;
-}
-// Permet d'obtenir l'animation réellement active (utile pour l'affichage du graphe en mode AUTO)
-extern "C" int getActiveGuirlandeAnimation(void) {
-    return (int)activeAnimation;
-}
 /**
  * @file garland_control.cpp
  * @brief Implémentation du contrôle des animations de guirlande
@@ -127,19 +61,19 @@ static const char* modeNames[] = {
 void loadGarlandSettings() {
     nvs_handle_t handle;
     esp_err_t err = nvs_open(NVS_NAMESPACE, NVS_READONLY, &handle);
-    
+
     if (err != ESP_OK) {
         LOG_PRINTLN("⚠ NVS non initialisé ou espace vide");
         return;
     }
-    
+
     // Charger le mode
     uint8_t mode = (uint8_t)G_MODE_PERMANENT;
     if (nvs_get_u8(handle, "mode", &mode) == ESP_OK) {
         currentMode = (GuirlandeMode)mode;
         LOG_PRINTF("Mode restauré: %s\n", modeNames[currentMode]);
     }
-    
+
     // Charger l'animation
     uint8_t anim = (uint8_t)G_ANIM_FADE_ALTERNATE;
     if (nvs_get_u8(handle, "animation", &anim) == ESP_OK) {
@@ -147,21 +81,21 @@ void loadGarlandSettings() {
         activeAnimation = currentAnimation;
         LOG_PRINTF("Animation restaurée: %s\n", animationNames[currentAnimation]);
     }
-    
+
     // Charger l'intervalle AUTO
     uint32_t autoInterval = 30000;
     if (nvs_get_u32(handle, "autoInterval", &autoInterval) == ESP_OK) {
         autoAnimationIntervalMs = autoInterval;
         LOG_PRINTF("Intervalle AUTO restauré: %lu ms\n", autoAnimationIntervalMs);
     }
-    
+
     // Charger la durée de détection mouvement
     uint32_t motionDuration = MOTION_TRIGGER_DURATION;
     if (nvs_get_u32(handle, "motionDuration", &motionDuration) == ESP_OK) {
         motionTriggerDurationMs = motionDuration;
         LOG_PRINTF("Durée mouvement restaurée: %lu ms\n", motionTriggerDurationMs);
     }
-    
+
     nvs_close(handle);
 }
 
@@ -171,25 +105,25 @@ void loadGarlandSettings() {
 void saveGarlandSettings() {
     nvs_handle_t handle;
     esp_err_t err = nvs_open(NVS_NAMESPACE, NVS_READWRITE, &handle);
-    
+
     if (err != ESP_OK) {
         LOG_PRINTLN("✗ Erreur: impossible d'ouvrir NVS");
         return;
     }
-    
+
     // Sauvegarder le mode
     nvs_set_u8(handle, "mode", (uint8_t)currentMode);
-    
+
     // Sauvegarder l'animation
     nvs_set_u8(handle, "animation", (uint8_t)currentAnimation);
-    
+
     // Sauvegarder les durées
     nvs_set_u32(handle, "autoInterval", autoAnimationIntervalMs);
     nvs_set_u32(handle, "motionDuration", motionTriggerDurationMs);
-    
+
     err = nvs_commit(handle);
     nvs_close(handle);
-    
+
     if (err == ESP_OK) {
         LOG_PRINTLN("✓ Paramètres sauvegardés en NVS");
     } else {
@@ -262,7 +196,7 @@ static void setSenseB(uint8_t intensity) {
 static void animateFadeAlternate() {
     unsigned long elapsed = millis() - animationStartTime;
     float phase = (elapsed % 4000) / 4000.0; // Cycle de 4 secondes
-    
+
     if (phase < 0.5) {
         // Phase A : Fade in/out du Sens A
         float subPhase = phase * 2.0;
@@ -282,7 +216,7 @@ static void animateFadeAlternate() {
 static void animateBlinkAlternate() {
     unsigned long elapsed = millis() - animationStartTime;
     uint16_t cycleTime = elapsed % 1000; // Cycle de 1 seconde
-    
+
     if (cycleTime < 500) {
         setSenseA(255);
     } else {
@@ -297,9 +231,9 @@ static void animatePulse() {
     unsigned long elapsed = millis() - animationStartTime;
     uint16_t cycleTime = elapsed % 2000;
     float phase = cycleTime / 2000.0;
-    
+
     uint8_t brightness = (phase < 0.5) ? (uint8_t)(phase * 2.0 * 255) : (uint8_t)((1.0 - (phase - 0.5) * 2.0) * 255);
-    
+
     // Alterner rapidement pour donner l'illusion de simultanéité
     if ((elapsed / 10) % 2 == 0) {
         setSenseA(brightness);
@@ -315,9 +249,9 @@ static void animateBreathing() {
     unsigned long elapsed = millis() - animationStartTime;
     uint16_t cycleTime = elapsed % 4000;
     float phase = cycleTime / 4000.0;
-    
+
     uint8_t brightness = (uint8_t)((1.0 - cos(phase * 2.0 * PI)) / 2.0 * 255);
-    
+
     if ((elapsed / 10) % 2 == 0) {
         setSenseA(brightness);
     } else {
@@ -331,7 +265,7 @@ static void animateBreathing() {
 static void animateStrobe() {
     unsigned long elapsed = millis() - animationStartTime;
     uint16_t cycleTime = elapsed % 200;  // Cycle de 200ms
-    
+
     // Flash très court (50ms) puis noir
     if (cycleTime < 50) {
         // Alterner A et B à chaque flash
@@ -341,7 +275,7 @@ static void animateStrobe() {
             setSenseB(255);
         }
     } else {
-        garlandOff();
+        guirlandeOff();
     }
 }
 
@@ -351,9 +285,9 @@ static void animateStrobe() {
 static void animateHeartbeat() {
     unsigned long elapsed = millis() - animationStartTime;
     uint16_t cycleTime = elapsed % 1500;  // Cycle de 1.5 secondes
-    
+
     uint8_t brightness = 0;
-    
+
     // Premier battement (0-200ms)
     if (cycleTime < 100) {
         brightness = (uint8_t)(cycleTime * 255 / 100);
@@ -367,7 +301,7 @@ static void animateHeartbeat() {
         brightness = (uint8_t)((450 - cycleTime) * 255 / 100);
     }
     // Pause jusqu'à la fin du cycle
-    
+
     // Alterner rapidement pour illuminer les deux sens
     if ((elapsed / 10) % 2 == 0) {
         setSenseA(brightness);
@@ -382,10 +316,10 @@ static void animateHeartbeat() {
 static void animateWave() {
     unsigned long elapsed = millis() - animationStartTime;
     float time = elapsed / 1000.0;  // Temps en secondes
-    
+
     // Calcul d'une onde sinusoïdale qui va de -1 à +1
     float wave = sin(time * 2.0);  // Période de π secondes
-    
+
     // Mapper la vague sur les deux sens
     if (wave > 0) {
         // Sens A : proportionnel à wave (0 → 1)
@@ -401,11 +335,11 @@ static void animateWave() {
  */
 static void animateSparkle() {
     unsigned long elapsed = millis() - animationStartTime;
-    
+
     // Changer aléatoirement toutes les 50ms
     if (elapsed % 50 < 5) {
         uint8_t randomBrightness = random(100, 255);
-        
+
         // 50% de chance pour chaque sens
         if (random(0, 2) == 0) {
             setSenseA(randomBrightness);
@@ -422,7 +356,7 @@ static void animateMeteor() {
     unsigned long elapsed = millis() - animationStartTime;
     uint16_t cycleTime = elapsed % 2000;  // Cycle de 2 secondes
     float progress = cycleTime / 2000.0;
-    
+
     // Traînée qui traverse de A vers B
     if (progress < 0.5) {
         // Phase A : montée rapide
@@ -432,7 +366,7 @@ static void animateMeteor() {
         // Phase B : montée A qui s'estompe + montée B
         uint8_t brightnessA = (uint8_t)((1.0 - progress) * 2.0 * 255);
         uint8_t brightnessB = (uint8_t)((progress - 0.5) * 2.0 * 255);
-        
+
         // Alterner rapidement pour créer l'illusion de traînée
         if ((elapsed / 20) % 2 == 0) {
             setSenseA(brightnessA);
@@ -448,123 +382,123 @@ static void animateMeteor() {
 
 void setupGarland() {
     LOG_PRINTLN("--- Initialisation guirlande ---");
-    
+
     // Charger les paramètres sauvegardés depuis NVS
     loadGarlandSettings();
-    
+
     // Configuration des pins TB6612FNG
     pinMode(TB6612_PWMA, OUTPUT);
     pinMode(TB6612_AIN1, OUTPUT);
     pinMode(TB6612_AIN2, OUTPUT);
     pinMode(TB6612_STBY, OUTPUT);
-    
+
     // Configuration PWM
     ledcSetup(GARLAND_PWM_CHANNEL, GARLAND_PWM_FREQUENCY, GARLAND_PWM_RESOLUTION);
     ledcAttachPin(TB6612_PWMA, GARLAND_PWM_CHANNEL);
-    
+
     // Activation du module (sortie de standby)
     digitalWrite(TB6612_STBY, HIGH);
-    
+
     // Configuration des capteurs
     pinMode(PIR_SENSOR, INPUT);
-    
+
     // Initialisation
-    garlandOff();
+    guirlandeOff();
     animationStartTime = millis();
-    
+
     LOG_PRINTLN("✓ Guirlande initialisée");
 }
 
 void updateGarland() {
     // Gestion des modes
     bool shouldBeOn = false;
-    
+
     switch (currentMode) {
-        case MODE_PERMANENT:
+        case G_MODE_PERMANENT:
             shouldBeOn = true;
             break;
-            
-        case MODE_MOTION_TRIGGER:
+
+        case G_MODE_MOTION_TRIGGER:
             if (isMotionDetected()) {
                 motionDetectedTime = millis();
             }
             shouldBeOn = (millis() - motionDetectedTime < motionTriggerDurationMs);
             break;
     }
-    
+
     // Si doit être éteint, éteindre et retourner
-    if (!shouldBeOn || currentAnimation == ANIM_OFF) {
-        garlandOff();
+    if (!shouldBeOn || currentAnimation == G_ANIM_OFF) {
+        guirlandeOff();
         garlandEnabled = false;
         return;
     }
-    
+
     garlandEnabled = true;
-    
+
     // Mode automatique : changer d'animation toutes les 30 secondes
     if (autoModeActive) {
         unsigned long elapsed = millis() - animationStartTime;
         if (elapsed > autoAnimationIntervalMs) {
             uint8_t nextAnim = (uint8_t)activeAnimation + 1;
-            // Boucler entre ANIM_FADE_ALTERNATE (1) et ANIM_METEOR (9), avant ANIM_AUTO (10)
-            if (nextAnim >= ANIM_AUTO) {
-                nextAnim = ANIM_FADE_ALTERNATE;
+            // Boucler entre G_ANIM_FADE_ALTERNATE (1) et G_ANIM_METEOR (9), avant G_ANIM_AUTO (10)
+            if (nextAnim >= G_ANIM_AUTO) {
+                nextAnim = G_ANIM_FADE_ALTERNATE;
             }
-            activeAnimation = (GarlandAnimation)nextAnim;
+            activeAnimation = (GuirlandeAnimation)nextAnim;
             animationStartTime = millis();
             LOG_PRINTF("Mode Auto: Animation %s\n", animationNames[nextAnim]);
         }
     }
-    
+
     // Exécution de l'animation (utiliser activeAnimation)
     switch (activeAnimation) {
-        case ANIM_OFF:
-            garlandOff();
+        case G_ANIM_OFF:
+            guirlandeOff();
             break;
-        case ANIM_FADE_ALTERNATE:
+        case G_ANIM_FADE_ALTERNATE:
             animateFadeAlternate();
             break;
-        case ANIM_BLINK_ALTERNATE:
+        case G_ANIM_BLINK_ALTERNATE:
             animateBlinkAlternate();
             break;
-        case ANIM_PULSE:
+        case G_ANIM_PULSE:
             animatePulse();
             break;
-        case ANIM_BREATHING:
+        case G_ANIM_BREATHING:
             animateBreathing();
             break;
-        case ANIM_STROBE:
+        case G_ANIM_STROBE:
             animateStrobe();
             break;
-        case ANIM_HEARTBEAT:
+        case G_ANIM_HEARTBEAT:
             animateHeartbeat();
             break;
-        case ANIM_WAVE:
+        case G_ANIM_WAVE:
             animateWave();
             break;
-        case ANIM_SPARKLE:
+        case G_ANIM_SPARKLE:
             animateSparkle();
             break;
-        case ANIM_METEOR:
+        case G_ANIM_METEOR:
             animateMeteor();
             break;
         default:
             break;
     }
-    
+
     // Libérer le CPU pour les tâches WiFi et éviter watchdog timer reset
     yield();
 }
 
-void setGarlandAnimation(GarlandAnimation animation) {
+void setGuirlandeAnimation(GuirlandeAnimation animation) {
     currentAnimation = animation;  // Toujours mettre à jour pour l'affichage
-    
+
     // Si on passe en mode AUTO, démarrer immédiatement avec la première animation
-    if (animation == ANIM_AUTO) {
+    if (animation == G_ANIM_AUTO) {
         autoModeActive = true;
-        activeAnimation = ANIM_FADE_ALTERNATE;  // Première animation
+        activeAnimation = G_ANIM_FADE_ALTERNATE;  // Première animation
         animationStartTime = millis();
-        LOG_PRINTF("Mode Auto activé: Animation %s\n", animationNames[ANIM_FADE_ALTERNATE]);
+        LOG_PRINTF("Mode Auto activé: Animation %s\n", animationNames[G_ANIM_FADE_ALTERNATE]);
     } else {
         autoModeActive = false;  // Désactiver le mode AUTO
         activeAnimation = animation;  // Animation active = animation sélectionnée
@@ -575,19 +509,35 @@ void setGarlandAnimation(GarlandAnimation animation) {
     saveGarlandSettings();
 }
 
-GarlandAnimation getGarlandAnimation() {
+GuirlandeAnimation getGuirlandeAnimation() {
     return currentAnimation;
 }
 
-const char* getGarlandAnimationName() {
-    return animationNames[currentAnimation];
+const char* getGuirlandeAnimationName() {
+    if ((int)currentAnimation >= 0 && (int)currentAnimation < G_ANIM_COUNT) {
+        return animationNames[(int)currentAnimation];
+    }
+    return "?";
 }
 
-const char* getGarlandAnimationNameById(int id) {
-    if (id >= 0 && id < ANIM_COUNT) {
+const char* getGuirlandeAnimationNameById(int id) {
+    if (id >= 0 && id < G_ANIM_COUNT) {
         return animationNames[id];
     }
     return "?";
+}
+
+// Wrappers C pour l'affichage (display.cpp)
+int getActiveGuirlandeAnimation() {
+    return (int)activeAnimation;
+}
+
+int getGuirlandeAnimationInt() {
+    return (int)currentAnimation;
+}
+
+int getGuirlandeModeInt() {
+    return (int)currentMode;
 }
 
 // ============================================================================
@@ -620,7 +570,7 @@ void setMotionTriggerDurationMs(unsigned long ms) {
     saveGarlandSettings();
 }
 
-void setGarlandMode(GarlandMode mode) {
+void setGuirlandeMode(GuirlandeMode mode) {
     currentMode = mode;
     LOG_PRINTF("Mode changé: %s\n", modeNames[mode]);
     // Sauvegarder automatiquement
@@ -632,7 +582,10 @@ GuirlandeMode getGuirlandeMode() {
 }
 
 const char* getGuirlandeModeName() {
-    return modeNames[currentMode];
+    if ((int)currentMode >= 0 && (int)currentMode < G_MODE_COUNT) {
+        return modeNames[(int)currentMode];
+    }
+    return "?";
 }
 
 const char* getGuirlandeModeNameById(int id) {
@@ -644,12 +597,9 @@ const char* getGuirlandeModeNameById(int id) {
 
 void nextGuirlandeAnimation() {
     uint8_t next = (uint8_t)currentAnimation + 1;
-    // En mode AUTO, ne pas proposer G_ANIM_OFF (0) ni G_ANIM_AUTO (10)
-    if (getGuirlandeMode() == 2) { // G_MODE_AUTO
-        if (next == 0) next = 1;
-        if (next >= (uint8_t)G_ANIM_AUTO) next = 1;
-    } else {
-        if (next >= G_ANIM_COUNT) next = 0;
+    // Ne pas proposer G_ANIM_OFF (0) ni G_ANIM_AUTO (10) en navigation manuelle
+    if (next >= G_ANIM_COUNT) {
+        next = 0;
     }
     setGuirlandeAnimation((GuirlandeAnimation)next);
 }

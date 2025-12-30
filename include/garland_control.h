@@ -1,35 +1,9 @@
-int getActiveGuirlandeAnimation(void);
-#ifdef __cplusplus
-extern "C" {
-#endif
-int getActiveGarlandAnimation(void);
-int getGarlandAnimationInt(void);
-int getGarlandModeInt(void);
-#ifdef __cplusplus
-}
-#endif
-
-// Fonctions natives C++ (pour le code C++)
-#ifdef __cplusplus
-GuirlandeAnimation getGuirlandeAnimation();
-GuirlandeMode getGuirlandeMode();
-#endif
-// Pour affichage du graphe de l'animation active en mode AUTO
-#ifdef __cplusplus
-extern "C" {
-#endif
-int getActiveGuirlandeAnimation(void);
-GuirlandeAnimation getGuirlandeAnimation(void);
-GuirlandeMode getGuirlandeMode(void);
-#ifdef __cplusplus
-}
-#endif
 /**
  * @file garland_control.h
  * @brief Contrôle des animations de guirlande LED bi-directionnelle
  * @version 0.8.0
  * @date 2025-12-13
- * 
+ *
  * Module de gestion des animations pour guirlande LED à 2 fils avec LEDs en anti-parallèle.
  * Utilise le module TB6612FNG pour contrôler la direction du courant et l'intensité lumineuse.
  */
@@ -48,21 +22,6 @@ GuirlandeMode getGuirlandeMode(void);
 // =============================================================================
 
 #define NVS_NAMESPACE "garland"  ///< Espace de noms NVS pour la persistence
-
-enum GarlandAnimation {
-    ANIM_OFF = 0,           ///< Guirlande éteinte
-    ANIM_FADE_ALTERNATE,    ///< Fade alterné entre Sens A et B
-    ANIM_BLINK_ALTERNATE,   ///< Clignotement alterné
-    ANIM_PULSE,             ///< Pulsation simultanée
-    ANIM_BREATHING,         ///< Respiration lente
-    ANIM_STROBE,            ///< Flash stroboscopique rapide
-    ANIM_HEARTBEAT,         ///< Double pulsation (battement de cœur)
-    ANIM_WAVE,              ///< Vague sinusoïdale fluide
-    ANIM_SPARKLE,           ///< Scintillement aléatoire
-    ANIM_METEOR,            ///< Traînée lumineuse avec estompage
-    ANIM_AUTO,              ///< Mode automatique (cycle toutes les animations)
-    ANIM_COUNT              ///< Nombre total d'animations
-};
 
 /**
  * @enum GuirlandeAnimation
@@ -83,12 +42,6 @@ enum GuirlandeAnimation {
     G_ANIM_COUNT              ///< Nombre total d'animations
 };
 
-enum GarlandMode {
-    MODE_PERMANENT = 0,     ///< Toujours allumé
-    MODE_MOTION_TRIGGER,    ///< Déclenchement par détection de mouvement
-    MODE_COUNT              ///< Nombre total de modes
-};
-
 /**
  * @enum GuirlandeMode
  * @brief Modes de fonctionnement de la guirlande
@@ -98,6 +51,25 @@ enum GuirlandeMode {
     G_MODE_MOTION_TRIGGER,    ///< Déclenchement par détection de mouvement
     G_MODE_COUNT              ///< Nombre total de modes
 };
+
+// Aliases pour compatibilité avec l'ancienne API
+typedef GuirlandeAnimation GarlandAnimation;
+typedef GuirlandeMode GarlandMode;
+#define ANIM_OFF G_ANIM_OFF
+#define ANIM_FADE_ALTERNATE G_ANIM_FADE_ALTERNATE
+#define ANIM_BLINK_ALTERNATE G_ANIM_BLINK_ALTERNATE
+#define ANIM_PULSE G_ANIM_PULSE
+#define ANIM_BREATHING G_ANIM_BREATHING
+#define ANIM_STROBE G_ANIM_STROBE
+#define ANIM_HEARTBEAT G_ANIM_HEARTBEAT
+#define ANIM_WAVE G_ANIM_WAVE
+#define ANIM_SPARKLE G_ANIM_SPARKLE
+#define ANIM_METEOR G_ANIM_METEOR
+#define ANIM_AUTO G_ANIM_AUTO
+#define ANIM_COUNT G_ANIM_COUNT
+#define MODE_PERMANENT G_MODE_PERMANENT
+#define MODE_MOTION_TRIGGER G_MODE_MOTION_TRIGGER
+#define MODE_COUNT G_MODE_COUNT
 
 // =============================================================================
 // CONFIGURATION
@@ -109,86 +81,82 @@ enum GuirlandeMode {
 
 #define MOTION_TRIGGER_DURATION 30000    ///< Durée d'allumage après détection (ms)
 
-// Durées configurables (exposées via l'interface Web)
-unsigned long getAutoAnimationIntervalMs();
-void setAutoAnimationIntervalMs(unsigned long ms);
-unsigned long getMotionTriggerDurationMs();
-void setMotionTriggerDurationMs(unsigned long ms);
-
-// Sauvegarde/restauration NVS
-/**
- * @brief Charge les paramètres sauvegardés (mode, animation, durées) depuis NVS
- */
-void loadGarlandSettings();
-
-/**
- * @brief Sauvegarde les paramètres actuels en NVS
- */
-void saveGarlandSettings();
-
 // =============================================================================
 // PROTOTYPES DE FONCTIONS
 // =============================================================================
 
-/**
- * @brief Initialise le module TB6612FNG et les capteurs
- * 
- * Configure les pins GPIO et le PWM pour contrôler la guirlande.
- * Initialise également les capteurs PIR et LDR.
- */
-void setupGarland();
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-/**
- * @brief Boucle principale de mise à jour des animations
- * 
- * Doit être appelée régulièrement dans loop() pour actualiser
- * l'animation en cours et gérer les modes de fonctionnement.
- */
-void updateGarland();
+// Durées configurables (exposées via l'interface Web)
+unsigned long getAutoAnimationIntervalMs(void);
+void setAutoAnimationIntervalMs(unsigned long ms);
+unsigned long getMotionTriggerDurationMs(void);
+void setMotionTriggerDurationMs(unsigned long ms);
+
+// Sauvegarde/restauration NVS
+void loadGarlandSettings(void);
+void saveGarlandSettings(void);
+
+// Fonctions d'initialisation et mise à jour
+void setupGarland(void);
+void updateGarland(void);
+
+// Fonctions pour récupérer l'animation/mode actif sous forme d'entier (pour LCD display)
+int getActiveGuirlandeAnimation(void);
+int getGuirlandeAnimationInt(void);
+int getGuirlandeModeInt(void);
+
+#ifdef __cplusplus
+}
+#endif
+
+// Fonctions C++ natives
+#ifdef __cplusplus
 
 /**
  * @brief Change l'animation actuelle
  * @param animation Nouvelle animation à afficher
  */
-void setGarlandAnimation(GarlandAnimation animation);
+void setGuirlandeAnimation(GuirlandeAnimation animation);
 
 /**
  * @brief Récupère l'animation actuelle
  * @return Animation en cours
  */
-GarlandAnimation getGarlandAnimation();
+GuirlandeAnimation getGuirlandeAnimation(void);
 
 /**
  * @brief Récupère le nom de l'animation actuelle
  * @return Nom de l'animation en cours
  */
-const char* getGarlandAnimationName();
+const char* getGuirlandeAnimationName(void);
 
 /**
  * @brief Récupère le nom d'une animation par son identifiant
- * @param id Identifiant (0..ANIM_COUNT-1)
+ * @param id Identifiant (0..G_ANIM_COUNT-1)
  * @return Nom ou "?" si hors bornes
  */
-const char* getGarlandAnimationNameById(int id);
+const char* getGuirlandeAnimationNameById(int id);
 
 /**
  * @brief Change le mode de fonctionnement
  * @param mode Nouveau mode
  */
-
 void setGuirlandeMode(GuirlandeMode mode);
 
 /**
  * @brief Récupère le mode de fonctionnement actuel
  * @return Mode actuel
  */
-GuirlandeMode getGuirlandeMode();
+GuirlandeMode getGuirlandeMode(void);
 
 /**
  * @brief Récupère le nom du mode actuel
  * @return Nom du mode en cours
  */
-const char* getGuirlandeModeName();
+const char* getGuirlandeModeName(void);
 
 /**
  * @brief Récupère le nom d'un mode par son identifiant
@@ -197,38 +165,52 @@ const char* getGuirlandeModeName();
  */
 const char* getGuirlandeModeNameById(int id);
 
-
 /**
  * @brief Passe à l'animation suivante
  */
-void nextGuirlandeAnimation();
+void nextGuirlandeAnimation(void);
 
 /**
  * @brief Passe au mode suivant
  */
-void nextGuirlandeMode();
+void nextGuirlandeMode(void);
 
 /**
  * @brief Éteint complètement la guirlande
  */
-void guirlandeOff();
+void guirlandeOff(void);
 
 /**
  * @brief Vérifie si un mouvement est détecté
  * @return true si mouvement détecté, false sinon
  */
-bool isMotionDetected();
+bool isMotionDetected(void);
 
-/**
 /**
  * @brief Récupère la valeur brute du capteur de luminosité
  * @return Valeur ADC du LDR (0-4095 pour ESP32)
  */
-int getLightLevel();
+int getLightLevel(void);
 
 /**
  * @brief Indique si une animation est actuellement active (non OFF et guirlande activée)
  * @return true si animation active, false sinon
  */
-bool isAnimationActive();
+bool isAnimationActive(void);
+
+// Aliases pour compatibilité avec l'ancienne API "Garland"
+inline void setGarlandAnimation(GarlandAnimation animation) { setGuirlandeAnimation(animation); }
+inline GarlandAnimation getGarlandAnimation(void) { return getGuirlandeAnimation(); }
+inline const char* getGarlandAnimationName(void) { return getGuirlandeAnimationName(); }
+inline const char* getGarlandAnimationNameById(int id) { return getGuirlandeAnimationNameById(id); }
+inline void setGarlandMode(GarlandMode mode) { setGuirlandeMode(mode); }
+inline GarlandMode getGarlandMode(void) { return getGuirlandeMode(); }
+inline const char* getGarlandModeName(void) { return getGuirlandeModeName(); }
+inline const char* getGarlandModeNameById(int id) { return getGuirlandeModeNameById(id); }
+inline void nextGarlandAnimation(void) { nextGuirlandeAnimation(); }
+inline void nextGarlandMode(void) { nextGuirlandeMode(); }
+inline void garlandOff(void) { guirlandeOff(); }
+
+#endif // __cplusplus
+
 #endif // GARLAND_CONTROL_H
