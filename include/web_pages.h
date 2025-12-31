@@ -112,11 +112,14 @@ String generateDashboardPage(
     html += "Ex: 30s/animation × 60s détection = 2 animations affichées.";
     html += "</div>";
 
+    // Zone de message de confirmation inline
+    html += "<div id='save-message' style='display:none;margin-top:12px;padding:10px;border-radius:8px;background:#d4edda;color:#155724;border:1px solid #c3e6cb;'></div>";
+
     // Actions de persistance
     html += "<div class='actions'>";
-    html += "<button onclick=\"fetch('/save')\">💾 Sauvegarder</button>";
-    html += "<button onclick=\"fetch('/load').then(()=>location.reload())\">🔄 Restaurer</button>";
-    html += "<button class='danger' onclick=\"if(confirm('Effacer la sauvegarde ?')) fetch('/erase')\">🗑️ Effacer</button>";
+    html += "<button onclick=\"saveSettings()\">💾 Sauvegarder</button>";
+    html += "<button onclick=\"loadSettings()\">🔄 Restaurer</button>";
+    html += "<button class='danger' onclick=\"eraseSettings()\">🗑️ Effacer</button>";
     html += "</div>";
     html += "</div>"; // card
     
@@ -131,10 +134,13 @@ String generateDashboardPage(
     
     
     // --- BOUTONS D'ACTION ---
+    // Zone de message de confirmation pour le reboot
+    html += "<div id='reboot-message' style='display:none;margin:12px 0;padding:10px;border-radius:8px;background:#fff3cd;color:#856404;border:1px solid #ffc107;'></div>";
+
     html += "<div class='actions'>";
     html += "<button onclick='location.reload()'>🔄 Actualiser</button>";
     html += "<button onclick='window.location.href=\"/update\"' style='background:linear-gradient(135deg,#667eea 0%,#764ba2 100%)'>⬆️ Mise à jour OTA</button>";
-    html += "<button class='danger' onclick='if(confirm(\"Redémarrer l'ESP32 ?\")) fetch(\"/reboot\")'>🔴 Redémarrer</button>";
+    html += "<button id='reboot-btn' class='danger' onclick='rebootDevice()'>🔴 Redémarrer</button>";
     html += "</div>";
     
     // --- SCRIPT JAVASCRIPT ---
@@ -149,6 +155,29 @@ String generateDashboardPage(
     html += "}";
     html += "function applyAutoInterval() { var s = document.getElementById('auto-interval-seconds').value; var ms = Math.round(s*1000); fetch('/auto_interval?ms=' + ms); }";
     html += "function applyMotionDuration() { var s = document.getElementById('motion-duration-seconds').value; var ms = Math.round(s*1000); fetch('/motion_duration?ms=' + ms); }";
+
+    // Fonctions pour save/load/erase avec messages inline
+    html += "function showMessage(msg) { var el = document.getElementById('save-message'); el.textContent = msg; el.style.display = 'block'; setTimeout(() => { el.style.display = 'none'; }, 3000); }";
+    html += "function saveSettings() { fetch('/save').then(() => showMessage('✓ Sauvegarde effectuée.')); }";
+    html += "function loadSettings() { fetch('/load').then(() => { showMessage('✓ Paramètres restaurés.'); setTimeout(() => location.reload(), 1000); }); }";
+    html += "function eraseSettings() { fetch('/erase').then(() => showMessage('✓ Sauvegarde effacée.')); }";
+
+    // Double validation pour le reboot
+    html += "var rebootConfirmed = false;";
+    html += "function rebootDevice() {";
+    html += "  if (!rebootConfirmed) {";
+    html += "    rebootConfirmed = true;";
+    html += "    var msg = document.getElementById('reboot-message');";
+    html += "    msg.textContent = '⚠️ Cliquez à nouveau sur Redémarrer pour confirmer';";
+    html += "    msg.style.display = 'block';";
+    html += "    document.getElementById('reboot-btn').style.background = 'linear-gradient(135deg, #f5576c 0%, #c0392b 100%)';";
+    html += "    setTimeout(() => { rebootConfirmed = false; msg.style.display = 'none'; document.getElementById('reboot-btn').style.background = ''; }, 5000);";
+    html += "  } else {";
+    html += "    fetch('/reboot');";
+    html += "    document.getElementById('reboot-message').textContent = '🔄 Redémarrage en cours...';";
+    html += "  }";
+    html += "}";
+
     // Mise à jour périodique du statut pour afficher l'animation en cours
     html += "function refreshStatus(){ fetch('/status').then(r=>r.json()).then(j=>{ var el=document.getElementById('current-anim'); if(el){ el.textContent=j.animation; } }); }";
     html += "setInterval(refreshStatus, 2000);";
