@@ -1,7 +1,7 @@
 /**
  * @file garland_control.h
  * @brief Contrôle des animations de guirlande LED bi-directionnelle
- * @version 1.1.0
+ * @version 1.5.3
  * @date 2025-12-13
  * 
  * Module de gestion des animations pour guirlande LED à 2 fils avec LEDs en anti-parallèle.
