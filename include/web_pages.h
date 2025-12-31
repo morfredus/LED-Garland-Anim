@@ -133,6 +133,7 @@ String generateDashboardPage(
     // --- BOUTONS D'ACTION ---
     html += "<div class='actions'>";
     html += "<button onclick='location.reload()'>🔄 Actualiser</button>";
+    html += "<button onclick='window.location.href=\"/update\"' style='background:linear-gradient(135deg,#667eea 0%,#764ba2 100%)'>⬆️ Mise à jour OTA</button>";
     html += "<button class='danger' onclick='if(confirm(\"Redémarrer l'ESP32 ?\")) fetch(\"/reboot\")'>🔴 Redémarrer</button>";
     html += "</div>";
     
@@ -155,7 +156,180 @@ String generateDashboardPage(
     html += "</script>";
     
     html += "</div></body></html>";
-    
+
+    return html;
+}
+
+/**
+ * @brief Génère la page HTML pour la mise à jour OTA du firmware
+ * @return String contenant le HTML complet de la page OTA
+ */
+String generateOTAPage() {
+    String html = "<!DOCTYPE html><html><head>";
+    html += "<meta charset='utf-8'>";
+    html += "<meta name='viewport' content='width=device-width, initial-scale=1'>";
+    html += "<title>Mise à jour OTA - " + String(PROJECT_NAME) + "</title>";
+    html += "<style>" + String(WEB_STYLES);
+
+    // Styles additionnels pour la page OTA
+    html += ".ota-container { max-width: 600px; margin: 0 auto; padding: 20px; }";
+    html += ".file-input-wrapper { position: relative; margin: 20px 0; }";
+    html += ".file-input { display: none; }";
+    html += ".file-label { display: inline-block; padding: 12px 24px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 8px; cursor: pointer; font-weight: bold; transition: transform 0.2s; }";
+    html += ".file-label:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4); }";
+    html += ".file-name { margin-top: 10px; padding: 10px; background: #f5f5f5; border-radius: 8px; font-family: monospace; color: #333; min-height: 20px; }";
+    html += ".upload-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 20px; transition: transform 0.2s; }";
+    html += ".upload-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(240, 147, 251, 0.4); }";
+    html += ".upload-btn:disabled { background: #ccc; cursor: not-allowed; transform: none; }";
+    html += ".progress-container { display: none; margin-top: 20px; }";
+    html += ".progress-bar { width: 100%; height: 30px; background: #f0f0f0; border-radius: 15px; overflow: hidden; }";
+    html += ".progress-fill { height: 100%; background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%); transition: width 0.3s; }";
+    html += ".progress-text { text-align: center; margin-top: 10px; font-weight: bold; color: #333; }";
+    html += ".status-message { margin-top: 20px; padding: 15px; border-radius: 8px; display: none; }";
+    html += ".status-success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }";
+    html += ".status-error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }";
+    html += ".warning-box { background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; border-radius: 4px; }";
+    html += ".info-box { background: #d1ecf1; border-left: 4px solid #17a2b8; padding: 15px; margin: 20px 0; border-radius: 4px; }";
+    html += ".back-btn { display: inline-block; margin-top: 20px; padding: 10px 20px; background: #6c757d; color: white; text-decoration: none; border-radius: 8px; }";
+    html += ".back-btn:hover { background: #5a6268; }";
+    html += "</style>";
+    html += "</head><body>";
+    html += "<div class='container'>";
+
+    // Header
+    html += "<div class='header'>";
+    html += "<h1>🔄 Mise à jour OTA</h1>";
+    html += "<p>" + String(PROJECT_NAME) + " v" + String(PROJECT_VERSION) + "</p>";
+    html += "</div>";
+
+    html += "<div class='ota-container'>";
+
+    // Carte d'information
+    html += "<div class='card'>";
+    html += "<div class='card-title'>📦 Téléverser un nouveau firmware</div>";
+
+    // Zone d'avertissement
+    html += "<div class='warning-box'>";
+    html += "⚠️ <strong>Attention :</strong> Ne débranchez pas l'appareil pendant la mise à jour. ";
+    html += "L'interruption du processus pourrait rendre l'appareil inutilisable.";
+    html += "</div>";
+
+    // Zone d'information
+    html += "<div class='info-box'>";
+    html += "ℹ️ <strong>Fichier requis :</strong> firmware.bin (compilé avec PlatformIO)<br>";
+    html += "📍 <strong>Emplacement :</strong> <code>.pio/build/esp32devkitc/firmware.bin</code>";
+    html += "</div>";
+
+    // Formulaire d'upload
+    html += "<form id='uploadForm' enctype='multipart/form-data'>";
+    html += "<div class='file-input-wrapper'>";
+    html += "<input type='file' id='fileInput' name='update' accept='.bin' class='file-input' required>";
+    html += "<label for='fileInput' class='file-label'>📁 Sélectionner un fichier .bin</label>";
+    html += "<div class='file-name' id='fileName'>Aucun fichier sélectionné</div>";
+    html += "</div>";
+    html += "<button type='submit' id='uploadBtn' class='upload-btn'>🚀 Lancer la mise à jour</button>";
+    html += "</form>";
+
+    // Barre de progression
+    html += "<div class='progress-container' id='progressContainer'>";
+    html += "<div class='progress-bar'><div class='progress-fill' id='progressFill'></div></div>";
+    html += "<div class='progress-text' id='progressText'>0%</div>";
+    html += "</div>";
+
+    // Message de statut
+    html += "<div class='status-message' id='statusMessage'></div>";
+
+    html += "</div>"; // card
+
+    // Bouton retour
+    html += "<a href='/' class='back-btn'>← Retour au tableau de bord</a>";
+
+    html += "</div>"; // ota-container
+
+    // JavaScript
+    html += "<script>";
+    html += "const fileInput = document.getElementById('fileInput');";
+    html += "const fileName = document.getElementById('fileName');";
+    html += "const uploadForm = document.getElementById('uploadForm');";
+    html += "const uploadBtn = document.getElementById('uploadBtn');";
+    html += "const progressContainer = document.getElementById('progressContainer');";
+    html += "const progressFill = document.getElementById('progressFill');";
+    html += "const progressText = document.getElementById('progressText');";
+    html += "const statusMessage = document.getElementById('statusMessage');";
+
+    // Afficher le nom du fichier sélectionné
+    html += "fileInput.addEventListener('change', function() {";
+    html += "  if (this.files.length > 0) {";
+    html += "    const file = this.files[0];";
+    html += "    fileName.textContent = file.name + ' (' + (file.size / 1024).toFixed(2) + ' KB)';";
+    html += "  } else {";
+    html += "    fileName.textContent = 'Aucun fichier sélectionné';";
+    html += "  }";
+    html += "});";
+
+    // Gérer l'upload
+    html += "uploadForm.addEventListener('submit', function(e) {";
+    html += "  e.preventDefault();";
+    html += "  if (fileInput.files.length === 0) {";
+    html += "    alert('Veuillez sélectionner un fichier .bin');";
+    html += "    return;";
+    html += "  }";
+    html += "  const file = fileInput.files[0];";
+    html += "  if (!file.name.endsWith('.bin')) {";
+    html += "    alert('Le fichier doit avoir l\\'extension .bin');";
+    html += "    return;";
+    html += "  }";
+    html += "  if (!confirm('Êtes-vous sûr de vouloir mettre à jour le firmware ?\\nL\\'appareil redémarrera automatiquement.')) {";
+    html += "    return;";
+    html += "  }";
+    html += "  uploadBtn.disabled = true;";
+    html += "  fileInput.disabled = true;";
+    html += "  progressContainer.style.display = 'block';";
+    html += "  statusMessage.style.display = 'none';";
+
+    html += "  const xhr = new XMLHttpRequest();";
+    html += "  xhr.upload.addEventListener('progress', function(e) {";
+    html += "    if (e.lengthComputable) {";
+    html += "      const percent = Math.round((e.loaded / e.total) * 100);";
+    html += "      progressFill.style.width = percent + '%';";
+    html += "      progressText.textContent = percent + '%';";
+    html += "    }";
+    html += "  });";
+
+    html += "  xhr.addEventListener('load', function() {";
+    html += "    if (xhr.status === 200) {";
+    html += "      statusMessage.className = 'status-message status-success';";
+    html += "      statusMessage.textContent = '✅ Mise à jour réussie ! Redémarrage en cours...';";
+    html += "      statusMessage.style.display = 'block';";
+    html += "      setTimeout(function() {";
+    html += "        window.location.href = '/';";
+    html += "      }, 5000);";
+    html += "    } else {";
+    html += "      statusMessage.className = 'status-message status-error';";
+    html += "      statusMessage.textContent = '❌ Erreur : ' + xhr.responseText;";
+    html += "      statusMessage.style.display = 'block';";
+    html += "      uploadBtn.disabled = false;";
+    html += "      fileInput.disabled = false;";
+    html += "    }";
+    html += "  });";
+
+    html += "  xhr.addEventListener('error', function() {";
+    html += "    statusMessage.className = 'status-message status-error';";
+    html += "    statusMessage.textContent = '❌ Erreur de connexion lors de l\\'upload';";
+    html += "    statusMessage.style.display = 'block';";
+    html += "    uploadBtn.disabled = false;";
+    html += "    fileInput.disabled = false;";
+    html += "  });";
+
+    html += "  const formData = new FormData();";
+    html += "  formData.append('update', file);";
+    html += "  xhr.open('POST', '/update');";
+    html += "  xhr.send(formData);";
+    html += "});";
+    html += "</script>";
+
+    html += "</div></body></html>";
+
     return html;
 }
 

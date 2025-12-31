@@ -28,9 +28,9 @@ pio run -e esp32s3_n16r8 -t upload
 ---
 # LED-Garland-Anim
 
-**Version: 1.2.2** (2025-12-31)
+**Version: 1.4.0** (2025-12-31)
 
-Controller for bi-directional LED garland animation on ESP32 Classic (IdeaSpark/DevKitC) with ST7789 display, auto-detection of PIR/RCWL-0516, web interface, physical buttons, 11 animations, smart modes, persistent configuration.
+Controller for bi-directional LED garland animation on ESP32 Classic (IdeaSpark/DevKitC) with ST7789 display, auto-detection of PIR/RCWL-0516, web interface, web-based OTA updates, physical buttons, 11 animations, smart modes, persistent configuration.
 
 ---
 
@@ -70,9 +70,10 @@ BTN2     → GPIO 17
 - Auto-detection of PIR HC-SR501 or RCWL-0516
 - Color ST7789 display (optional)
 - Full-featured web interface
+- **Web-based OTA firmware updates** (new in v1.4.0)
 - Physical button controls
 - Persistent configuration (NVS)
-- OTA updates
+- OTA updates (ArduinoOTA + Web)
 
 ---
 
@@ -130,12 +131,57 @@ BTN2     → GPIO 17
 
 See the detailed guide: [docs/OTA_UPDATE.md](docs/OTA_UPDATE.md)
 
-Starting from v1.3.0, the firmware supports OTA updates using ArduinoOTA.
+## 6. OTA Updates (Over-the-Air)
 
-**How to use:**
-1. Connect the ESP32 to WiFi (see above).
-2. In PlatformIO or Arduino IDE, select "Upload using OTA" (the device appears as `LED-Garland-Anim.local`).
-3. The device will reboot automatically after a successful upload.
+See the detailed guide: [docs/OTA_UPDATE.md](docs/OTA_UPDATE.md)
+
+The firmware supports **two OTA update methods**:
+
+### 6.1. Web-based OTA Update (New in v1.4.0) ⭐
+
+**The simplest and recommended method!**
+
+1. Compile your firmware with PlatformIO:
+   ```bash
+   pio run -e esp32devkitc
+   ```
+
+2. Access the ESP32's web interface: `http://[ESP32_IP]`
+
+3. Click the **"⬆️ OTA Update"** button on the dashboard
+
+4. On the update page:
+   - Click **"📁 Select .bin file"**
+   - Navigate to `.pio/build/esp32devkitc/firmware.bin`
+   - Click **"🚀 Start Update"**
+
+5. Progress is displayed in real-time:
+   - Progress bar in the browser
+   - Percentage display on the ST7789 screen
+   - Status messages (success/failure)
+
+6. The ESP32 reboots automatically after a successful update
+
+**Advantages:**
+- ✅ Intuitive graphical interface
+- ✅ No PlatformIO commands needed
+- ✅ Works from any browser (PC, smartphone, tablet)
+- ✅ Real-time progress display
+- ✅ Automatic file validation
+
+**⚠️ Important:** Do not unplug the device during the update!
+
+### 6.2. OTA Update via ArduinoOTA (PlatformIO)
+
+**Traditional method for developers:**
+
+1. Connect the ESP32 to WiFi
+2. In PlatformIO, use:
+   ```bash
+   pio run -e esp32devkitc -t upload --upload-port [ESP32_IP]
+   ```
+3. The device appears as `LED-Garland-Anim.local`
+4. The device reboots automatically after the update
 
 **Security note:** OTA is enabled only when the ESP32 is connected to WiFi.
 
@@ -174,7 +220,7 @@ In `include/garland_control.h`:
 
 ## 9. Versions
 
-**Current Version: v1.2.2** (2025-12-31)
+**Current Version: v1.4.0** (2025-12-31)
 See [CHANGELOG.md](./CHANGELOG.md)
 
 ---

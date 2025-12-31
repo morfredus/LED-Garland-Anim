@@ -4,12 +4,13 @@
 /**
  * @file web_interface.h
  * @brief Gestion de l'interface web et des handlers du serveur
- * @version 1.1.0
- * 
+ * @version 1.4.0
+ *
  * Module dédié à la gestion des routes HTTP et handlers du serveur web.
  * Contient les callbacks pour les différents endpoints de l'API web.
  */
 
+#include <Update.h>
 #include "web_pages.h"
 #include "garland_control.h"
 #include "display.h"
@@ -165,6 +166,122 @@ void handleEraseSettings() {
 }
 
 /**
+ * @brief Handler pour la page de mise à jour OTA (GET /update)
+ * Affiche la page d'upload du firmware
+ */
+void handleOTAPage() {
+    String html = generateOTAPage();
+    server.send(200, "text/html", html);
+}
+
+/**
+ * @brief Handler pour l'upload du firmware OTA (POST /update)
+ * Gère le téléversement du fichier .bin et la mise à jour du firmware
+ */
+void handleOTAUpload() {
+    HTTPUpload& upload = server.upload();
+
+    if (upload.status == UPLOAD_FILE_START) {
+        LOG_PRINTF("[OTA] Update Start: %s\n", upload.filename.c_str());
+
+        // Affichage sur l'écran ST7789
+        #ifdef HAS_ST7789
+            display.fillScreen(COLOR_BLACK);
+            display.setTextSize(2);
+            display.setTextColor(COLOR_CYAN);
+            display.setCursor(10, 60);
+            display.println("MISE A JOUR");
+            display.setCursor(10, 90);
+            display.println("OTA...");
+        #endif
+
+        // Démarrer la mise à jour (taille 0 = utiliser tout l'espace disponible)
+        if (!Update.begin(UPDATE_SIZE_UNKNOWN)) {
+            LOG_PRINTLN("[OTA] Error: Not enough space");
+            Update.printError(Serial);
+        }
+    }
+    else if (upload.status == UPLOAD_FILE_WRITE) {
+        // Écrire les données du firmware
+        if (Update.write(upload.buf, upload.currentSize) != upload.currentSize) {
+            LOG_PRINTLN("[OTA] Error: Write failed");
+            Update.printError(Serial);
+        } else {
+            // Affichage de la progression
+            size_t progress = Update.progress();
+            size_t total = Update.size();
+            if (total > 0) {
+                int percent = (progress * 100) / total;
+                LOG_PRINTF("[OTA] Progress: %d%%\n", percent);
+
+                #ifdef HAS_ST7789
+                    // Barre de progression
+                    int barWidth = 115;
+                    int barX = 10;
+                    int barY = 120;
+                    int barHeight = 20;
+                    int fillWidth = (barWidth * percent) / 100;
+
+                    display.fillRect(barX, barY, barWidth, barHeight, COLOR_BLACK);
+                    display.drawRect(barX, barY, barWidth, barHeight, COLOR_WHITE);
+                    display.fillRect(barX + 2, barY + 2, fillWidth - 4, barHeight - 4, COLOR_GREEN);
+
+                    display.fillRect(10, 150, 115, 30, COLOR_BLACK);
+                    display.setCursor(40, 155);
+                    display.setTextSize(3);
+                    display.setTextColor(COLOR_YELLOW);
+                    display.printf("%d%%", percent);
+                #endif
+            }
+        }
+    }
+    else if (upload.status == UPLOAD_FILE_END) {
+        if (Update.end(true)) {
+            LOG_PRINTF("[OTA] Update Success: %u bytes\n", upload.totalSize);
+
+            #ifdef HAS_ST7789
+                display.fillScreen(COLOR_BLACK);
+                display.setTextSize(2);
+                display.setTextColor(COLOR_GREEN);
+                display.setCursor(10, 100);
+                display.println("REUSSI!");
+                display.setCursor(10, 130);
+                display.println("Redemarrage");
+            #endif
+        } else {
+            LOG_PRINTLN("[OTA] Update Failed");
+            Update.printError(Serial);
+
+            #ifdef HAS_ST7789
+                display.fillScreen(COLOR_BLACK);
+                display.setTextSize(2);
+                display.setTextColor(COLOR_RED);
+                display.setCursor(10, 100);
+                display.println("ECHEC!");
+            #endif
+        }
+    }
+}
+
+/**
+ * @brief Handler appelé après la fin de l'upload OTA
+ * Envoie la réponse finale et redémarre l'ESP32
+ */
+void handleOTAUploadComplete() {
+    if (Update.hasError()) {
+        String error = "Update Failed: ";
+        error += Update.errorString();
+        server.send(500, "text/plain", error);
+        LOG_PRINTF("[OTA] Error: %s\n", error.c_str());
+    } else {
+        server.send(200, "text/plain", "Update Success! Rebooting...");
+        LOG_PRINTLN("[OTA] Success! Rebooting...");
+        delay(1000);
+        ESP.restart();
+    }
+}
+
+/**
  * @brief Handler pour les pages non trouvées (404)
  */
 void handleNotFound() {
@@ -186,6 +303,11 @@ void setupWebServer() {
     server.on("/load", handleLoadSettings);
     server.on("/erase", handleEraseSettings);
     server.on("/status", handleStatus);
+
+    // Routes OTA
+    server.on("/update", HTTP_GET, handleOTAPage);
+    server.on("/update", HTTP_POST, handleOTAUploadComplete, handleOTAUpload);
+
     server.onNotFound(handleNotFound);
     server.begin();
     LOG_PRINTLN("Serveur web démarré sur http://" + WiFi.localIP().toString());

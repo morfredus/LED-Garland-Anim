@@ -1,3 +1,27 @@
+# [1.4.0] – 2025-12-31
+
+### Added
+- **Web-based OTA update system**: Upload firmware (.bin) directly from the browser
+- Dedicated web page `/update` with intuitive interface for firmware upload
+- Real-time progress display (progress bar, percentage)
+- Uploaded file validation (check .bin extension)
+- Update status display on ST7789 screen (progress, success, failure)
+- Complete error handling with clear messages
+- Automatic reboot after successful update
+- Quick access button to OTA update from the dashboard
+
+### Changed
+- Version number incremented to 1.4.0 (SEMVER)
+- User documentation completed with Web OTA instructions (EN/FR)
+- ArduinoOTA kept as alternative method (PlatformIO OTA)
+
+### Technical
+- Using native ESP32 `Update.h` for firmware flashing
+- Upload handler with optimized memory management (chunked upload)
+- JavaScript interface for asynchronous upload with XMLHttpRequest
+- Client-side and server-side validation
+
+---
 # [1.3.0] – 2025-12-31
 
 ### Added
