@@ -27,7 +27,7 @@ Vous pouvez choisir la méthode de téléversement (USB ou OTA) à chaque upload
 ---
 # LED-Garland-Anim
 
-**Version : 1.4.0** (2025-12-31)
+**Version : 1.4.1** (2025-12-31)
 
 Contrôleur d'animation de guirlande LED bi-directionnelle pour ESP32 Classic (IdeaSpark/DevKitC) avec écran ST7789, auto-détection PIR/RCWL-0516, web interface, boutons physiques, 11 animations, modes intelligents, configuration persistante.
 
@@ -596,7 +596,8 @@ Dans `include/garland_control.h` :
 
 Au démarrage, le système s'initialise avec :
 - **Mode Animation** : `AUTO` - Enchaîne les 14 animations (30 sec chacune)
-- **Mode Fonctionnement** : `PERMANENT` - Guirlande toujours allumée
+- **Mode Fonctionnement** : `PERMANENT` ou **DÉTECTION**
+- **Démarrage immédiat** : La guirlande démarre toujours avec une animation active, même en mode détection (allumée pour la durée configurée).
 - **Affichage** : Affiche le nom de l'animation et l'adresse IP sur l'OLED
 
 Modifiez ces valeurs par défaut dans `src/garland_control.cpp` :
