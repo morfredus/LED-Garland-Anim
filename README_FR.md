@@ -11,12 +11,16 @@ Vous pouvez choisir la méthode de téléversement (USB ou OTA) à chaque upload
   - PlatformIO détectera automatiquement le port série (ex : COM8)
 
 - **Téléversement OTA (WiFi) :**
+
   - Utilisez :
     ```bash
     pio run -e esp32devkitc -t upload --upload-port 192.168.x.x
     ```
   - Remplacez `192.168.x.x` par l’adresse IP de votre ESP32
   - PlatformIO utilisera automatiquement OTA pour cet upload
+  - ⚠️ **Note :** PlatformIO affichera un avertissement :
+    > We have just detected `upload_port` as IP address or host name of ESP device. `upload_protocol` is switched to `espota`.
+    Ceci est normal et ne nécessite aucune modification de votre configuration.
 
 **Astuce :** Ne mettez pas `upload_protocol = espota` en global. Utilisez l’option `--upload-port` pour l’OTA uniquement quand nécessaire.
 
