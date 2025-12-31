@@ -1,3 +1,7 @@
+# [1.2.2] - 2025-12-31
+
+### Changed
+- Suppression de toutes les références à ESP32-S3 et environnements associés dans la documentation (FR/EN)
 # [1.2.1] - 2025-12-31
 
 ### Added
