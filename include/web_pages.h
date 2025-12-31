@@ -138,19 +138,19 @@ String generateDashboardPage(
     
     
     // --- BOUTONS D'ACTION ---
-    html += "<div style='display:flex;gap:12px;align-items:flex-start;'>";
+    html += "<div style='position:relative;'>";
 
-    // Boutons à gauche
-    html += "<div class='actions' style='flex:1;margin:0;'>";
+    // Boutons
+    html += "<div class='actions'>";
     html += "<button onclick='location.reload()'>🔄 Actualiser</button>";
     html += "<button onclick='window.location.href=\"/update\"' style='background:linear-gradient(135deg,#667eea 0%,#764ba2 100%)'>⬆️ Mise à jour OTA</button>";
     html += "<button id='reboot-btn' class='danger' onclick='rebootDevice()'>🔴 Redémarrer</button>";
     html += "</div>";
 
-    // Zone de message de confirmation pour le reboot à droite
-    html += "<div id='reboot-message' style='display:none;flex:1;padding:10px;border-radius:8px;background:#fff3cd;color:#856404;border:1px solid #ffc107;min-height:48px;display:none;align-items:center;'></div>";
+    // Zone de message de confirmation pour le reboot - positionnée à droite en absolu
+    html += "<div id='reboot-message' style='display:none;position:absolute;top:0;right:0;padding:10px 15px;border-radius:8px;background:#fff3cd;color:#856404;border:1px solid #ffc107;max-width:350px;box-shadow:0 2px 8px rgba(0,0,0,0.1);'></div>";
 
-    html += "</div>"; // fin du flex container
+    html += "</div>"; // fin du container position relative
     
     // --- SCRIPT JAVASCRIPT ---
     html += "<script>";
@@ -186,7 +186,7 @@ String generateDashboardPage(
     html += "    rebootConfirmed = true;";
     html += "    var msg = document.getElementById('reboot-message');";
     html += "    msg.textContent = '⚠️ Cliquez à nouveau sur Redémarrer pour confirmer';";
-    html += "    msg.style.display = 'flex';";
+    html += "    msg.style.display = 'block';";
     html += "    document.getElementById('reboot-btn').style.background = 'linear-gradient(135deg, #f5576c 0%, #c0392b 100%)';";
     html += "    setTimeout(() => { rebootConfirmed = false; msg.style.display = 'none'; document.getElementById('reboot-btn').style.background = ''; }, 5000);";
     html += "  } else {";
@@ -277,8 +277,11 @@ String generateOTAPage() {
     html += "<label for='fileInput' class='file-label'>📁 Sélectionner un fichier .bin</label>";
     html += "<div class='file-name' id='fileName'>Aucun fichier sélectionné</div>";
     html += "</div>";
-    html += "<button type='submit' id='uploadBtn' class='upload-btn'>🚀 Lancer la mise à jour</button>";
+    html += "<button type='button' id='uploadBtn' class='upload-btn' onclick='handleUpload()'>🚀 Lancer la mise à jour</button>";
     html += "</form>";
+
+    // Message de confirmation pour double-clic OTA
+    html += "<div id='ota-confirm-message' style='display:none;margin-top:15px;padding:12px;border-radius:8px;background:#fff3cd;color:#856404;border:1px solid #ffc107;text-align:center;'></div>";
 
     // Barre de progression
     html += "<div class='progress-container' id='progressContainer'>";
@@ -317,25 +320,40 @@ String generateOTAPage() {
     html += "  }";
     html += "});";
 
-    // Gérer l'upload
-    html += "uploadForm.addEventListener('submit', function(e) {";
-    html += "  e.preventDefault();";
+    // Validation et upload avec double confirmation
+    html += "var uploadConfirmed = false;";
+    html += "function handleUpload() {";
     html += "  if (fileInput.files.length === 0) {";
-    html += "    alert('Veuillez sélectionner un fichier .bin');";
+    html += "    statusMessage.className = 'status-message status-error';";
+    html += "    statusMessage.textContent = '❌ Veuillez sélectionner un fichier .bin';";
+    html += "    statusMessage.style.display = 'block';";
     html += "    return;";
     html += "  }";
     html += "  const file = fileInput.files[0];";
     html += "  if (!file.name.endsWith('.bin')) {";
-    html += "    alert('Le fichier doit avoir l\\'extension .bin');";
+    html += "    statusMessage.className = 'status-message status-error';";
+    html += "    statusMessage.textContent = '❌ Le fichier doit avoir l\\'extension .bin';";
+    html += "    statusMessage.style.display = 'block';";
     html += "    return;";
     html += "  }";
-    html += "  if (!confirm('Êtes-vous sûr de vouloir mettre à jour le firmware ?\\nL\\'appareil redémarrera automatiquement.')) {";
+    html += "  if (!uploadConfirmed) {";
+    html += "    uploadConfirmed = true;";
+    html += "    uploadBtn.textContent = '⚠️ Cliquer à nouveau pour confirmer la mise à jour';";
+    html += "    uploadBtn.style.background = 'linear-gradient(135deg, #f5576c 0%, #c0392b 100%)';";
+    html += "    var msg = document.getElementById('ota-confirm-message');";
+    html += "    msg.textContent = '⚠️ Attention : L\\'appareil redémarrera automatiquement après la mise à jour';";
+    html += "    msg.style.display = 'block';";
+    html += "    setTimeout(() => { uploadConfirmed = false; uploadBtn.textContent = '🚀 Lancer la mise à jour'; uploadBtn.style.background = ''; msg.style.display = 'none'; }, 5000);";
     html += "    return;";
     html += "  }";
+    html += "  startUpload(file);";
+    html += "}";
+    html += "function startUpload(file) {";
     html += "  uploadBtn.disabled = true;";
     html += "  fileInput.disabled = true;";
     html += "  progressContainer.style.display = 'block';";
     html += "  statusMessage.style.display = 'none';";
+    html += "  document.getElementById('ota-confirm-message').style.display = 'none';";
 
     html += "  const xhr = new XMLHttpRequest();";
     html += "  xhr.upload.addEventListener('progress', function(e) {";
@@ -375,7 +393,7 @@ String generateOTAPage() {
     html += "  formData.append('update', file);";
     html += "  xhr.open('POST', '/update');";
     html += "  xhr.send(formData);";
-    html += "});";
+    html += "}";
     html += "</script>";
 
     html += "</div></body></html>";
