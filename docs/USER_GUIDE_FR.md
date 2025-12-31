@@ -30,8 +30,10 @@ Guide utilisateur complet pour le contrôleur d'animation de guirlande LED (ESP3
 
 ## Table des Matières
 
-- [Guide Utilisateur - LED-Garland-Anim v1.1.0](#guide-utilisateur---led-garland-anim-v110)
+- [Guide Utilisateur - LED-Garland-Anim v1.2.1](#guide-utilisateur---led-garland-anim-v121)
+  - [🚦 Détection automatique du capteur de mouvement (v1.2.1)](#-détection-automatique-du-capteur-de-mouvement-v121)
   - [Table des Matières](#table-des-matières)
+  - [Mises à jour OTA](#mises-à-jour-ota)
   - [Premier Démarrage](#premier-démarrage)
     - [À Quoi S'attendre](#à-quoi-sattendre)
     - [Notez Votre Adresse IP](#notez-votre-adresse-ip)
@@ -43,8 +45,10 @@ Guide utilisateur complet pour le contrôleur d'animation de guirlande LED (ESP3
   - [Animations](#animations)
   - [Utilisation Quotidienne](#utilisation-quotidienne)
   - [Dépannage](#dépannage)
-  - [Mises à jour OTA](#mises-à-jour-ota)
+
 ## Mises à jour OTA
+
+Voir le guide détaillé OTA : [docs/OTA_UPDATE_FR.md](OTA_UPDATE_FR.md)
 
 Depuis la version 1.3.0, le firmware prend en charge les mises à jour OTA (Over-the-Air) via ArduinoOTA.
 
