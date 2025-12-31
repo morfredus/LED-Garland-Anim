@@ -43,6 +43,17 @@ Guide utilisateur complet pour le contrôleur d'animation de guirlande LED (ESP3
   - [Animations](#animations)
   - [Utilisation Quotidienne](#utilisation-quotidienne)
   - [Dépannage](#dépannage)
+  - [Mises à jour OTA](#mises-à-jour-ota)
+## Mises à jour OTA
+
+Depuis la version 1.3.0, le firmware prend en charge les mises à jour OTA (Over-the-Air) via ArduinoOTA.
+
+**Utilisation :**
+1. Connectez l’ESP32 au WiFi.
+2. Dans PlatformIO ou Arduino IDE, sélectionnez « Upload using OTA » (l’appareil apparaît comme `LED-Garland-Anim.local`).
+3. L’appareil redémarre automatiquement après une mise à jour réussie.
+
+**Sécurité :** OTA n’est activé que lorsque l’ESP32 est connecté au WiFi.
 
 ---
 

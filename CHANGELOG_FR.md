@@ -1,3 +1,13 @@
+# [1.3.0] – 2025-12-31
+
+### Ajouté
+- Prise en charge des mises à jour OTA (Over-the-Air) du firmware via ArduinoOTA
+- Documentation et guides utilisateur mis à jour (FR/EN)
+
+### Modifié
+- Numéro de version incrémenté à 1.3.0 (SEMVER)
+
+---
 # [1.2.2] - 2025-12-31
 
 ### Modifié

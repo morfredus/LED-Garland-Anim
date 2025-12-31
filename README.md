@@ -99,7 +99,20 @@ BTN2     → GPIO 17
 
 ---
 
-## 6. Advanced Configuration
+
+## 6. OTA Updates (Over-the-Air)
+
+Starting from v1.3.0, the firmware supports OTA updates using ArduinoOTA.
+
+**How to use:**
+1. Connect the ESP32 to WiFi (see above).
+2. In PlatformIO or Arduino IDE, select "Upload using OTA" (the device appears as `LED-Garland-Anim.local`).
+3. The device will reboot automatically after a successful upload.
+
+**Security note:** OTA is enabled only when the ESP32 is connected to WiFi.
+
+---
+## 7. Advanced Configuration
 
 In `include/config.h`:
 ```cpp

@@ -1,9 +1,13 @@
+
 /**
  * @file main.cpp
  * @brief Point d'entrée principal du projet LED-Garland-Anim
- * @version 1.1.0
- * @date 2025-12-30
+ * @version 1.3.0
+ * @date 2025-12-31
+ *
+ * OTA support: ArduinoOTA (upload firmware over WiFi)
  */
+#include <ArduinoOTA.h>
 
 #include <Arduino.h>
 #include <WiFi.h>
@@ -148,7 +152,6 @@ void setup() {
     setupDisplay();
     displayBootScreen(PROJECT_NAME, PROJECT_VERSION, -1);
 
-
     // Initialisation de la guirlande
     setupGarland();
 
@@ -164,8 +167,19 @@ void setup() {
         pinMode(LED_BUILTIN, OUTPUT);
     #endif
 
-    // Démarrage Serveur Web
+    // OTA: configuration et démarrage si WiFi OK
     if(WiFi.status() == WL_CONNECTED) {
+        ArduinoOTA.setHostname(PROJECT_NAME);
+        ArduinoOTA.onStart([]() {
+            LOG_PRINTLN("[OTA] Start updating...");
+        });
+        ArduinoOTA.onEnd([]() {
+            LOG_PRINTLN("[OTA] Update finished!");
+        });
+        ArduinoOTA.onError([](ota_error_t error) {
+            LOG_PRINTF("[OTA] Error[%u]\n", error);
+        });
+        ArduinoOTA.begin();
         setupWebServer();
     }
 }
@@ -183,10 +197,13 @@ void loop() {
     // 3. Gestion Serveur Web (non-bloquant)
     server.handleClient();
 
-    // 4. Libération CPU (CRITIQUE pour watchdog)
+    // 4. OTA (doit être appelé souvent)
+    ArduinoOTA.handle();
+
+    // 5. Libération CPU (CRITIQUE pour watchdog)
     yield();
 
-    // 5. Heartbeat Non-Bloquant (remplace delay)
+    // 6. Heartbeat Non-Bloquant (remplace delay)
     unsigned long currentMillis = millis();
     if (currentMillis - previousMillis >= interval) {
         previousMillis = currentMillis;
@@ -200,7 +217,7 @@ void loop() {
         #endif
     }
 
-    // 6. Rafraîchissement de l'animation ST7789
+    // 7. Rafraîchissement de l'animation ST7789
     #ifdef HAS_ST7789
         if (currentMillis - lastDisplayUpdate >= displayUpdateInterval) {
             lastDisplayUpdate = currentMillis;

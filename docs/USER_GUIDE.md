@@ -38,6 +38,17 @@ Complete user guide for the LED-Garland-Anim LED garland animation controller (E
 6. [Animations](#animations)
 7. [Daily Usage](#daily-usage)
 8. [Troubleshooting](#troubleshooting)
+9. [OTA Updates](#ota-updates)
+## OTA Updates
+
+From v1.3.0, the firmware supports OTA (Over-the-Air) updates using ArduinoOTA.
+
+**How to use:**
+1. Connect the ESP32 to WiFi.
+2. In PlatformIO or Arduino IDE, select "Upload using OTA" (the device appears as `LED-Garland-Anim.local`).
+3. The device will reboot automatically after a successful upload.
+
+**Security note:** OTA is enabled only when the ESP32 is connected to WiFi.
 
 ---
 
