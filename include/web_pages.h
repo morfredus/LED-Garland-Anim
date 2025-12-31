@@ -54,6 +54,10 @@ String generateDashboardPage(
     // --- Carte unique: Paramètres Guirlande ---
     html += "<div class='card card-full'>";
     html += "<div class='card-title'>🎄 Paramètres Guirlande <span style='float:right;font-size:0.9em;color:#1b5e20;'>En cours: <span id='current-anim' class='mono'>" + String(getGarlandAnimationName()) + "</span></span></div>";
+
+    // Zone de message inline pour animation/mode
+    html += "<div id='param-message' style='display:none;margin-bottom:12px;padding:10px;border-radius:8px;background:#d4edda;color:#155724;border:1px solid #c3e6cb;'></div>";
+
     // Animation
     html += "<div class='card-item'><span class='card-label'>Animation:</span>";
     html += "<select id='animSelect' style='width:55%;padding:8px;border-radius:8px;border:1px solid #ddd;'>";
@@ -134,24 +138,37 @@ String generateDashboardPage(
     
     
     // --- BOUTONS D'ACTION ---
-    // Zone de message de confirmation pour le reboot
-    html += "<div id='reboot-message' style='display:none;margin:12px 0;padding:10px;border-radius:8px;background:#fff3cd;color:#856404;border:1px solid #ffc107;'></div>";
+    html += "<div style='display:flex;gap:12px;align-items:flex-start;'>";
 
-    html += "<div class='actions'>";
+    // Boutons à gauche
+    html += "<div class='actions' style='flex:1;margin:0;'>";
     html += "<button onclick='location.reload()'>🔄 Actualiser</button>";
     html += "<button onclick='window.location.href=\"/update\"' style='background:linear-gradient(135deg,#667eea 0%,#764ba2 100%)'>⬆️ Mise à jour OTA</button>";
     html += "<button id='reboot-btn' class='danger' onclick='rebootDevice()'>🔴 Redémarrer</button>";
     html += "</div>";
+
+    // Zone de message de confirmation pour le reboot à droite
+    html += "<div id='reboot-message' style='display:none;flex:1;padding:10px;border-radius:8px;background:#fff3cd;color:#856404;border:1px solid #ffc107;min-height:48px;display:none;align-items:center;'></div>";
+
+    html += "</div>"; // fin du flex container
     
     // --- SCRIPT JAVASCRIPT ---
     html += "<script>";
+
+    // Fonction pour afficher les messages de paramètres
+    html += "function showParamMessage(msg) { var el = document.getElementById('param-message'); el.textContent = msg; el.style.display = 'block'; setTimeout(() => { el.style.display = 'none'; }, 3000); }";
+
     html += "function changeAnimation() {";
     html += "  var id = document.getElementById('animSelect').value;";
-    html += "  fetch('/animation?id=' + id).then(() => setTimeout(() => location.reload(), 500));";
+    html += "  var select = document.getElementById('animSelect');";
+    html += "  var animName = select.options[select.selectedIndex].text;";
+    html += "  fetch('/animation?id=' + id).then(() => { showParamMessage('✓ Animation changée : ' + animName); setTimeout(() => location.reload(), 1000); });";
     html += "}";
     html += "function changeMode() {";
     html += "  var id = document.getElementById('modeSelect').value;";
-    html += "  fetch('/mode?id=' + id).then(() => setTimeout(() => location.reload(), 500));";
+    html += "  var select = document.getElementById('modeSelect');";
+    html += "  var modeName = select.options[select.selectedIndex].text;";
+    html += "  fetch('/mode?id=' + id).then(() => { showParamMessage('✓ Mode changé : ' + modeName); setTimeout(() => location.reload(), 1000); });";
     html += "}";
     html += "function applyAutoInterval() { var s = document.getElementById('auto-interval-seconds').value; var ms = Math.round(s*1000); fetch('/auto_interval?ms=' + ms); }";
     html += "function applyMotionDuration() { var s = document.getElementById('motion-duration-seconds').value; var ms = Math.round(s*1000); fetch('/motion_duration?ms=' + ms); }";
@@ -169,12 +186,16 @@ String generateDashboardPage(
     html += "    rebootConfirmed = true;";
     html += "    var msg = document.getElementById('reboot-message');";
     html += "    msg.textContent = '⚠️ Cliquez à nouveau sur Redémarrer pour confirmer';";
-    html += "    msg.style.display = 'block';";
+    html += "    msg.style.display = 'flex';";
     html += "    document.getElementById('reboot-btn').style.background = 'linear-gradient(135deg, #f5576c 0%, #c0392b 100%)';";
     html += "    setTimeout(() => { rebootConfirmed = false; msg.style.display = 'none'; document.getElementById('reboot-btn').style.background = ''; }, 5000);";
     html += "  } else {";
     html += "    fetch('/reboot');";
-    html += "    document.getElementById('reboot-message').textContent = '🔄 Redémarrage en cours...';";
+    html += "    var msg = document.getElementById('reboot-message');";
+    html += "    msg.textContent = '🔄 Redémarrage en cours...';";
+    html += "    msg.style.background = '#d4edda';";
+    html += "    msg.style.color = '#155724';";
+    html += "    msg.style.borderColor = '#c3e6cb';";
     html += "  }";
     html += "}";
 
