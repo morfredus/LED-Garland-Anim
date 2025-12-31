@@ -15,14 +15,18 @@
 
 static GarlandAnimation currentAnimation = ANIM_FADE_ALTERNATE;  // Animation sélectionnée (pour affichage)
 static GarlandAnimation activeAnimation = ANIM_FADE_ALTERNATE;   // Animation réellement exécutée
+static GarlandAnimation savedAnimation = ANIM_FADE_ALTERNATE;    // Animation sauvegardée à restaurer après intro
 static GarlandMode currentMode = MODE_PERMANENT;
+static GarlandMode savedMode = MODE_PERMANENT;                    // Mode sauvegardé à restaurer après intro
 static unsigned long animationStartTime = 0;
+static unsigned long bootTime = 0;                                // Temps du démarrage pour gérer l'intro
 static unsigned long motionDetectedTime = 0;
 static unsigned long autoAnimationIntervalMs = 30000;   // Intervalle entre changements en mode AUTO
 static unsigned long motionTriggerDurationMs = MOTION_TRIGGER_DURATION; // Durée d'allumage après détection
 static bool garlandEnabled = true;
 static bool autoModeActive = false;  // Flag pour suivre si le mode AUTO est actif
 static bool lastMotionState = false;  // État précédent du capteur PIR pour détecter les fronts
+static bool introAnimationActive = true; // Flag pour suivre si l'animation d'intro est active
 
 // Paramètres d'animation
 static uint8_t brightnessA = 0;
@@ -78,14 +82,16 @@ void loadGarlandSettings() {
     // Charger le mode
     uint8_t mode = (uint8_t)MODE_PERMANENT;
     if (nvs_get_u8(handle, "mode", &mode) == ESP_OK) {
-        currentMode = (GarlandMode)mode;
+        savedMode = (GarlandMode)mode;
+        currentMode = savedMode;
         LOG_PRINTF("Mode restauré: %s\n", modeNames[currentMode]);
     }
-    
+
     // Charger l'animation
     uint8_t anim = (uint8_t)ANIM_FADE_ALTERNATE;
     if (nvs_get_u8(handle, "animation", &anim) == ESP_OK) {
-        currentAnimation = (GarlandAnimation)anim;
+        savedAnimation = (GarlandAnimation)anim;
+        currentAnimation = savedAnimation;
         activeAnimation = currentAnimation;
         LOG_PRINTF("Animation restaurée: %s\n", animationNames[currentAnimation]);
     }
@@ -425,19 +431,54 @@ void setupGarland() {
     }
 
     // Initialisation
-    garlandOff();
     animationStartTime = millis();
+    bootTime = millis();
 
-    // Initialiser motionDetectedTime dans le passé pour que le timer soit expiré au démarrage
-    // Évite que les animations s'allument automatiquement au boot en mode détection
-    if (motionDetectedTime == 0) {
-        motionDetectedTime = 0 - motionTriggerDurationMs - 1000;  // Débordement intentionnel
-    }
+    // Démarrer immédiatement l'animation d'introduction
+    introAnimationActive = true;
+    activeAnimation = ANIM_FADE_ALTERNATE;  // Animation d'intro par défaut
+    garlandEnabled = true;
 
-    LOG_PRINTLN("✓ Guirlande initialisée");
+    // Forcer le mode permanent pendant l'intro pour que l'animation démarre immédiatement
+    currentMode = MODE_PERMANENT;
+
+    LOG_PRINTF("✓ Guirlande initialisée - Animation d'intro lancée (%s) pour %lu ms\n",
+               animationNames[activeAnimation], INTRO_ANIMATION_DURATION);
+    LOG_PRINTF("  Animation cible après intro: %s\n", animationNames[savedAnimation]);
+    LOG_PRINTF("  Mode cible après intro: %s\n", modeNames[savedMode]);
 }
 
 void updateGarland() {
+    // Vérifier si l'animation d'intro est terminée
+    if (introAnimationActive) {
+        unsigned long elapsed = millis() - bootTime;
+        if (elapsed >= INTRO_ANIMATION_DURATION) {
+            // L'animation d'intro est terminée, basculer vers le mode/animation sauvegardés
+            introAnimationActive = false;
+            currentMode = savedMode;
+            currentAnimation = savedAnimation;
+
+            // Configurer l'animation active selon le mode sauvegardé
+            if (savedAnimation == ANIM_AUTO) {
+                autoModeActive = true;
+                activeAnimation = ANIM_FADE_ALTERNATE;
+            } else {
+                autoModeActive = false;
+                activeAnimation = savedAnimation;
+            }
+
+            animationStartTime = millis();
+
+            // Initialiser motionDetectedTime dans le passé pour le mode détection
+            if (savedMode == MODE_MOTION_TRIGGER) {
+                motionDetectedTime = 0 - motionTriggerDurationMs - 1000;
+            }
+
+            LOG_PRINTF("✓ Animation d'intro terminée - Bascule vers %s / %s\n",
+                       animationNames[currentAnimation], modeNames[currentMode]);
+        }
+    }
+
     // Gestion des modes
     bool shouldBeOn = false;
 
@@ -535,8 +576,15 @@ void updateGarland() {
 }
 
 void setGarlandAnimation(GarlandAnimation animation) {
+    // Désactiver l'animation d'intro si l'utilisateur change manuellement l'animation
+    if (introAnimationActive) {
+        introAnimationActive = false;
+        LOG_PRINTLN("Animation d'intro interrompue par changement manuel");
+    }
+
     currentAnimation = animation;  // Toujours mettre à jour pour l'affichage
-    
+    savedAnimation = animation;    // Mettre à jour aussi la sauvegarde
+
     // Si on passe en mode AUTO, démarrer immédiatement avec la première animation
     if (animation == ANIM_AUTO) {
         autoModeActive = true;
@@ -599,7 +647,14 @@ void setMotionTriggerDurationMs(unsigned long ms) {
 }
 
 void setGarlandMode(GarlandMode mode) {
+    // Désactiver l'animation d'intro si l'utilisateur change manuellement le mode
+    if (introAnimationActive) {
+        introAnimationActive = false;
+        LOG_PRINTLN("Animation d'intro interrompue par changement manuel de mode");
+    }
+
     currentMode = mode;
+    savedMode = mode;  // Mettre à jour aussi la sauvegarde
     LOG_PRINTF("Mode changé: %s\n", modeNames[mode]);
     // Sauvegarder automatiquement
     saveGarlandSettings();

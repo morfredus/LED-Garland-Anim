@@ -27,7 +27,7 @@ Vous pouvez choisir la méthode de téléversement (USB ou OTA) à chaque upload
 ---
 # LED-Garland-Anim
 
-**Version : 1.4.0** (2025-12-31)
+**Version : 1.5.0** (2025-12-31)
 
 Contrôleur d'animation de guirlande LED bi-directionnelle pour ESP32 Classic (IdeaSpark/DevKitC) avec écran ST7789, auto-détection PIR/RCWL-0516, web interface, boutons physiques, 11 animations, modes intelligents, configuration persistante.
 
@@ -107,9 +107,11 @@ BTN2     → GPIO 17
 ## 5. Utilisation
 
 ### Démarrage
-1. La guirlande démarre en animation **Auto** et mode **Permanent**
-2. L'écran affiche la progression WiFi puis l'adresse IP
-3. Accès web : `http://[IP_ESP32]`
+1. La guirlande démarre avec une **animation d'intro de 10 secondes** (Fade Alterné)
+2. Après l'intro, elle bascule automatiquement vers l'animation et le mode sauvegardés
+3. L'écran affiche la progression WiFi puis l'adresse IP
+4. Accès web : `http://[IP_ESP32]`
+5. **Note:** L'animation d'intro démarre immédiatement, même en mode détection
 
 ### Contrôles physiques
 - **Bouton 1** : Animation suivante / mode auto
@@ -118,6 +120,8 @@ BTN2     → GPIO 17
 
 ### Interface web
 - Tableau de bord, sélection animation/mode, visualisation capteurs, actions à distance
+- **Confirmations inline** pour les opérations save/restore/erase (pas de popups bloquants)
+- **Double-clic pour confirmer** le redémarrage (sécurité)
 
 ### Bot Telegram (optionnel)
 - Commandes `/anim`, `/mode`, `/nextanim`, `/nextmode`, `/status`, `/liste`
@@ -221,7 +225,7 @@ Dans `include/garland_control.h` :
 
 ## 9. Versions
 
-**Version Actuelle : v1.4.0** (2025-12-31)
+**Version Actuelle : v1.5.0** (2025-12-31)
 Voir [CHANGELOG_FR.md](./CHANGELOG_FR.md)
 
 ---
@@ -300,7 +304,7 @@ Au démarrage, si une configuration existe, elle est chargée automatiquement. S
 
 # LED-Garland-Anim
 
-**Version : 1.2.1**
+**Version : 1.5.0**
 
 Contrôleur d'animation de guirlande LED bi-directionnelle pour ESP32 IdeaSpark (ST7789)
 
@@ -388,7 +392,7 @@ Contrôlez une guirlande à 2 fils avec LEDs en anti-parallèle via un module TB
 git clone <votre-repo>
 cd LED-Garland-Anim
 ```
-**Version 1.2.1** - Contrôleur d'animation de guirlande LED bi-directionnelle pour ESP32 IdeaSpark (ST7789)
+**Version 1.5.0** - Contrôleur d'animation de guirlande LED bi-directionnelle pour ESP32 IdeaSpark (ST7789)
 ### 2. Configurer `include/secrets.h`
 Éditez `include/secrets.h` pour définir vos réseaux WiFi.
 
@@ -642,7 +646,7 @@ static GarlandMode currentMode = MODE_PERMANENT;         // Ou MODE_MOTION_TRIGG
 
 ## 📝 Versions
 
-**Version Actuelle : v1.2.1** (2025-12-31)
+**Version Actuelle : v1.5.0** (2025-12-31)
 
 Voir [CHANGELOG_FR.md](./CHANGELOG_FR.md) pour l'historique complet.
 

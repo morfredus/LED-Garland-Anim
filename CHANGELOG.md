@@ -1,3 +1,32 @@
+# [1.5.0] – 2025-12-31
+
+### Added
+- **Automatic startup animation**: 10-second intro animation (Fade Alternate) starts immediately on boot
+- **Automatic transition**: After intro, automatically switches to saved animation and mode
+- **Inline confirmation messages**: All save/restore/erase operations display inline confirmations (no blocking popups)
+- **Double-click reboot confirmation**: Reboot button requires two clicks for safety (5-second timeout)
+
+### Changed
+- Startup behavior: Animation starts immediately, even in motion detection mode
+- Web interface: Removed all blocking alert() and confirm() popups
+- Reboot button: Added visual feedback (color change) on first click
+- User experience: Non-blocking confirmations improve workflow
+- Version number incremented to 1.5.0 (SEMVER - MINOR)
+
+### Fixed
+- Startup issue: Garland now animates immediately instead of waiting for user interaction
+- Reboot reliability: Double confirmation prevents accidental reboots
+- Motion detection mode: Intro animation plays before motion detection activates
+
+### Technical
+- Added `INTRO_ANIMATION_DURATION` constant (10 seconds)
+- Added `introAnimationActive`, `savedAnimation`, `savedMode` state variables
+- Modified `setupGarland()` to start intro animation immediately
+- Modified `updateGarland()` to handle intro-to-saved transition
+- JavaScript functions for inline messages: `showMessage()`, `saveSettings()`, `loadSettings()`, `eraseSettings()`
+- JavaScript reboot confirmation with timeout: `rebootDevice()`
+
+---
 # [1.4.0] – 2025-12-31
 
 ### Added

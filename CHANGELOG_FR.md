@@ -1,3 +1,32 @@
+# [1.5.0] – 2025-12-31
+
+### Ajouté
+- **Animation de démarrage automatique** : Animation d'intro de 10 secondes (Fade Alterné) démarre immédiatement au boot
+- **Transition automatique** : Après l'intro, bascule automatiquement vers l'animation et le mode sauvegardés
+- **Messages de confirmation inline** : Toutes les opérations save/restore/erase affichent des confirmations inline (pas de popups bloquants)
+- **Double-clic pour confirmer le redémarrage** : Le bouton redémarrer nécessite deux clics pour la sécurité (timeout de 5 secondes)
+
+### Modifié
+- Comportement au démarrage : L'animation démarre immédiatement, même en mode détection de mouvement
+- Interface web : Suppression de tous les popups bloquants alert() et confirm()
+- Bouton redémarrer : Ajout d'un retour visuel (changement de couleur) au premier clic
+- Expérience utilisateur : Les confirmations non-bloquantes améliorent le workflow
+- Numéro de version incrémenté à 1.5.0 (SEMVER - MINOR)
+
+### Corrigé
+- Problème de démarrage : La guirlande s'anime maintenant immédiatement au lieu d'attendre une interaction utilisateur
+- Fiabilité du redémarrage : La double confirmation évite les redémarrages accidentels
+- Mode détection de mouvement : L'animation d'intro joue avant l'activation de la détection de mouvement
+
+### Technique
+- Ajout de la constante `INTRO_ANIMATION_DURATION` (10 secondes)
+- Ajout des variables d'état `introAnimationActive`, `savedAnimation`, `savedMode`
+- Modification de `setupGarland()` pour démarrer l'animation d'intro immédiatement
+- Modification de `updateGarland()` pour gérer la transition intro-vers-sauvegarde
+- Fonctions JavaScript pour messages inline : `showMessage()`, `saveSettings()`, `loadSettings()`, `eraseSettings()`
+- Confirmation de redémarrage JavaScript avec timeout : `rebootDevice()`
+
+---
 # [1.4.0] – 2025-12-31
 
 ### Ajouté
