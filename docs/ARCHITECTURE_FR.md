@@ -7,7 +7,7 @@ La configuration (mode, animation, intervalles) est stockée dans la NVS de l’
 - Si la NVS est vide ou corrompue, les valeurs par défaut sont utilisées puis sauvegardées.
 
 Ceci garantit la restauration automatique des réglages utilisateur après redémarrage ou coupure d’alimentation.
-# 📚 Architecture - LED-Garland-Anim v1.2.1
+# 📚 Architecture - LED-Garland-Anim v1.4.1
 
 ## 🎯 Vue d'ensemble
 
@@ -18,6 +18,10 @@ LED-Garland-Anim v1.2.1 est désormais unifié pour la carte ESP32 IdeaSpark ave
 - **Modes Intelligents** : Gestion automatique basée sur capteurs
 - **Module TB6612FNG** : Contrôle bi-directionnel de la guirlande
 - **Détection automatique du capteur de mouvement** : PIR (HC-SR501) ou radar Doppler (RCWL-0516) auto-détecté sur GPIO 35
+
+## Comportement au démarrage
+
+Au démarrage, la guirlande démarre toujours avec une animation active, même en mode détection (allumée pour la durée configurée).
 
 ## Structure Modulaire
 

@@ -1,3 +1,10 @@
+
+# [1.4.1] – 2025-12-31
+
+### Fixed
+- Startup: The garland now always starts with an active animation, even in detection mode (lights up for the configured duration).
+- Version number incremented to 1.4.1 (SEMVER)
+
 # [1.4.0] – 2025-12-31
 
 ### Added
