@@ -1,3 +1,12 @@
+# [1.2.2] – 2025-12-31
+
+### Modifié
+- Harmonisation complète et réorganisation logique des README.md et README_FR.md (structure, clarté, suppression des doublons)
+- Suppression définitive des références à ESP32-S3 et anciens environnements
+- Relecture et ordonnancement de toute la documentation et des guides pour une clarté utilisateur
+- Version, changelog et notes de version mis à jour
+
+---
 # [1.2.1] – 2025-12-31
 
 ### Ajouté

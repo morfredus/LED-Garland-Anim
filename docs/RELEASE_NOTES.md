@@ -1,3 +1,12 @@
+# [1.2.2] – 2025-12-31
+
+### Changed
+- Complete harmonization and logical reorganization of README.md and README_FR.md (structure, clarity, deduplication)
+- Definitive removal of ESP32-S3 and legacy environment references
+- All documentation and guides reviewed for logical order and user clarity
+- Version, changelog, and release notes updated
+
+---
 # [1.2.1] – 2025-12-31
 
 ### Added
