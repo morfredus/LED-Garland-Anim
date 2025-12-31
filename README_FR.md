@@ -99,7 +99,10 @@ BTN2     → GPIO 17
 ---
 
 
+
 ## 6. Mises à jour OTA (Over-the-Air)
+
+Voir le guide détaillé : [docs/OTA_UPDATE_FR.md](docs/OTA_UPDATE_FR.md)
 
 Depuis la version 1.3.0, le firmware prend en charge les mises à jour OTA via ArduinoOTA.
 

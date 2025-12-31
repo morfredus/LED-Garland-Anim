@@ -39,7 +39,10 @@ Complete user guide for the LED-Garland-Anim LED garland animation controller (E
 7. [Daily Usage](#daily-usage)
 8. [Troubleshooting](#troubleshooting)
 9. [OTA Updates](#ota-updates)
+
 ## OTA Updates
+
+See the detailed OTA update guide: [docs/OTA_UPDATE.md](OTA_UPDATE.md)
 
 From v1.3.0, the firmware supports OTA (Over-the-Air) updates using ArduinoOTA.
 
