@@ -1,7 +1,7 @@
 /**
  * @file garland_control.cpp
  * @brief Implémentation du contrôle des animations de guirlande
- * @version 1.4.1
+ * @version 1.1.0
  * @date 2025-12-13
  */
 
@@ -428,19 +428,10 @@ void setupGarland() {
     garlandOff();
     animationStartTime = millis();
 
-    // Correction : en mode détection, simuler une détection au démarrage pour lancer l'animation
-    if (currentMode == MODE_MOTION_TRIGGER) {
-        motionDetectedTime = millis(); // Simule une détection immédiate
-        // Si l'animation restaurée est ANIM_OFF, choisir une animation par défaut (ex : FADE_ALTERNATE)
-        if (currentAnimation == ANIM_OFF) {
-            setGarlandAnimation(ANIM_FADE_ALTERNATE);
-        }
-    } else {
-        // En mode permanent, pas de timer
-        motionDetectedTime = 0;
-        if (currentAnimation == ANIM_OFF) {
-            setGarlandAnimation(ANIM_FADE_ALTERNATE);
-        }
+    // Initialiser motionDetectedTime dans le passé pour que le timer soit expiré au démarrage
+    // Évite que les animations s'allument automatiquement au boot en mode détection
+    if (motionDetectedTime == 0) {
+        motionDetectedTime = 0 - motionTriggerDurationMs - 1000;  // Débordement intentionnel
     }
 
     LOG_PRINTLN("✓ Guirlande initialisée");

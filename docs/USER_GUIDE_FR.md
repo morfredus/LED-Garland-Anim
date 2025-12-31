@@ -13,8 +13,8 @@ Le système utilise la NVS (mémoire non-volatile) de l’ESP32 pour sauvegarder
 - Les réglages sont conservés même après redémarrage ou coupure d’alimentation.
 
 **Aucune action requise de l’utilisateur** : la gestion est entièrement automatique.
-# Guide Utilisateur - LED-Garland-Anim v1.4.1
-## 🚦 Détection automatique du capteur de mouvement (v1.4.1)
+# Guide Utilisateur - LED-Garland-Anim v1.2.1
+## 🚦 Détection automatique du capteur de mouvement (v1.2.1)
 
 À partir de la version 1.2.1, le système détecte automatiquement si un capteur PIR (HC-SR501) ou un capteur radar Doppler (RCWL-0516) est connecté sur le GPIO 35 :
 - **PIR** : LOW au repos, HIGH sur détection
@@ -25,10 +25,6 @@ Le firmware adapte la logique de détection en conséquence. Aucune configuratio
 Voir docs/PIR_SENSOR_SETUP_FR.md et docs/RADAR_SENSOR_SETUP_FR.md pour le câblage et les réglages.
 
 Guide utilisateur complet pour le contrôleur d'animation de guirlande LED (ESP32 IdeaSpark + ST7789).
-
-## 🚀 Comportement au démarrage
-
-Au démarrage, la guirlande démarre toujours avec une animation active, même en mode détection (allumée pour la durée configurée).
 
 ---
 
