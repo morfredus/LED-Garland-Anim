@@ -1,3 +1,25 @@
+# [1.5.3] – 2025-12-31
+
+### Modifié
+- **Positionnement du message de reboot** : Le message utilise maintenant un positionnement absolu en haut à droite, les boutons ne se rétrécissent plus
+- **Confirmation de mise à jour OTA** : Remplacement du popup bloquant `confirm()` par une double confirmation (timeout 5 secondes)
+- Le texte du bouton OTA change en "⚠️ Cliquer à nouveau pour confirmer la mise à jour" au premier clic
+- Un message d'avertissement apparaît sous le bouton OTA après le premier clic
+
+### Corrigé
+- Disposition UI : Le message de confirmation reboot ne déplace plus les boutons
+- UX : Les boutons conservent une largeur fixe quel que soit l'état d'affichage du message
+- OTA : Suppression des popups bloquants `alert()` pour les erreurs de validation de fichier
+- OTA : Les erreurs de validation de fichier s'affichent maintenant comme messages de statut inline
+
+### Technique
+- Message reboot : Changement de flexbox vers `position:absolute` avec `top:0;right:0`
+- Message reboot : Ajout d'ombre et max-width pour meilleure visibilité
+- OTA : Conversion du submit de formulaire en gestionnaire de clic bouton `handleUpload()`
+- OTA : Ajout de la variable d'état `uploadConfirmed` pour la logique de double-clic
+- OTA : Remplacement de alert() par affichage statusMessage inline
+
+---
 # [1.5.2] – 2025-12-31
 
 ### Ajouté
