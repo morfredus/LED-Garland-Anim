@@ -61,6 +61,7 @@ enum GarlandMode {
 #define GARLAND_PWM_CHANNEL    0         ///< Canal PWM pour le TB6612FNG
 
 #define MOTION_TRIGGER_DURATION 30000    ///< Durée d'allumage après détection (ms)
+#define INTRO_ANIMATION_DURATION 10000   ///< Durée de l'animation d'intro au démarrage (ms)
 
 // Durées configurables (exposées via l'interface Web)
 unsigned long getAutoAnimationIntervalMs();

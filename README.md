@@ -28,9 +28,9 @@ pio run -e esp32s3_n16r8 -t upload
 ---
 # LED-Garland-Anim
 
-**Version: 1.4.0** (2025-12-31)
+**Version: 1.5.0** (2025-12-31)
 
-Controller for bi-directional LED garland animation on ESP32 Classic (IdeaSpark/DevKitC) with ST7789 display, auto-detection of PIR/RCWL-0516, web interface, web-based OTA updates, physical buttons, 11 animations, smart modes, persistent configuration.
+Controller for bi-directional LED garland animation on ESP32 Classic (IdeaSpark/DevKitC) with ST7789 display, auto-detection of PIR/RCWL-0516, web interface with inline confirmations, web-based OTA updates, physical buttons, 11 animations, smart modes, persistent configuration, automatic startup animation.
 
 ---
 
@@ -108,9 +108,11 @@ BTN2     → GPIO 17
 ## 5. Usage
 
 ### Startup
-1. The garland starts in **Auto** animation and **Permanent** mode
-2. The display shows WiFi progress then the IP address
-3. Web access: `http://[ESP32_IP]`
+1. The garland starts with a **10-second intro animation** (Fade Alternate)
+2. After the intro, it automatically switches to the saved animation and mode
+3. The display shows WiFi progress then the IP address
+4. Web access: `http://[ESP32_IP]`
+5. **Note:** The intro animation starts immediately, even in motion detection mode
 
 ### Physical controls
 - **Button 1**: Next animation / auto mode
@@ -119,6 +121,8 @@ BTN2     → GPIO 17
 
 ### Web interface
 - Dashboard, animation/mode selection, sensor visualization, remote actions
+- **Inline confirmations** for save/restore/erase operations (no blocking popups)
+- **Double-click confirmation** for reboot (safety feature)
 
 ### Telegram bot (optional)
 - Commands `/anim`, `/mode`, `/nextanim`, `/nextmode`, `/status`, `/list`
@@ -411,7 +415,7 @@ static GarlandMode currentMode = MODE_PERMANENT;         // Or MODE_MOTION_TRIGG
 
 ## 📝 Versions
 
-**Current Version: v1.2.1** (2025-12-31)
+**Current Version: v1.5.0** (2025-12-31)
 
 See [CHANGELOG.md](./CHANGELOG.md) for complete history.
 
