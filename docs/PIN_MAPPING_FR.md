@@ -249,4 +249,4 @@ Vous pouvez utiliser n'importe quelle carte ESP32 avec un écran ST7789 compatib
 
 **Note** : Ce guide accompagne le projet LED-Garland-Anim v1.0.0. Pour toute question ou problème, consultez le README.md et le code source commenté.
 
-**Version du document : v1.2.1 (2025-12-31)**
+**Version du document : v1.5.3 (2025-12-31)**

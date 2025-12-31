@@ -100,4 +100,4 @@ You may use any ESP32 board with a compatible ST7789 display, but you must respe
 
 ---
 
-**Document version: v1.2.1 (2025-12-31)**
+**Document version: v1.5.3 (2025-12-31)**
