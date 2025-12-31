@@ -510,9 +510,10 @@ void updateGarland() {
             }
             break;
     }
-    
+
     // Si doit être éteint, éteindre et retourner
-    if (!shouldBeOn || currentAnimation == ANIM_OFF) {
+    // IMPORTANT: Tester activeAnimation (celle en cours) et non currentAnimation (celle sélectionnée)
+    if (!shouldBeOn || activeAnimation == ANIM_OFF) {
         garlandOff();
         garlandEnabled = false;
         return;
