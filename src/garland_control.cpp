@@ -29,6 +29,13 @@ static uint8_t brightnessA = 0;
 static uint8_t brightnessB = 0;
 static float animationPhase = 0.0;
 
+// Type de capteur de mouvement détecté
+static MotionSensorType motionSensorType = MOTION_SENSOR_UNKNOWN;
+
+MotionSensorType getMotionSensorType() {
+    return motionSensorType;
+}
+
 // =============================================================================
 // NOMS DES ANIMATIONS ET MODES
 // =============================================================================
@@ -400,8 +407,22 @@ void setupGarland() {
     // Activation du module (sortie de standby)
     digitalWrite(TB6612_STBY, HIGH);
     
-    // Configuration des capteurs
-    pinMode(PIR_SENSOR, INPUT);
+
+    // Configuration du capteur de mouvement (PIR ou RCWL-0516)
+    pinMode(MOTION_SENSOR_PIN, INPUT);
+
+    // Détection automatique du type de capteur :
+    // PIR : LOW au repos, HIGH sur détection
+    // RCWL-0516 : HIGH au repos, LOW sur détection
+    delay(100); // Laisser le capteur s'initialiser
+    int sensorIdle = digitalRead(MOTION_SENSOR_PIN);
+    if (sensorIdle == LOW) {
+        motionSensorType = MOTION_SENSOR_PIR;
+        LOG_PRINTLN("Capteur de mouvement détecté : PIR");
+    } else {
+        motionSensorType = MOTION_SENSOR_RCWL;
+        LOG_PRINTLN("Capteur de mouvement détecté : RCWL-0516");
+    }
 
     // Initialisation
     garlandOff();
@@ -620,8 +641,20 @@ void garlandOff() {
     setIntensity(0);
 }
 
+
+// Détection de mouvement compatible PIR et RCWL-0516
 bool isMotionDetected() {
-    return digitalRead(PIR_SENSOR) == HIGH;
+    int val = digitalRead(MOTION_SENSOR_PIN);
+    if (motionSensorType == MOTION_SENSOR_PIR) {
+        // PIR : HIGH = mouvement
+        return val == HIGH;
+    } else if (motionSensorType == MOTION_SENSOR_RCWL) {
+        // RCWL-0516 : LOW = mouvement
+        return val == LOW;
+    } else {
+        // Par défaut, comportement PIR
+        return val == HIGH;
+    }
 }
 
 int getLightLevel() {

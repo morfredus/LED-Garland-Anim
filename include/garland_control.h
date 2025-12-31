@@ -165,7 +165,22 @@ void nextGarlandMode();
 void garlandOff();
 
 /**
- * @brief Vérifie si un mouvement est détecté
+ * @enum MotionSensorType
+ * @brief Type de capteur de mouvement détecté
+ */
+enum MotionSensorType {
+    MOTION_SENSOR_PIR = 0,
+    MOTION_SENSOR_RCWL,
+    MOTION_SENSOR_UNKNOWN
+};
+
+/**
+ * @brief Retourne le type de capteur de mouvement détecté (PIR ou RCWL-0516)
+ */
+MotionSensorType getMotionSensorType();
+
+/**
+ * @brief Vérifie si un mouvement est détecté (PIR ou RCWL-0516)
  * @return true si mouvement détecté, false sinon
  */
 bool isMotionDetected();

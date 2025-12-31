@@ -13,7 +13,16 @@ The system uses ESP32's NVS (Non-Volatile Storage) to automatically save and res
 - Settings are persistent across reboots and power cycles.
 
 **No user action is required**: configuration is managed automatically.
-# User Guide - LED-Garland-Anim v1.1.0
+# User Guide - LED-Garland-Anim v1.2.0
+## 🚦 Motion Sensor Auto-Detection (v1.2.0)
+
+Starting from version 1.2.0, the system automatically detects whether a PIR sensor (HC-SR501) or a Doppler radar sensor (RCWL-0516) is connected to GPIO 35:
+- **PIR**: LOW when idle, HIGH when motion detected
+- **RCWL-0516**: HIGH when idle, LOW when motion detected
+
+The firmware adapts detection logic accordingly. No configuration is required—just connect your preferred sensor to GPIO 35.
+
+See docs/PIR_SENSOR_SETUP.md and docs/RADAR_SENSOR_SETUP.md for wiring and adjustment details.
 
 Complete user guide for the LED-Garland-Anim LED garland animation controller (ESP32 IdeaSpark + ST7789).
 
