@@ -1,12 +1,16 @@
-# Pin Connection Guide - LED-Garland-Anim v1.1.0
+# Pin Connection Guide - LED-Garland-Anim v1.2.0
 
 > 📌 **Beginner's Guide**: This document explains how to physically connect components to your ESP32 IdeaSpark board for the LED-Garland-Anim project.
 
 ## 🎯 Table of Contents
-- [ESP32 IdeaSpark Board](#esp32-ideaspark-board)
-- [Detailed Connection Schematics](#detailed-connection-schematics)
-- [TB6612FNG Module](#tb6612fng-module---garland-controller)
-- [Beginner Tips](#beginner-tips)
+- [Pin Connection Guide - LED-Garland-Anim v1.2.0](#pin-connection-guide---led-garland-anim-v120)
+  - [🎯 Table of Contents](#-table-of-contents)
+  - [ESP32 IdeaSpark Board](#esp32-ideaspark-board)
+    - [📋 Pin Summary Table](#-pin-summary-table)
+    - [🎨 LCD ST7789 Connection Schematic](#-lcd-st7789-connection-schematic)
+    - [🎄 TB6612FNG + Garland Connection Schematic](#-tb6612fng--garland-connection-schematic)
+  - [⚠️ Compatible ESP32 + ST7789](#️-compatible-esp32--st7789)
+  - [Beginner Tips](#beginner-tips)
 
 ---
 
@@ -32,7 +36,7 @@
 | **TB6612_AIN1**   | AIN1       | GPIO 25  | Direction bit 1            | Current direction control    |
 | **TB6612_AIN2**   | AIN2       | GPIO 33  | Direction bit 2            | Current direction control    |
 | **TB6612_STBY**   | STBY       | GPIO 14  | Standby                    | Module activation (HIGH)    |
-| **PIR_SENSOR**    | OUT        | GPIO 35  | Detection signal           | HIGH = motion detected      |
+| **MOTION_SENSOR_PIN** | OUT        | GPIO 35  | Motion sensor (PIR or RCWL-0516, auto-detected) | See docs for details |
 
 ### 🎨 LCD ST7789 Connection Schematic
 
@@ -96,4 +100,4 @@ You may use any ESP32 board with a compatible ST7789 display, but you must respe
 
 ---
 
-**Document version: v1.1.0 (2025-12-30)**
+**Document version: v1.2.0 (2025-12-31)**

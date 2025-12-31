@@ -1,3 +1,29 @@
+# Notes de version – LED-Garland-Anim v1.2.0
+
+## [1.2.0] – 2025-12-31
+
+### Ajouté
+- Détection automatique du type de capteur de mouvement (PIR HC-SR501 ou radar Doppler RCWL-0516) sur GPIO 35
+- Nouvelle documentation technique pour le RCWL-0516 (FR/EN)
+- Toute la documentation utilisateur et technique mise à jour pour v1.2.0 (FR/EN)
+
+### Modifié
+- Mapping des pins : PIR_SENSOR remplacé par MOTION_SENSOR_PIN (GPIO 35)
+- Suppression de toutes les références à la LDR/photoresistor (fonctionnalité supprimée)
+- Tableaux de mapping et guides adaptés au matériel réellement supporté
+- Dépannage et guides mis à jour pour la nouvelle logique capteur
+
+### Corrigé
+- Cohérence de la documentation (FR/EN)
+- Numéros de version et dates dans tous les documents
+
+### Supprimé
+- Tout le code et la documentation liés à la LDR/photoresistor
+- Support des écrans et cartes obsolètes (seul ESP32 Classic + ST7789 est supporté)
+
+---
+
+Voir CHANGELOG_FR.md pour l’historique détaillé des commits.
 ## [1.1.0] - 2024-06-XX
 
 ### Ajouté

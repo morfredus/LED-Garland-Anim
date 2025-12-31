@@ -32,7 +32,7 @@
 | **TB6612_AIN1**   | AIN1       | GPIO 25  | Direction bit 1            | Contrôle direction courant  |
 | **TB6612_AIN2**   | AIN2       | GPIO 33  | Direction bit 2            | Contrôle direction courant  |
 | **TB6612_STBY**   | STBY       | GPIO 14  | Standby                    | Activation module (HIGH)    |
-| **PIR_SENSOR**    | OUT        | GPIO 35  | Signal détection           | HIGH = mouvement détecté    |
+| **MOTION_SENSOR_PIN** | OUT        | GPIO 35  | Capteur de mouvement (PIR ou RCWL-0516, auto-détecté) | Voir docs pour détails |
 
 ### 🎨 Schéma de connexion LCD ST7789
 
@@ -249,4 +249,4 @@ Vous pouvez utiliser n'importe quelle carte ESP32 avec un écran ST7789 compatib
 
 **Note** : Ce guide accompagne le projet LED-Garland-Anim v1.0.0. Pour toute question ou problème, consultez le README.md et le code source commenté.
 
-**Version du document : v1.0.0 (2025-12-30)**
+**Version du document : v1.2.0 (2025-12-31)**

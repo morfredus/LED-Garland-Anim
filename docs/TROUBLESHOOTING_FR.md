@@ -12,7 +12,7 @@
 - Effacer la flash et reprogrammer le firmware
 - Vérifier les messages d’erreur sur la console série
 - Si le problème persiste, ouvrir un ticket avec les logs
-# Dépannage - LED-Garland-Anim v1.1.0
+# Dépannage - LED-Garland-Anim v1.2.0
 
 Guide rapide pour diagnostiquer les problèmes sur ESP32 IdeaSpark.
 
@@ -39,8 +39,8 @@ Guide rapide pour diagnostiquer les problèmes sur ESP32 IdeaSpark.
 - Si rebonds, vérifier la longueur des fils et l'état des interrupteurs ; les logs série doivent afficher les pressions.
 
 ## Capteurs
-- PIR_SENSOR : GPIO35. Alimentez en 5V + GND, ajustez sensibilité et temporisation.
-- Si détection permanente, éloigner des sources de chaleur/soleil ; si jamais, augmenter la sensibilité.
+- MOTION_SENSOR_PIN : GPIO35. Le système auto-détecte PIR (HC-SR501) ou RCWL-0516. Vérifiez l'alim 5V/GND. Pour PIR : ajustez sensibilité/temporisation. Pour RCWL : vérifiez les interférences ou faux positifs.
+Si détection permanente, éloigner le capteur des sources de chaleur/soleil (PIR) ou d'interférences (RCWL) ; si jamais, augmenter la sensibilité (PIR) ou vérifier le câblage (RCWL).
 
 ## Affichage
 - LCD ST7789 : contrôler toutes les lignes SPI et l'alim BLK (backlight).
@@ -53,4 +53,4 @@ Guide rapide pour diagnostiquer les problèmes sur ESP32 IdeaSpark.
 
 ---
 
-**Version du document : v1.1.0 (2025-12-30)**
+**Version du document : v1.2.0 (2025-12-31)**

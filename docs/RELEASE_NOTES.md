@@ -1,3 +1,55 @@
+# Release Notes – LED-Garland-Anim v1.2.0
+
+## [1.2.0] – 2025-12-31
+
+### Added
+- Automatic detection of motion sensor type (PIR HC-SR501 or RCWL-0516 Doppler radar) on GPIO 35
+- New technical documentation for RCWL-0516 (EN/FR)
+- All user and technical documentation updated for v1.2.0 (EN/FR)
+
+### Changed
+- Pin mapping: PIR_SENSOR replaced by MOTION_SENSOR_PIN (GPIO 35)
+- All references to LDR/photoresistor removed (feature dropped)
+- Mapping tables and guides adapted to actual supported hardware
+- Troubleshooting and guides updated for new sensor logic
+
+### Fixed
+- Documentation consistency (EN/FR)
+- Version numbers and dates in all documents
+
+### Removed
+- All code and documentation related to LDR/photoresistor
+- Support for obsolete screens and boards (only ESP32 Classic + ST7789 supported)
+
+---
+
+See CHANGELOG.md for detailed commit history.
+# Release Notes – LED-Garland-Anim v1.2.0
+
+## [1.2.0] – 2025-12-31
+
+### Added
+- Automatic detection of motion sensor type (PIR HC-SR501 or Doppler radar RCWL-0516) on GPIO 35
+- New technical documentation for RCWL-0516 (EN/FR)
+- All user and technical documentation updated for v1.2.0 (EN/FR)
+
+### Changed
+- Pin mapping: PIR_SENSOR replaced by MOTION_SENSOR_PIN (GPIO 35)
+- All references to LDR/photoresistor removed (feature deprecated)
+- Documentation and pin tables now reflect only supported hardware
+- Troubleshooting and guides updated for new sensor logic
+
+### Fixed
+- Consistency of documentation (EN/FR)
+- Version numbers and dates in all docs
+
+### Removed
+- All code and documentation related to LDR/photoresistor
+- Legacy display and board support (now ESP32 Classic + ST7789 only)
+
+---
+
+See CHANGELOG.md for detailed commit history.
 ## [1.1.0] - 2024-06-XX
 
 ### Added

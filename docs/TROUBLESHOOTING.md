@@ -12,7 +12,7 @@
 - Erase flash and re-upload firmware
 - Check for error messages on serial console
 - If problem persists, file an issue with logs
-# Troubleshooting - LED-Garland-Anim v1.1.0
+# Troubleshooting - LED-Garland-Anim v1.2.0
 
 Use this guide to debug the ESP32 IdeaSpark build when something does not work as expected.
 
@@ -39,8 +39,8 @@ Use this guide to debug the ESP32 IdeaSpark build when something does not work a
 - If bouncy, inspect cabling length and switch quality; logs should show presses.
 
 ## Sensors
-- PIR_SENSOR: GPIO35. Verify module has 5V and GND, adjust sensitivity and delay pots.
-- If motion always true, move the PIR away from heaters/sunlight; if never true, increase sensitivity.
+- MOTION_SENSOR_PIN: GPIO35. System auto-detects PIR (HC-SR501) or RCWL-0516. Verify module has 5V and GND. For PIR: adjust sensitivity and delay pots. For RCWL: check for interference or false triggers.
+If motion always true, move the sensor away from heaters/sunlight (PIR) or sources of interference (RCWL); if never true, increase sensitivity (PIR) or check wiring (RCWL).
 
 ## Display
 - LCD ST7789: verify all SPI lines plus BLK (backlight) are powered; reseat jumpers.
@@ -53,4 +53,4 @@ Use this guide to debug the ESP32 IdeaSpark build when something does not work a
 
 ---
 
-**Document version: v1.1.0 (2025-12-30)**
+**Document version: v1.2.0 (2025-12-31)**
