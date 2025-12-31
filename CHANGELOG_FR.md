@@ -1,3 +1,24 @@
+# [1.2.1] - 2025-12-31
+
+### Ajouté
+- Prise en charge de l'auto-détection du capteur de mouvement (PIR HC-SR501 ou RCWL-0516) sur GPIO 35
+- Documentation technique et utilisateur mise à jour (FR/EN)
+
+### Modifié
+- Mapping des pins : PIR_SENSOR remplacé par MOTION_SENSOR_PIN (GPIO 35)
+- Suppression de toutes les références à la LDR/photoresistor (fonctionnalité supprimée)
+- Tableaux de mapping et guides adaptés au matériel réellement supporté
+- Dépannage et guides mis à jour pour la nouvelle logique capteur
+
+### Corrigé
+- Cohérence de la documentation (FR/EN)
+- Numéros de version et dates dans tous les documents
+
+### Supprimé
+- Tout le code et la documentation liés à la LDR/photoresistor
+- Support des écrans et cartes obsolètes (seul ESP32 Classic + ST7789 est supporté)
+
+---
 ### [1.1.0] - 2024-06-XX
 #### Ajouté
 - Sauvegarde et restauration automatique de la configuration utilisateur (mode, animation, intervalles) via NVS. Les réglages sont conservés après redémarrage ou coupure d’alimentation.
