@@ -1,4 +1,4 @@
-## 8. Choosing USB or OTA Upload
+## Choosing USB or OTA Upload
 
 You can choose the upload method (USB or OTA) at each upload without editing platformio.ini:
 
@@ -131,9 +131,6 @@ BTN2     → GPIO 17
 
 
 
-## 6. OTA Updates (Over-the-Air)
-
-See the detailed guide: [docs/OTA_UPDATE.md](docs/OTA_UPDATE.md)
 
 ## 6. OTA Updates (Over-the-Air)
 
@@ -204,7 +201,7 @@ In `include/garland_control.h`:
 
 ---
 
-## 7. Technical Specifications
+## 8. Technical Specifications
 
 - LED garland: 2 wires, anti-parallel LEDs, 8-bit PWM 5kHz
 - TB6612FNG: dual H-bridge, direction/intensity control
@@ -215,21 +212,21 @@ In `include/garland_control.h`:
 
 ---
 
-## 8. Troubleshooting
+## 9. Troubleshooting
 
 - Check wiring, power supply, WiFi configuration
 - See [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md)
 
 ---
 
-## 9. Versions
+## 10. Versions
 
-**Current Version: v1.4.0** (2025-12-31)
+**Current Version: v1.5.3** (2025-12-31)
 See [CHANGELOG.md](./CHANGELOG.md)
 
 ---
 
-## 10. Documentation
+## 11. Documentation
 
 - [User Guide](docs/USER_GUIDE.md)
 - [Technical Architecture](docs/ARCHITECTURE.md)
@@ -239,7 +236,7 @@ See [CHANGELOG.md](./CHANGELOG.md)
 
 ---
 
-## 11. Contributing
+## 12. Contributing
 
 1. Fork the project
 2. Create a branch (`git checkout -b feature/improvement`)
@@ -249,19 +246,19 @@ See [CHANGELOG.md](./CHANGELOG.md)
 
 ---
 
-## 12. License
+## 13. License
 
 This project is provided as-is for educational and personal use.
 
 ---
 
-## 13. Author
+## 14. Author
 
 ESP32 project for bi-directional LED garlands with advanced animations and smart modes.
 
 ---
 
-## 14. Acknowledgements
+## 15. Acknowledgements
 
 - PlatformIO team
 - Adafruit (GFX, NeoPixel, ST7789 libraries)
