@@ -1,126 +1,144 @@
+pio run -e esp32s3_n16r8 -t upload
+
+---
 # LED-Garland-Anim
 
-**Version: 1.2.2**
+**Version: 1.2.2** (2025-12-31)
 
-### Hardware
-- ESP32 Classic (IdeaSpark/DevKitC)
+Controller for bi-directional LED garland animation on ESP32 Classic (IdeaSpark/DevKitC) with ST7789 display, auto-detection of PIR/RCWL-0516, web interface, physical buttons, 11 animations, smart modes, persistent configuration.
 
-### 4. Select Environment
-In `platformio.ini`, use only:
-- `esp32devkitc`: ESP32 Classic (4MB Flash)
+---
 
-#### ESP32 Classic Pin Summary:
-TB6612FNG:
+## 1. Required Hardware
+
+- **ESP32 Classic board (IdeaSpark/DevKitC)**
+- **TB6612FNG dual H-bridge driver**
+- **2-wire LED garland** (anti-parallel LEDs, ~50 LEDs)
+- **Motion sensor**: PIR HC-SR501 or RCWL-0516 (auto-detected)
+- **TFT ST7789 display** (optional)
+- **RGB NeoPixel LED** WS2812B (optional)
+- **Suitable power supply** for the garland
+
+### Main pinout summary (ESP32 Classic)
+TB6612FNG :
   PWMA  → GPIO 12
+  AIN1  → GPIO 25
+  AIN2  → GPIO 33
+  STBY  → GPIO 14
+MOTION_SENSOR_PIN (PIR/RCWL-0516) → GPIO 35
+LCD_MOSI → GPIO 23
+LCD_SCLK → GPIO 18
+LCD_CS   → GPIO 15
+LCD_DC   → GPIO 2
+LCD_RST  → GPIO 4
+LCD_BLK  → GPIO 32
+BTN1     → GPIO 16
+BTN2     → GPIO 17
 
-### Sensors
-- **PIR HC-SR501**: Digital signal (LOW when idle, HIGH on detection)
+---
+
+## 2. Key Features
+
+- Control a 2-wire LED garland with ESP32 Classic
+- 11 spectacular animations
+- 2 smart operating modes (Permanent, Motion Trigger)
+- Auto-detection of PIR HC-SR501 or RCWL-0516
+- Color ST7789 display (optional)
+- Full-featured web interface
+- Physical button controls
+- Persistent configuration (NVS)
+- OTA updates
+
+---
+
+## 3. Software Prerequisites
+
+- **PlatformIO** (VS Code extension or CLI)
+- **Python 3.x**
+- **Git**
+
+---
+
+## 4. Installation
+
+1. Clone the project
+   ```bash
+   git clone <your-repo>
+   cd LED-Garland-Anim
+   ```
+2. Configure `include/secrets.h` (WiFi)
+3. In `platformio.ini`, use only:
+   - `esp32devkitc`: ESP32 Classic (4MB Flash)
+4. Wire the components as shown above
+5. Build and upload
+   ```bash
+   pio run -e esp32devkitc
+   pio run -e esp32devkitc -t upload
+   pio device monitor
+   ```
+
+---
+
+## 5. Usage
+
+### Startup
+1. The garland starts in **Auto** animation and **Permanent** mode
+2. The display shows WiFi progress then the IP address
+3. Web access: `http://[ESP32_IP]`
+
+### Physical controls
+- **Button 1**: Next animation / auto mode
+- **Button 2**: Change mode
+- **BOOT button**: Restart (long press)
+
+### Web interface
+- Dashboard, animation/mode selection, sensor visualization, remote actions
+
+### Telegram bot (optional)
+- Commands `/anim`, `/mode`, `/nextanim`, `/nextmode`, `/status`, `/list`
+
+---
+
+## 6. Advanced Configuration
+
+In `include/config.h`:
+```cpp
+// #define HAS_OLED        // Comment to disable
+// #define HAS_ST7789      // Comment to disable
+```
+In `include/garland_control.h`:
+```cpp
+#define MOTION_TRIGGER_DURATION 30000  // Duration in ms after detection
+```
+
+---
+
+## 7. Technical Specifications
+
+- LED garland: 2 wires, anti-parallel LEDs, 8-bit PWM 5kHz
+- TB6612FNG: dual H-bridge, direction/intensity control
+- Sensors: PIR (LOW idle, HIGH detection), RCWL-0516 (HIGH idle, LOW detection)
+- Display: ST7789 1.14" 135x240px (optional)
+- Memory: 4MB Flash, ~500KB RAM
+- WiFi: 2.4GHz, auto-reconnect, integrated web server
+
+---
+
+## 8. Troubleshooting
+
+- Check wiring, power supply, WiFi configuration
+- See [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md)
+
+---
+
+## 9. Versions
 
 **Current Version: v1.2.2** (2025-12-31)
-## 💾 Persistent Configuration (NVS)
-
-The project automatically saves and restores the following settings in non-volatile storage (NVS):
-- Current mode (permanent / motion trigger)
-- Current animation
-- Auto mode interval
-- Motion trigger duration
-
-On startup, if a configuration exists, it is loaded automatically. If not, default values are used. Any change via the web interface or buttons is saved for the next reboot.
-
-# LED-Garland-Anim
-
-**Version : 1.2.1**
-
-
-**Version 1.1.0** - LED Garland Animation Controller for ESP32 IdeaSpark (ST7789)
-
-Control a 2-wire garland with anti-parallel LEDs via TB6612FNG motor driver module. Features 11 spectacular animations, Auto mode, 2 smart operating modes, ST7789 LCD display, web interface, and physical button controls.
-
-**Version 1.2.1** - LED Garland Animation Controller for ESP32 IdeaSpark (ST7789)
+See [CHANGELOG.md](./CHANGELOG.md)
 
 ---
 
-## ✨ Key Features
-
-### 🎄 11 Spectacular Garland Animations
-- **Off**: Garland disabled
-- **Alternating Fade**: Smooth transition between both LED directions
-- **Blink Alternate**: Fast alternation between Direction A and B
-- **Pulse**: Simultaneous beat of both directions
-- **Breathing**: Slow intensity rise/fall
-- **✨ Strobe**: Rapid stroboscopic flash effect
-- **✨ Heartbeat**: Double-beat pulsation (♥️ BOM-bom...)
-- **✨ Wave**: Smooth sinusoidal wave flowing between directions
-- **✨ Sparkle**: Random twinkling sparkle effect
-- **✨ Meteor**: Light trail with progressive fade
-- **Auto Mode**: Cycles through all animations (30s each) with **instant start** - no blank period
-
-### 🎮 2 Smart Operating Modes
-- **Permanent**: Always on (default at startup)
-- **Motion Trigger**: PIR sensor activation (30s after motion detection)
-
-### 🖥️ OLED Real-time Display
-- Live display of current animation and mode names
-- Local IP address for web access
-- Animated visualization bar (11 distinct patterns)
-- Adaptive layout for 128x32 and 128x64 screens
-- 10 FPS refresh rate for smooth animations
-
-### 🌐 Web Interface
-- **Complete Dashboard**: System info, memory, WiFi stats
-- **Garland Control**: Animation and mode selection (2 modes, 11 animations incl. Auto)
-- **Sensor Visualization**: PIR motion status
-- **Remote Actions**: Refresh and restart
-
-### 🔘 Physical Controls
-- **Button 0 (BOOT)**: Restart on long press (1s)
-- **Button 1**: Animation change + auto mode access
-- **Button 2**: Operating mode change
-
-### 📱 Display & Feedback
-- **OLED SSD1306 Support**: WiFi progress, IP, real-time info
-- **TFT ST7789 Support**: High-resolution color display
-- **TB6612FNG Module**: Bi-directional garland control (GPIO: TB6612_PWMA, TB6612_AIN1, TB6612_AIN2, TB6612_STBY)
-- **PIR Sensor**: HC-SR501 motion detection (GPIO: PIR_SENSOR)
- Live display of current animation and mode names
- Local IP address for web access
- Animated visualization bar (11 distinct patterns)
- Adaptive layout for 135x240 screens
- 10 FPS refresh rate for smooth animations
-
-
----
-- **Git** (for version control)
-
-- 2-wire LED garland (anti-parallel LEDs, ~50 LEDs total)
-- **PIR HC-SR501** sensor (optional, for motion trigger mode)
----
-
-## 🛠️ Installation
-### 1. Clone the Project
-
-## Features
-
-- Control a LED garland with an ESP32 board (IdeaSpark)
-- Color LCD (ST7789)
-- Motion sensor support (PIR HC-SR501 or RCWL-0516, auto-detected)
-- Web interface for configuration
-- Persistent configuration (NVS)
-- Multiple animation modes
-- Over-the-air (OTA) updates
-
-## Hardware
-
-- ESP32 Classic (IdeaSpark)
-- ST7789 1.3" LCD
-- TB6612FNG motor driver
-- PIR motion sensor (HC-SR501) **or** RCWL-0516 Doppler radar sensor (auto-detected)
-
-## Pin Mapping
-
-See [docs/PIN_MAPPING.md](docs/PIN_MAPPING.md)
-
-## Documentation
+## 10. Documentation
 
 - [User Guide](docs/USER_GUIDE.md)
 - [Technical Architecture](docs/ARCHITECTURE.md)
@@ -128,64 +146,36 @@ See [docs/PIN_MAPPING.md](docs/PIN_MAPPING.md)
 - [Troubleshooting](docs/TROUBLESHOOTING.md)
 - [Release Notes](docs/RELEASE_NOTES.md)
 
-## License
+---
 
-See LICENSE file.
-Sensors:
-  PIR   → GPIO 14
+## 11. Contributing
 
-Buttons:
-  BTN1  → GPIO 16
-  BTN2  → GPIO 17
+1. Fork the project
+2. Create a branch (`git checkout -b feature/improvement`)
+3. Commit your changes (`git commit -m 'Add feature'`)
+4. Push to the branch (`git push origin feature/improvement`)
+5. Open a Pull Request
 
-Displays:
-  OLED SDA → GPIO 21
-  OLED SCL → GPIO 22
-```
+---
 
-#### ESP32 Classic Pin Summary:
-TB6612FNG:
-  PWMA  → GPIO 12
-  AIN1  → GPIO 32
-  AIN2  → GPIO 33
-  STBY  → GPIO 14
+## 12. License
 
-Sensors:
-  PIR   → GPIO 35
+This project is provided as-is for educational and personal use.
 
-Buttons:
-  BTN1  → GPIO 4
-  BTN2  → GPIO 16
+---
 
-Displays:
-  OLED SCL → GPIO 22
-```
+## 13. Author
 
-### 6. Compile and Upload
-```bash
-# Build
-pio run -e esp32s3_n16r8
+ESP32 project for bi-directional LED garlands with advanced animations and smart modes.
 
-pio run -e esp32s3_n16r8 -t upload
+---
 
-# Serial Monitor
-pio device monitor
-```
+## 14. Acknowledgements
 
-
-## 📡 Usage
-### Physical Controls
-- **Button 2**: Change operating mode
-- **BOOT Button (long press)**: Restart ESP32
-
-### Web Interface
-- **Animation Selector**: Choose from 15 animations (including Auto)
-- **Mode Selector**: Switch between 2 operating modes
-- **Refresh Button**: Update system information
-- **Restart Button**: Remote restart
-
-- Commands (from authorized chat):
-  - `/anim <id|name>` (e.g. `/anim 3`, `/anim auto`)
+- PlatformIO team
+- Adafruit (GFX, NeoPixel, ST7789 libraries)
+- ESP32 community
+- TB6612FNG module
   - `/mode <id|name>` (e.g. `/mode 1`, `/mode detect`)
   - `/nextanim`, `/nextmode`
   - `/liste` (lists all modes and animations with IDs)
