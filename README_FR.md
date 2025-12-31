@@ -115,7 +115,7 @@ Contrôlez une guirlande à 2 fils avec LEDs en anti-parallèle via un module TB
 - Carte **ESP32-S3 DevKitC-1** ou **ESP32 DevKitC**
 - Module **TB6612FNG** (contrôleur moteur double pont H)
 - Guirlande LED à 2 fils (LEDs en anti-parallèle, ~50 LEDs total)
-- Capteur **PIR HC-SR501** (optionnel, pour mode détection mouvement)
+- Capteur **PIR HC-SR501** ou **RCWL-0516** (optionnel, pour mode détection mouvement)
 - Écran **OLED SSD1306** 128x32 ou 128x64 (optionnel)
 - Écran **TFT ST7789** 240x240 (optionnel)
 - **LED RGB NeoPixel** WS2812B (optionnel)
