@@ -53,4 +53,4 @@ If motion always true, move the sensor away from heaters/sunlight (PIR) or sourc
 
 ---
 
-**Document version: v1.2.1 (2025-12-31)**
+**Document version: v1.5.3 (2025-12-31)**
