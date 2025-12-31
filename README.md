@@ -10,11 +10,14 @@ On startup, if a configuration exists, it is loaded automatically. If not, defau
 
 # LED-Garland-Anim
 
+**Version : 1.2.0**
+
+
 **Version 1.1.0** - LED Garland Animation Controller for ESP32 IdeaSpark (ST7789)
 
 Control a 2-wire garland with anti-parallel LEDs via TB6612FNG motor driver module. Features 11 spectacular animations, Auto mode, 2 smart operating modes, ST7789 LCD display, web interface, and physical button controls.
 
-[🇫🇷 Version française](README_FR.md) | [📝 Changelog](CHANGELOG.md) | [📚 Documentation](docs/)
+**Version 1.2.0** - LED Garland Animation Controller for ESP32 IdeaSpark (ST7789)
 
 ---
 
@@ -76,38 +79,39 @@ Control a 2-wire garland with anti-parallel LEDs via TB6612FNG motor driver modu
 
 ## 🛠️ Installation
 ### 1. Clone the Project
-```bash
-git clone <your-repo>
-cd LED-Garland-Anim
-```
 
-### 2. Configure `include/secrets.h`
-Edit `include/secrets.h` to set your WiFi networks and Telegram bot credentials (`TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`).
+## Features
 
-### 3. Configure PlatformIO
-Modify build paths in `platformio.ini` (optional):
+- Control a LED garland with an ESP32 board (IdeaSpark)
+- Color LCD (ST7789)
+- Motion sensor support (PIR HC-SR501 or RCWL-0516, auto-detected)
+- Web interface for configuration
+- Persistent configuration (NVS)
+- Multiple animation modes
+- Over-the-air (OTA) updates
 
-```ini
-build_dir       = C:/pio_builds/LED-Garland-Anim/build
-build_cache_dir = C:/pio_builds/LED-Garland-Anim/cache
-```
+## Hardware
 
-### 4. Select Environment
-Choose your board in `platformio.ini`:
-- `esp32s3_n16r8`: ESP32-S3 with 16MB Flash / 8MB PSRAM (default)
-- `esp32s3_n8r8`: ESP32-S3 with 8MB Flash / 8MB PSRAM
-- `esp32devkitc`: ESP32 Classic (4MB Flash)
+- ESP32 Classic (IdeaSpark)
+- ST7789 1.3" LCD
+- TB6612FNG motor driver
+- PIR motion sensor (HC-SR501) **or** RCWL-0516 Doppler radar sensor (auto-detected)
 
-### 5. Wire Components
-Consult **[docs/PIN_MAPPING.md](./docs/PIN_MAPPING.md)** for detailed connection schematics.
+## Pin Mapping
 
-#### ESP32-S3 Pin Summary:
-```
-TB6612FNG:
-  PWMA  → GPIO 5
-  AIN1  → GPIO 6
-  AIN2  → GPIO 4
+See [docs/PIN_MAPPING.md](docs/PIN_MAPPING.md)
 
+## Documentation
+
+- [User Guide](docs/USER_GUIDE.md)
+- [Technical Architecture](docs/ARCHITECTURE.md)
+- [Pin Mapping](docs/PIN_MAPPING.md)
+- [Troubleshooting](docs/TROUBLESHOOTING.md)
+- [Release Notes](docs/RELEASE_NOTES.md)
+
+## License
+
+See LICENSE file.
 Sensors:
   PIR   → GPIO 14
 
