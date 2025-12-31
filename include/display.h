@@ -1,7 +1,7 @@
 /**
  * @file display.h
  * @brief Module de gestion de l'écran ST7789 (ESP32 IdeaSpark 1.14" LCD)
- * @version 1.1.0
+ * @version 1.5.3
  * @date 2025-12-30
  *
  * Ce module fournit une interface pour gérer l'affichage sur l'écran
