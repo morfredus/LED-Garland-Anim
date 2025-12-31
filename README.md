@@ -14,7 +14,7 @@ On startup, if a configuration exists, it is loaded automatically. If not, defau
 
 Control a 2-wire garland with anti-parallel LEDs via TB6612FNG motor driver module. Features 11 spectacular animations, Auto mode, 2 smart operating modes, ST7789 LCD display, web interface, and physical button controls.
 
-[🇫🇷 Version française](README_FR.md) | [📝 Changelog](CHANGELOG.md) | [📚 Documentation](docs/)
+**Version 1.2.0** - LED Garland Animation Controller for ESP32 IdeaSpark (ST7789)
 
 ---
 
