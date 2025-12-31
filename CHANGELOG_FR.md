@@ -1,3 +1,24 @@
+# [1.5.2] – 2025-12-31
+
+### Ajouté
+- **Confirmation inline pour changements d'animation** : Affiche "✓ Animation changée : [Nom]" lors de la sélection d'une nouvelle animation
+- **Confirmation inline pour changements de mode** : Affiche "✓ Mode changé : [Nom]" lors du changement de mode
+- Retour visuel amélioré pour toutes les actions utilisateur dans l'interface web
+
+### Modifié
+- **Positionnement du message de confirmation reboot** : Le message apparaît maintenant à droite des boutons au lieu d'en dessous
+- Le message de reboot utilise une disposition flexbox pour éviter le déplacement des boutons
+- Toutes les confirmations utilisent maintenant un délai cohérent de 3 secondes avant disparition automatique
+- Rechargement de la page retardé d'1 seconde après changement d'animation/mode pour afficher la confirmation
+
+### Technique
+- Ajout de la fonction `showParamMessage()` pour les confirmations animation/mode
+- Modification de `changeAnimation()` pour extraire et afficher le nom de l'animation
+- Modification de `changeMode()` pour extraire et afficher le nom du mode
+- Le conteneur du message de reboot utilise `display:flex` pour un alignement correct
+- Améliorations CSS pour le positionnement des messages inline
+
+---
 # [1.5.1] – 2025-12-31
 
 ### Corrigé
