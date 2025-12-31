@@ -1,3 +1,22 @@
+# LED-Garland-Anim
+
+**Version: 1.2.2**
+
+### Hardware
+- ESP32 Classic (IdeaSpark/DevKitC)
+
+### 4. Select Environment
+In `platformio.ini`, use only:
+- `esp32devkitc`: ESP32 Classic (4MB Flash)
+
+#### ESP32 Classic Pin Summary:
+TB6612FNG:
+  PWMA  → GPIO 12
+
+### Sensors
+- **PIR HC-SR501**: Digital signal (LOW when idle, HIGH on detection)
+
+**Current Version: v1.2.2** (2025-12-31)
 ## 💾 Persistent Configuration (NVS)
 
 The project automatically saves and restores the following settings in non-volatile storage (NVS):

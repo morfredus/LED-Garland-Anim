@@ -1,3 +1,19 @@
+### Matériel
+- Carte **ESP32 Classic (IdeaSpark/DevKitC)**
+- Module **TB6612FNG** (contrôleur moteur double pont H)
+ 
+### 4. Sélectionner l'Environnement
+Dans `platformio.ini`, utilisez uniquement :
+- `esp32devkitc`: ESP32 Classic (4MB Flash)
+
+#### Résumé Pins ESP32 Classic :
+TB6612FNG:
+  PWMA  → GPIO 12
+
+### Capteurs
+- **PIR HC-SR501** : Signal digital (LOW au repos, HIGH sur détection)
+
+**Version Actuelle : v1.2.2** (2025-12-31)
 ## 🔧 Réglage du capteur PIR
 
 Le capteur PIR (HC-SR501) permet de détecter les mouvements pour déclencher la guirlande.
