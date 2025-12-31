@@ -53,4 +53,4 @@ Si détection permanente, éloigner le capteur des sources de chaleur/soleil (PI
 
 ---
 
-**Version du document : v1.2.1 (2025-12-31)**
+**Version du document : v1.5.3 (2025-12-31)**

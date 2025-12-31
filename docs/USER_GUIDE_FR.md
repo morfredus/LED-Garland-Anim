@@ -67,7 +67,7 @@ Depuis la version 1.3.0, le firmware prend en charge les mises à jour OTA (Over
 1. **LCD ST7789** affiche "Connexion WiFi..."
 2. **LED_BUILTIN** clignote en bleu pendant la connexion WiFi
 3. Après connexion, **adresse IP** affichée pendant 3 secondes
-4. **Guirlande** démarre avec animation Fade Alterné en mode Permanent
+4. **Guirlande** joue une animation d'intro de 10 secondes (Fade Alterné), puis bascule vers l'animation/mode sauvegardé
 5. **LED_BUILTIN** devient verte quand prête
 
 ### Notez Votre Adresse IP
@@ -125,4 +125,4 @@ Voir [TROUBLESHOOTING_FR.md](TROUBLESHOOTING_FR.md) pour l'aide.
 
 ---
 
-**Version du document : v1.2.1 (2025-12-31)**
+**Version du document : v1.5.3 (2025-12-31)**

@@ -1,17 +1,71 @@
-# OTA Update Process (ArduinoOTA)
+# OTA Update Process
 
-This guide explains how to update the LED-Garland-Anim firmware over WiFi using ArduinoOTA.
+This guide explains how to update the LED-Garland-Anim firmware over WiFi using two different methods.
 
 ---
 
 ## Prerequisites
 - The ESP32 must be flashed at least once via USB with a firmware version >= 1.3.0 (OTA enabled)
-- The device must be connected to the same WiFi network as your computer
-- PlatformIO (VS Code) or Arduino IDE installed
+- The device must be connected to WiFi
+- For method 1 (Web-based): Any web browser
+- For method 2 (ArduinoOTA): PlatformIO (VS Code) or Arduino IDE
 
 ---
 
-## Step-by-Step OTA Update
+## Method 1: Web-Based OTA Update (v1.4.0+) ⭐
+
+**The simplest and recommended method!**
+
+### Step-by-Step
+
+1. **Compile your firmware** with PlatformIO:
+   ```bash
+   pio run -e esp32devkitc
+   ```
+
+2. **Access the web interface**:
+   - Go to `http://[ESP32_IP]` in your browser
+   - The IP address is displayed on the ST7789 LCD screen
+
+3. **Navigate to OTA update page**:
+   - Click the **"⬆️ OTA Update"** button on the dashboard
+   - Or directly access `http://[ESP32_IP]/update`
+
+4. **Upload firmware**:
+   - Click **"📁 Select .bin file"**
+   - Navigate to `.pio/build/esp32devkitc/firmware.bin`
+   - Click **"🚀 Start Update"** (requires double-click confirmation for safety)
+
+5. **Monitor progress**:
+   - Progress bar in the browser
+   - Percentage display on the ST7789 screen
+   - Status messages (success/failure)
+
+6. **Automatic reboot**:
+   - The ESP32 reboots automatically after a successful update
+   - Wait for WiFi reconnection (~10 seconds)
+
+### Advantages
+- ✅ Intuitive graphical interface
+- ✅ No PlatformIO commands needed
+- ✅ Works from any device (PC, smartphone, tablet)
+- ✅ Real-time progress display
+- ✅ Automatic file validation (.bin extension required)
+- ✅ Double-click confirmation prevents accidental updates
+
+### Important Notes
+- ⚠️ **Do not unplug or reset** the device during the update!
+- ⚠️ Ensure stable WiFi connection
+- ⚠️ Firmware file must have `.bin` extension
+- ⚠️ Update takes 10-30 seconds depending on file size
+
+---
+
+## Method 2: OTA Update via ArduinoOTA (PlatformIO)
+
+**Traditional method for developers who prefer command-line:**
+
+### Step-by-Step
 
 1. **Power on the ESP32 and connect it to WiFi**
    - The device will display its IP address on the LCD (or check your router)
@@ -24,13 +78,14 @@ This guide explains how to update the LED-Garland-Anim firmware over WiFi using 
    - In Arduino IDE: Select the network port corresponding to your device
 
 4. **Upload the firmware**
-   - Click the upload button as usual
+   - Click the upload button as usual, or use:
+     ```bash
+     pio run -e esp32devkitc -t upload --upload-port [ESP32_IP]
+     ```
    - The upload will proceed over WiFi
    - The device will reboot automatically after a successful update
 
----
-
-## Troubleshooting
+### Troubleshooting
 - If the device does not appear in the port list:
   - Ensure it is connected to WiFi
   - Check that your computer is on the same network
@@ -40,9 +95,36 @@ This guide explains how to update the LED-Garland-Anim firmware over WiFi using 
 
 ---
 
-## Security Note
-OTA is enabled by default and does not require a password. For production, consider setting a password with `ArduinoOTA.setPassword()` in the code.
+## Comparison
+
+| Feature | Web-based OTA | ArduinoOTA |
+|---------|---------------|------------|
+| **Ease of use** | ⭐⭐⭐⭐⭐ Very easy | ⭐⭐⭐ Moderate |
+| **Required tools** | Web browser only | PlatformIO/Arduino IDE |
+| **Visual progress** | ✅ Yes (browser + LCD) | ❌ No |
+| **From any device** | ✅ Yes | ❌ No (only dev machine) |
+| **Safety confirmation** | ✅ Double-click | ❌ No |
+| **Best for** | End users, quick updates | Developers, automated builds |
 
 ---
 
-For more details, see the official [ArduinoOTA documentation](https://github.com/esp8266/Arduino/blob/master/doc/ota_updates/ota_updates.md).
+## Security Note
+
+OTA is enabled by default and does not require a password. For production environments, consider:
+- Setting a password with `ArduinoOTA.setPassword()` in the code
+- Restricting access to the web interface
+- Using a separate WiFi network for IoT devices
+
+---
+
+## Version History
+
+- **v1.5.3**: Added double-click confirmation for OTA updates
+- **v1.4.0**: Added web-based OTA update interface
+- **v1.3.0**: Added ArduinoOTA support
+
+---
+
+For more details on ArduinoOTA, see the official [ArduinoOTA documentation](https://github.com/esp8266/Arduino/blob/master/doc/ota_updates/ota_updates.md).
+
+**Document version: v1.5.3 (2025-12-31)**
