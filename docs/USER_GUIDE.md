@@ -13,10 +13,10 @@ The system uses ESP32's NVS (Non-Volatile Storage) to automatically save and res
 - Settings are persistent across reboots and power cycles.
 
 **No user action is required**: configuration is managed automatically.
-# User Guide - LED-Garland-Anim v1.2.0
-## 🚦 Motion Sensor Auto-Detection (v1.2.0)
+# User Guide - LED-Garland-Anim v1.2.1
+## 🚦 Motion Sensor Auto-Detection (v1.2.1)
 
-Starting from version 1.2.0, the system automatically detects whether a PIR sensor (HC-SR501) or a Doppler radar sensor (RCWL-0516) is connected to GPIO 35:
+Starting from version 1.2.1, the system automatically detects whether a PIR sensor (HC-SR501) or a Doppler radar sensor (RCWL-0516) is connected to GPIO 35:
 - **PIR**: LOW when idle, HIGH when motion detected
 - **RCWL-0516**: HIGH when idle, LOW when motion detected
 
@@ -105,4 +105,4 @@ See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for help.
 
 ---
 
-**Document version: v1.1.0 (2025-12-30)**
+**Document version: v1.2.1 (2025-12-31)**

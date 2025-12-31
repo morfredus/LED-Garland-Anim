@@ -13,10 +13,10 @@ Le système utilise la NVS (mémoire non-volatile) de l’ESP32 pour sauvegarder
 - Les réglages sont conservés même après redémarrage ou coupure d’alimentation.
 
 **Aucune action requise de l’utilisateur** : la gestion est entièrement automatique.
-# Guide Utilisateur - LED-Garland-Anim v1.2.0
-## 🚦 Détection automatique du capteur de mouvement (v1.2.0)
+# Guide Utilisateur - LED-Garland-Anim v1.2.1
+## 🚦 Détection automatique du capteur de mouvement (v1.2.1)
 
-À partir de la version 1.2.0, le système détecte automatiquement si un capteur PIR (HC-SR501) ou un capteur radar Doppler (RCWL-0516) est connecté sur le GPIO 35 :
+À partir de la version 1.2.1, le système détecte automatiquement si un capteur PIR (HC-SR501) ou un capteur radar Doppler (RCWL-0516) est connecté sur le GPIO 35 :
 - **PIR** : LOW au repos, HIGH sur détection
 - **RCWL-0516** : HIGH au repos, LOW sur détection
 
@@ -110,4 +110,4 @@ Voir [TROUBLESHOOTING_FR.md](TROUBLESHOOTING_FR.md) pour l'aide.
 
 ---
 
-**Version du document : v1.1.0 (2025-12-30)**
+**Version du document : v1.2.1 (2025-12-31)**

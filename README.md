@@ -10,14 +10,14 @@ On startup, if a configuration exists, it is loaded automatically. If not, defau
 
 # LED-Garland-Anim
 
-**Version : 1.2.0**
+**Version : 1.2.1**
 
 
 **Version 1.1.0** - LED Garland Animation Controller for ESP32 IdeaSpark (ST7789)
 
 Control a 2-wire garland with anti-parallel LEDs via TB6612FNG motor driver module. Features 11 spectacular animations, Auto mode, 2 smart operating modes, ST7789 LCD display, web interface, and physical button controls.
 
-**Version 1.2.0** - LED Garland Animation Controller for ESP32 IdeaSpark (ST7789)
+**Version 1.2.1** - LED Garland Animation Controller for ESP32 IdeaSpark (ST7789)
 
 ---
 
@@ -315,7 +315,7 @@ static GarlandMode currentMode = MODE_PERMANENT;         // Or MODE_MOTION_TRIGG
 
 ## 📝 Versions
 
-**Current Version: v1.1.0** (2025-12-30)
+**Current Version: v1.2.1** (2025-12-31)
 
 See [CHANGELOG.md](./CHANGELOG.md) for complete history.
 

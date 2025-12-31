@@ -34,7 +34,7 @@ Au démarrage, si une configuration existe, elle est chargée automatiquement. S
 
 # LED-Garland-Anim
 
-**Version : 1.2.0**
+**Version : 1.2.1**
 
 Contrôleur d'animation de guirlande LED bi-directionnelle pour ESP32 IdeaSpark (ST7789)
 
@@ -130,16 +130,16 @@ Contrôlez une guirlande à 2 fils avec LEDs en anti-parallèle via un module TB
 git clone <votre-repo>
 cd LED-Garland-Anim
 ```
-**Version 1.2.0** - Contrôleur d'animation de guirlande LED bi-directionnelle pour ESP32 IdeaSpark (ST7789)
+**Version 1.2.1** - Contrôleur d'animation de guirlande LED bi-directionnelle pour ESP32 IdeaSpark (ST7789)
 ### 2. Configurer `include/secrets.h`
 Éditez `include/secrets.h` pour définir vos réseaux WiFi.
 
 Exemple :
  **Détection Mouvement**: Déclenchement par capteur de mouvement (PIR ou RCWL-0516, 30s après détection)
 #define WIFI_SSID_1 "YourNetwork"
-# 🚦 Détection automatique du capteur de mouvement (v1.2.0)
+# 🚦 Détection automatique du capteur de mouvement (v1.2.1)
 
-À partir de la version 1.2.0, le système détecte automatiquement si un capteur PIR (HC-SR501) ou un capteur radar Doppler (RCWL-0516) est connecté sur le GPIO 35 :
+À partir de la version 1.2.1, le système détecte automatiquement si un capteur PIR (HC-SR501) ou un capteur radar Doppler (RCWL-0516) est connecté sur le GPIO 35 :
 - **PIR** : LOW au repos, HIGH sur détection
 - **RCWL-0516** : HIGH au repos, LOW sur détection
 
@@ -384,7 +384,7 @@ static GarlandMode currentMode = MODE_PERMANENT;         // Ou MODE_MOTION_TRIGG
 
 ## 📝 Versions
 
-**Version Actuelle : v1.2.0** (2025-12-31)
+**Version Actuelle : v1.2.1** (2025-12-31)
 
 Voir [CHANGELOG_FR.md](./CHANGELOG_FR.md) pour l'historique complet.
 
