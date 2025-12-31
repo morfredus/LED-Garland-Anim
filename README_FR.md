@@ -1,19 +1,180 @@
-### Matériel
-- Carte **ESP32 Classic (IdeaSpark/DevKitC)**
-- Module **TB6612FNG** (contrôleur moteur double pont H)
- 
-### 4. Sélectionner l'Environnement
-Dans `platformio.ini`, utilisez uniquement :
-- `esp32devkitc`: ESP32 Classic (4MB Flash)
 
-#### Résumé Pins ESP32 Classic :
-TB6612FNG:
+---
+# LED-Garland-Anim
+
+**Version : 1.2.2** (2025-12-31)
+
+Contrôleur d'animation de guirlande LED bi-directionnelle pour ESP32 Classic (IdeaSpark/DevKitC) avec écran ST7789, auto-détection PIR/RCWL-0516, web interface, boutons physiques, 11 animations, modes intelligents, configuration persistante.
+
+---
+
+## 1. Matériel requis
+
+- **Carte ESP32 Classic (IdeaSpark/DevKitC)**
+- **Module TB6612FNG** (double pont H)
+- **Guirlande LED 2 fils** (LEDs en anti-parallèle, ~50 LEDs)
+- **Capteur de mouvement** : PIR HC-SR501 ou RCWL-0516 (auto-détection)
+- **Écran TFT ST7789** (optionnel)
+- **LED RGB NeoPixel** WS2812B (optionnel)
+- **Alimentation adaptée** pour la guirlande
+
+### Schéma des pins principaux (ESP32 Classic)
+TB6612FNG :
   PWMA  → GPIO 12
+  AIN1  → GPIO 25
+  AIN2  → GPIO 33
+  STBY  → GPIO 14
+MOTION_SENSOR_PIN (PIR/RCWL-0516) → GPIO 35
+LCD_MOSI → GPIO 23
+LCD_SCLK → GPIO 18
+LCD_CS   → GPIO 15
+LCD_DC   → GPIO 2
+LCD_RST  → GPIO 4
+LCD_BLK  → GPIO 32
+BTN1     → GPIO 16
+BTN2     → GPIO 17
 
-### Capteurs
-- **PIR HC-SR501** : Signal digital (LOW au repos, HIGH sur détection)
+---
+
+## 2. Fonctionnalités principales
+
+- Contrôle d'une guirlande LED avec ESP32 Classic
+- 11 animations spectaculaires
+- 2 modes de fonctionnement intelligents (Permanent, Détection Mouvement)
+- Auto-détection PIR HC-SR501 ou RCWL-0516
+- Affichage couleur ST7789 (optionnel)
+- Interface web complète
+- Contrôles physiques par boutons
+- Configuration persistante (NVS)
+- Mises à jour OTA
+
+---
+
+## 3. Prérequis logiciels
+
+- **PlatformIO** (extension VS Code ou CLI)
+- **Python 3.x**
+- **Git**
+
+---
+
+## 4. Installation
+
+1. Cloner le projet
+  ```bash
+  git clone <votre-repo>
+  cd LED-Garland-Anim
+  ```
+2. Configurer `include/secrets.h` (WiFi)
+3. Dans `platformio.ini`, utiliser uniquement :
+  - `esp32devkitc`: ESP32 Classic (4MB Flash)
+4. Câbler les composants selon le schéma ci-dessus
+5. Compiler et téléverser
+  ```bash
+  pio run -e esp32devkitc
+  pio run -e esp32devkitc -t upload
+  pio device monitor
+  ```
+
+---
+
+## 5. Utilisation
+
+### Démarrage
+1. La guirlande démarre en animation **Auto** et mode **Permanent**
+2. L'écran affiche la progression WiFi puis l'adresse IP
+3. Accès web : `http://[IP_ESP32]`
+
+### Contrôles physiques
+- **Bouton 1** : Animation suivante / mode auto
+- **Bouton 2** : Changement de mode
+- **Bouton BOOT** : Redémarrage (appui long)
+
+### Interface web
+- Tableau de bord, sélection animation/mode, visualisation capteurs, actions à distance
+
+### Bot Telegram (optionnel)
+- Commandes `/anim`, `/mode`, `/nextanim`, `/nextmode`, `/status`, `/liste`
+
+---
+
+## 6. Configuration avancée
+
+Dans `include/config.h` :
+```cpp
+// #define HAS_OLED        // Commenter pour désactiver
+// #define HAS_ST7789      // Commenter pour désactiver
+```
+Dans `include/garland_control.h` :
+```cpp
+#define MOTION_TRIGGER_DURATION 30000  // Durée en ms après détection
+```
+
+---
+
+## 7. Spécifications techniques
+
+- Guirlande LED : 2 fils, LEDs anti-parallèle, PWM 8 bits 5kHz
+- TB6612FNG : double pont H, contrôle sens/intensité
+- Capteurs : PIR (LOW repos, HIGH détection), RCWL-0516 (HIGH repos, LOW détection)
+- Affichage : ST7789 1.14" 135x240px (optionnel)
+- Mémoire : Flash 4MB, RAM ~500KB
+- WiFi : 2.4GHz, auto-reconnexion, serveur web intégré
+
+---
+
+## 8. Dépannage
+
+- Vérifier câblage, alimentation, configuration WiFi
+- Voir [docs/TROUBLESHOOTING_FR.md](docs/TROUBLESHOOTING_FR.md)
+
+---
+
+## 9. Versions
 
 **Version Actuelle : v1.2.2** (2025-12-31)
+Voir [CHANGELOG_FR.md](./CHANGELOG_FR.md)
+
+---
+
+## 10. Documentation
+
+- [Guide utilisateur](docs/USER_GUIDE_FR.md)
+- [Architecture technique](docs/ARCHITECTURE_FR.md)
+- [Mapping des pins](docs/PIN_MAPPING_FR.md)
+- [Dépannage](docs/TROUBLESHOOTING_FR.md)
+- [Notes de version](docs/RELEASE_NOTES_FR.md)
+
+---
+
+## 11. Contribution
+
+1. Fork le projet
+2. Créer une branche (`git checkout -b feature/amelioration`)
+3. Commit les changements (`git commit -m 'Ajout fonctionnalité'`)
+4. Push sur la branche (`git push origin feature/amelioration`)
+5. Ouvrir une Pull Request
+
+---
+
+## 12. Licence
+
+Ce projet est fourni tel quel à des fins éducatives et personnelles.
+
+---
+
+## 13. Auteur
+
+Projet ESP32 pour guirlandes LED bi-directionnelles avec animations avancées et modes intelligents.
+
+---
+
+## 14. Remerciements
+
+- Équipe PlatformIO
+- Adafruit (librairies GFX, NeoPixel, ST7789)
+- Communauté ESP32
+- Module TB6612FNG
 ## 🔧 Réglage du capteur PIR
 
 Le capteur PIR (HC-SR501) permet de détecter les mouvements pour déclencher la guirlande.
@@ -127,15 +288,7 @@ Contrôlez une guirlande à 2 fils avec LEDs en anti-parallèle via un module TB
 - **Python 3.x** (pour PlatformIO)
 - **Git** (pour contrôle de version)
 
-### Matériel
-- Carte **ESP32-S3 DevKitC-1** ou **ESP32 DevKitC**
-- Module **TB6612FNG** (contrôleur moteur double pont H)
-- Guirlande LED à 2 fils (LEDs en anti-parallèle, ~50 LEDs total)
-- Capteur **PIR HC-SR501** ou **RCWL-0516** (optionnel, pour mode détection mouvement)
-- Écran **OLED SSD1306** 128x32 ou 128x64 (optionnel)
-- Écran **TFT ST7789** 240x240 (optionnel)
-- **LED RGB NeoPixel** WS2812B (optionnel)
-- Alimentation adaptée pour la guirlande (vérifier tension/courant)
+
 
 ---
 
