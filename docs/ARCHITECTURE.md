@@ -7,16 +7,17 @@ The configuration (mode, animation, intervals) is stored in ESP32's NVS using th
 - If NVS is empty or corrupted, defaults are used and saved.
 
 This ensures user settings are always restored after a reboot or power loss.
-# 📚 Architecture - LED-Garland-Anim v1.1.0
+# 📚 Architecture - LED-Garland-Anim v1.2.0
 
 ## 🎯 Overview
 
-LED-Garland-Anim v1.0.0 is now unified for the ESP32 IdeaSpark board with integrated ST7789 LCD (1.14").
+LED-Garland-Anim v1.2.0 is now unified for the ESP32 IdeaSpark board with integrated ST7789 LCD (1.14").
 - **Web Interface**: Remote control and configuration
 - **Local Display**: ST7789 LCD (no OLED/TFT/ILI9341)
 - **Physical Control**: Buttons for animation/mode changes
 - **Smart Modes**: Automatic management based on sensors
 - **TB6612FNG Module**: Bi-directional garland control
+- **Motion Sensor Auto-Detection**: PIR (HC-SR501) or Doppler radar (RCWL-0516) auto-detected on GPIO 35
 
 ## Modular Structure
 
@@ -36,7 +37,7 @@ const char* getGarlandAnimationName();         // Current animation name
 const char* getGarlandModeName();              // Current mode name
 
 // GPIO naming convention:
-// BUTTON_BOOT, BUTTON_1, BUTTON_2, I2C_SDA, I2C_SCL, TB6612_PWMA, TB6612_AIN1, TB6612_AIN2, TB6612_STBY, PIR_SENSOR, LED_BUILTIN
+// BUTTON_BOOT, BUTTON_1, BUTTON_2, I2C_SDA, I2C_SCL, TB6612_PWMA, TB6612_AIN1, TB6612_AIN2, TB6612_STBY, MOTION_SENSOR_PIN, LED_BUILTIN
 ```
 
 **Animations (11 types)**:
@@ -66,7 +67,7 @@ See [PIN_MAPPING.md](PIN_MAPPING.md) for full details. Only ESP32 IdeaSpark + ST
 
 ## Sensors & Buttons
 
-- PIR motion sensor (GPIO 35)
+- Motion sensor (PIR or RCWL-0516, GPIO 35, auto-detected)
 - User buttons (GPIO 16/17)
 - TB6612FNG driver (PWM, direction, standby)
 
@@ -78,5 +79,5 @@ See [PIN_MAPPING.md](PIN_MAPPING.md) for full details. Only ESP32 IdeaSpark + ST
 
 ## Versioning
 
-- This document: v1.1.0 (2025-12-30)
+- This document: v1.2.0 (2025-12-31)
 - See CHANGELOG.md for details

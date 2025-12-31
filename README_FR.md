@@ -31,9 +31,12 @@ Le projet sauvegarde et restaure automatiquement les paramètres suivants dans l
 
 Au démarrage, si une configuration existe, elle est chargée automatiquement. Sinon, les valeurs par défaut sont utilisées. Tout changement via l’interface web ou les boutons est sauvegardé pour le prochain redémarrage.
 
+
 # LED-Garland-Anim
 
-**Version 1.1.0** - Contrôleur d'animation de guirlande LED bi-directionnelle pour ESP32 IdeaSpark (ST7789)
+**Version : 1.2.0**
+
+Contrôleur d'animation de guirlande LED bi-directionnelle pour ESP32 IdeaSpark (ST7789)
 
 Contrôlez une guirlande à 2 fils avec LEDs en anti-parallèle via un module TB6612FNG. 11 animations spectaculaires, mode Auto, 2 modes intelligents, affichage LCD ST7789, interface web, et contrôles physiques par boutons.
 
@@ -41,7 +44,16 @@ Contrôlez une guirlande à 2 fils avec LEDs en anti-parallèle via un module TB
 
 ---
 
-## ✨ Fonctionnalités Principales
+
+## Fonctionnalités
+
+- Contrôle d'une guirlande LED avec une carte ESP32 (IdeaSpark)
+- Écran LCD couleur (ST7789)
+- Capteur de mouvement (PIR HC-SR501 ou RCWL-0516, détection automatique)
+- Interface web de configuration
+- Configuration persistante (NVS)
+- Plusieurs modes d'animation
+- Mises à jour OTA
 
 ### 🎄 11 Animations Spectaculaires de Guirlande
 - **Éteint**: Guirlande désactivée
@@ -308,7 +320,7 @@ Dans `include/garland_control.h` :
 
 ### Capteurs
 - **PIR** : Signal digital (HIGH = mouvement détecté)
-- **LDR** : Analogique 12 bits (0-4095)
+- **RCWL-0516** : Signal digital (LOW = mouvement détecté)
 
 ### Mémoire (ESP32-S3 N16R8)
 - Flash : 16 MB (partition huge_app)
@@ -372,21 +384,20 @@ static GarlandMode currentMode = MODE_PERMANENT;         // Ou MODE_MOTION_TRIGG
 
 ## 📝 Versions
 
-**Version Actuelle : v1.1.0** (2025-12-30)
+**Version Actuelle : v1.2.0** (2025-12-31)
 
 Voir [CHANGELOG_FR.md](./CHANGELOG_FR.md) pour l'historique complet.
 
 ---
 
-## 📚 Documentation
 
-- **[README.md](./README.md)** - Version anglaise
-- **[CHANGELOG.md](./CHANGELOG.md)** - Historique versions (anglais)
-- **[CHANGELOG_FR.md](./CHANGELOG_FR.md)** - Historique versions (français)
-- **[docs/PIN_MAPPING.md](./docs/PIN_MAPPING.md)** - Schémas de connexion détaillés
-- **[docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md)** - Architecture du code
-- **[docs/USER_GUIDE_FR.md](./docs/USER_GUIDE_FR.md)** - Guide utilisateur complet
-- **[docs/TROUBLESHOOTING_FR.md](./docs/TROUBLESHOOTING_FR.md)** - Dépannage détaillé
+## Documentation
+
+- [Guide utilisateur](docs/USER_GUIDE_FR.md)
+- [Architecture technique](docs/ARCHITECTURE_FR.md)
+- [Mapping des pins](docs/PIN_MAPPING_FR.md)
+- [Dépannage](docs/TROUBLESHOOTING_FR.md)
+- [Notes de version](docs/RELEASE_NOTES_FR.md)
 
 ---
 
