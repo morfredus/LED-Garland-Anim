@@ -1,12 +1,12 @@
 // ---
 // Changelog :
-// #3 (2025-12-30) : LCD ST7789 devient l'unique écran couleur supporté (mapping unique, suppression TFT/ILI9341, OLED secours)
+// #4 (2025-12-31) : Détection automatique du capteur de mouvement (PIR ou RCWL-0516), code et documentation adaptés, version 1.2.0
 // ---
 /**
  * @file board_config.h
  * @brief Mapping optimisé pour ESP32 IdeaSpark (Écran 1.14" intégré)
- * @version 1.1.0
- * @date 2025-12-30
+ * @version 1.2.0
+ * @date 2025-12-31
  */
 
 #ifndef BOARD_CONFIG_H
@@ -53,9 +53,9 @@
 #define TB6612_STBY  14   ///< Standby (HIGH = actif)
 
 // ============================================================================
-// CAPTEUR DE MOUVEMENT (PIR)
+// CAPTEUR DE MOUVEMENT (PIR ou RCWL-0516)
 // ============================================================================
-#define PIR_SENSOR   35   ///< Entrée PIR (GPIO 35 est Input Only, parfait ici)
+#define MOTION_SENSOR_PIN   35   ///< Entrée capteur de mouvement (PIR ou RCWL-0516)
 
 // ============================================================================
 // BOUTONS UTILISATEUR EXTERNES

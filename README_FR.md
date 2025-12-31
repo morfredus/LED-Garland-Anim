@@ -118,19 +118,28 @@ Contrôlez une guirlande à 2 fils avec LEDs en anti-parallèle via un module TB
 git clone <votre-repo>
 cd LED-Garland-Anim
 ```
-
+**Version 1.2.0** - Contrôleur d'animation de guirlande LED bi-directionnelle pour ESP32 IdeaSpark (ST7789)
 ### 2. Configurer `include/secrets.h`
 Éditez `include/secrets.h` pour définir vos réseaux WiFi.
 
 Exemple :
-```cpp
+ **Détection Mouvement**: Déclenchement par capteur de mouvement (PIR ou RCWL-0516, 30s après détection)
 #define WIFI_SSID_1 "YourNetwork"
+# 🚦 Détection automatique du capteur de mouvement (v1.2.0)
+
+À partir de la version 1.2.0, le système détecte automatiquement si un capteur PIR (HC-SR501) ou un capteur radar Doppler (RCWL-0516) est connecté sur le GPIO 35 :
+- **PIR** : LOW au repos, HIGH sur détection
+- **RCWL-0516** : HIGH au repos, LOW sur détection
+
+Le firmware adapte la logique de détection en conséquence. Aucune configuration n’est requise : il suffit de connecter le capteur souhaité sur le GPIO 35.
+
+Voir docs/PIR_SENSOR_SETUP_FR.md et docs/RADAR_SENSOR_SETUP_FR.md pour le câblage et les réglages.
 #define WIFI_PASS_1 "YourPassword"
 ```
-
+**Capteur de mouvement**: Détection automatique PIR (HC-SR501) ou RCWL-0516 (GPIO : MOTION_SENSOR_PIN)
 ### 3. Configurer PlatformIO
-Modifiez les chemins de build dans `platformio.ini` (optionnel) :
-
+  MOTION_SENSOR_PIN   → GPIO 35
+  MOTION_SENSOR_PIN   → GPIO 14
 ```ini
 build_dir       = C:/pio_builds/LED-Garland-Anim/build
 build_cache_dir = C:/pio_builds/LED-Garland-Anim/cache
