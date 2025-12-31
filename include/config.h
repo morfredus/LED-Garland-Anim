@@ -1,7 +1,7 @@
 /**
  * @file config.h
  * @brief Configuration globale du projet
- * @version 1.5.0
+ * @version 1.5.1
  * @date 2025-12-31
  */
 

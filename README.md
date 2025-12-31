@@ -28,7 +28,7 @@ pio run -e esp32s3_n16r8 -t upload
 ---
 # LED-Garland-Anim
 
-**Version: 1.5.0** (2025-12-31)
+**Version: 1.5.1** (2025-12-31)
 
 Controller for bi-directional LED garland animation on ESP32 Classic (IdeaSpark/DevKitC) with ST7789 display, auto-detection of PIR/RCWL-0516, web interface with inline confirmations, web-based OTA updates, physical buttons, 11 animations, smart modes, persistent configuration, automatic startup animation.
 
@@ -415,7 +415,7 @@ static GarlandMode currentMode = MODE_PERMANENT;         // Or MODE_MOTION_TRIGG
 
 ## 📝 Versions
 
-**Current Version: v1.5.0** (2025-12-31)
+**Current Version: v1.5.1** (2025-12-31)
 
 See [CHANGELOG.md](./CHANGELOG.md) for complete history.
 

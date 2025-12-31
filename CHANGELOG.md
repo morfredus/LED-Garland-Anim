@@ -1,3 +1,15 @@
+# [1.5.1] – 2025-12-31
+
+### Fixed
+- **Critical bug**: Startup animation now works correctly even when saved animation is OFF
+- Animation logic now correctly uses `activeAnimation` instead of `currentAnimation` for runtime checks
+- Intro animation is no longer blocked by OFF animation in saved settings
+
+### Technical
+- Modified `updateGarland()`: Changed test from `currentAnimation == ANIM_OFF` to `activeAnimation == ANIM_OFF`
+- This ensures the intro animation plays regardless of saved animation state
+
+---
 # [1.5.0] – 2025-12-31
 
 ### Added

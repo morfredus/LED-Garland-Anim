@@ -225,7 +225,7 @@ Dans `include/garland_control.h` :
 
 ## 9. Versions
 
-**Version Actuelle : v1.5.0** (2025-12-31)
+**Version Actuelle : v1.5.1** (2025-12-31)
 Voir [CHANGELOG_FR.md](./CHANGELOG_FR.md)
 
 ---
@@ -646,7 +646,7 @@ static GarlandMode currentMode = MODE_PERMANENT;         // Ou MODE_MOTION_TRIGG
 
 ## 📝 Versions
 
-**Version Actuelle : v1.5.0** (2025-12-31)
+**Version Actuelle : v1.5.1** (2025-12-31)
 
 Voir [CHANGELOG_FR.md](./CHANGELOG_FR.md) pour l'historique complet.
 

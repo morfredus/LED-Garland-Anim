@@ -1,3 +1,15 @@
+# [1.5.1] – 2025-12-31
+
+### Corrigé
+- **Bug critique** : L'animation de démarrage fonctionne maintenant correctement même quand l'animation sauvegardée est OFF
+- La logique d'animation utilise maintenant correctement `activeAnimation` au lieu de `currentAnimation` pour les tests d'exécution
+- L'animation d'intro n'est plus bloquée par l'animation OFF dans les paramètres sauvegardés
+
+### Technique
+- Modification de `updateGarland()` : Changement du test de `currentAnimation == ANIM_OFF` à `activeAnimation == ANIM_OFF`
+- Cela garantit que l'animation d'intro joue indépendamment de l'état de l'animation sauvegardée
+
+---
 # [1.5.0] – 2025-12-31
 
 ### Ajouté
