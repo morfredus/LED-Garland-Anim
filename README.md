@@ -11,12 +11,16 @@ You can choose the upload method (USB or OTA) at each upload without editing pla
    - PlatformIO will auto-detect the serial port (e.g. COM8)
 
 - **OTA upload (WiFi):**
+
    - Use:
       ```bash
       pio run -e esp32devkitc -t upload --upload-port 192.168.x.x
       ```
    - Replace `192.168.x.x` with your ESP32's IP address
    - PlatformIO will automatically use OTA for this upload
+   - ⚠️ **Note:** PlatformIO will show a warning:
+     > We have just detected `upload_port` as IP address or host name of ESP device. `upload_protocol` is switched to `espota`.
+     This is normal and does not require any change in your configuration.
 
 **Tip:** Do not set `upload_protocol = espota` globally. Use the `--upload-port` option for OTA uploads only when needed.
 pio run -e esp32s3_n16r8 -t upload
