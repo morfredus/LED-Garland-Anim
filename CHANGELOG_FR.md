@@ -1,10 +1,3 @@
-
-# [1.4.1] – 2025-12-31
-
-### Corrigé
-- Démarrage : La guirlande démarre toujours avec une animation active, même en mode détection (allumée pour la durée configurée).
-- Numéro de version incrémenté à 1.4.1 (SEMVER)
-
 # [1.4.0] – 2025-12-31
 
 ### Ajouté

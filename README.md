@@ -28,7 +28,7 @@ pio run -e esp32s3_n16r8 -t upload
 ---
 # LED-Garland-Anim
 
-**Version: 1.4.1** (2025-12-31)
+**Version: 1.4.0** (2025-12-31)
 
 Controller for bi-directional LED garland animation on ESP32 Classic (IdeaSpark/DevKitC) with ST7789 display, auto-detection of PIR/RCWL-0516, web interface, web-based OTA updates, physical buttons, 11 animations, smart modes, persistent configuration.
 
@@ -365,8 +365,7 @@ In `include/garland_control.h`:
 
 At boot, the system initializes with:
 - **Animation Mode**: `AUTO` - Cycles through all 14 animations (30 seconds each)
-- **Operating Mode**: `PERMANENT` or **MOTION_TRIGGER**
-- **Immediate startup**: The garland always starts with an active animation, even in detection mode (lights up for the configured duration).
+- **Operating Mode**: `PERMANENT` - Garland always on
 - **Display**: Shows animation name and IP address on OLED
 
 Change these defaults in `src/garland_control.cpp`:
