@@ -61,7 +61,7 @@ From v1.3.0, the firmware supports OTA (Over-the-Air) updates using ArduinoOTA.
 1. **ST7789 LCD** displays "Connecting to WiFi..."
 2. **LED_BUILTIN** blinks blue during WiFi connection
 3. After connection, **IP address** displayed for 3 seconds
-4. **Garland** starts with Alternating Fade animation in Permanent mode
+4. **Garland** plays a 10-second intro animation (Fade Alternate), then switches to saved animation/mode
 5. **LED_BUILTIN** turns green when ready
 
 ### Note Your IP Address
@@ -119,4 +119,4 @@ See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for help.
 
 ---
 
-**Document version: v1.2.1 (2025-12-31)**
+**Document version: v1.5.3 (2025-12-31)**

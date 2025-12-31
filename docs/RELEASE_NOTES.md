@@ -1,3 +1,111 @@
+# [1.5.3] – 2025-12-31
+
+### Changed
+- **Reboot message positioning**: Message now uses absolute positioning at top-right, buttons no longer shrink or move
+- **OTA update confirmation**: Replaced blocking `confirm()` popup with double-click confirmation (5-second timeout)
+- OTA button text changes to "⚠️ Click again to confirm update" on first click
+- Warning message appears below OTA button after first click
+
+### Fixed
+- UI layout: Reboot confirmation message no longer causes button displacement
+- UX: Buttons maintain fixed width regardless of message display state
+- OTA: Removed blocking `alert()` popups for file validation errors
+- OTA: File validation errors now display as inline status messages
+
+### Technical
+- Reboot message: Changed from flexbox to `position:absolute` with `top:0;right:0`
+- Reboot message: Added shadow and max-width for better visibility
+- OTA: Converted form submit to button click handler `handleUpload()`
+- OTA: Added `uploadConfirmed` state variable for double-click logic
+- OTA: Replaced alert() with inline statusMessage display
+
+---
+# [1.5.2] – 2025-12-31
+
+### Added
+- **Inline confirmation for animation changes**: Displays "✓ Animation changed: [Name]" when selecting a new animation
+- **Inline confirmation for mode changes**: Displays "✓ Mode changed: [Name]" when switching modes
+- Improved visual feedback for all user actions in web interface
+
+### Changed
+- **Reboot confirmation message positioning**: Message now appears to the right of buttons instead of below
+- Reboot message uses flexbox layout to prevent button displacement
+- All confirmations now use consistent 3-second auto-dismiss timing
+- Page reload delayed by 1 second after animation/mode change to show confirmation
+
+### Technical
+- Added `showParamMessage()` function for animation/mode confirmations
+- Modified `changeAnimation()` to extract and display animation name
+- Modified `changeMode()` to extract and display mode name
+- Reboot message container uses `display:flex` for proper alignment
+- CSS improvements for inline message positioning
+
+---
+# [1.5.1] – 2025-12-31
+
+### Fixed
+- **Critical bug**: Startup animation now works correctly even when saved animation is OFF
+- Animation logic now correctly uses `activeAnimation` instead of `currentAnimation` for runtime checks
+- Intro animation is no longer blocked by OFF animation in saved settings
+
+### Technical
+- Modified `updateGarland()`: Changed test from `currentAnimation == ANIM_OFF` to `activeAnimation == ANIM_OFF`
+- This ensures the intro animation plays regardless of saved animation state
+
+---
+# [1.5.0] – 2025-12-31
+
+### Added
+- **Automatic startup animation**: 10-second intro animation (Fade Alternate) starts immediately on boot
+- **Automatic transition**: After intro, automatically switches to saved animation and mode
+- **Inline confirmation messages**: All save/restore/erase operations display inline confirmations (no blocking popups)
+- **Double-click reboot confirmation**: Reboot button requires two clicks for safety (5-second timeout)
+
+### Changed
+- Startup behavior: Animation starts immediately, even in motion detection mode
+- Web interface: Removed all blocking alert() and confirm() popups
+- Reboot button: Added visual feedback (color change) on first click
+- User experience: Non-blocking confirmations improve workflow
+- Version number incremented to 1.5.0 (SEMVER - MINOR)
+
+### Fixed
+- Startup issue: Garland now animates immediately instead of waiting for user interaction
+- Reboot reliability: Double confirmation prevents accidental reboots
+- Motion detection mode: Intro animation plays before motion detection activates
+
+### Technical
+- Added `INTRO_ANIMATION_DURATION` constant (10 seconds)
+- Added `introAnimationActive`, `savedAnimation`, `savedMode` state variables
+- Modified `setupGarland()` to start intro animation immediately
+- Modified `updateGarland()` to handle intro-to-saved transition
+- JavaScript functions for inline messages: `showMessage()`, `saveSettings()`, `loadSettings()`, `eraseSettings()`
+- JavaScript reboot confirmation with timeout: `rebootDevice()`
+
+---
+# [1.4.0] – 2025-12-31
+
+### Added
+- **Web-based OTA update system**: Upload firmware (.bin) directly from the browser
+- Dedicated web page `/update` with intuitive interface for firmware upload
+- Real-time progress display (progress bar, percentage)
+- Uploaded file validation (check .bin extension)
+- Update status display on ST7789 screen (progress, success, failure)
+- Complete error handling with clear messages
+- Automatic reboot after successful update
+- Quick access button to OTA update from the dashboard
+
+### Changed
+- Version number incremented to 1.4.0 (SEMVER)
+- User documentation completed with Web OTA instructions (EN/FR)
+- ArduinoOTA kept as alternative method (PlatformIO OTA)
+
+### Technical
+- Using native ESP32 `Update.h` for firmware flashing
+- Upload handler with optimized memory management (chunked upload)
+- JavaScript interface for asynchronous upload with XMLHttpRequest
+- Client-side and server-side validation
+
+---
 # [1.3.0] – 2025-12-31
 
 ### Added
