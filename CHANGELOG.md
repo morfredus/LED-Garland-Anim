@@ -1,3 +1,109 @@
+# [1.11.0] – 2026-01-01
+
+### Added (MINOR - New Features + Major Animation Improvements)
+
+**NEW FEATURE: Auto Mode for Matrix**
+- **Description**: Automatic cycling through all matrix animations
+- **Behavior**: Cycles every 30 seconds through all animations (excluding OFF)
+- **Implementation**: New enum `MATRIX_ANIM_AUTO`, auto mode logic in `updateMatrix8x8()`
+- **UI**: New "Auto" option in matrix animation selection
+- **Files**: `include/matrix8x8_control.h:78`, `src/matrix8x8_control.cpp:17-24,1836-1855,1971-1978`
+
+### Fixed (CRITICAL - Detection Mode + Animations)
+
+**CRITICAL FIX #1: Detection Mode Matrix Re-activation**
+- **Issue**: In MODE_MOTION_TRIGGER, matrix didn't turn back on after motion detection because `matrixEnabled` was set to false
+- **Root Cause**: `matrix8x8Off()` permanently disabled matrix by setting `matrixEnabled = false`
+- **Solution**: Modified `updateMatrix8x8()` to clear matrix without changing `matrixEnabled` flag during motion timeout
+- **Result**: Matrix now correctly turns back on when motion is detected, preserving animation and brightness settings
+- **Files**: `src/matrix8x8_control.cpp:1811-1834`
+
+**Animation Improvements (14 animations fixed/enhanced):**
+
+1. **Candy Cane** - Complete redesign with realistic candy cane shape
+   - **Before**: Generic diagonal stripes across entire matrix
+   - **After**: Proper candy cane with curved hook at top, straight stick, rotating red/white diagonal stripes
+   - **File**: `src/matrix8x8_control.cpp:670-713`
+
+2. **Clock** - Professional analog clock with proper hour markers
+   - **Before**: Simplified circle with erratic hand
+   - **After**: 12-hour markers (12,3,6,9 bright white, others dim gray), smooth 60-second clockwise sweep, hand changes red when passing hours
+   - **File**: `src/matrix8x8_control.cpp:1154-1215`
+
+3. **Bunny** - Added animated eyes
+   - **Before**: Eyes missing
+   - **After**: Black eyes that move with bunny hop, blinking animation every 2 seconds
+   - **File**: `src/matrix8x8_control.cpp:1274-1370`
+
+4. **Flower** - Realistic blooming flower animation
+   - **Before**: Static small flowers
+   - **After**: Two side-by-side flowers with 8 petals each, smooth opening/closing bloom cycle, green stems
+   - **File**: `src/matrix8x8_control.cpp:1330-1441`
+
+5. **Meteor** - Full diagonal matrix coverage
+   - **Before**: Vertical falling only, top 3 rows only
+   - **After**: Diagonal meteors across full 8x8 matrix, 3 meteors at different stages, realistic trailing effect
+   - **File**: `src/matrix8x8_control.cpp:388-425`
+
+6. **Santa** - Highly recognizable Santa face
+   - **Before**: Abstract pattern
+   - **After**: Red hat with white trim and pom-pom, skin tone face, blinking black eyes, red nose, white beard with mustache gap
+   - **File**: `src/matrix8x8_control.cpp:462-512`
+
+7. **Gift** - Clear gift box with ribbon and bow
+   - **Before**: Unclear pattern
+   - **After**: Color-cycling box (red/green/blue), gold ribbon cross, sparkling bow on top
+   - **File**: `src/matrix8x8_control.cpp:615-659`
+
+8. **Snowflake** - Added heartbeat pulse effect
+   - **Before**: Constant brightness
+   - **After**: Double-pulse heartbeat pattern (two quick pulses, pause, repeat), cyan color maintained
+   - **File**: `src/matrix8x8_control.cpp:694-743`
+
+9. **Rainbow Wave** - True sine wave animation
+   - **Before**: Static vertical rainbow stripes
+   - **After**: Animated sine wave with rainbow colors, smooth horizontal movement, vertical gradient effect
+   - **File**: `src/matrix8x8_control.cpp:1519-1555`
+
+10-14. **Minor refinements**: Matrix Rain (verified full height), Plasma (optimized), Radar (improved), Stocking (from v1.10.0), Countdown (from v1.8.1)
+
+### Removed
+
+**Removed Animation: Icicles**
+- **Reason**: User request - animation to be removed from available options
+- **Impact**: Total animations: 39 → 38 (plus Auto mode = 39 selectable options)
+- **Files Modified**:
+  - Enum: `include/matrix8x8_control.h:52` (removed MATRIX_ANIM_ICICLES)
+  - Names array: `src/matrix8x8_control.cpp:56` (removed "Icicles")
+  - Function: `src/matrix8x8_control.cpp:986-1017` (removed animateIcicles())
+  - Switch case: `src/matrix8x8_control.cpp:2041-2043` (removed case)
+
+### Changed
+
+**Animation Count:**
+- **Before**: 39 animations (including Icicles)
+- **After**: 38 animations + Auto mode = 39 total selectable options
+
+**Detection Behavior:**
+- **MODE_PERMANENT**: No changes (both always on)
+- **MODE_MOTION_MATRIX_INDEPENDENT**: No changes (garland motion-based, matrix always on)
+- **MODE_MOTION_TRIGGER**: **FIXED** - Both turn off after timeout, **both turn back on** with detection (preserving settings)
+
+### Technical
+
+- **Auto Mode Variables**: Added `autoModeActive`, `autoModeChangeTime`, `autoModeInterval`, `activeAnimation`
+- **Matrix State Management**: Separated user control (`matrixEnabled`) from motion-based visibility
+- **Animation Execution**: Auto mode executes `activeAnimation`, manual mode executes `currentAnimation`
+- **NVS Persistence**: Auto mode selection saved and restored across reboots
+- **Animation Quality**: All fixed animations now use full 8x8 matrix appropriately
+
+### Version
+
+- **SEMVER Classification**: MINOR (1.11.0) - New features, significant fixes, backwards compatible
+- **All Files Updated**: Updated version string to 1.11.0 in all headers, source files, platformio.ini, and documentation
+
+---
+
 # [1.10.0] – 2026-01-01
 
 ### Added (MINOR - New Animations + UX Improvements)
