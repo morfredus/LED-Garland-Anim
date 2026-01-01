@@ -1,7 +1,7 @@
 /**
  * @file garland_control.h
  * @brief Contrôle des animations de guirlande LED bi-directionnelle
- * @version 1.7.0
+ * @version 1.8.0
  * @date 2026-01-01
  *
  * Module de gestion des animations pour guirlande LED à 2 fils avec LEDs en anti-parallèle.
@@ -47,9 +47,10 @@ enum GarlandAnimation {
  * @brief Modes de fonctionnement de la guirlande
  */
 enum GarlandMode {
-    MODE_PERMANENT = 0,     ///< Toujours allumé
-    MODE_MOTION_TRIGGER,    ///< Déclenchement par détection de mouvement
-    MODE_COUNT              ///< Nombre total de modes
+    MODE_PERMANENT = 0,              ///< Guirlande et matrice toujours allumées
+    MODE_MOTION_TRIGGER,             ///< Guirlande ET matrice déclenchées par détection
+    MODE_MOTION_MATRIX_INDEPENDENT,  ///< Guirlande déclenchée par détection, matrice toujours allumée
+    MODE_COUNT                       ///< Nombre total de modes
 };
 
 // =============================================================================
@@ -194,4 +195,11 @@ bool isMotionDetected();
  * @return true si animation active, false sinon
  */
 bool isAnimationActive();
+
+/**
+ * @brief Indique si la guirlande doit être allumée selon le mode actuel
+ * @return true si la guirlande doit être allumée, false sinon
+ */
+bool isGarlandEnabled();
+
 #endif // GARLAND_CONTROL_H

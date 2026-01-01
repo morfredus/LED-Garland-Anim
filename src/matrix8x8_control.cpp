@@ -1,11 +1,12 @@
 /**
  * @file matrix8x8_control.cpp
  * @brief Implementation of 8x8 NeoPixel matrix control with festive animations
- * @version 1.7.0
+ * @version 1.8.0
  * @date 2026-01-01
  */
 
 #include "matrix8x8_control.h"
+#include "garland_control.h"
 
 // =============================================================================
 // GLOBAL VARIABLES
@@ -1582,7 +1583,19 @@ void setupMatrix8x8() {
 }
 
 void updateMatrix8x8() {
-    if (!matrixEnabled || currentAnimation == MATRIX_ANIM_OFF) {
+    // Get current garland mode to determine matrix behavior
+    GarlandMode mode = getGarlandMode();
+
+    // In MODE_MOTION_TRIGGER, matrix follows garland state
+    // In MODE_MOTION_MATRIX_INDEPENDENT and MODE_PERMANENT, matrix is independent
+    bool matrixShouldBeOn = matrixEnabled && (currentAnimation != MATRIX_ANIM_OFF);
+
+    if (mode == MODE_MOTION_TRIGGER) {
+        // Matrix follows garland state in this mode
+        matrixShouldBeOn = matrixShouldBeOn && isGarlandEnabled();
+    }
+
+    if (!matrixShouldBeOn) {
         matrix8x8Off();
         return;
     }
