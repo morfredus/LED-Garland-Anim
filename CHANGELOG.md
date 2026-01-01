@@ -1,3 +1,41 @@
+# [1.11.2] – 2026-01-01
+
+### Fixed (PATCH - Coordinate System Correction)
+
+**Matrix Coordinate Mapping System**
+- **Issue**: Matrix used zigzag indexing pattern (even rows left→right, odd rows right→left)
+- **Problem**: Caused incorrect pixel positioning and visual distortions in animations
+- **Solution**: Implemented uniform linear indexing (all rows 0-7 go left→right)
+- **Impact**: All 38 matrix animations now display correctly with proper coordinate alignment
+- **Files**: `src/matrix8x8_control.cpp:88-108`
+
+### Technical
+
+**Coordinate System Specification**
+- All rows now follow the same pattern: pixels 0-7 (left to right)
+- Row 0: pixels 0-7
+- Row 1: pixels 8-15
+- Row 2: pixels 16-23
+- Row 3: pixels 24-31
+- Row 4: pixels 32-39
+- Row 5: pixels 40-47
+- Row 6: pixels 48-55
+- Row 7: pixels 56-63
+
+**Modified Function**
+```cpp
+static uint16_t xy(uint8_t x, uint8_t y) {
+    if (x >= 8 || y >= 8) return 0;
+    return y * 8 + x;  // Linear: all rows left to right
+}
+```
+
+### Version
+
+- **SEMVER Classification**: PATCH (1.11.2) - Bug fix, corrects coordinate mapping, no new features
+
+---
+
 # [1.11.1] – 2026-01-01
 
 ### Fixed (PATCH - Synchronization)
