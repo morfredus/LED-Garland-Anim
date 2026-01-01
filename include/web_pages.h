@@ -4,7 +4,7 @@
 /**
  * @file web_pages.h
  * @brief Génération des pages HTML pour l'interface web
- * @version 1.9.0
+ * @version 1.10.0
  *
  * Module dédié à la génération du contenu HTML de l'interface web.
  * Contient les fonctions pour construire les différentes cartes et sections.
@@ -198,25 +198,46 @@ String generateDashboardPage(
     // Fonction pour afficher les messages de paramètres
     html += "function showParamMessage(msg) { var el = document.getElementById('param-message'); el.textContent = msg; el.style.visibility = 'visible'; setTimeout(() => { el.style.visibility = 'hidden'; el.textContent = ''; }, 2500); }";
 
+    html += "function updateCurrentAnimation(animName) {";
+    html += "  var el = document.getElementById('current-anim');";
+    html += "  if (el) { el.textContent = animName; }";
+    html += "  var items = document.querySelectorAll('[name=\"garlandAnim\"]');";
+    html += "  items.forEach(item => { var parent = item.parentElement; parent.classList.remove('selected'); if (item.checked) parent.classList.add('selected'); });";
+    html += "}";
+
     html += "function changeAnimation(id) {";
     html += "  var radio = document.getElementById('anim' + id);";
     html += "  var animName = radio.nextElementSibling.textContent;";
-    html += "  fetch('/animation?id=' + id).then(() => { showParamMessage('✓ Animation changée : ' + animName); setTimeout(() => location.reload(), 1000); });";
+    html += "  fetch('/animation?id=' + id).then(() => { showParamMessage('✓ Animation changée : ' + animName); updateCurrentAnimation(animName); });";
     html += "}";
+
+    html += "function updateCurrentMode(modeName) {";
+    html += "  var items = document.querySelectorAll('[name=\"garlandMode\"]');";
+    html += "  items.forEach(item => { var parent = item.parentElement; parent.classList.remove('selected'); if (item.checked) parent.classList.add('selected'); });";
+    html += "}";
+
     html += "function changeMode(id) {";
     html += "  var radio = document.getElementById('mode' + id);";
     html += "  var modeName = radio.nextElementSibling.textContent;";
-    html += "  fetch('/mode?id=' + id).then(() => { showParamMessage('✓ Mode changé : ' + modeName); setTimeout(() => location.reload(), 1000); });";
+    html += "  fetch('/mode?id=' + id).then(() => { showParamMessage('✓ Mode changé : ' + modeName); updateCurrentMode(modeName); });";
     html += "}";
     html += "function applyAutoInterval() { var s = document.getElementById('auto-interval-seconds').value; var ms = Math.round(s*1000); fetch('/auto_interval?ms=' + ms); }";
     html += "function applyMotionDuration() { var s = document.getElementById('motion-duration-seconds').value; var ms = Math.round(s*1000); fetch('/motion_duration?ms=' + ms); }";
 
     // Fonctions pour la matrice 8x8 (BUGFIX #7: use visibility instead of display)
     html += "function showMatrixMessage(msg) { var el = document.getElementById('matrix-message'); el.textContent = msg; el.style.visibility = 'visible'; setTimeout(() => { el.style.visibility = 'hidden'; el.textContent = ''; }, 2500); }";
+
+    html += "function updateCurrentMatrix(animName) {";
+    html += "  var el = document.getElementById('current-matrix');";
+    html += "  if (el) { el.textContent = animName; }";
+    html += "  var items = document.querySelectorAll('[name=\"matrixAnim\"]');";
+    html += "  items.forEach(item => { var parent = item.parentElement; parent.classList.remove('selected'); if (item.checked) parent.classList.add('selected'); });";
+    html += "}";
+
     html += "function changeMatrixAnimation(id) {";
     html += "  var radio = document.getElementById('matrixAnim' + id);";
     html += "  var animName = radio.nextElementSibling.textContent;";
-    html += "  fetch('/matrix_animation?id=' + id).then(() => { showMatrixMessage('✓ Animation changée : ' + animName); setTimeout(() => location.reload(), 1000); });";
+    html += "  fetch('/matrix_animation?id=' + id).then(() => { showMatrixMessage('✓ Animation changée : ' + animName); updateCurrentMatrix(animName); });";
     html += "}";
     html += "function updateBrightnessValue(val) { document.getElementById('brightnessValue').textContent = val; }";
     html += "function applyMatrixBrightness() {";
