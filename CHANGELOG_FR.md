@@ -1,3 +1,31 @@
+# [1.6.0] – 2026-01-01
+
+### Ajouté
+- **Matrice NeoPixel 8x8 WS2812B-64** : Support complet pour matrice LED 8×8 sur GPIO 13
+- **10 Animations festives pour la matrice** : Étoile, Météore, Étoile filante, Père Noël, Sapin, Cloche, Neige, Cadeau, Bougie, Flocon
+- **Animation d'étoile scintillante au démarrage** : La matrice affiche automatiquement une étoile scintillante au démarrage
+- **Contrôle de luminosité de la matrice** : Contrôle indépendant de la luminosité de la matrice 8×8 (0-255)
+- **Interface Web pour la matrice** : Carte dédiée dans l'interface web pour sélection d'animation et ajustement de luminosité
+- **Persistance NVS de la matrice** : Les paramètres de la matrice (animation, luminosité) sont sauvegardés en NVS
+- **Système d'animation double** : La guirlande et la matrice fonctionnent indépendamment avec des contrôles séparés
+
+### Modifié
+- **Numéro de version** : Incrémenté à 1.6.0 (SEMVER - MINOR : nouvelle fonctionnalité)
+- **Configuration GPIO** : Ajout du GPIO 13 pour la matrice NeoPixel 8×8 dans `board_config.h`
+- **Interface Web** : Ajout de la carte "✨ Matrice 8x8 NeoPixel" avec sélecteur d'animation et curseur de luminosité
+- **API de statut** : Extension de l'endpoint `/status` avec matrix_animation, matrix_animation_id, matrix_brightness
+- **Documentation** : Mise à jour complète de toute la documentation FR/EN avec les fonctionnalités de la matrice 8×8
+
+### Technique
+- Nouveaux fichiers : `matrix8x8_control.h`, `matrix8x8_control.cpp`
+- Nouveaux endpoints API : `/matrix_animation?id=X`, `/matrix_brightness?value=X`
+- La matrice utilise la bibliothèque Adafruit_NeoPixel avec 64 pixels (8×8)
+- Fonction de mapping de coordonnées XY pour câblage en zigzag
+- Motifs d'animation festive définis en bitmaps 8×8
+- Espace de noms NVS séparé "matrix8x8" pour les paramètres de la matrice
+- Le rafraîchissement du statut en temps réel inclut les animations de guirlande et matrice
+
+---
 # [1.5.3] – 2025-12-31
 
 ### Modifié

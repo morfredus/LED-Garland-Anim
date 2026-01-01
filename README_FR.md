@@ -29,7 +29,7 @@ Vous pouvez choisir la méthode de téléversement (USB ou OTA) à chaque upload
 
 **Version : 1.5.3** (2025-12-31)
 
-Contrôleur d'animation de guirlande LED bi-directionnelle pour ESP32 Classic (IdeaSpark/DevKitC) avec écran ST7789, auto-détection PIR/RCWL-0516, web interface, boutons physiques, 11 animations, modes intelligents, configuration persistante.
+Contrôleur d'animation de guirlande LED bi-directionnelle et matrice NeoPixel 8x8 pour ESP32 Classic (IdeaSpark/DevKitC) avec écran ST7789, auto-détection PIR/RCWL-0516, interface web avec contrôles dédiés, boutons physiques, 11 animations de guirlande, 10 animations festives pour matrice, contrôle double indépendant, modes intelligents, configuration persistante, animations de démarrage automatiques.
 
 ---
 
@@ -38,17 +38,19 @@ Contrôleur d'animation de guirlande LED bi-directionnelle pour ESP32 Classic (I
 - **Carte ESP32 Classic (IdeaSpark/DevKitC)**
 - **Module TB6612FNG** (double pont H)
 - **Guirlande LED 2 fils** (LEDs en anti-parallèle, ~50 LEDs)
+- **Matrice NeoPixel 8x8 WS2812B-64** (64 LEDs RGB adressables)
 - **Capteur de mouvement** : PIR HC-SR501 ou RCWL-0516 (auto-détection)
-- **Écran TFT ST7789** (optionnel)
-- **LED RGB NeoPixel** WS2812B (optionnel)
-- **Alimentation adaptée** pour la guirlande
+- **Écran TFT ST7789** (optionnel, intégré sur IdeaSpark)
+- **Alimentation adaptée** pour la guirlande et la matrice (5V recommandé pour NeoPixels)
 
 ### Schéma des pins principaux (ESP32 Classic)
-TB6612FNG :
+TB6612FNG (Guirlande) :
   PWMA  → GPIO 12
   AIN1  → GPIO 25
   AIN2  → GPIO 33
   STBY  → GPIO 14
+Matrice NeoPixel 8x8 :
+  DATA  → GPIO 13
 MOTION_SENSOR_PIN (PIR/RCWL-0516) → GPIO 35
 LCD_MOSI → GPIO 23
 LCD_SCLK → GPIO 18
@@ -63,15 +65,18 @@ BTN2     → GPIO 17
 
 ## 2. Fonctionnalités principales
 
-- Contrôle d'une guirlande LED avec ESP32 Classic
-- 11 animations spectaculaires
+- **Double contrôle LED** : Guirlande LED 2 fils + matrice NeoPixel 8x8 avec contrôle indépendant
+- **21 animations au total** : 11 pour la guirlande + 10 animations festives pour la matrice 8x8
+- **Animations festives pour matrice** : Étoile, Météore, Étoile filante, Père Noël, Sapin, Cloche, Neige, Cadeau, Bougie, Flocon
+- **Contrôle de luminosité de la matrice** : Ajustement indépendant (0-255) pour la matrice
+- **Animation de démarrage** : Animation d'étoile scintillante sur la matrice au démarrage
 - 2 modes de fonctionnement intelligents (Permanent, Détection Mouvement)
 - Auto-détection PIR HC-SR501 ou RCWL-0516
-- Affichage couleur ST7789 (optionnel)
-- Interface web complète
+- Affichage couleur ST7789 (optionnel, intégré sur IdeaSpark)
+- Interface web complète avec contrôles pour la matrice
 - **Mise à jour OTA via interface Web** (nouveau v1.4.0)
 - Contrôles physiques par boutons
-- Configuration persistante (NVS)
+- Configuration persistante (NVS) pour guirlande et matrice
 - Mises à jour OTA (ArduinoOTA + Web)
 
 ---
