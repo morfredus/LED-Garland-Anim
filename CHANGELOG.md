@@ -1,3 +1,26 @@
+# [1.7.0] – 2026-01-01
+
+### Added
+- **27 New Matrix Animations**: Expanded from 10 to 37 total festive animations for 8x8 NeoPixel matrix
+- **Christmas Animations (10)**: Candy Cane, Wreath, Stocking, Reindeer, Gingerbread Man, Hot Cocoa, Fireplace, Icicles, Northern Lights, Presents Stack
+- **New Year Animations (7)**: Fireworks, Champagne Bubbles, Countdown 3-2-1, Confetti, Clock, Party Popper, Disco Ball
+- **Easter Animations (4)**: Easter Egg, Hopping Bunny, Hatching Chick, Spring Flowers
+- **Modern/Abstract Animations (6)**: Rainbow Wave, Sparkle Rain, Plasma Effect, Matrix Digital Rain, Rotating Spiral, Pulsing Heart, Twinkling Stars Field
+
+### Changed
+- **Version number**: Incremented to 1.7.0 (SEMVER - MINOR: significant new features)
+- **Total Animation Count**: Now 48 total animations (11 garland + 37 matrix)
+- **Matrix Animation Categories**: Organized into Original, Christmas, New Year, Easter, and Modern/Abstract themes
+- **Documentation**: Complete update of all FR/EN documentation with new animations
+
+### Technical
+- Enhanced `matrix8x8_control.h` with 27 new animation enums
+- Added 27 new animation functions in `matrix8x8_control.cpp`
+- New animation patterns: Wreath, Stocking, Reindeer, Gingerbread, Heart, Easter Egg, Bunny, Chick, Flower
+- All animations optimized for 8×8 LED matrix with smooth transitions
+- Realistic effects: plasma, northern lights, fireworks, champagne bubbles, digital rain
+
+---
 # [1.6.0] – 2026-01-01
 
 ### Added

@@ -1,3 +1,26 @@
+# [1.7.0] – 2026-01-01
+
+### Ajouté
+- **27 Nouvelles animations pour la matrice** : Extension de 10 à 37 animations festives totales pour la matrice NeoPixel 8×8
+- **Animations de Noël (10)** : Canne à sucre, Couronne, Chaussette, Renne, Pain d'épices, Chocolat chaud, Cheminée, Glaçons, Aurore boréale, Pile de cadeaux
+- **Animations du Nouvel An (7)** : Feux d'artifice, Bulles de champagne, Compte à rebours 3-2-1, Confettis, Horloge, Cotillon, Boule disco
+- **Animations de Pâques (4)** : Œuf de Pâques, Lapin sauteur, Poussin éclos, Fleurs printanières
+- **Animations modernes/abstraites (6)** : Vague arc-en-ciel, Pluie scintillante, Effet plasma, Pluie matricielle digitale, Spirale rotative, Cœur pulsant, Champ d'étoiles scintillantes
+
+### Modifié
+- **Numéro de version** : Incrémenté à 1.7.0 (SEMVER - MINOR : nouvelles fonctionnalités significatives)
+- **Nombre total d'animations** : Maintenant 48 animations totales (11 guirlande + 37 matrice)
+- **Catégories d'animations de matrice** : Organisées en thèmes Original, Noël, Nouvel An, Pâques et Moderne/Abstrait
+- **Documentation** : Mise à jour complète de toute la documentation FR/EN avec les nouvelles animations
+
+### Technique
+- Amélioration de `matrix8x8_control.h` avec 27 nouvelles énumérations d'animations
+- Ajout de 27 nouvelles fonctions d'animation dans `matrix8x8_control.cpp`
+- Nouveaux motifs d'animation : Couronne, Chaussette, Renne, Pain d'épices, Cœur, Œuf de Pâques, Lapin, Poussin, Fleur
+- Toutes les animations optimisées pour matrice LED 8×8 avec transitions fluides
+- Effets réalistes : plasma, aurore boréale, feux d'artifice, bulles de champagne, pluie digitale
+
+---
 # [1.6.0] – 2026-01-01
 
 ### Ajouté

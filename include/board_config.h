@@ -5,7 +5,7 @@
 /**
  * @file board_config.h
  * @brief Mapping optimisé pour ESP32 IdeaSpark (Écran 1.14" intégré)
- * @version 1.6.0
+ * @version 1.7.0
  * @date 2026-01-01
  */
 
@@ -66,7 +66,7 @@
 // ============================================================================
 // MATRICE NEOPIXEL 8x8 WS2812B-64
 // ============================================================================
-#define MATRIX8X8_PIN        32   ///< Data pin for 8x8 NeoPixel matrix (WS2812B-64)
+#define MATRIX8X8_PIN        13   ///< Data pin for 8x8 NeoPixel matrix (WS2812B-64)
 #define MATRIX8X8_NUMPIXELS  64   ///< Number of pixels in 8x8 matrix
 
 #endif // BOARD_CONFIG_H
