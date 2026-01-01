@@ -1,3 +1,53 @@
+# [1.8.1] – 2026-01-01
+
+### Fixed (PATCH - Bug Fixes Only)
+
+**7 Numbered Bug Fixes:**
+
+- **BUGFIX #1: Matrix Rain Animation**
+  - **Issue**: Bottom LED rows not visible due to aggressive fade
+  - **Fix**: Reduced fade intensity from 220 to 245 to preserve bottom rows
+  - **File**: `src/matrix8x8_control.cpp:1401`
+
+- **BUGFIX #2: Clock Animation**
+  - **Issue**: Clock hand rotating counter-clockwise (wrong direction)
+  - **Fix**: Reversed rotation direction by negating angle: `cos(-angle - PI/2)`
+  - **File**: `src/matrix8x8_control.cpp:1097`
+
+- **BUGFIX #3: Countdown Animation**
+  - **Issue**: Digits 3, 2, 1 unreadable on 8x8 matrix
+  - **Fix**: Completely redrawn all three digits with clearer, larger patterns
+  - **File**: `src/matrix8x8_control.cpp:1004`
+
+- **BUGFIX #4: Icicles Animation**
+  - **Issue**: Incomplete animation - only 4 icicles, weak dripping effect
+  - **Fix**: Added all 8 icicles with varying lengths + proper animated water drops
+  - **File**: `src/matrix8x8_control.cpp:854`
+
+- **BUGFIX #5: Candle Animation**
+  - **Issue**: Base too narrow (2px), flame too wide (4px), unrealistic proportions
+  - **Fix**: Widened base to 4 pixels (x=2-5), narrowed flickering flame to 2 pixels (x=3-4)
+  - **File**: `src/matrix8x8_control.cpp:595`
+
+- **BUGFIX #6: Bell Animation**
+  - **Issue**: Entire bell deforming/moving, not realistic
+  - **Fix**: Bell stays fixed, only clapper (pendulum) swings inside
+  - **File**: `src/matrix8x8_control.cpp:501`
+
+- **BUGFIX #7: Web UI Layout**
+  - **Issue**: Inline messages cause button/list displacement when appearing
+  - **Fix**: Reserved space with `visibility:hidden` + `min-height:44px` instead of `display:none`
+  - **Files**: `include/web_pages.h:60,121,136,188,206,220`
+
+### Changed
+- **Version number**: Incremented to 1.8.1 (SEMVER - PATCH: bug fixes only)
+
+### Technical
+- Animation improvements target better visual recognition on 8x8 matrix constraints
+- Web UI now maintains stable layout preventing element shifts
+- All fixes maintain backward compatibility
+
+---
 # [1.8.0] – 2026-01-01
 
 ### Added
