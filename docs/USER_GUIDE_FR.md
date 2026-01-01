@@ -13,8 +13,8 @@ Le système utilise la NVS (mémoire non-volatile) de l’ESP32 pour sauvegarder
 - Les réglages sont conservés même après redémarrage ou coupure d’alimentation.
 
 **Aucune action requise de l’utilisateur** : la gestion est entièrement automatique.
-# Guide Utilisateur - LED-Garland-Anim v1.11.1
-## 🚦 Détection automatique du capteur de mouvement (v1.11.1)
+# Guide Utilisateur - LED-Garland-Anim v1.11.2
+## 🚦 Détection automatique du capteur de mouvement (v1.11.2)
 
 À partir de la version 1.11.0, le système détecte automatiquement si un capteur PIR (HC-SR501) ou un capteur radar Doppler (RCWL-0516) est connecté sur le GPIO 35 :
 - **PIR** : LOW au repos, HIGH sur détection
@@ -30,8 +30,8 @@ Guide utilisateur complet pour le contrôleur d'animation de guirlande LED (ESP3
 
 ## Table des Matières
 
-- [Guide Utilisateur - LED-Garland-Anim v1.11.1](#guide-utilisateur---led-garland-anim-v121)
-  - [🚦 Détection automatique du capteur de mouvement (v1.11.1)](#-détection-automatique-du-capteur-de-mouvement-v121)
+- [Guide Utilisateur - LED-Garland-Anim v1.11.2](#guide-utilisateur---led-garland-anim-v121)
+  - [🚦 Détection automatique du capteur de mouvement (v1.11.2)](#-détection-automatique-du-capteur-de-mouvement-v121)
   - [Table des Matières](#table-des-matières)
   - [Mises à jour OTA](#mises-à-jour-ota)
   - [Premier Démarrage](#premier-démarrage)
@@ -125,4 +125,4 @@ Voir [TROUBLESHOOTING_FR.md](TROUBLESHOOTING_FR.md) pour l'aide.
 
 ---
 
-**Version du document : v1.11.1 (2025-12-31)**
+**Version du document : v1.11.2 (2025-12-31)**
