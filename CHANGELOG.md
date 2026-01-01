@@ -1,3 +1,31 @@
+# [1.11.3] – 2026-01-01
+
+### Fixed (PATCH - Animation Quality Improvements)
+
+**Matrix Rain Animation**
+- **Issue**: Animation only used top 2 rows, not utilizing full 8x8 display
+- **Solution**: Completely redesigned with independent falling streams per column
+- **Features**: Each column has different speed, staggered start positions, proper brightness gradient
+- **Result**: Full height usage with smooth, dynamic Matrix-style rain effect
+- **Files**: `src/matrix8x8_control.cpp:1582-1638`
+
+**Clock Animation**
+- **Issue**: Messy design with cluttered appearance and poor readability
+- **Solution**: Redesigned with clean circular outline and clear visual hierarchy
+- **Features**:
+  - Blue-tinted circular clock face outline
+  - Gold hour markers at 12, 3, 6, 9 positions (2-pixel each)
+  - Elegant blue-gray center point
+  - Smooth red second hand with 60-second rotation
+- **Result**: Much cleaner, more elegant, and easier to read
+- **Files**: `src/matrix8x8_control.cpp:1211-1279`
+
+### Version
+
+- **SEMVER Classification**: PATCH (1.11.3) - Bug fixes and visual improvements, no new features
+
+---
+
 # [1.11.2] – 2026-01-01
 
 ### Fixed (PATCH - Coordinate System Correction)
