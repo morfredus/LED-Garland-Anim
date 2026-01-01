@@ -1057,37 +1057,41 @@ static void animateCountdown() {
     uint32_t color = matrix.Color(255, 255, 0);
 
     if (number == 3) {
-        // Draw "3" - cleaner design
-        // Top horizontal
-        setPixel(2, 1, color); setPixel(3, 1, color); setPixel(4, 1, color);
-        // Right vertical
-        setPixel(5, 1, color); setPixel(5, 2, color); setPixel(5, 3, color);
-        setPixel(5, 4, color); setPixel(5, 5, color); setPixel(5, 6, color);
-        // Middle horizontal
-        setPixel(3, 3, color); setPixel(4, 3, color);
-        // Bottom horizontal
-        setPixel(2, 6, color); setPixel(3, 6, color); setPixel(4, 6, color);
-    } else if (number == 2) {
-        // Draw "2" - clearer design
+        // ----- "3" bien centré, style 5x7 -----
         // Top horizontal
         setPixel(2, 1, color); setPixel(3, 1, color); setPixel(4, 1, color); setPixel(5, 1, color);
-        // Top right
+        // Upper right vertical
+        setPixel(5, 2, color); setPixel(5, 3, color);
+        // Middle horizontal
+        setPixel(3, 3, color); setPixel(4, 3, color); setPixel(5, 3, color);
+        // Lower right vertical
+        setPixel(5, 4, color); setPixel(5, 5, color);
+        // Bottom horizontal
+        setPixel(2, 6, color); setPixel(3, 6, color); setPixel(4, 6, color); setPixel(5, 6, color);
+
+    } else if (number == 2) {
+        // ----- "2" lisible et symétrique -----
+        // Top horizontal
+        setPixel(2, 1, color); setPixel(3, 1, color); setPixel(4, 1, color); setPixel(5, 1, color);
+        // Upper right
         setPixel(5, 2, color);
         // Middle horizontal
         setPixel(2, 3, color); setPixel(3, 3, color); setPixel(4, 3, color); setPixel(5, 3, color);
-        // Bottom left
+        // Lower left
         setPixel(2, 4, color); setPixel(2, 5, color);
         // Bottom horizontal
         setPixel(2, 6, color); setPixel(3, 6, color); setPixel(4, 6, color); setPixel(5, 6, color);
+
     } else if (number == 1) {
-        // Draw "1" - clearer design
-        // Top diagonal
-        setPixel(3, 2, color);
+        // ----- "1" simple, bien centré -----
+        // Small base (pied)
+        setPixel(3, 6, color); setPixel(4, 6, color); setPixel(5, 6, color);
         // Vertical line
         setPixel(4, 1, color); setPixel(4, 2, color); setPixel(4, 3, color);
         setPixel(4, 4, color); setPixel(4, 5, color);
-        // Bottom horizontal
-        setPixel(2, 6, color); setPixel(3, 6, color); setPixel(4, 6, color); setPixel(5, 6, color);
+        // Slight top tick (optionnel mais lisible)
+        setPixel(3, 2, color);
+
     } else {
         // Explosion!
         for (uint8_t x = 0; x < 8; x++) {
@@ -1101,6 +1105,7 @@ static void animateCountdown() {
 
     matrix.show();
 }
+
 
 /**
  * @brief Animation: Falling Confetti
