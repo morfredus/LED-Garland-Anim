@@ -4,14 +4,15 @@
 /**
  * @file web_pages.h
  * @brief Génération des pages HTML pour l'interface web
- * @version 1.5.3
- * 
+ * @version 1.6.0
+ *
  * Module dédié à la génération du contenu HTML de l'interface web.
  * Contient les fonctions pour construire les différentes cartes et sections.
  */
 
 #include "web_styles.h"
 #include "garland_control.h"
+#include "matrix8x8_control.h"
 
 /**
  * @brief Génère la page HTML complète du tableau de bord
@@ -126,14 +127,56 @@ String generateDashboardPage(
     html += "<button class='danger' onclick=\"eraseSettings()\">🗑️ Effacer</button>";
     html += "</div>";
     html += "</div>"; // card
-    
+
+    // --- Carte Matrice 8x8 NeoPixel ---
+    html += "<div class='card card-full'>";
+    html += "<div class='card-title'>✨ Matrice 8x8 NeoPixel <span style='float:right;font-size:0.9em;color:#7b1fa2;'>En cours: <span id='current-matrix' class='mono'>" + String(getMatrix8x8AnimationName()) + "</span></span></div>";
+
+    // Zone de message inline pour matrix
+    html += "<div id='matrix-message' style='display:none;margin-bottom:12px;padding:10px;border-radius:8px;background:#d4edda;color:#155724;border:1px solid #c3e6cb;'></div>";
+
+    // Animation selection
+    html += "<div class='card-item'><span class='card-label'>Animation:</span>";
+    html += "<select id='matrixAnimSelect' style='width:55%;padding:8px;border-radius:8px;border:1px solid #ddd;'>";
+    for (int i = 0; i < MATRIX_ANIM_COUNT; i++) {
+        html += "<option value='" + String(i) + "'";
+        if (i == (int)getMatrix8x8Animation()) html += " selected";
+        html += ">";
+        switch(i) {
+            case MATRIX_ANIM_OFF: html += "Off"; break;
+            case MATRIX_ANIM_STAR: html += "Star"; break;
+            case MATRIX_ANIM_METEOR: html += "Meteor"; break;
+            case MATRIX_ANIM_SHOOTING_STAR: html += "Shooting Star"; break;
+            case MATRIX_ANIM_SANTA: html += "Santa"; break;
+            case MATRIX_ANIM_TREE: html += "Christmas Tree"; break;
+            case MATRIX_ANIM_BELL: html += "Bell"; break;
+            case MATRIX_ANIM_SNOW: html += "Falling Snow"; break;
+            case MATRIX_ANIM_GIFT: html += "Gift Box"; break;
+            case MATRIX_ANIM_CANDLE: html += "Candle"; break;
+            case MATRIX_ANIM_SNOWFLAKE: html += "Snowflake"; break;
+        }
+        html += "</option>";
+    }
+    html += "</select>";
+    html += "<button onclick='changeMatrixAnimation()' style='margin-left:10px;padding:8px 12px;background:#7b1fa2;color:white;border:none;border-radius:8px;cursor:pointer;'>Appliquer</button>";
+    html += "</div>";
+
+    // Brightness control
+    html += "<div class='card-item'><span class='card-label'>Luminosité:</span>";
+    html += "<input type='range' id='matrixBrightness' min='0' max='255' value='" + String(getMatrix8x8Brightness()) + "' style='width:55%;' oninput='updateBrightnessValue(this.value)'> ";
+    html += "<span id='brightnessValue' style='display:inline-block;width:50px;'>" + String(getMatrix8x8Brightness()) + "</span> ";
+    html += "<button class='apply' onclick='applyMatrixBrightness()'>Valider</button>";
+    html += "</div>";
+
+    html += "</div>"; // card
+
     // --- Carte WiFi minimaliste ---
     html += "<div class='card'>";
     html += "<div class='card-title'>📶 Réseau WiFi</div>";
     html += "<div class='card-item'><span class='card-label'>SSID:</span><span class='card-value'>" + WiFi.SSID() + "</span></div>";
     html += "<div class='card-item'><span class='card-label'>IP:</span><span class='card-value mono'>" + WiFi.localIP().toString() + "</span></div>";
     html += "</div>";
-    
+
     // Fin des cartes
     
     
@@ -173,6 +216,20 @@ String generateDashboardPage(
     html += "function applyAutoInterval() { var s = document.getElementById('auto-interval-seconds').value; var ms = Math.round(s*1000); fetch('/auto_interval?ms=' + ms); }";
     html += "function applyMotionDuration() { var s = document.getElementById('motion-duration-seconds').value; var ms = Math.round(s*1000); fetch('/motion_duration?ms=' + ms); }";
 
+    // Fonctions pour la matrice 8x8
+    html += "function showMatrixMessage(msg) { var el = document.getElementById('matrix-message'); el.textContent = msg; el.style.display = 'block'; setTimeout(() => { el.style.display = 'none'; }, 3000); }";
+    html += "function changeMatrixAnimation() {";
+    html += "  var id = document.getElementById('matrixAnimSelect').value;";
+    html += "  var select = document.getElementById('matrixAnimSelect');";
+    html += "  var animName = select.options[select.selectedIndex].text;";
+    html += "  fetch('/matrix_animation?id=' + id).then(() => { showMatrixMessage('✓ Animation changée : ' + animName); setTimeout(() => location.reload(), 1000); });";
+    html += "}";
+    html += "function updateBrightnessValue(val) { document.getElementById('brightnessValue').textContent = val; }";
+    html += "function applyMatrixBrightness() {";
+    html += "  var val = document.getElementById('matrixBrightness').value;";
+    html += "  fetch('/matrix_brightness?value=' + val).then(() => showMatrixMessage('✓ Luminosité changée : ' + val));";
+    html += "}";
+
     // Fonctions pour save/load/erase avec messages inline
     html += "function showMessage(msg) { var el = document.getElementById('save-message'); el.textContent = msg; el.style.display = 'block'; setTimeout(() => { el.style.display = 'none'; }, 3000); }";
     html += "function saveSettings() { fetch('/save').then(() => showMessage('✓ Sauvegarde effectuée.')); }";
@@ -200,7 +257,10 @@ String generateDashboardPage(
     html += "}";
 
     // Mise à jour périodique du statut pour afficher l'animation en cours
-    html += "function refreshStatus(){ fetch('/status').then(r=>r.json()).then(j=>{ var el=document.getElementById('current-anim'); if(el){ el.textContent=j.animation; } }); }";
+    html += "function refreshStatus(){ fetch('/status').then(r=>r.json()).then(j=>{ ";
+    html += "var el=document.getElementById('current-anim'); if(el){ el.textContent=j.animation; } ";
+    html += "var mel=document.getElementById('current-matrix'); if(mel){ mel.textContent=j.matrix_animation; } ";
+    html += "}); }";
     html += "setInterval(refreshStatus, 2000);";
     html += "document.addEventListener('DOMContentLoaded', refreshStatus);";
     html += "</script>";

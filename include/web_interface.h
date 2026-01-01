@@ -4,7 +4,7 @@
 /**
  * @file web_interface.h
  * @brief Gestion de l'interface web et des handlers du serveur
- * @version 1.5.3
+ * @version 1.6.0
  *
  * Module dédié à la gestion des routes HTTP et handlers du serveur web.
  * Contient les callbacks pour les différents endpoints de l'API web.
@@ -13,6 +13,7 @@
 #include <Update.h>
 #include "web_pages.h"
 #include "garland_control.h"
+#include "matrix8x8_control.h"
 #include "display.h"
 
 // Déclaration du serveur web (défini dans main.cpp)
@@ -114,6 +115,9 @@ void handleStatus() {
     json += "\"motion_detected\":" + String(isMotionDetected() ? "true" : "false") + ",";
     json += "\"auto_interval_ms\":" + String(getAutoAnimationIntervalMs()) + ",";
     json += "\"motion_duration_ms\":" + String(getMotionTriggerDurationMs()) + ",";
+    json += "\"matrix_animation\":\"" + String(getMatrix8x8AnimationName()) + "\",";
+    json += "\"matrix_animation_id\":" + String((int)getMatrix8x8Animation()) + ",";
+    json += "\"matrix_brightness\":" + String(getMatrix8x8Brightness()) + ",";
     json += "\"ip\":\"" + WiFi.localIP().toString() + "\"";
     json += "}";
     server.send(200, "application/json", json);
@@ -163,6 +167,40 @@ void handleEraseSettings() {
     nvs_flash_erase();
     nvs_flash_init();
     server.send(200, "text/plain", "Sauvegarde effacée");
+}
+
+/**
+ * @brief Handler pour changer l'animation de la matrice 8x8 (GET /matrix_animation?id=X)
+ */
+void handleSetMatrix8x8Animation() {
+    if (server.hasArg("id")) {
+        int animId = server.arg("id").toInt();
+        if (animId >= 0 && animId < MATRIX_ANIM_COUNT) {
+            setMatrix8x8Animation((Matrix8x8Animation)animId);
+            server.send(200, "text/plain", "Matrix animation changed");
+        } else {
+            server.send(400, "text/plain", "Invalid animation ID");
+        }
+    } else {
+        server.send(400, "text/plain", "Missing parameter");
+    }
+}
+
+/**
+ * @brief Handler pour changer la luminosité de la matrice 8x8 (GET /matrix_brightness?value=X)
+ */
+void handleSetMatrix8x8Brightness() {
+    if (server.hasArg("value")) {
+        int brightness = server.arg("value").toInt();
+        if (brightness >= 0 && brightness <= 255) {
+            setMatrix8x8Brightness((uint8_t)brightness);
+            server.send(200, "text/plain", "Matrix brightness changed");
+        } else {
+            server.send(400, "text/plain", "Brightness out of range (0-255)");
+        }
+    } else {
+        server.send(400, "text/plain", "Missing parameter");
+    }
 }
 
 /**
@@ -303,6 +341,10 @@ void setupWebServer() {
     server.on("/load", handleLoadSettings);
     server.on("/erase", handleEraseSettings);
     server.on("/status", handleStatus);
+
+    // Routes pour la matrice 8x8
+    server.on("/matrix_animation", handleSetMatrix8x8Animation);
+    server.on("/matrix_brightness", handleSetMatrix8x8Brightness);
 
     // Routes OTA
     server.on("/update", HTTP_GET, handleOTAPage);
