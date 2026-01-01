@@ -1527,13 +1527,15 @@ void setupMatrix8x8() {
 
     // Initialize NeoPixel
     matrix.begin();
-    matrix.setBrightness(matrixBrightness);
     matrix.show();  // Clear all pixels
 
-    // Load saved settings
+    // Load saved settings from NVS
     loadMatrix8x8Settings();
 
-    // Start with star animation
+    // Apply loaded brightness
+    matrix.setBrightness(matrixBrightness);
+
+    // Start with selected animation
     animationStartTime = millis();
     matrixEnabled = true;
 
