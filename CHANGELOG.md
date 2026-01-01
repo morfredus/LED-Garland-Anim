@@ -1,3 +1,60 @@
+# [1.9.0] – 2026-01-01
+
+### Changed (MINOR - UI Improvements)
+
+**Web Interface Modernization:**
+
+- **IMPROVEMENT #1: Radio Buttons Replace Dropdowns**
+  - **What**: Replaced all dropdown selects with radio button grids for better UX
+  - **Affected**: Matrix animations (37 options), Garland modes (3 options), Garland animations (11 options)
+  - **Benefit**: Immediate visual overview of all options, no need to open dropdowns
+  - **Files**: `include/web_pages.h:62-89,91-110,145-159`, `include/web_styles.h:39-47`
+
+- **IMPROVEMENT #2: Responsive 2-Column Layout**
+  - **What**: Radio buttons display in 2 columns on wide screens, 1 column on narrow screens
+  - **Breakpoint**: 600px width (mobile-first responsive design)
+  - **CSS**: `.radio-grid { grid-template-columns: repeat(2, 1fr); }` with media query
+  - **Files**: `include/web_styles.h:39-40`
+
+- **IMPROVEMENT #3: Instant Selection (No Apply Buttons)**
+  - **What**: Removed all "Appliquer" buttons - selections apply immediately via `onchange` events
+  - **Benefit**: Reduced clicks, faster interaction, modern web app feel
+  - **Technical**: JavaScript functions now accept ID parameter directly from radio button
+  - **Files**: `include/web_pages.h:201-220`
+
+- **IMPROVEMENT #4: Enhanced Visual Feedback**
+  - **What**: Selected radio items highlighted with green background and border
+  - **CSS**: `.radio-item.selected { background:#e8f5e9; border-color:#43a047; }`
+  - **Hover Effect**: Radio items highlight on hover for better interactivity
+  - **Files**: `include/web_styles.h:41-46`
+
+- **IMPROVEMENT #5: Validation Message Timing**
+  - **What**: Reduced message display time from 3s to 2.5s for snappier UI
+  - **Files**: `include/web_pages.h:199,215`
+
+### Fixed
+
+- **BUGFIX #8: Missing 3rd Mode in Web UI**
+  - **Issue**: `MODE_MOTION_MATRIX_INDEPENDENT` (3rd mode) not appearing in dropdown, line stayed white
+  - **Fix**: Added missing switch case: `case MODE_MOTION_MATRIX_INDEPENDENT: modeName = "Détection (guirlande)";`
+  - **File**: `include/web_pages.h:99`
+
+### Technical
+
+- **CSS Additions**: 8 new CSS classes for radio button styling and responsive grid
+- **HTML Structure**: Replaced `<select>` + `<option>` with `<div class='radio-grid'>` + radio inputs
+- **JavaScript Changes**: Functions now accept value parameter instead of reading from select element
+- **Compact Design**: UI remains visually compact despite adding 51 total radio buttons
+- **Accessibility**: Labels properly associated with radio inputs via `for` attribute
+- **Mobile Optimized**: Single-column layout prevents horizontal scrolling on small screens
+
+### Version
+
+- **SEMVER Classification**: MINOR (1.9.0) - New features and UI improvements, no breaking changes
+- **All Files Updated**: Updated version string in 13 files (headers, source, platformio.ini)
+
+---
+
 # [1.8.1] – 2026-01-01
 
 ### Fixed (PATCH - Bug Fixes Only)

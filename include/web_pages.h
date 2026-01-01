@@ -4,7 +4,7 @@
 /**
  * @file web_pages.h
  * @brief Génération des pages HTML pour l'interface web
- * @version 1.8.1
+ * @version 1.9.0
  *
  * Module dédié à la génération du contenu HTML de l'interface web.
  * Contient les fonctions pour construire les différentes cartes et sections.
@@ -59,47 +59,54 @@ String generateDashboardPage(
     // Zone de message inline pour animation/mode (BUGFIX #7: reserved space)
     html += "<div id='param-message' style='visibility:hidden;min-height:44px;margin-bottom:12px;padding:10px;border-radius:8px;background:#d4edda;color:#155724;border:1px solid #c3e6cb;'></div>";
 
-    // Animation
-    html += "<div class='card-item'><span class='card-label'>Animation:</span>";
-    html += "<select id='animSelect' style='width:55%;padding:8px;border-radius:8px;border:1px solid #ddd;'>";
+    // Animation (Radio buttons in 2-column grid)
+    html += "<span class='section-label'>Animation:</span>";
+    html += "<div class='radio-grid'>";
     for (int i = 0; i < ANIM_COUNT; i++) {
-        html += "<option value='" + String(i) + "'";
-        if (i == (int)getGarlandAnimation()) html += " selected";
-        html += ">";
+        String animName;
         switch(i) {
-            case ANIM_OFF: html += "Off"; break;
-            case ANIM_FADE_ALTERNATE: html += "Fade Alternate"; break;
-            case ANIM_BLINK_ALTERNATE: html += "Blink Alternate"; break;
-            case ANIM_PULSE: html += "Pulse"; break;
-            case ANIM_BREATHING: html += "Breathing"; break;
-            case ANIM_STROBE: html += "Strobe"; break;
-            case ANIM_HEARTBEAT: html += "Heartbeat"; break;
-            case ANIM_WAVE: html += "Wave"; break;
-            case ANIM_SPARKLE: html += "Sparkle"; break;
-            case ANIM_METEOR: html += "Meteor"; break;
-            case ANIM_AUTO: html += "Auto"; break;
+            case ANIM_OFF: animName = "Off"; break;
+            case ANIM_FADE_ALTERNATE: animName = "Fade Alternate"; break;
+            case ANIM_BLINK_ALTERNATE: animName = "Blink Alternate"; break;
+            case ANIM_PULSE: animName = "Pulse"; break;
+            case ANIM_BREATHING: animName = "Breathing"; break;
+            case ANIM_STROBE: animName = "Strobe"; break;
+            case ANIM_HEARTBEAT: animName = "Heartbeat"; break;
+            case ANIM_WAVE: animName = "Wave"; break;
+            case ANIM_SPARKLE: animName = "Sparkle"; break;
+            case ANIM_METEOR: animName = "Meteor"; break;
+            case ANIM_AUTO: animName = "Auto"; break;
         }
-        html += "</option>";
+        html += "<div class='radio-item";
+        if (i == (int)getGarlandAnimation()) html += " selected";
+        html += "' onclick='this.querySelector(\"input\").click()'>";
+        html += "<input type='radio' name='garlandAnim' id='anim" + String(i) + "' value='" + String(i) + "'";
+        if (i == (int)getGarlandAnimation()) html += " checked";
+        html += " onchange='changeAnimation(" + String(i) + ")'>";
+        html += "<label for='anim" + String(i) + "'>" + animName + "</label>";
+        html += "</div>";
     }
-    html += "</select>";
-    html += "<button onclick='changeAnimation()' style='margin-left:10px;padding:8px 12px;background:#667eea;color:white;border:none;border-radius:8px;cursor:pointer;'>Appliquer</button>";
     html += "</div>";
 
-    // Mode
-    html += "<div class='card-item'><span class='card-label'>Mode:</span>";
-    html += "<select id='modeSelect' style='width:55%;padding:8px;border-radius:8px;border:1px solid #ddd;'>";
+    // Mode (Radio buttons in 2-column grid, BUGFIX #8: added missing 3rd mode)
+    html += "<span class='section-label'>Mode:</span>";
+    html += "<div class='radio-grid'>";
     for (int i = 0; i < MODE_COUNT; i++) {
-        html += "<option value='" + String(i) + "'";
-        if (i == (int)getGarlandMode()) html += " selected";
-        html += ">";
+        String modeName;
         switch(i) {
-            case MODE_PERMANENT: html += "Permanent"; break;
-            case MODE_MOTION_TRIGGER: html += "Détection"; break;
+            case MODE_PERMANENT: modeName = "Permanent"; break;
+            case MODE_MOTION_TRIGGER: modeName = "Détection (tout)"; break;
+            case MODE_MOTION_MATRIX_INDEPENDENT: modeName = "Détection (guirlande)"; break;
         }
-        html += "</option>";
+        html += "<div class='radio-item";
+        if (i == (int)getGarlandMode()) html += " selected";
+        html += "' onclick='this.querySelector(\"input\").click()'>";
+        html += "<input type='radio' name='garlandMode' id='mode" + String(i) + "' value='" + String(i) + "'";
+        if (i == (int)getGarlandMode()) html += " checked";
+        html += " onchange='changeMode(" + String(i) + ")'>";
+        html += "<label for='mode" + String(i) + "'>" + modeName + "</label>";
+        html += "</div>";
     }
-    html += "</select>";
-    html += "<button onclick='changeMode()' style='margin-left:10px;padding:8px 12px;background:#f093fb;color:white;border:none;border-radius:8px;cursor:pointer;'>Appliquer</button>";
     html += "</div>";
 
     // Durées (saisies en secondes avec bouton de validation)
@@ -135,16 +142,20 @@ String generateDashboardPage(
     // Zone de message inline pour matrix (BUGFIX #7: reserved space)
     html += "<div id='matrix-message' style='visibility:hidden;min-height:44px;margin-bottom:12px;padding:10px;border-radius:8px;background:#d4edda;color:#155724;border:1px solid #c3e6cb;'></div>";
 
-    // Animation selection
-    html += "<div class='card-item'><span class='card-label'>Animation:</span>";
-    html += "<select id='matrixAnimSelect' style='width:55%;padding:8px;border-radius:8px;border:1px solid #ddd;'>";
+    // Animation selection (Radio buttons in 2-column grid)
+    html += "<span class='section-label'>Animation:</span>";
+    html += "<div class='radio-grid'>";
     for (int i = 0; i < MATRIX_ANIM_COUNT; i++) {
-        html += "<option value='" + String(i) + "'";
+        String animName = String(getMatrix8x8AnimationNameById(i));
+        html += "<div class='radio-item";
         if (i == (int)getMatrix8x8Animation()) html += " selected";
-        html += ">" + String(getMatrix8x8AnimationNameById(i)) + "</option>";
+        html += "' onclick='this.querySelector(\"input\").click()'>";
+        html += "<input type='radio' name='matrixAnim' id='matrixAnim" + String(i) + "' value='" + String(i) + "'";
+        if (i == (int)getMatrix8x8Animation()) html += " checked";
+        html += " onchange='changeMatrixAnimation(" + String(i) + ")'>";
+        html += "<label for='matrixAnim" + String(i) + "'>" + animName + "</label>";
+        html += "</div>";
     }
-    html += "</select>";
-    html += "<button onclick='changeMatrixAnimation()' style='margin-left:10px;padding:8px 12px;background:#7b1fa2;color:white;border:none;border-radius:8px;cursor:pointer;'>Appliquer</button>";
     html += "</div>";
 
     // Brightness control
@@ -185,29 +196,26 @@ String generateDashboardPage(
     html += "<script>";
 
     // Fonction pour afficher les messages de paramètres
-    html += "function showParamMessage(msg) { var el = document.getElementById('param-message'); el.textContent = msg; el.style.visibility = 'visible'; setTimeout(() => { el.style.visibility = 'hidden'; el.textContent = ''; }, 3000); }";
+    html += "function showParamMessage(msg) { var el = document.getElementById('param-message'); el.textContent = msg; el.style.visibility = 'visible'; setTimeout(() => { el.style.visibility = 'hidden'; el.textContent = ''; }, 2500); }";
 
-    html += "function changeAnimation() {";
-    html += "  var id = document.getElementById('animSelect').value;";
-    html += "  var select = document.getElementById('animSelect');";
-    html += "  var animName = select.options[select.selectedIndex].text;";
+    html += "function changeAnimation(id) {";
+    html += "  var radio = document.getElementById('anim' + id);";
+    html += "  var animName = radio.nextElementSibling.textContent;";
     html += "  fetch('/animation?id=' + id).then(() => { showParamMessage('✓ Animation changée : ' + animName); setTimeout(() => location.reload(), 1000); });";
     html += "}";
-    html += "function changeMode() {";
-    html += "  var id = document.getElementById('modeSelect').value;";
-    html += "  var select = document.getElementById('modeSelect');";
-    html += "  var modeName = select.options[select.selectedIndex].text;";
+    html += "function changeMode(id) {";
+    html += "  var radio = document.getElementById('mode' + id);";
+    html += "  var modeName = radio.nextElementSibling.textContent;";
     html += "  fetch('/mode?id=' + id).then(() => { showParamMessage('✓ Mode changé : ' + modeName); setTimeout(() => location.reload(), 1000); });";
     html += "}";
     html += "function applyAutoInterval() { var s = document.getElementById('auto-interval-seconds').value; var ms = Math.round(s*1000); fetch('/auto_interval?ms=' + ms); }";
     html += "function applyMotionDuration() { var s = document.getElementById('motion-duration-seconds').value; var ms = Math.round(s*1000); fetch('/motion_duration?ms=' + ms); }";
 
     // Fonctions pour la matrice 8x8 (BUGFIX #7: use visibility instead of display)
-    html += "function showMatrixMessage(msg) { var el = document.getElementById('matrix-message'); el.textContent = msg; el.style.visibility = 'visible'; setTimeout(() => { el.style.visibility = 'hidden'; el.textContent = ''; }, 3000); }";
-    html += "function changeMatrixAnimation() {";
-    html += "  var id = document.getElementById('matrixAnimSelect').value;";
-    html += "  var select = document.getElementById('matrixAnimSelect');";
-    html += "  var animName = select.options[select.selectedIndex].text;";
+    html += "function showMatrixMessage(msg) { var el = document.getElementById('matrix-message'); el.textContent = msg; el.style.visibility = 'visible'; setTimeout(() => { el.style.visibility = 'hidden'; el.textContent = ''; }, 2500); }";
+    html += "function changeMatrixAnimation(id) {";
+    html += "  var radio = document.getElementById('matrixAnim' + id);";
+    html += "  var animName = radio.nextElementSibling.textContent;";
     html += "  fetch('/matrix_animation?id=' + id).then(() => { showMatrixMessage('✓ Animation changée : ' + animName); setTimeout(() => location.reload(), 1000); });";
     html += "}";
     html += "function updateBrightnessValue(val) { document.getElementById('brightnessValue').textContent = val; }";
