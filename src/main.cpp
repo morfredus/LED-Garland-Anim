@@ -2,8 +2,8 @@
 /**
  * @file main.cpp
  * @brief Point d'entrée principal du projet LED-Garland-Anim
- * @version 1.5.3
- * @date 2025-12-31
+ * @version 1.6.0
+ * @date 2026-01-01
  *
  * OTA support: ArduinoOTA (upload firmware over WiFi) + Web OTA (Update.h)
  */
@@ -23,6 +23,7 @@
 #include "web_interface.h"
 #include "display.h"
 #include "garland_control.h"
+#include "matrix8x8_control.h"
 
 // --- OBJETS ---
 WiFiMulti wifiMulti;
@@ -155,6 +156,9 @@ void setup() {
     // Initialisation de la guirlande
     setupGarland();
 
+    // Initialisation de la matrice 8x8 NeoPixel
+    setupMatrix8x8();
+
     // Chargement de la configuration sauvegardée (mode, animation, durées) depuis NVS
     // Si aucune sauvegarde, valeurs par défaut utilisées
     loadGarlandSettings();
@@ -193,6 +197,9 @@ void loop() {
 
     // 2. Mise à jour de l'animation de guirlande
     updateGarland();
+
+    // 2b. Mise à jour de l'animation de la matrice 8x8
+    updateMatrix8x8();
 
     // 3. Gestion Serveur Web (non-bloquant)
     server.handleClient();
