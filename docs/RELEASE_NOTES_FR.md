@@ -124,4 +124,4 @@ Historique complet des versions du projet LED-Garland-Anim.
 
 **Voir CHANGELOG_FR.md pour l'historique détaillé des commits.**
 
-**LED-Garland-Anim v1.10.0** - Contrôleur moderne de guirlande LED pour ESP32 IdeaSpark 🎄✨
+**LED-Garland-Anim v1.11.0** - Contrôleur moderne de guirlande LED pour ESP32 IdeaSpark 🎄✨

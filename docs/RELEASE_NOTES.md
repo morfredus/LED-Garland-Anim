@@ -190,7 +190,7 @@ Complete version history for the LED-Garland-Anim project.
 - Web interface: Removed all blocking alert() and confirm() popups
 - Reboot button: Added visual feedback (color change) on first click
 - User experience: Non-blocking confirmations improve workflow
-- Version 1.10.0 (SEMVER - MINOR)
+- Version 1.11.0 (SEMVER - MINOR)
 
 ### Fixed
 - Startup issue: Garland now animates immediately instead of waiting for user interaction
@@ -219,7 +219,7 @@ Complete version history for the LED-Garland-Anim project.
 - Quick access button to OTA update from the dashboard
 
 ### Changed
-- Version 1.10.0 (SEMVER)
+- Version 1.11.0 (SEMVER)
 - User documentation completed with Web OTA instructions (EN/FR)
 - ArduinoOTA kept as alternative method (PlatformIO OTA)
 
@@ -237,7 +237,7 @@ Complete version history for the LED-Garland-Anim project.
 - Documentation and user guides updated (EN/FR)
 
 ### Changed
-- Version 1.10.0 (SEMVER)
+- Version 1.11.0 (SEMVER)
 
 ---
 # [1.2.2] – 2025-12-31
@@ -270,14 +270,14 @@ Complete version history for the LED-Garland-Anim project.
 - Support for obsolete screens and boards (only ESP32 Classic + ST7789 supported)
 
 ---
-# Release Notes – LED-Garland-Anim v1.10.0
+# Release Notes – LED-Garland-Anim v1.11.0
 
 ## [1.2.0] – 2025-12-31
 
 ### Added
 - Automatic detection of motion sensor type (PIR HC-SR501 or RCWL-0516 Doppler radar) on GPIO 35
 - New technical documentation for RCWL-0516 (EN/FR)
-- All user and technical documentation updated for v1.10.0 (EN/FR)
+- All user and technical documentation updated for v1.11.0 (EN/FR)
 
 ### Changed
 - Pin mapping: PIR_SENSOR replaced by MOTION_SENSOR_PIN (GPIO 35)
@@ -296,14 +296,14 @@ Complete version history for the LED-Garland-Anim project.
 ---
 
 See CHANGELOG.md for detailed commit history.
-# Release Notes – LED-Garland-Anim v1.10.0
+# Release Notes – LED-Garland-Anim v1.11.0
 
 ## [1.2.0] – 2025-12-31
 
 ### Added
 - Automatic detection of motion sensor type (PIR HC-SR501 or Doppler radar RCWL-0516) on GPIO 35
 - New technical documentation for RCWL-0516 (EN/FR)
-- All user and technical documentation updated for v1.10.0 (EN/FR)
+- All user and technical documentation updated for v1.11.0 (EN/FR)
 
 ### Changed
 - Pin mapping: PIR_SENSOR replaced by MOTION_SENSOR_PIN (GPIO 35)
@@ -326,13 +326,13 @@ See CHANGELOG.md for detailed commit history.
 
 ### Added
 - Automatic save/restore of user configuration (mode, animation, intervals) using NVS. Settings persist across reboots and power cycles.
-# Release Notes - Version 1.10.0
+# Release Notes - Version 1.11.0
 
 **Release Date:** December 30, 2025
 
 ## 🎉 Major Release: ESP32 IdeaSpark Platform Unification
 
-Version 1.10.0 represents a complete platform modernization, focusing exclusively on the ESP32 IdeaSpark board with integrated 1.14" ST7789 LCD display.
+Version 1.11.0 represents a complete platform modernization, focusing exclusively on the ESP32 IdeaSpark board with integrated 1.14" ST7789 LCD display.
 
 ---
 
@@ -518,10 +518,10 @@ If upgrading from v0.x.x:
 
 ## 🙏 Thank You
 
-Thank you for using LED-Garland-Anim! This v1.10.0 release brings a modern, focused platform with beautiful visual animations.
+Thank you for using LED-Garland-Anim! This v1.11.0 release brings a modern, focused platform with beautiful visual animations.
 
 For issues, questions, or contributions, please visit the project repository.
 
 ---
 
-**LED-Garland-Anim v1.10.0** - Modern LED Garland Controller for ESP32 IdeaSpark 🎄✨
+**LED-Garland-Anim v1.11.0** - Modern LED Garland Controller for ESP32 IdeaSpark 🎄✨

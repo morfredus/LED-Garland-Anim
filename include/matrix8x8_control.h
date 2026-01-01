@@ -1,7 +1,7 @@
 /**
  * @file matrix8x8_control.h
  * @brief Control for 8x8 NeoPixel WS2812B-64 matrix with festive animations
- * @version 1.10.0
+ * @version 1.11.0
  * @date 2026-01-01
  *
  * Module for managing animations on an 8x8 NeoPixel matrix.
@@ -49,7 +49,6 @@ enum Matrix8x8Animation {
     MATRIX_ANIM_GINGERBREAD,    ///< Gingerbread man
     MATRIX_ANIM_HOT_COCOA,      ///< Steaming hot cocoa
     MATRIX_ANIM_FIREPLACE,      ///< Flickering fireplace
-    MATRIX_ANIM_ICICLES,        ///< Hanging icicles
     MATRIX_ANIM_NORTHERN_LIGHTS,///< Aurora borealis effect
     MATRIX_ANIM_PRESENTS,       ///< Stack of presents
     // New Year animations
@@ -75,6 +74,7 @@ enum Matrix8x8Animation {
     MATRIX_ANIM_STARS_FIELD,    ///< Twinkling stars field
     MATRIX_ANIM_CAMPFIRE,       ///< Realistic campfire with heat propagation
     MATRIX_ANIM_RADAR,          ///< Military green radar sweep with blips
+    MATRIX_ANIM_AUTO,           ///< Automatic mode (cycles through all animations)
     MATRIX_ANIM_COUNT           ///< Total number of animations
 };
 

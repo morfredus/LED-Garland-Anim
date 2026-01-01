@@ -232,7 +232,7 @@ Dans `include/garland_control.h` :
 
 ## 10. Versions
 
-**Version Actuelle : v1.10.0** (2026-01-01)
+**Version Actuelle : v1.11.0** (2026-01-01)
 Voir [CHANGELOG_FR.md](./CHANGELOG_FR.md)
 
 ---
