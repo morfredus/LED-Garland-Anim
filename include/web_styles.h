@@ -4,7 +4,7 @@
 /**
  * @file web_styles.h
  * @brief Feuilles de style pour l'interface web
- * @version 1.10.0
+ * @version 1.11.0
  * @date 2026-01-01
  *
  * Module dédié à la gestion des styles CSS de l'interface web.

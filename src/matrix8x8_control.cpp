@@ -1,7 +1,7 @@
 /**
  * @file matrix8x8_control.cpp
  * @brief Implementation of 8x8 NeoPixel matrix control with festive animations
- * @version 1.10.0
+ * @version 1.11.0
  * @date 2026-01-01
  */
 
@@ -14,10 +14,14 @@
 
 static Adafruit_NeoPixel matrix = Adafruit_NeoPixel(MATRIX8X8_NUMPIXELS, MATRIX8X8_PIN, NEO_GRB + NEO_KHZ800);
 
-static Matrix8x8Animation currentAnimation = MATRIX_ANIM_STAR;  // Start with star animation
+static Matrix8x8Animation currentAnimation = MATRIX_ANIM_STAR;  // Selected animation (for display/save)
+static Matrix8x8Animation activeAnimation = MATRIX_ANIM_STAR;   // Currently executing animation
 static unsigned long animationStartTime = 0;
+static unsigned long autoModeChangeTime = 0;  // Track last auto mode change
+static unsigned long autoModeInterval = 30000;  // 30 seconds per animation in auto mode
 static uint8_t matrixBrightness = 128;  // Default brightness (50%)
 static bool matrixEnabled = true;
+static bool autoModeActive = false;  // Flag to track if auto mode is active
 
 // Animation state variables
 static uint8_t animationPhase = 0;
@@ -49,7 +53,6 @@ static const char* animationNames[] = {
     "Gingerbread",
     "Hot Cocoa",
     "Fireplace",
-    "Icicles",
     "Northern Lights",
     "Presents",
     // New Year animations
@@ -74,7 +77,8 @@ static const char* animationNames[] = {
     "Heart",
     "Stars Field",
     "Campfire",
-    "Radar"
+    "Radar",
+    "Auto"
 };
 
 // =============================================================================
@@ -378,36 +382,42 @@ static void animateStar() {
 }
 
 /**
- * @brief Animation: Meteor shower
- * @note FIX #1: Changed from modulo timing to threshold-based timing
+ * @brief Animation: Meteor shower - Diagonal meteors across full matrix
  */
 static void animateMeteor() {
     static unsigned long lastUpdate = 0;
+    static uint8_t meteorPos = 0;
     unsigned long currentMillis = millis();
 
-    // Move every 100ms
-    if (currentMillis - lastUpdate >= 100) {
+    // Move every 120ms
+    if (currentMillis - lastUpdate >= 120) {
         lastUpdate = currentMillis;
 
-        // Fade all pixels
+        // Fade all pixels (trail effect)
         for (uint8_t i = 0; i < 64; i++) {
-            uint32_t color = matrix.getPixelColor(i);
-            matrix.setPixelColor(i, dimColor(color, 180));
+            matrix.setPixelColor(i, dimColor(matrix.getPixelColor(i), 170));
         }
 
-        // Add new meteor at random position
-        if (random(0, 100) > 70) {
-            uint8_t x = random(0, 8);
-            setPixel(x, 0, matrix.Color(255, 255, 200));
-        }
+        // Draw meteor diagonally across full matrix
+        // Multiple meteors at different stages
+        for (uint8_t m = 0; m < 3; m++) {
+            int8_t pos = (meteorPos + m * 5) % 16;  // 16 diagonal positions across matrix
 
-        // Move meteors down
-        for (int8_t y = 7; y > 0; y--) {
-            for (uint8_t x = 0; x < 8; x++) {
-                uint32_t color = getPixel(x, y - 1);
-                setPixel(x, y, color);
+            // Draw meteor with trail (4 pixels long)
+            for (int8_t trail = 0; trail < 4; trail++) {
+                int8_t x = pos - trail;
+                int8_t y = pos - trail;
+
+                if (x >= 0 && x < 8 && y >= 0 && y < 8) {
+                    uint8_t brightness = 255 - (trail * 60);  // Dimmer trail
+                    uint32_t color = matrix.Color(brightness, brightness, brightness * 0.8);
+                    setPixel(x, y, color);
+                }
             }
         }
+
+        meteorPos++;
+        if (meteorPos >= 16) meteorPos = 0;
 
         matrix.show();
     }
@@ -446,25 +456,56 @@ static void animateShootingStar() {
 }
 
 /**
- * @brief Animation: Santa face
+ * @brief Animation: Santa face - Improved with hat, eyes, and beard
  */
 static void animateSanta() {
     unsigned long elapsed = millis() - animationStartTime;
-    float phase = (elapsed % 2000) / 2000.0;
+    uint8_t blinkPhase = (elapsed / 2500) % 10;
 
     clearMatrix();
 
-    // Pulsating red color for Santa
-    uint8_t brightness = (uint8_t)((sin(phase * 2.0 * PI) + 1.0) * 100 + 55);
-    uint32_t color = matrix.Color(brightness, 0, 0);
-
-    drawPattern(SANTA_PATTERN, color);
-
-    // White beard area (bottom part)
-    for (uint8_t x = 0; x < 8; x++) {
-        setPixel(x, 7, matrix.Color(255, 255, 255));
-        setPixel(x, 0, matrix.Color(255, 255, 255));
+    // Red hat (rows 0-2)
+    for (uint8_t y = 0; y < 3; y++) {
+        for (uint8_t x = 1; x < 7; x++) {
+            setPixel(x, y, matrix.Color(220, 0, 0));
+        }
     }
+
+    // White hat trim (row 2)
+    for (uint8_t x = 1; x < 7; x++) {
+        setPixel(x, 2, matrix.Color(255, 255, 255));
+    }
+
+    // White pom-pom on hat
+    setPixel(7, 0, matrix.Color(255, 255, 255));
+
+    // Skin tone face (rows 3-5)
+    for (uint8_t y = 3; y < 6; y++) {
+        for (uint8_t x = 1; x < 7; x++) {
+            setPixel(x, y, matrix.Color(255, 220, 180));
+        }
+    }
+
+    // Eyes (black, blink occasionally)
+    if (blinkPhase != 0) {
+        setPixel(2, 4, matrix.Color(0, 0, 0));  // Left eye
+        setPixel(5, 4, matrix.Color(0, 0, 0));  // Right eye
+    }
+
+    // Red nose (Rudolph!)
+    setPixel(3, 5, matrix.Color(255, 0, 0));
+    setPixel(4, 5, matrix.Color(255, 0, 0));
+
+    // White beard (rows 6-7)
+    for (uint8_t y = 6; y < 8; y++) {
+        for (uint8_t x = 0; x < 8; x++) {
+            setPixel(x, y, matrix.Color(255, 255, 255));
+        }
+    }
+
+    // Beard detail (mustache gap)
+    setPixel(3, 6, matrix.Color(255, 220, 180));
+    setPixel(4, 6, matrix.Color(255, 220, 180));
 
     matrix.show();
 }
@@ -568,31 +609,50 @@ static void animateSnow() {
 }
 
 /**
- * @brief Animation: Gift box
+ * @brief Animation: Gift box - Clear box with ribbon and animated bow
  */
 static void animateGift() {
     unsigned long elapsed = millis() - animationStartTime;
-    float phase = (elapsed % 2000) / 2000.0;
+    uint8_t colorPhase = (elapsed / 1000) % 3;
+    uint8_t sparklePhase = (elapsed / 300) % 4;
 
     clearMatrix();
 
-    // Alternating colors for gift wrap
-    uint32_t color1 = matrix.Color(255, 0, 0);  // Red
-    uint32_t color2 = matrix.Color(0, 255, 0);  // Green
+    // Gift box colors (cycle: red, green, blue)
+    uint32_t boxColor;
+    if (colorPhase == 0) boxColor = matrix.Color(200, 0, 0);      // Red
+    else if (colorPhase == 1) boxColor = matrix.Color(0, 180, 0); // Green
+    else boxColor = matrix.Color(0, 0, 200);                      // Blue
 
-    uint32_t currentColor = (phase < 0.5) ? color1 : color2;
-
-    drawPattern(GIFT_PATTERN, currentColor);
-
-    // Yellow ribbon (center lines)
-    for (uint8_t y = 0; y < 8; y++) {
-        setPixel(3, y, matrix.Color(255, 200, 0));
-        setPixel(4, y, matrix.Color(255, 200, 0));
+    // Draw gift box (rows 2-7, cols 1-6)
+    for (uint8_t y = 2; y < 8; y++) {
+        for (uint8_t x = 1; x < 7; x++) {
+            setPixel(x, y, boxColor);
+        }
     }
-    for (uint8_t x = 0; x < 8; x++) {
-        setPixel(x, 0, matrix.Color(255, 200, 0));
-        setPixel(x, 1, matrix.Color(255, 200, 0));
+
+    // Gold ribbon (vertical down center)
+    for (uint8_t y = 2; y < 8; y++) {
+        setPixel(3, y, matrix.Color(255, 215, 0));
+        setPixel(4, y, matrix.Color(255, 215, 0));
     }
+
+    // Gold ribbon (horizontal across top of box)
+    for (uint8_t x = 1; x < 7; x++) {
+        setPixel(x, 2, matrix.Color(255, 215, 0));
+        setPixel(x, 3, matrix.Color(255, 215, 0));
+    }
+
+    // Bow on top (rows 0-1) - sparkles
+    uint8_t bowBrightness = (sparklePhase == 0) ? 255 : 200;
+    setPixel(2, 0, matrix.Color(bowBrightness, 180, 0));  // Left bow
+    setPixel(2, 1, matrix.Color(bowBrightness, 180, 0));
+    setPixel(3, 0, matrix.Color(255, 215, 0));  // Center knot
+    setPixel(4, 0, matrix.Color(255, 215, 0));
+    setPixel(3, 1, matrix.Color(255, 215, 0));
+    setPixel(4, 1, matrix.Color(255, 215, 0));
+    setPixel(5, 0, matrix.Color(bowBrightness, 180, 0));  // Right bow
+    setPixel(5, 1, matrix.Color(bowBrightness, 180, 0));
 
     matrix.show();
 }
@@ -628,15 +688,32 @@ static void animateCandle() {
 }
 
 /**
- * @brief Animation: Rotating snowflake
+ * @brief Animation: Snowflake - Rotating with heartbeat pulse effect
  */
 static void animateSnowflake() {
     unsigned long elapsed = millis() - animationStartTime;
     uint8_t rotation = (elapsed / 300) % 4;
 
-    clearMatrix();
+    // Heartbeat pulse effect (same color, varying brightness)
+    float pulsePhase = (elapsed % 1500) / 1500.0;  // 1.5 second cycle
+    // Create heartbeat pattern: two quick pulses, then pause
+    float pulse;
+    if (pulsePhase < 0.15) {
+        // First pulse (0-0.15)
+        pulse = sin(pulsePhase / 0.15 * PI);
+    } else if (pulsePhase > 0.25 && pulsePhase < 0.4) {
+        // Second pulse (0.25-0.4)
+        pulse = sin((pulsePhase - 0.25) / 0.15 * PI);
+    } else {
+        // Rest period
+        pulse = 0;
+    }
 
-    uint32_t cyanColor = matrix.Color(0, 200, 255);
+    // Brightness varies from 100 to 255
+    uint8_t brightness = 100 + (uint8_t)(pulse * 155);
+    uint32_t cyanColor = matrix.Color(0, brightness * 0.78, brightness);
+
+    clearMatrix();
 
     if (rotation == 0) {
         drawPattern(SNOWFLAKE_PATTERN, cyanColor);
@@ -665,21 +742,41 @@ static void animateSnowflake() {
 }
 
 /**
- * @brief Animation: Candy Cane with rotating stripes
+ * @brief Animation: Candy Cane - Realistic candy cane with hook and rotating diagonal stripes
  */
 static void animateCandyCane() {
     unsigned long elapsed = millis() - animationStartTime;
-    uint8_t offset = (elapsed / 150) % 8;
+    uint8_t offset = (elapsed / 200) % 8;  // Rotate stripes
 
     clearMatrix();
 
-    // Draw diagonal red and white stripes
+    // Candy cane shape: hook at top (rows 0-2), straight stick (rows 3-7)
+    // The hook curves from left to right at the top
+
+    // Define the candy cane pixels (1 = part of cane, 0 = background)
+    const uint8_t CANE_SHAPE[] = {
+        0b00111110,  // Row 0: Hook top (curved)
+        0b01000001,  // Row 1: Hook sides
+        0b00000011,  // Row 2: Hook bends down right
+        0b00001100,  // Row 3: Stick starts
+        0b00001100,  // Row 4: Straight stick
+        0b00001100,  // Row 5: Straight stick
+        0b00001100,  // Row 6: Straight stick
+        0b00001100   // Row 7: Stick bottom
+    };
+
+    // Draw candy cane with rotating diagonal stripes
     for (uint8_t y = 0; y < 8; y++) {
+        uint8_t row = CANE_SHAPE[y];
         for (uint8_t x = 0; x < 8; x++) {
-            if ((x + y + offset) % 2 == 0) {
-                setPixel(x, y, matrix.Color(255, 0, 0));  // Red
-            } else {
-                setPixel(x, y, matrix.Color(255, 255, 255));  // White
+            if (row & (1 << (7 - x))) {
+                // This pixel is part of the candy cane
+                // Diagonal stripe pattern that rotates
+                if ((x + y + offset) % 4 < 2) {
+                    setPixel(x, y, matrix.Color(255, 0, 0));  // Red stripe
+                } else {
+                    setPixel(x, y, matrix.Color(255, 255, 255));  // White stripe
+                }
             }
         }
     }
@@ -880,39 +977,6 @@ static void animateFireplace() {
             uint8_t r = 255 - y * 40;
             uint8_t g = random(50, 150) - y * 20;
             setPixel(x, 4 - y, matrix.Color(r, g, 0));
-        }
-    }
-
-    matrix.show();
-}
-
-/**
- * @brief Animation: Hanging Icicles
- */
-/**
- * @note BUGFIX #4 (v1.8.1): Completed animation with all icicles and proper dripping
- */
-static void animateIcicles() {
-    unsigned long elapsed = millis() - animationStartTime;
-    uint8_t dripPhase = (elapsed / 200) % 16;
-
-    clearMatrix();
-
-    // Draw all icicles hanging from top (every column for fuller effect)
-    for (uint8_t x = 0; x < 8; x++) {
-        uint8_t length = 3 + ((x + elapsed / 1000) % 3);  // Vary lengths slowly
-        for (uint8_t y = 0; y < length && y < 8; y++) {
-            uint8_t brightness = 200 - y * 25;
-            setPixel(x, y, matrix.Color(brightness, brightness, 255));
-        }
-    }
-
-    // Animated dripping effect - water drops falling
-    if (dripPhase < 8) {
-        uint8_t dropX = (elapsed / 2000) % 8;  // Which icicle drips
-        uint8_t dropY = dripPhase;
-        if (dropY < 7) {
-            setPixel(dropX, dropY, matrix.Color(100, 100, 255));
         }
     }
 
@@ -1149,32 +1213,66 @@ static void animateConfetti() {
 }
 
 /**
- * @brief Animation: Clock at midnight
- * @note BUGFIX #2 (v1.8.1): Reversed rotation direction (clockwise now)
+ * @brief Animation: Clock - Analog clock with hour markers and smooth second hand
  */
 static void animateClock() {
     unsigned long elapsed = millis() - animationStartTime;
-    float angle = (elapsed % 12000) / 12000.0 * 2.0 * PI;
+    // One full rotation every 60 seconds (real-time second hand)
+    float angle = (elapsed % 60000) / 60000.0 * TWO_PI;
 
     clearMatrix();
 
-    // Clock circle
-    for (uint8_t i = 0; i < 8; i++) {
-        float a = i * PI / 4.0;
-        int8_t x = 3.5 + cos(a) * 3;
-        int8_t y = 3.5 + sin(a) * 3;
+    // Center point (clock axis)
+    setPixel(3, 3, matrix.Color(200, 200, 200));
+    setPixel(4, 3, matrix.Color(200, 200, 200));
+    setPixel(3, 4, matrix.Color(200, 200, 200));
+    setPixel(4, 4, matrix.Color(200, 200, 200));
+
+    // Draw clock circle with hour markers
+    // 12 positions around the clock
+    for (uint8_t i = 0; i < 12; i++) {
+        float a = i * PI / 6.0 - PI/2;  // -PI/2 to start at 12 o'clock
+        float radius = 3.0;
+        int8_t x = 3.5 + cos(a) * radius;
+        int8_t y = 3.5 + sin(a) * radius;
+
         if (x >= 0 && x < 8 && y >= 0 && y < 8) {
-            setPixel(x, y, matrix.Color(255, 255, 255));
+            // Main hour markers (12, 3, 6, 9) are brighter
+            if (i % 3 == 0) {
+                setPixel(x, y, matrix.Color(255, 255, 255));  // Bright white for cardinal hours
+            } else {
+                setPixel(x, y, matrix.Color(100, 100, 100));  // Dim gray for other hours
+            }
         }
     }
 
-    // Clock hand (reversed rotation: -angle instead of +angle)
-    int8_t hx = 3.5 + cos(-angle - PI/2) * 2.5;
-    int8_t hy = 3.5 + sin(-angle - PI/2) * 2.5;
-    setPixel(3, 3, matrix.Color(255, 0, 0));
-    setPixel(4, 4, matrix.Color(255, 0, 0));
-    if (hx >= 0 && hx < 8 && hy >= 0 && hy < 8) {
-        setPixel(hx, hy, matrix.Color(255, 0, 0));
+    // Draw second hand (clockwise rotation)
+    // angle = 0 at top (12 o'clock), increases clockwise
+    float handAngle = angle - PI/2;  // Adjust so 0 is at top
+
+    // Draw hand from center to edge
+    for (float r = 0.5; r <= 2.8; r += 0.4) {
+        int8_t hx = 3.5 + cos(handAngle) * r;
+        int8_t hy = 3.5 + sin(handAngle) * r;
+
+        if (hx >= 0 && hx < 8 && hy >= 0 && hy < 8) {
+            // Check if hand is near an hour marker (change color)
+            bool nearMarker = false;
+            for (uint8_t i = 0; i < 12; i++) {
+                float markerAngle = i * PI / 6.0;
+                float angleDiff = abs(angle - markerAngle);
+                if (angleDiff < 0.3 || angleDiff > (TWO_PI - 0.3)) {
+                    nearMarker = true;
+                    break;
+                }
+            }
+
+            if (nearMarker) {
+                setPixel(hx, hy, matrix.Color(255, 0, 0));  // Red when passing hour
+            } else {
+                setPixel(hx, hy, matrix.Color(255, 100, 0));  // Orange normally
+            }
+        }
     }
 
     matrix.show();
@@ -1269,17 +1367,18 @@ static void animateEasterEgg() {
 }
 
 /**
- * @brief Animation: Hopping Bunny
+ * @brief Animation: Hopping Bunny - With animated eyes
  */
 static void animateBunny() {
     unsigned long elapsed = millis() - animationStartTime;
     uint8_t hopPhase = (elapsed / 300) % 4;
+    uint8_t blinkPhase = (elapsed / 2000) % 10;  // Blink cycle
 
     clearMatrix();
 
-    int8_t yOffset = (hopPhase == 1) ? -1 : 0;
+    int8_t yOffset = (hopPhase == 1) ? -1 : 0;  // Hop up on phase 1
 
-    // Draw bunny with hop effect
+    // Draw bunny body (white)
     for (uint8_t y = 0; y < 8; y++) {
         uint8_t row = BUNNY_PATTERN[y];
         for (uint8_t x = 0; x < 8; x++) {
@@ -1292,9 +1391,19 @@ static void animateBunny() {
         }
     }
 
-    // Pink nose
-    setPixel(3, 3 + yOffset, matrix.Color(255, 100, 150));
-    setPixel(4, 3 + yOffset, matrix.Color(255, 100, 150));
+    // Eyes (move with bunny, blink occasionally)
+    int8_t eyeY = 2 + yOffset;  // Eyes at row 2
+    if (eyeY >= 0 && eyeY < 8 && blinkPhase != 0) {  // Blink when phase == 0
+        setPixel(2, eyeY, matrix.Color(0, 0, 0));  // Left eye (black)
+        setPixel(5, eyeY, matrix.Color(0, 0, 0));  // Right eye (black)
+    }
+
+    // Pink nose (moves with bunny)
+    int8_t noseY = 3 + yOffset;
+    if (noseY >= 0 && noseY < 8) {
+        setPixel(3, noseY, matrix.Color(255, 100, 150));
+        setPixel(4, noseY, matrix.Color(255, 100, 150));
+    }
 
     matrix.show();
 }
@@ -1325,36 +1434,45 @@ static void animateChick() {
 }
 
 /**
- * @brief Animation: Spring Flowers blooming
+ * @brief Animation: Spring Flowers - Blooming flowers with petals opening/closing
  */
 static void animateFlowers() {
     unsigned long elapsed = millis() - animationStartTime;
-    uint8_t bloomPhase = (elapsed / 400) % 8;
+    float bloomPhase = (elapsed % 3000) / 3000.0;  // 0 to 1 bloom cycle
 
     clearMatrix();
 
-    // Multiple flowers at different bloom stages
-    for (uint8_t i = 0; i < 3; i++) {
-        uint8_t cx = 1 + i * 3;
-        uint8_t cy = 4;
-        uint8_t size = min(bloomPhase + i, 3);
+    // Two flowers side by side
+    for (uint8_t flowerNum = 0; flowerNum < 2; flowerNum++) {
+        uint8_t cx = 2 + flowerNum * 4;  // Centers at x=2 and x=6
+        uint8_t cy = 3;  // Center y
 
-        // Flower center
+        // Blooming effect: 0=closed, 1=fully open
+        float bloom = (sin(bloomPhase * TWO_PI + flowerNum * PI) + 1.0) / 2.0;
+
+        // Yellow center (always visible)
         setPixel(cx, cy, matrix.Color(255, 255, 0));
 
-        // Petals
-        if (size > 0) {
-            setPixel(cx - 1, cy, matrix.Color(255, 0, 255));
-            setPixel(cx + 1, cy, matrix.Color(255, 0, 255));
-        }
-        if (size > 1) {
-            setPixel(cx, cy - 1, matrix.Color(255, 100, 200));
-            setPixel(cx, cy + 1, matrix.Color(255, 100, 200));
+        // 8 petals around center (open/close based on bloom phase)
+        if (bloom > 0.3) {
+            // 4 cardinal petals (pink/magenta)
+            setPixel(cx - 1, cy, matrix.Color(255, 0, 255));  // Left
+            setPixel(cx + 1, cy, matrix.Color(255, 0, 255));  // Right
+            setPixel(cx, cy - 1, matrix.Color(255, 100, 200));  // Top
+            setPixel(cx, cy + 1, matrix.Color(255, 100, 200));  // Bottom
         }
 
-        // Stem
+        if (bloom > 0.6) {
+            // 4 diagonal petals (lighter pink) - only when fully blooming
+            setPixel(cx - 1, cy - 1, matrix.Color(255, 150, 200));  // Top-left
+            setPixel(cx + 1, cy - 1, matrix.Color(255, 150, 200));  // Top-right
+            setPixel(cx - 1, cy + 1, matrix.Color(255, 150, 200));  // Bottom-left
+            setPixel(cx + 1, cy + 1, matrix.Color(255, 150, 200));  // Bottom-right
+        }
+
+        // Green stem from flower down to bottom
         for (uint8_t y = cy + 1; y < 8; y++) {
-            setPixel(cx, y, matrix.Color(0, 150, 0));
+            setPixel(cx, y, matrix.Color(0, 180, 0));
         }
     }
 
@@ -1362,16 +1480,21 @@ static void animateFlowers() {
 }
 
 /**
- * @brief Animation: Rainbow Wave
+ * @brief Animation: Rainbow Wave - True sine wave effect with rainbow colors
  */
 static void animateRainbowWave() {
     unsigned long elapsed = millis() - animationStartTime;
-    uint8_t offset = (elapsed / 100) % 8;
+    float timeOffset = elapsed / 500.0;  // Slower movement for smoother wave
 
     clearMatrix();
 
     for (uint8_t x = 0; x < 8; x++) {
-        uint8_t hue = ((x + offset) * 32) % 256;
+        // Create sine wave pattern
+        float wave = sin((x * 0.8) + timeOffset) * 3.5 + 3.5;  // Wave from 0 to 7
+        int8_t waveY = (int8_t)wave;
+
+        // Rainbow color based on x position + time
+        uint8_t hue = ((x * 32) + (uint8_t)(elapsed / 50)) % 256;
         uint32_t color;
 
         if (hue < 43) color = matrix.Color(255, hue * 6, 0);
@@ -1381,8 +1504,16 @@ static void animateRainbowWave() {
         else if (hue < 214) color = matrix.Color((hue - 171) * 6, 0, 255);
         else color = matrix.Color(255, 0, 255 - (hue - 214) * 6);
 
-        for (uint8_t y = 0; y < 8; y++) {
-            setPixel(x, y, color);
+        // Draw wave with vertical gradient
+        for (int8_t y = 0; y < 8; y++) {
+            int8_t dist = abs(y - waveY);
+            if (dist == 0) {
+                setPixel(x, y, color);  // Brightest at wave peak
+            } else if (dist == 1) {
+                setPixel(x, y, dimColor(color, 180));  // Slightly dimmer nearby
+            } else if (dist == 2) {
+                setPixel(x, y, dimColor(color, 80));  // Very dim
+            }
         }
     }
 
@@ -1814,20 +1945,46 @@ void updateMatrix8x8() {
 
     // In MODE_MOTION_TRIGGER, matrix follows garland state
     // In MODE_MOTION_MATRIX_INDEPENDENT and MODE_PERMANENT, matrix is independent
-    bool matrixShouldBeOn = matrixEnabled && (currentAnimation != MATRIX_ANIM_OFF);
+    bool matrixShouldBeOn = (currentAnimation != MATRIX_ANIM_OFF) && (currentAnimation != MATRIX_ANIM_AUTO || autoModeActive);
 
     if (mode == MODE_MOTION_TRIGGER) {
         // Matrix follows garland state in this mode
+        // IMPORTANT: Don't use matrixEnabled here - it should turn back on automatically
         matrixShouldBeOn = matrixShouldBeOn && isGarlandEnabled();
+    } else {
+        // In other modes, respect the matrixEnabled flag
+        matrixShouldBeOn = matrixShouldBeOn && matrixEnabled;
     }
 
     if (!matrixShouldBeOn) {
-        matrix8x8Off();
+        // Clear matrix but DON'T set matrixEnabled = false
+        // This allows matrix to turn back on when motion is detected
+        clearMatrix();
+        matrix.show();
         return;
     }
 
-    // Execute current animation
-    switch (currentAnimation) {
+    // Auto mode: cycle through animations (excluding OFF and AUTO)
+    if (autoModeActive) {
+        unsigned long elapsed = millis() - autoModeChangeTime;
+        if (elapsed > autoModeInterval) {
+            // Move to next animation
+            uint8_t nextAnim = (uint8_t)activeAnimation + 1;
+            // Skip OFF (0) and AUTO (last), cycle from STAR (1) to RADAR (last-1)
+            if (nextAnim == MATRIX_ANIM_OFF || nextAnim >= MATRIX_ANIM_AUTO) {
+                nextAnim = MATRIX_ANIM_STAR;  // Loop back to first real animation
+            }
+            activeAnimation = (Matrix8x8Animation)nextAnim;
+            animationStartTime = millis();
+            autoModeChangeTime = millis();
+            LOG_PRINTF("Auto Mode: Switched to %s\n", animationNames[activeAnimation]);
+        }
+    }
+
+    // Execute current animation (use activeAnimation in auto mode, currentAnimation otherwise)
+    Matrix8x8Animation animToExecute = autoModeActive ? activeAnimation : currentAnimation;
+
+    switch (animToExecute) {
         // Original animations
         case MATRIX_ANIM_STAR:
             animateStar();
@@ -1880,9 +2037,6 @@ void updateMatrix8x8() {
             break;
         case MATRIX_ANIM_FIREPLACE:
             animateFireplace();
-            break;
-        case MATRIX_ANIM_ICICLES:
-            animateIcicles();
             break;
         case MATRIX_ANIM_NORTHERN_LIGHTS:
             animateNorthernLights();
@@ -1966,8 +2120,19 @@ void setMatrix8x8Animation(Matrix8x8Animation animation) {
 
     if (animation == MATRIX_ANIM_OFF) {
         matrixEnabled = false;
+        autoModeActive = false;
         matrix8x8Off();
+    } else if (animation == MATRIX_ANIM_AUTO) {
+        // Enable auto mode
+        autoModeActive = true;
+        activeAnimation = MATRIX_ANIM_STAR;  // Start with first real animation
+        autoModeChangeTime = millis();
+        matrixEnabled = true;
+        LOG_PRINTF("Auto Mode activated: Starting with %s\n", animationNames[activeAnimation]);
     } else {
+        // Specific animation selected
+        autoModeActive = false;
+        activeAnimation = animation;
         matrixEnabled = true;
         // Force immediate display of first frame
         clearMatrix();
