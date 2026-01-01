@@ -4,6 +4,67 @@ Complete version history for the LED-Garland-Anim project.
 
 ---
 
+# [1.11.2] – 2026-01-01
+
+### Fixed (PATCH - Coordinate System Correction)
+
+**Matrix Coordinate Mapping System**
+- Fixed incorrect zigzag indexing pattern in 8x8 NeoPixel matrix
+- Implemented uniform linear indexing (all rows 0-7 go left→right)
+- Corrects pixel positioning and visual distortions in all 38 matrix animations
+- Modified `xy()` function to use simple linear mapping: `return y * 8 + x;`
+
+### Technical
+- All rows now follow the same left-to-right pattern
+- Coordinate specification: Row N = pixels (N×8) to (N×8+7)
+- Ensures proper alignment of animations with physical LED layout
+
+---
+
+# [1.11.1] – 2026-01-01
+
+### Fixed (PATCH - Synchronization)
+
+**Matrix Auto Mode Interval Synchronization**
+- Matrix auto mode now shares the same interval as garland auto mode
+- Single UI control adjusts animation duration for both simultaneously
+- Both modules call `getAutoAnimationIntervalMs()` for synchronized timing
+- Default: 30 seconds (configurable from 5s to 5 minutes via web UI)
+
+---
+
+# [1.11.0] – 2026-01-01
+
+### Added (MINOR - New Features + Major Animation Improvements)
+
+**NEW FEATURE: Auto Mode for Matrix**
+- Automatic cycling through all matrix animations
+- Synchronized interval with garland auto mode
+- Never uses OFF state - continuous animation display
+
+**Detection Mode Logic Fixes**
+- MODE_MOTION_TRIGGER: Matrix now correctly turns back on when motion detected
+- Fixed critical bug where matrix remained off after timeout
+- Preserves animation and brightness settings during motion detection cycles
+
+**Animation Quality Improvements** (14 animations fixed)
+- Candy Cane: Realistic diagonal hook with rotating red/white stripes
+- Clock: Real-time second hand, clockwise rotation, proper hour markers
+- Bunny: Added blinking eyes
+- Flower: Recognizable blooming 8-petal flower
+- Meteor: Full diagonal matrix coverage
+- Santa: Improved facial features (hat, eyes, nose, beard)
+- Gift: Clear box with ribbon and bow
+- Snowflake: Heartbeat pulse effect
+- Rainbow Wave: True sine wave motion
+- Plasma: Enhanced visual clarity
+- Radar: Improved blip persistence
+
+### Removed
+- Icicles animation completely removed
+
+---
+
 # [1.10.0] – 2026-01-01
 
 ### Added (MINOR - New Animations + UX Improvements)
@@ -190,7 +251,7 @@ Complete version history for the LED-Garland-Anim project.
 - Web interface: Removed all blocking alert() and confirm() popups
 - Reboot button: Added visual feedback (color change) on first click
 - User experience: Non-blocking confirmations improve workflow
-- Version 1.11.1 (SEMVER - MINOR)
+- Version 1.11.2 (SEMVER - MINOR)
 
 ### Fixed
 - Startup issue: Garland now animates immediately instead of waiting for user interaction
@@ -219,7 +280,7 @@ Complete version history for the LED-Garland-Anim project.
 - Quick access button to OTA update from the dashboard
 
 ### Changed
-- Version 1.11.1 (SEMVER)
+- Version 1.11.2 (SEMVER)
 - User documentation completed with Web OTA instructions (EN/FR)
 - ArduinoOTA kept as alternative method (PlatformIO OTA)
 
@@ -237,7 +298,7 @@ Complete version history for the LED-Garland-Anim project.
 - Documentation and user guides updated (EN/FR)
 
 ### Changed
-- Version 1.11.1 (SEMVER)
+- Version 1.11.2 (SEMVER)
 
 ---
 # [1.2.2] – 2025-12-31
@@ -270,14 +331,14 @@ Complete version history for the LED-Garland-Anim project.
 - Support for obsolete screens and boards (only ESP32 Classic + ST7789 supported)
 
 ---
-# Release Notes – LED-Garland-Anim v1.11.1
+# Release Notes – LED-Garland-Anim v1.11.2
 
 ## [1.2.0] – 2025-12-31
 
 ### Added
 - Automatic detection of motion sensor type (PIR HC-SR501 or RCWL-0516 Doppler radar) on GPIO 35
 - New technical documentation for RCWL-0516 (EN/FR)
-- All user and technical documentation updated for v1.11.1 (EN/FR)
+- All user and technical documentation updated for v1.11.2 (EN/FR)
 
 ### Changed
 - Pin mapping: PIR_SENSOR replaced by MOTION_SENSOR_PIN (GPIO 35)
@@ -296,14 +357,14 @@ Complete version history for the LED-Garland-Anim project.
 ---
 
 See CHANGELOG.md for detailed commit history.
-# Release Notes – LED-Garland-Anim v1.11.1
+# Release Notes – LED-Garland-Anim v1.11.2
 
 ## [1.2.0] – 2025-12-31
 
 ### Added
 - Automatic detection of motion sensor type (PIR HC-SR501 or Doppler radar RCWL-0516) on GPIO 35
 - New technical documentation for RCWL-0516 (EN/FR)
-- All user and technical documentation updated for v1.11.1 (EN/FR)
+- All user and technical documentation updated for v1.11.2 (EN/FR)
 
 ### Changed
 - Pin mapping: PIR_SENSOR replaced by MOTION_SENSOR_PIN (GPIO 35)
@@ -326,13 +387,13 @@ See CHANGELOG.md for detailed commit history.
 
 ### Added
 - Automatic save/restore of user configuration (mode, animation, intervals) using NVS. Settings persist across reboots and power cycles.
-# Release Notes - Version 1.11.1
+# Release Notes - Version 1.11.2
 
 **Release Date:** December 30, 2025
 
 ## 🎉 Major Release: ESP32 IdeaSpark Platform Unification
 
-Version 1.11.1 represents a complete platform modernization, focusing exclusively on the ESP32 IdeaSpark board with integrated 1.14" ST7789 LCD display.
+Version 1.11.2 represents a complete platform modernization, focusing exclusively on the ESP32 IdeaSpark board with integrated 1.14" ST7789 LCD display.
 
 ---
 
@@ -518,10 +579,10 @@ If upgrading from v0.x.x:
 
 ## 🙏 Thank You
 
-Thank you for using LED-Garland-Anim! This v1.11.1 release brings a modern, focused platform with beautiful visual animations.
+Thank you for using LED-Garland-Anim! This v1.11.2 release brings a modern, focused platform with beautiful visual animations.
 
 For issues, questions, or contributions, please visit the project repository.
 
 ---
 
-**LED-Garland-Anim v1.11.1** - Modern LED Garland Controller for ESP32 IdeaSpark 🎄✨
+**LED-Garland-Anim v1.11.2** - Modern LED Garland Controller for ESP32 IdeaSpark 🎄✨
