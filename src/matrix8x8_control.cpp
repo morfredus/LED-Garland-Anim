@@ -1,7 +1,7 @@
 /**
  * @file matrix8x8_control.cpp
  * @brief Implementation of 8x8 NeoPixel matrix control with festive animations
- * @version 1.9.0
+ * @version 1.10.0
  * @date 2026-01-01
  */
 
@@ -72,7 +72,9 @@ static const char* animationNames[] = {
     "Matrix Rain",
     "Spiral",
     "Heart",
-    "Stars Field"
+    "Stars Field",
+    "Campfire",
+    "Radar"
 };
 
 // =============================================================================
@@ -234,16 +236,17 @@ static const uint8_t WREATH_PATTERN[] = {
     0b00111100
 };
 
-// Stocking pattern
+// Stocking pattern - redesigned for better recognition
+// Represents a Christmas stocking hanging with cuff, leg, and foot
 static const uint8_t STOCKING_PATTERN[] = {
-    0b00011000,
-    0b00111100,
-    0b00011000,
-    0b00011000,
-    0b00011000,
-    0b01111110,
-    0b11111111,
-    0b11111111
+    0b00111100,  // Row 0: White cuff top
+    0b00111100,  // Row 1: White cuff
+    0b00111100,  // Row 2: Red leg start
+    0b00111100,  // Row 3: Red leg
+    0b00111100,  // Row 4: Red leg
+    0b01111110,  // Row 5: Red foot starts (wider)
+    0b11111110,  // Row 6: Red foot
+    0b01111100   // Row 7: Red toe (rounded)
 };
 
 // Reindeer pattern
@@ -717,36 +720,68 @@ static void animateWreath() {
 /**
  * @brief Animation: Hanging Stocking
  */
+/**
+ * @brief Animation: Stocking - Completely redesigned Christmas stocking
+ * Displays a red stocking with white cuff and decorative elements
+ */
 static void animateStocking() {
     unsigned long elapsed = millis() - animationStartTime;
-    uint8_t phase = (elapsed / 200) % 6;
+    uint8_t phase = (elapsed / 300) % 8;  // Slower swing
 
     clearMatrix();
 
-    // Slight swing effect
+    // Realistic swing effect (pendulum motion)
     int8_t offset = 0;
-    if (phase == 1 || phase == 2) offset = -1;
-    else if (phase == 4 || phase == 5) offset = 1;
+    if (phase == 1) offset = -1;
+    else if (phase == 2) offset = -1;
+    else if (phase == 6) offset = 1;
+    else if (phase == 7) offset = 1;
 
-    // Draw red stocking
-    for (uint8_t y = 0; y < 8; y++) {
+    // Draw red stocking body
+    for (uint8_t y = 2; y < 8; y++) {  // Start from row 2 (after cuff)
         uint8_t row = STOCKING_PATTERN[y];
         for (uint8_t x = 0; x < 8; x++) {
             if (row & (1 << (7 - x))) {
                 int8_t newX = x + offset;
                 if (newX >= 0 && newX < 8) {
-                    setPixel(newX, y, matrix.Color(255, 0, 0));
+                    setPixel(newX, y, matrix.Color(220, 0, 0));  // Red
                 }
             }
         }
     }
 
-    // White cuff
-    for (int8_t x = 1 + offset; x < 6 + offset; x++) {
-        if (x >= 0 && x < 8) {
-            setPixel(x, 0, matrix.Color(255, 255, 255));
-            setPixel(x, 1, matrix.Color(255, 255, 255));
+    // White cuff at top (rows 0-1)
+    for (uint8_t y = 0; y < 2; y++) {
+        uint8_t row = STOCKING_PATTERN[y];
+        for (uint8_t x = 0; x < 8; x++) {
+            if (row & (1 << (7 - x))) {
+                int8_t newX = x + offset;
+                if (newX >= 0 && newX < 8) {
+                    setPixel(newX, y, matrix.Color(255, 255, 255));  // White cuff
+                }
+            }
         }
+    }
+
+    // Add decorative green stripe on leg
+    for (int8_t x = 2 + offset; x < 6 + offset; x++) {
+        if (x >= 0 && x < 8) {
+            setPixel(x, 3, matrix.Color(0, 180, 0));  // Green stripe
+        }
+    }
+
+    // Add twinkling star/sparkle on stocking (for interest)
+    if (phase % 4 < 2) {
+        int8_t starX = 3 + offset;
+        if (starX >= 0 && starX < 8) {
+            setPixel(starX, 5, matrix.Color(255, 215, 0));  // Gold sparkle
+        }
+    }
+
+    // Optional: Hanging loop/hook at top
+    int8_t hookX = 3 + offset;
+    if (hookX >= 0 && hookX < 8) {
+        setPixel(hookX, 0, matrix.Color(150, 150, 150));  // Gray hook
     }
 
     matrix.show();
@@ -1521,6 +1556,176 @@ static void animateStarsField() {
     }
 }
 
+/**
+ * @brief Animation: Campfire - Realistic fire simulation with heat propagation
+ */
+static void animateCampfire() {
+    static unsigned long lastUpdate = 0;
+    static uint8_t heat[64];  // Heat map for each pixel
+    unsigned long currentMillis = millis();
+
+    if (currentMillis - lastUpdate >= 60) {
+        lastUpdate = currentMillis;
+
+        // Cool down every cell a little
+        for (uint8_t i = 0; i < 64; i++) {
+            uint8_t cooling = random(0, 20);
+            if (heat[i] > cooling) {
+                heat[i] -= cooling;
+            } else {
+                heat[i] = 0;
+            }
+        }
+
+        // Heat from bottom (fire source at bottom rows)
+        for (uint8_t x = 0; x < 8; x++) {
+            // Bottom two rows are the fire source
+            if (random(0, 100) < 70) {
+                heat[56 + x] = random(200, 255);  // Row 7 (bottom)
+            }
+            if (random(0, 100) < 60) {
+                heat[48 + x] = random(180, 240);  // Row 6
+            }
+        }
+
+        // Propagate heat upward with diffusion
+        for (int8_t y = 0; y < 6; y++) {  // Don't process bottom 2 rows
+            for (uint8_t x = 0; x < 8; x++) {
+                uint8_t idx = y * 8 + x;
+                uint8_t below = (y + 1) * 8 + x;
+
+                // Heat rises from pixel below
+                heat[idx] = (heat[idx] + heat[below] * 2) / 3;
+
+                // Diffuse left/right slightly
+                if (x > 0) heat[idx] = (heat[idx] * 3 + heat[idx - 1]) / 4;
+                if (x < 7) heat[idx] = (heat[idx] * 3 + heat[idx + 1]) / 4;
+            }
+        }
+
+        // Convert heat to color (red->orange->yellow->white for hottest)
+        for (uint8_t y = 0; y < 8; y++) {
+            for (uint8_t x = 0; x < 8; x++) {
+                uint8_t h = heat[y * 8 + x];
+                uint32_t color;
+
+                if (h < 85) {
+                    // Dark red to red
+                    color = matrix.Color(h * 3, 0, 0);
+                } else if (h < 170) {
+                    // Red to orange
+                    uint8_t t = (h - 85) * 3;
+                    color = matrix.Color(255, t / 2, 0);
+                } else {
+                    // Orange to yellow/white
+                    uint8_t t = (h - 170) * 3;
+                    color = matrix.Color(255, 200 + t / 4, t / 2);
+                }
+
+                setPixel(x, y, color);
+            }
+        }
+
+        matrix.show();
+    }
+}
+
+/**
+ * @brief Animation: Radar - Military green radar sweep with blips
+ */
+static void animateRadar() {
+    static unsigned long lastUpdate = 0;
+    static float angle = 0;
+    static uint8_t blips[8][2];  // Store blip positions [x, y]
+    static uint8_t blipAge[8];   // Age of each blip
+    static unsigned long lastBlipAdd = 0;
+    unsigned long currentMillis = millis();
+
+    // Update radar sweep
+    if (currentMillis - lastUpdate >= 50) {
+        lastUpdate = currentMillis;
+        angle += 0.2;
+        if (angle >= TWO_PI) angle = 0;
+
+        clearMatrix();
+
+        // Draw radar grid (faint green circles)
+        for (uint8_t r = 1; r <= 3; r++) {
+            for (float a = 0; a < TWO_PI; a += PI / 16) {
+                int8_t x = 3.5 + cos(a) * r;
+                int8_t y = 3.5 + sin(a) * r;
+                if (x >= 0 && x < 8 && y >= 0 && y < 8) {
+                    setPixel(x, y, matrix.Color(0, 20, 0));
+                }
+            }
+        }
+
+        // Draw center point
+        setPixel(3, 3, matrix.Color(0, 100, 0));
+        setPixel(4, 3, matrix.Color(0, 100, 0));
+        setPixel(3, 4, matrix.Color(0, 100, 0));
+        setPixel(4, 4, matrix.Color(0, 100, 0));
+
+        // Draw radar sweep line (bright green)
+        for (float r = 0; r < 4; r += 0.3) {
+            int8_t x = 3.5 + cos(angle) * r;
+            int8_t y = 3.5 + sin(angle) * r;
+            if (x >= 0 && x < 8 && y >= 0 && y < 8) {
+                uint8_t brightness = 255 - (r * 40);
+                setPixel(x, y, matrix.Color(0, brightness, 0));
+            }
+        }
+
+        // Draw fading trail behind sweep
+        for (float trailAngle = angle - 0.5; trailAngle > angle - PI; trailAngle -= 0.15) {
+            float dist = angle - trailAngle;
+            uint8_t brightness = 100 - (dist * 60);
+            if (brightness > 100) brightness = 0;
+
+            for (float r = 1; r < 4; r += 0.5) {
+                int8_t x = 3.5 + cos(trailAngle) * r;
+                int8_t y = 3.5 + sin(trailAngle) * r;
+                if (x >= 0 && x < 8 && y >= 0 && y < 8) {
+                    uint32_t existing = getPixel(x, y);
+                    if ((existing & 0xFF00) >> 8 < brightness) {
+                        setPixel(x, y, matrix.Color(0, brightness, 0));
+                    }
+                }
+            }
+        }
+
+        // Add new blip occasionally
+        if (currentMillis - lastBlipAdd > 2000 && random(0, 100) < 30) {
+            for (uint8_t i = 0; i < 8; i++) {
+                if (blipAge[i] == 0) {
+                    blips[i][0] = random(0, 8);
+                    blips[i][1] = random(0, 8);
+                    blipAge[i] = 255;
+                    lastBlipAdd = currentMillis;
+                    break;
+                }
+            }
+        }
+
+        // Draw and age blips
+        for (uint8_t i = 0; i < 8; i++) {
+            if (blipAge[i] > 0) {
+                // Draw blip as bright dot
+                setPixel(blips[i][0], blips[i][1], matrix.Color(0, blipAge[i], 0));
+
+                // Age the blip (fade out)
+                if (blipAge[i] > 8) {
+                    blipAge[i] -= 8;
+                } else {
+                    blipAge[i] = 0;
+                }
+            }
+        }
+
+        matrix.show();
+    }
+}
+
 // =============================================================================
 // NVS PERSISTENCE
 // =============================================================================
@@ -1736,6 +1941,12 @@ void updateMatrix8x8() {
             break;
         case MATRIX_ANIM_STARS_FIELD:
             animateStarsField();
+            break;
+        case MATRIX_ANIM_CAMPFIRE:
+            animateCampfire();
+            break;
+        case MATRIX_ANIM_RADAR:
+            animateRadar();
             break;
         default:
             break;

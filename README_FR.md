@@ -27,9 +27,9 @@ Vous pouvez choisir la méthode de téléversement (USB ou OTA) à chaque upload
 ---
 # LED-Garland-Anim
 
-**Version : 1.9.0** (2026-01-01)
+**Version : 1.10.0** (2026-01-01)
 
-Contrôleur d'animation de guirlande LED bi-directionnelle et matrice NeoPixel 8x8 pour ESP32 Classic (IdeaSpark/DevKitC) avec écran ST7789, auto-détection PIR/RCWL-0516, interface web modernisée avec boutons radio et layout responsive, boutons physiques, 11 animations de guirlande, 37 animations festives pour matrice (Noël, Nouvel An, Pâques), contrôle double indépendant, modes intelligents, configuration persistante, animations de démarrage automatiques.
+Contrôleur d'animation de guirlande LED bi-directionnelle et matrice NeoPixel 8x8 pour ESP32 Classic (IdeaSpark/DevKitC) avec écran ST7789, auto-détection PIR/RCWL-0516, interface web modernisée avec boutons radio, layout responsive et mises à jour AJAX sans flash, boutons physiques, 11 animations de guirlande, 39 animations festives pour matrice (Noël, Nouvel An, Pâques, Feu de Camp, Radar), contrôle double indépendant, modes intelligents, configuration persistante, animations de démarrage automatiques.
 
 ---
 
@@ -232,7 +232,7 @@ Dans `include/garland_control.h` :
 
 ## 10. Versions
 
-**Version Actuelle : v1.9.0** (2026-01-01)
+**Version Actuelle : v1.10.0** (2026-01-01)
 Voir [CHANGELOG_FR.md](./CHANGELOG_FR.md)
 
 ---

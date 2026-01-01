@@ -1,7 +1,7 @@
 /**
  * @file matrix8x8_control.h
  * @brief Control for 8x8 NeoPixel WS2812B-64 matrix with festive animations
- * @version 1.9.0
+ * @version 1.10.0
  * @date 2026-01-01
  *
  * Module for managing animations on an 8x8 NeoPixel matrix.
@@ -73,6 +73,8 @@ enum Matrix8x8Animation {
     MATRIX_ANIM_SPIRAL,         ///< Rotating spiral
     MATRIX_ANIM_HEART,          ///< Pulsing heart
     MATRIX_ANIM_STARS_FIELD,    ///< Twinkling stars field
+    MATRIX_ANIM_CAMPFIRE,       ///< Realistic campfire with heat propagation
+    MATRIX_ANIM_RADAR,          ///< Military green radar sweep with blips
     MATRIX_ANIM_COUNT           ///< Total number of animations
 };
 

@@ -1,3 +1,53 @@
+# [1.10.0] – 2026-01-01
+
+### Added (MINOR - New Animations + UX Improvements)
+
+**New Matrix Animations:**
+
+- **NEW ANIMATION #1: Campfire**
+  - **Description**: Realistic fire simulation with heat propagation algorithm
+  - **Features**: Heat map with 64 cells, upward heat diffusion, color gradient (red→orange→yellow→white)
+  - **Visual**: Flames rise from bottom rows with organic flickering movement
+  - **File**: `src/matrix8x8_control.cpp:1529-1598`
+
+- **NEW ANIMATION #2: Radar**
+  - **Description**: Military-style green radar sweep with blips
+  - **Features**: Rotating sweep line, fading trail, concentric grid circles, random appearing/fading blips
+  - **Visual**: Classic radar screen with smooth sweep and target detection
+  - **File**: `src/matrix8x8_control.cpp:1603-1694`
+
+- **ANIMATION REDESIGN: Stocking** (Christmas)
+  - **Issue**: Previous design unrecognizable, poor visual clarity
+  - **Solution**: Complete rewrite with clear stocking shape
+  - **New Features**: White cuff, red body with green decorative stripe, gold sparkle, hanging hook, realistic pendulum swing
+  - **Visual**: Now clearly identifiable as Christmas stocking with festive colors
+  - **Files**: `src/matrix8x8_control.cpp:240-250` (pattern), `727-788` (function)
+
+### Changed
+
+- **Web UI: No More Page Reloads (CRITICAL UX FIX)**
+  - **Issue**: Page reload caused white flash and jarring user experience
+  - **Solution**: Removed all `location.reload()` calls, implemented AJAX updates
+  - **New Functions**: `updateCurrentAnimation()`, `updateCurrentMode()`, `updateCurrentMatrix()`
+  - **Result**: Smooth, flash-free UI updates when changing animations/modes
+  - **Files**: `include/web_pages.h:201-241`
+
+### Technical
+
+- **Total Animations**: 37 → 39 (Campfire + Radar added)
+- **Animation Enum**: Updated `Matrix8x8Animation` enum with `MATRIX_ANIM_CAMPFIRE` and `MATRIX_ANIM_RADAR`
+- **Animation Names**: Added "Campfire" and "Radar" to `animationNames[]` array
+- **Switch Cases**: Added handlers in `updateMatrix8x8()` function
+- **DOM Updates**: JavaScript now updates UI elements dynamically without full page refresh
+- **Visual Feedback**: Radio button selections update instantly with CSS class changes
+
+### Version
+
+- **SEMVER Classification**: MINOR (1.10.0) - New animations + significant UX improvements, no breaking changes
+- **All Files Updated**: Updated version string in all headers, source files, and platformio.ini
+
+---
+
 # [1.9.0] – 2026-01-01
 
 ### Changed (MINOR - UI Improvements)
