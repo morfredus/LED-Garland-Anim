@@ -27,7 +27,7 @@ Vous pouvez choisir la méthode de téléversement (USB ou OTA) à chaque upload
 ---
 # LED-Garland-Anim
 
-**Version : 1.5.3** (2025-12-31)
+**Version : 1.5.3** (2026-01-01)
 
 Contrôleur d'animation de guirlande LED bi-directionnelle et matrice NeoPixel 8x8 pour ESP32 Classic (IdeaSpark/DevKitC) avec écran ST7789, auto-détection PIR/RCWL-0516, interface web avec contrôles dédiés, boutons physiques, 11 animations de guirlande, 10 animations festives pour matrice, contrôle double indépendant, modes intelligents, configuration persistante, animations de démarrage automatiques.
 
@@ -66,8 +66,13 @@ BTN2     → GPIO 17
 ## 2. Fonctionnalités principales
 
 - **Double contrôle LED** : Guirlande LED 2 fils + matrice NeoPixel 8x8 avec contrôle indépendant
-- **21 animations au total** : 11 pour la guirlande + 10 animations festives pour la matrice 8x8
-- **Animations festives pour matrice** : Étoile, Météore, Étoile filante, Père Noël, Sapin, Cloche, Neige, Cadeau, Bougie, Flocon
+- **48 animations au total** : 11 pour la guirlande + 37 animations festives pour la matrice 8x8
+- **37 animations pour matrice** organisées par thème :
+  - **Originales (10)** : Étoile, Météore, Étoile filante, Père Noël, Sapin, Cloche, Neige, Cadeau, Bougie, Flocon
+  - **Noël (10)** : Canne à sucre, Couronne, Chaussette, Renne, Pain d'épices, Chocolat chaud, Cheminée, Glaçons, Aurore boréale, Cadeaux
+  - **Nouvel An (7)** : Feux d'artifice, Champagne, Compte à rebours, Confettis, Horloge, Cotillon, Boule disco
+  - **Pâques (4)** : Œuf de Pâques, Lapin, Poussin, Fleurs
+  - **Moderne/Abstrait (6)** : Vague arc-en-ciel, Pluie scintillante, Plasma, Pluie matricielle, Spirale, Cœur, Champ d'étoiles
 - **Contrôle de luminosité de la matrice** : Ajustement indépendant (0-255) pour la matrice
 - **Animation de démarrage** : Animation d'étoile scintillante sur la matrice au démarrage
 - 2 modes de fonctionnement intelligents (Permanent, Détection Mouvement)
@@ -227,7 +232,7 @@ Dans `include/garland_control.h` :
 
 ## 10. Versions
 
-**Version Actuelle : v1.5.3** (2025-12-31)
+**Version Actuelle : v1.5.3** (2026-01-01)
 Voir [CHANGELOG_FR.md](./CHANGELOG_FR.md)
 
 ---

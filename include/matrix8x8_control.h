@@ -1,11 +1,11 @@
 /**
  * @file matrix8x8_control.h
  * @brief Control for 8x8 NeoPixel WS2812B-64 matrix with festive animations
- * @version 1.6.0
+ * @version 1.7.0
  * @date 2026-01-01
  *
  * Module for managing animations on an 8x8 NeoPixel matrix.
- * Features festive holiday-themed animations including star, meteor, Christmas tree, etc.
+ * Features 30 festive holiday-themed animations for Christmas, New Year, and Easter.
  */
 
 #ifndef MATRIX8X8_CONTROL_H
@@ -30,6 +30,7 @@
  */
 enum Matrix8x8Animation {
     MATRIX_ANIM_OFF = 0,        ///< Matrix off
+    // Original animations
     MATRIX_ANIM_STAR,           ///< Twinkling star
     MATRIX_ANIM_METEOR,         ///< Meteor shower
     MATRIX_ANIM_SHOOTING_STAR,  ///< Shooting star
@@ -40,6 +41,38 @@ enum Matrix8x8Animation {
     MATRIX_ANIM_GIFT,           ///< Gift box
     MATRIX_ANIM_CANDLE,         ///< Flickering candle
     MATRIX_ANIM_SNOWFLAKE,      ///< Rotating snowflake
+    // Christmas animations
+    MATRIX_ANIM_CANDY_CANE,     ///< Candy cane with rotating stripes
+    MATRIX_ANIM_WREATH,         ///< Christmas wreath with bow
+    MATRIX_ANIM_STOCKING,       ///< Hanging stockings
+    MATRIX_ANIM_REINDEER,       ///< Reindeer silhouette
+    MATRIX_ANIM_GINGERBREAD,    ///< Gingerbread man
+    MATRIX_ANIM_HOT_COCOA,      ///< Steaming hot cocoa
+    MATRIX_ANIM_FIREPLACE,      ///< Flickering fireplace
+    MATRIX_ANIM_ICICLES,        ///< Hanging icicles
+    MATRIX_ANIM_NORTHERN_LIGHTS,///< Aurora borealis effect
+    MATRIX_ANIM_PRESENTS,       ///< Stack of presents
+    // New Year animations
+    MATRIX_ANIM_FIREWORKS,      ///< Fireworks bursts
+    MATRIX_ANIM_CHAMPAGNE,      ///< Rising champagne bubbles
+    MATRIX_ANIM_COUNTDOWN,      ///< Countdown 3-2-1
+    MATRIX_ANIM_CONFETTI,       ///< Falling confetti
+    MATRIX_ANIM_CLOCK,          ///< Midnight clock
+    MATRIX_ANIM_PARTY_POPPER,   ///< Party popper explosion
+    MATRIX_ANIM_DISCO_BALL,     ///< Rotating disco ball
+    // Easter animations
+    MATRIX_ANIM_EASTER_EGG,     ///< Decorated Easter egg
+    MATRIX_ANIM_BUNNY,          ///< Hopping bunny
+    MATRIX_ANIM_CHICK,          ///< Hatching chick
+    MATRIX_ANIM_FLOWERS,        ///< Spring flowers blooming
+    // Abstract/Modern animations
+    MATRIX_ANIM_RAINBOW_WAVE,   ///< Rainbow wave
+    MATRIX_ANIM_SPARKLE_RAIN,   ///< Sparkling rain
+    MATRIX_ANIM_PLASMA,         ///< Plasma effect
+    MATRIX_ANIM_MATRIX_RAIN,    ///< Digital matrix rain
+    MATRIX_ANIM_SPIRAL,         ///< Rotating spiral
+    MATRIX_ANIM_HEART,          ///< Pulsing heart
+    MATRIX_ANIM_STARS_FIELD,    ///< Twinkling stars field
     MATRIX_ANIM_COUNT           ///< Total number of animations
 };
 

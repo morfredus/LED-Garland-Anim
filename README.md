@@ -28,9 +28,9 @@ pio run -e esp32s3_n16r8 -t upload
 ---
 # LED-Garland-Anim
 
-**Version: 1.6.0** (2026-01-01)
+**Version: 1.7.0** (2026-01-01)
 
-Controller for bi-directional LED garland and 8x8 NeoPixel matrix animation on ESP32 Classic (IdeaSpark/DevKitC) with ST7789 display, auto-detection of PIR/RCWL-0516, web interface with inline confirmations, web-based OTA updates, physical buttons, 11 garland animations, 10 festive matrix animations, dual independent control, smart modes, persistent configuration, automatic startup animations.
+Controller for bi-directional LED garland and 8x8 NeoPixel matrix animation on ESP32 Classic (IdeaSpark/DevKitC) with ST7789 display, auto-detection of PIR/RCWL-0516, web interface with inline confirmations, web-based OTA updates, physical buttons, 11 garland animations, 37 festive matrix animations (Christmas, New Year, Easter), dual independent control, smart modes, persistent configuration, automatic startup animations.
 
 ---
 
@@ -67,8 +67,13 @@ BTN2     → GPIO 17
 ## 2. Key Features
 
 - **Dual LED Control**: 2-wire LED garland + 8x8 NeoPixel matrix with independent control
-- **21 Total Animations**: 11 for garland + 10 festive animations for 8x8 matrix
-- **Festive Matrix Animations**: Star, Meteor, Shooting Star, Santa, Christmas Tree, Bell, Falling Snow, Gift Box, Candle, Snowflake
+- **48 Total Animations**: 11 for garland + 37 festive animations for 8x8 matrix
+- **37 Matrix Animations** organized by theme:
+  - **Original (10)**: Star, Meteor, Shooting Star, Santa, Tree, Bell, Snow, Gift, Candle, Snowflake
+  - **Christmas (10)**: Candy Cane, Wreath, Stocking, Reindeer, Gingerbread, Hot Cocoa, Fireplace, Icicles, Northern Lights, Presents
+  - **New Year (7)**: Fireworks, Champagne, Countdown, Confetti, Clock, Party Popper, Disco Ball
+  - **Easter (4)**: Easter Egg, Bunny, Chick, Flowers
+  - **Modern/Abstract (6)**: Rainbow Wave, Sparkle Rain, Plasma, Matrix Rain, Spiral, Heart, Stars Field
 - **Matrix Brightness Control**: Independent brightness adjustment (0-255) for the matrix
 - **Startup Animation**: Sparkling star animation on matrix at boot
 - 2 smart operating modes (Permanent, Motion Trigger)
