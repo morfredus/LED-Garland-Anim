@@ -1,3 +1,53 @@
+# [1.8.1] – 2026-01-01
+
+### Corrections (PATCH - Corrections de Bugs Uniquement)
+
+**7 Corrections de Bugs Numérotées :**
+
+- **BUGFIX #1 : Animation Matrix Rain**
+  - **Problème** : Lignes LED du bas invisibles à cause d'un fade trop agressif
+  - **Correction** : Réduit l'intensité du fade de 220 à 245 pour préserver les lignes inférieures
+  - **Fichier** : `src/matrix8x8_control.cpp:1401`
+
+- **BUGFIX #2 : Animation Clock**
+  - **Problème** : Aiguille d'horloge tournant dans le mauvais sens (sens antihoraire)
+  - **Correction** : Inversé la direction de rotation en négatif l'angle : `cos(-angle - PI/2)`
+  - **Fichier** : `src/matrix8x8_control.cpp:1097`
+
+- **BUGFIX #3 : Animation Countdown**
+  - **Problème** : Chiffres 3, 2, 1 illisibles sur matrice 8x8
+  - **Correction** : Redessiné complètement les trois chiffres avec des motifs plus clairs et plus grands
+  - **Fichier** : `src/matrix8x8_control.cpp:1004`
+
+- **BUGFIX #4 : Animation Icicles**
+  - **Problème** : Animation incomplète - seulement 4 glaçons, effet de goutte faible
+  - **Correction** : Ajouté les 8 glaçons avec longueurs variables + gouttes d'eau animées
+  - **Fichier** : `src/matrix8x8_control.cpp:854`
+
+- **BUGFIX #5 : Animation Candle**
+  - **Problème** : Base trop étroite (2px), flamme trop large (4px), proportions irréalistes
+  - **Correction** : Base élargie à 4 pixels (x=2-5), flamme rétrécie à 2 pixels scintillants (x=3-4)
+  - **Fichier** : `src/matrix8x8_control.cpp:595`
+
+- **BUGFIX #6 : Animation Bell**
+  - **Problème** : Toute la cloche se déforme/bouge, pas réaliste
+  - **Correction** : Cloche reste fixe, seul le balancier (battant) oscille à l'intérieur
+  - **Fichier** : `src/matrix8x8_control.cpp:501`
+
+- **BUGFIX #7 : Layout Interface Web**
+  - **Problème** : Messages inline déplacent boutons/listes quand ils apparaissent
+  - **Correction** : Espace réservé avec `visibility:hidden` + `min-height:44px` au lieu de `display:none`
+  - **Fichiers** : `include/web_pages.h:60,121,136,188,206,220`
+
+### Modifications
+- **Numéro de version** : Incrémenté à 1.8.1 (SEMVER - PATCH : corrections de bugs uniquement)
+
+### Technique
+- Améliorations d'animations ciblant meilleure reconnaissance visuelle sur contraintes 8x8
+- Interface web maintient désormais layout stable empêchant déplacements d'éléments
+- Toutes corrections maintiennent compatibilité ascendante
+
+---
 # [1.8.0] – 2026-01-01
 
 ### Ajouts

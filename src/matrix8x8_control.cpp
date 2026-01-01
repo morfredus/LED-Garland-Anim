@@ -1,7 +1,7 @@
 /**
  * @file matrix8x8_control.cpp
  * @brief Implementation of 8x8 NeoPixel matrix control with festive animations
- * @version 1.8.0
+ * @version 1.8.1
  * @date 2026-01-01
  */
 
@@ -498,6 +498,7 @@ static void animateTree() {
 
 /**
  * @brief Animation: Ringing bell
+ * @note BUGFIX #6 (v1.8.1): Bell stays fixed, only clapper moves
  */
 static void animateBell() {
     unsigned long elapsed = millis() - animationStartTime;
@@ -505,23 +506,26 @@ static void animateBell() {
 
     clearMatrix();
 
-    // Draw bell with swing effect (slight offset)
-    int8_t offset = 0;
-    if (phase == 1) offset = -1;
-    else if (phase == 3) offset = 1;
-
+    // Draw bell (fixed, no offset)
     uint32_t goldColor = matrix.Color(255, 200, 0);
 
     for (uint8_t y = 0; y < 8; y++) {
         uint8_t row = BELL_PATTERN[y];
         for (uint8_t x = 0; x < 8; x++) {
             if (row & (1 << (7 - x))) {
-                int8_t newX = x + offset;
-                if (newX >= 0 && newX < 8) {
-                    setPixel(newX, y, goldColor);
-                }
+                setPixel(x, y, goldColor);
             }
         }
+    }
+
+    // Draw moving clapper (pendulum) inside bell
+    int8_t clapperX = 4;  // Center x position
+    if (phase == 1) clapperX = 3;  // Swing left
+    else if (phase == 3) clapperX = 5;  // Swing right
+
+    // Clapper at bottom of bell (y=6)
+    if (clapperX >= 0 && clapperX < 8) {
+        setPixel(clapperX, 6, matrix.Color(150, 150, 150));  // Gray clapper
     }
 
     matrix.show();
@@ -592,27 +596,27 @@ static void animateGift() {
 
 /**
  * @brief Animation: Flickering candle
+ * @note BUGFIX #5 (v1.8.1): Wider base (4px), narrower flickering flame (2px)
  */
 static void animateCandle() {
     unsigned long elapsed = millis() - animationStartTime;
 
     clearMatrix();
 
-    // Candle body (white)
+    // Candle body (white) - 4 pixels wide (x=2 to x=5)
     for (uint8_t y = 3; y < 8; y++) {
-        for (uint8_t x = 3; x < 5; x++) {
+        for (uint8_t x = 2; x < 6; x++) {
             setPixel(x, y, matrix.Color(200, 200, 150));
         }
     }
 
-    // Flickering flame
+    // Flickering flame - 2 pixels wide (x=3 to x=4)
     uint8_t flicker = random(180, 255);
     uint8_t flameHeight = random(2, 4);
 
     for (uint8_t y = 0; y < flameHeight; y++) {
-        for (uint8_t x = 2; x < 6; x++) {
+        for (uint8_t x = 3; x < 5; x++) {  // 2 pixels wide
             uint8_t brightness = flicker - (y * 50);
-            if (y == 0 && (x == 2 || x == 5)) continue;  // Flame shape
             setPixel(x, 2 - y, matrix.Color(brightness, brightness / 2, 0));
         }
     }
@@ -850,24 +854,31 @@ static void animateFireplace() {
 /**
  * @brief Animation: Hanging Icicles
  */
+/**
+ * @note BUGFIX #4 (v1.8.1): Completed animation with all icicles and proper dripping
+ */
 static void animateIcicles() {
     unsigned long elapsed = millis() - animationStartTime;
-    uint8_t phase = (elapsed / 100) % 8;
+    uint8_t dripPhase = (elapsed / 200) % 16;
 
     clearMatrix();
 
-    // Draw icicles hanging from top
-    for (uint8_t x = 0; x < 8; x += 2) {
-        uint8_t length = 3 + (x % 3);
-        for (uint8_t y = 0; y < length; y++) {
-            uint8_t brightness = 200 - y * 30;
+    // Draw all icicles hanging from top (every column for fuller effect)
+    for (uint8_t x = 0; x < 8; x++) {
+        uint8_t length = 3 + ((x + elapsed / 1000) % 3);  // Vary lengths slowly
+        for (uint8_t y = 0; y < length && y < 8; y++) {
+            uint8_t brightness = 200 - y * 25;
             setPixel(x, y, matrix.Color(brightness, brightness, 255));
         }
     }
 
-    // Dripping effect
-    if (phase < 6) {
-        setPixel(phase, 5, matrix.Color(150, 150, 255));
+    // Animated dripping effect - water drops falling
+    if (dripPhase < 8) {
+        uint8_t dropX = (elapsed / 2000) % 8;  // Which icicle drips
+        uint8_t dropY = dripPhase;
+        if (dropY < 7) {
+            setPixel(dropX, dropY, matrix.Color(100, 100, 255));
+        }
     }
 
     matrix.show();
@@ -1001,42 +1012,47 @@ static void animateChampagne() {
 
 /**
  * @brief Animation: Countdown 3-2-1
+ * @note BUGFIX #3 (v1.8.1): Redrawn readable digits for 8x8 matrix
  */
 static void animateCountdown() {
     unsigned long elapsed = millis() - animationStartTime;
     uint8_t number = 3 - ((elapsed / 1000) % 4);
 
     clearMatrix();
+    uint32_t color = matrix.Color(255, 255, 0);
 
     if (number == 3) {
-        // Draw "3"
-        for (uint8_t y = 0; y < 7; y++) {
-            setPixel(2, y, matrix.Color(255, 255, 0));
-            setPixel(5, y, matrix.Color(255, 255, 0));
-        }
-        setPixel(3, 0, matrix.Color(255, 255, 0));
-        setPixel(4, 0, matrix.Color(255, 255, 0));
-        setPixel(3, 3, matrix.Color(255, 255, 0));
-        setPixel(4, 3, matrix.Color(255, 255, 0));
-        setPixel(3, 6, matrix.Color(255, 255, 0));
-        setPixel(4, 6, matrix.Color(255, 255, 0));
+        // Draw "3" - cleaner design
+        // Top horizontal
+        setPixel(2, 1, color); setPixel(3, 1, color); setPixel(4, 1, color);
+        // Right vertical
+        setPixel(5, 1, color); setPixel(5, 2, color); setPixel(5, 3, color);
+        setPixel(5, 4, color); setPixel(5, 5, color); setPixel(5, 6, color);
+        // Middle horizontal
+        setPixel(3, 3, color); setPixel(4, 3, color);
+        // Bottom horizontal
+        setPixel(2, 6, color); setPixel(3, 6, color); setPixel(4, 6, color);
     } else if (number == 2) {
-        // Draw "2"
-        for (uint8_t x = 2; x <= 5; x++) {
-            setPixel(x, 0, matrix.Color(255, 255, 0));
-            setPixel(x, 3, matrix.Color(255, 255, 0));
-            setPixel(x, 6, matrix.Color(255, 255, 0));
-        }
-        setPixel(5, 1, matrix.Color(255, 255, 0));
-        setPixel(5, 2, matrix.Color(255, 255, 0));
-        setPixel(2, 4, matrix.Color(255, 255, 0));
-        setPixel(2, 5, matrix.Color(255, 255, 0));
+        // Draw "2" - clearer design
+        // Top horizontal
+        setPixel(2, 1, color); setPixel(3, 1, color); setPixel(4, 1, color); setPixel(5, 1, color);
+        // Top right
+        setPixel(5, 2, color);
+        // Middle horizontal
+        setPixel(2, 3, color); setPixel(3, 3, color); setPixel(4, 3, color); setPixel(5, 3, color);
+        // Bottom left
+        setPixel(2, 4, color); setPixel(2, 5, color);
+        // Bottom horizontal
+        setPixel(2, 6, color); setPixel(3, 6, color); setPixel(4, 6, color); setPixel(5, 6, color);
     } else if (number == 1) {
-        // Draw "1"
-        for (uint8_t y = 0; y < 7; y++) {
-            setPixel(4, y, matrix.Color(255, 255, 0));
-        }
-        setPixel(3, 1, matrix.Color(255, 255, 0));
+        // Draw "1" - clearer design
+        // Top diagonal
+        setPixel(3, 2, color);
+        // Vertical line
+        setPixel(4, 1, color); setPixel(4, 2, color); setPixel(4, 3, color);
+        setPixel(4, 4, color); setPixel(4, 5, color);
+        // Bottom horizontal
+        setPixel(2, 6, color); setPixel(3, 6, color); setPixel(4, 6, color); setPixel(5, 6, color);
     } else {
         // Explosion!
         for (uint8_t x = 0; x < 8; x++) {
@@ -1094,6 +1110,7 @@ static void animateConfetti() {
 
 /**
  * @brief Animation: Clock at midnight
+ * @note BUGFIX #2 (v1.8.1): Reversed rotation direction (clockwise now)
  */
 static void animateClock() {
     unsigned long elapsed = millis() - animationStartTime;
@@ -1111,9 +1128,9 @@ static void animateClock() {
         }
     }
 
-    // Clock hand
-    int8_t hx = 3.5 + cos(angle - PI/2) * 2.5;
-    int8_t hy = 3.5 + sin(angle - PI/2) * 2.5;
+    // Clock hand (reversed rotation: -angle instead of +angle)
+    int8_t hx = 3.5 + cos(-angle - PI/2) * 2.5;
+    int8_t hy = 3.5 + sin(-angle - PI/2) * 2.5;
     setPixel(3, 3, matrix.Color(255, 0, 0));
     setPixel(4, 4, matrix.Color(255, 0, 0));
     if (hx >= 0 && hx < 8 && hy >= 0 && hy < 8) {
@@ -1397,9 +1414,8 @@ static void animatePlasma() {
 
 /**
  * @brief Animation: Matrix Digital Rain
- */
-/**
  * @note FIX #7: Changed from modulo timing to threshold-based timing
+ * @note BUGFIX #1 (v1.8.1): Reduced fade intensity to keep bottom rows visible (220→245)
  */
 static void animateMatrixRain() {
     static unsigned long lastUpdate = 0;
@@ -1425,9 +1441,9 @@ static void animateMatrixRain() {
             }
         }
 
-        // Fade existing pixels
+        // Fade existing pixels (reduced fade to keep bottom rows visible)
         for (uint8_t i = 0; i < 64; i++) {
-            matrix.setPixelColor(i, dimColor(matrix.getPixelColor(i), 220));
+            matrix.setPixelColor(i, dimColor(matrix.getPixelColor(i), 245));
         }
 
         matrix.show();
