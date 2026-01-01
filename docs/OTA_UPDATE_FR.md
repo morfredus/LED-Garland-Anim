@@ -12,7 +12,7 @@ Ce guide explique comment mettre à jour le firmware LED-Garland-Anim via WiFi e
 
 ---
 
-## Méthode 1 : Mise à jour OTA via interface web (v1.11.2+) ⭐
+## Méthode 1 : Mise à jour OTA via interface web (v1.11.3+) ⭐
 
 **La méthode la plus simple et recommandée !**
 
@@ -119,12 +119,12 @@ OTA est activé par défaut et ne nécessite pas de mot de passe. Pour les envir
 
 ## Historique des versions
 
-- **v1.11.2** : Ajout de la confirmation par double-clic pour les mises à jour OTA
-- **v1.11.2** : Ajout de l'interface de mise à jour OTA via web
-- **v1.11.2** : Ajout du support ArduinoOTA
+- **v1.11.3** : Ajout de la confirmation par double-clic pour les mises à jour OTA
+- **v1.11.3** : Ajout de l'interface de mise à jour OTA via web
+- **v1.11.3** : Ajout du support ArduinoOTA
 
 ---
 
 Pour plus de détails sur ArduinoOTA, voir la [documentation officielle ArduinoOTA](https://github.com/esp8266/Arduino/blob/master/doc/ota_updates/ota_updates.md).
 
-**Version du document : v1.11.2 (2025-12-31)**
+**Version du document : v1.11.3 (2025-12-31)**

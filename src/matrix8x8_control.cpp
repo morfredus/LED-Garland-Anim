@@ -1,7 +1,7 @@
 /**
  * @file matrix8x8_control.cpp
  * @brief Implementation of 8x8 NeoPixel matrix control with festive animations
- * @version 1.11.2
+ * @version 1.11.3
  * @date 2026-01-01
  */
 
@@ -1209,65 +1209,69 @@ static void animateConfetti() {
 }
 
 /**
- * @brief Animation: Clock - Analog clock with hour markers and smooth second hand
+ * @brief Animation: Clock - Clean analog clock with smooth second hand
+ * Redesigned: Simpler, cleaner, more readable
  */
 static void animateClock() {
     unsigned long elapsed = millis() - animationStartTime;
-    // One full rotation every 60 seconds (real-time second hand)
-    float angle = (elapsed % 60000) / 60000.0 * TWO_PI;
+    // One full rotation every 60 seconds
+    float angle = (elapsed % 60000) / 60000.0 * TWO_PI - PI/2;  // Start at 12 o'clock
 
     clearMatrix();
 
-    // Center point (clock axis)
-    setPixel(3, 3, matrix.Color(200, 200, 200));
-    setPixel(4, 3, matrix.Color(200, 200, 200));
-    setPixel(3, 4, matrix.Color(200, 200, 200));
-    setPixel(4, 4, matrix.Color(200, 200, 200));
+    // Draw clock face outline (circle)
+    // Top row
+    setPixel(2, 0, matrix.Color(80, 80, 120));
+    setPixel(3, 0, matrix.Color(100, 100, 150));
+    setPixel(4, 0, matrix.Color(100, 100, 150));
+    setPixel(5, 0, matrix.Color(80, 80, 120));
 
-    // Draw clock circle with hour markers
-    // 12 positions around the clock
-    for (uint8_t i = 0; i < 12; i++) {
-        float a = i * PI / 6.0 - PI/2;  // -PI/2 to start at 12 o'clock
-        float radius = 3.0;
-        int8_t x = 3.5 + cos(a) * radius;
-        int8_t y = 3.5 + sin(a) * radius;
+    // Second row
+    setPixel(1, 1, matrix.Color(80, 80, 120));
+    setPixel(6, 1, matrix.Color(80, 80, 120));
 
-        if (x >= 0 && x < 8 && y >= 0 && y < 8) {
-            // Main hour markers (12, 3, 6, 9) are brighter
-            if (i % 3 == 0) {
-                setPixel(x, y, matrix.Color(255, 255, 255));  // Bright white for cardinal hours
-            } else {
-                setPixel(x, y, matrix.Color(100, 100, 100));  // Dim gray for other hours
-            }
-        }
-    }
+    // Middle rows
+    setPixel(0, 2, matrix.Color(80, 80, 120));
+    setPixel(7, 2, matrix.Color(80, 80, 120));
+    setPixel(0, 3, matrix.Color(100, 100, 150));
+    setPixel(7, 3, matrix.Color(100, 100, 150));
+    setPixel(0, 4, matrix.Color(100, 100, 150));
+    setPixel(7, 4, matrix.Color(100, 100, 150));
+    setPixel(0, 5, matrix.Color(80, 80, 120));
+    setPixel(7, 5, matrix.Color(80, 80, 120));
 
-    // Draw second hand (clockwise rotation)
-    // angle = 0 at top (12 o'clock), increases clockwise
-    float handAngle = angle - PI/2;  // Adjust so 0 is at top
+    // Bottom rows
+    setPixel(1, 6, matrix.Color(80, 80, 120));
+    setPixel(6, 6, matrix.Color(80, 80, 120));
 
-    // Draw hand from center to edge
-    for (float r = 0.5; r <= 2.8; r += 0.4) {
-        int8_t hx = 3.5 + cos(handAngle) * r;
-        int8_t hy = 3.5 + sin(handAngle) * r;
+    setPixel(2, 7, matrix.Color(80, 80, 120));
+    setPixel(3, 7, matrix.Color(100, 100, 150));
+    setPixel(4, 7, matrix.Color(100, 100, 150));
+    setPixel(5, 7, matrix.Color(80, 80, 120));
+
+    // Draw 4 main hour markers (12, 3, 6, 9) in gold
+    setPixel(3, 1, matrix.Color(255, 200, 0));  // 12 o'clock (top)
+    setPixel(4, 1, matrix.Color(255, 200, 0));
+    setPixel(6, 3, matrix.Color(255, 200, 0));  // 3 o'clock (right)
+    setPixel(6, 4, matrix.Color(255, 200, 0));
+    setPixel(3, 6, matrix.Color(255, 200, 0));  // 6 o'clock (bottom)
+    setPixel(4, 6, matrix.Color(255, 200, 0));
+    setPixel(1, 3, matrix.Color(255, 200, 0));  // 9 o'clock (left)
+    setPixel(1, 4, matrix.Color(255, 200, 0));
+
+    // Center point (small, elegant)
+    setPixel(3, 3, matrix.Color(150, 150, 200));
+    setPixel(4, 3, matrix.Color(150, 150, 200));
+    setPixel(3, 4, matrix.Color(150, 150, 200));
+    setPixel(4, 4, matrix.Color(150, 150, 200));
+
+    // Draw second hand (red, smooth)
+    for (float r = 0.8; r <= 2.5; r += 0.5) {
+        int8_t hx = 3.5 + cos(angle) * r;
+        int8_t hy = 3.5 + sin(angle) * r;
 
         if (hx >= 0 && hx < 8 && hy >= 0 && hy < 8) {
-            // Check if hand is near an hour marker (change color)
-            bool nearMarker = false;
-            for (uint8_t i = 0; i < 12; i++) {
-                float markerAngle = i * PI / 6.0;
-                float angleDiff = abs(angle - markerAngle);
-                if (angleDiff < 0.3 || angleDiff > (TWO_PI - 0.3)) {
-                    nearMarker = true;
-                    break;
-                }
-            }
-
-            if (nearMarker) {
-                setPixel(hx, hy, matrix.Color(255, 0, 0));  // Red when passing hour
-            } else {
-                setPixel(hx, hy, matrix.Color(255, 100, 0));  // Orange normally
-            }
+            setPixel(hx, hy, matrix.Color(255, 50, 50));  // Bright red hand
         }
     }
 
@@ -1581,36 +1585,56 @@ static void animatePlasma() {
 
 /**
  * @brief Animation: Matrix Digital Rain
- * @note FIX #7: Changed from modulo timing to threshold-based timing
- * @note BUGFIX #1 (v1.8.1): Reduced fade intensity to keep bottom rows visible (220→245)
+ * Redesigned: Full height usage with multiple independent falling streams
  */
 static void animateMatrixRain() {
     static unsigned long lastUpdate = 0;
+    static uint8_t streamPos[8] = {0, 2, 4, 6, 1, 3, 5, 7};  // Staggered start positions
+    static uint8_t streamSpeed[8];  // Different speeds for each column
+    static bool initialized = false;
+
     unsigned long currentMillis = millis();
 
-    if (currentMillis - lastUpdate >= 150) {
+    if (!initialized) {
+        for (uint8_t i = 0; i < 8; i++) {
+            streamSpeed[i] = random(1, 4);  // Random speed 1-3
+        }
+        initialized = true;
+    }
+
+    if (currentMillis - lastUpdate >= 100) {
         lastUpdate = currentMillis;
 
-        // Move everything down
-        for (int8_t y = 7; y > 0; y--) {
-            for (uint8_t x = 0; x < 8; x++) {
-                setPixel(x, y, getPixel(x, y - 1));
-            }
-        }
+        clearMatrix();
 
-        // Add new characters at top
+        // Draw each column as an independent stream
         for (uint8_t x = 0; x < 8; x++) {
-            if (random(0, 100) > 70) {
-                uint8_t brightness = random(100, 255);
-                setPixel(x, 0, matrix.Color(0, brightness, 0));
-            } else {
-                setPixel(x, 0, 0);
+            // Move stream down
+            streamPos[x] += streamSpeed[x];
+            if (streamPos[x] >= 16) {  // Reset when off screen
+                streamPos[x] = 0;
+                streamSpeed[x] = random(1, 4);
             }
-        }
 
-        // Fade existing pixels (reduced fade to keep bottom rows visible)
-        for (uint8_t i = 0; i < 64; i++) {
-            matrix.setPixelColor(i, dimColor(matrix.getPixelColor(i), 245));
+            // Draw trailing characters with fade
+            for (uint8_t i = 0; i < 8; i++) {
+                int16_t y = streamPos[x] - i;
+                if (y >= 0 && y < 8) {
+                    uint8_t brightness;
+                    if (i == 0) {
+                        brightness = 255;  // Bright head
+                    } else if (i == 1) {
+                        brightness = 200;
+                    } else if (i == 2) {
+                        brightness = 150;
+                    } else if (i == 3) {
+                        brightness = 100;
+                    } else {
+                        brightness = max(0, 80 - i * 15);  // Fading tail
+                    }
+                    setPixel(x, y, matrix.Color(0, brightness, 0));
+                }
+            }
         }
 
         matrix.show();
