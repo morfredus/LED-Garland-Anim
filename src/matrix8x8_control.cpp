@@ -1686,6 +1686,9 @@ void setMatrix8x8Animation(Matrix8x8Animation animation) {
         matrix8x8Off();
     } else {
         matrixEnabled = true;
+        // Force immediate display of first frame
+        clearMatrix();
+        matrix.show();
     }
 
     LOG_PRINTF("Matrix animation changed: %s\n", animationNames[animation]);
