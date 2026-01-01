@@ -1,3 +1,60 @@
+# [1.9.0] – 2026-01-01
+
+### Modifications (MINOR - Améliorations Interface)
+
+**Modernisation de l'Interface Web :**
+
+- **AMÉLIORATION #1 : Boutons Radio Remplacent Listes Déroulantes**
+  - **Quoi** : Remplacement de toutes les listes déroulantes par des grilles de boutons radio pour meilleure UX
+  - **Concerné** : Animations matrice (37 options), Modes guirlande (3 options), Animations guirlande (11 options)
+  - **Bénéfice** : Vue d'ensemble immédiate de toutes les options, pas besoin d'ouvrir les listes
+  - **Fichiers** : `include/web_pages.h:62-89,91-110,145-159`, `include/web_styles.h:39-47`
+
+- **AMÉLIORATION #2 : Layout Responsive 2 Colonnes**
+  - **Quoi** : Boutons radio affichés sur 2 colonnes (écrans larges), 1 colonne (écrans étroits)
+  - **Point de rupture** : 600px de largeur (responsive mobile-first)
+  - **CSS** : `.radio-grid { grid-template-columns: repeat(2, 1fr); }` avec media query
+  - **Fichiers** : `include/web_styles.h:39-40`
+
+- **AMÉLIORATION #3 : Sélection Instantanée (Plus de Boutons "Appliquer")**
+  - **Quoi** : Suppression de tous les boutons "Appliquer" - sélections appliquées immédiatement via événements `onchange`
+  - **Bénéfice** : Moins de clics, interaction plus rapide, sensation d'application web moderne
+  - **Technique** : Fonctions JavaScript acceptent maintenant paramètre ID directement du bouton radio
+  - **Fichiers** : `include/web_pages.h:201-220`
+
+- **AMÉLIORATION #4 : Retour Visuel Amélioré**
+  - **Quoi** : Options radio sélectionnées surlignées avec fond et bordure verts
+  - **CSS** : `.radio-item.selected { background:#e8f5e9; border-color:#43a047; }`
+  - **Effet survol** : Options radio surlignées au survol pour meilleure interactivité
+  - **Fichiers** : `include/web_styles.h:41-46`
+
+- **AMÉLIORATION #5 : Timing Messages de Validation**
+  - **Quoi** : Réduction du temps d'affichage des messages de 3s à 2,5s pour UI plus réactive
+  - **Fichiers** : `include/web_pages.h:199,215`
+
+### Corrections
+
+- **BUGFIX #8 : 3ème Mode Manquant dans Interface Web**
+  - **Problème** : `MODE_MOTION_MATRIX_INDEPENDENT` (3ème mode) n'apparaissait pas dans la liste, ligne restait blanche
+  - **Correction** : Ajout du case manquant : `case MODE_MOTION_MATRIX_INDEPENDENT: modeName = "Détection (guirlande)";`
+  - **Fichier** : `include/web_pages.h:99`
+
+### Technique
+
+- **Ajouts CSS** : 8 nouvelles classes CSS pour style boutons radio et grille responsive
+- **Structure HTML** : Remplacement `<select>` + `<option>` par `<div class='radio-grid'>` + inputs radio
+- **Modifications JavaScript** : Fonctions acceptent maintenant paramètre valeur au lieu de lire depuis élément select
+- **Design Compact** : UI reste visuellement compacte malgré ajout de 51 boutons radio au total
+- **Accessibilité** : Labels correctement associés aux inputs radio via attribut `for`
+- **Optimisé Mobile** : Layout une colonne empêche défilement horizontal sur petits écrans
+
+### Version
+
+- **Classification SEMVER** : MINOR (1.9.0) - Nouvelles fonctionnalités et améliorations UI, pas de changements incompatibles
+- **Tous Fichiers Mis à Jour** : Chaîne de version mise à jour dans 13 fichiers (headers, source, platformio.ini)
+
+---
+
 # [1.8.1] – 2026-01-01
 
 ### Corrections (PATCH - Corrections de Bugs Uniquement)
