@@ -75,7 +75,7 @@ BTN2     → GPIO 17
   - **Moderne/Abstrait (6)** : Vague arc-en-ciel, Pluie scintillante, Plasma, Pluie matricielle, Spirale, Cœur, Champ d'étoiles
 - **Contrôle de luminosité de la matrice** : Ajustement indépendant (0-255) pour la matrice
 - **Animation de démarrage** : Animation d'étoile scintillante sur la matrice au démarrage
-- 2 modes de fonctionnement intelligents (Permanent, Détection Mouvement)
+- **3 Modes de Fonctionnement Intelligents** : Permanent (tout allumé), Détection (tout suit mouvement), Détection Indépendante (guirlande suit mouvement, matrice toujours allumée)
 - Auto-détection PIR HC-SR501 ou RCWL-0516
 - Affichage couleur ST7789 (optionnel, intégré sur IdeaSpark)
 - Interface web complète avec contrôles pour la matrice

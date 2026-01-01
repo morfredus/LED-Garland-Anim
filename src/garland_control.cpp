@@ -1,7 +1,7 @@
 /**
  * @file garland_control.cpp
  * @brief Implémentation du contrôle des animations de guirlande
- * @version 1.7.0
+ * @version 1.8.0
  * @date 2026-01-01
  */
 
@@ -60,7 +60,8 @@ static const char* animationNames[] = {
 
 static const char* modeNames[] = {
     "Permanent",
-    "Detection"
+    "Detection (tout)",
+    "Detection (guirlande)"
 };
 
 // =============================================================================
@@ -488,6 +489,7 @@ void updateGarland() {
             break;
 
         case MODE_MOTION_TRIGGER:
+        case MODE_MOTION_MATRIX_INDEPENDENT:
             // Détecter seulement les fronts montants (nouveau mouvement)
             bool currentMotionState = isMotionDetected();
             if (currentMotionState && !lastMotionState) {
@@ -505,8 +507,10 @@ void updateGarland() {
             static unsigned long lastLogTime = 0;
             if (millis() - lastLogTime > 5000) {
                 lastLogTime = millis();
-                LOG_PRINTF("Mode Détection: %s (temps écoulé: %lu ms / %lu ms)\n",
-                    shouldBeOn ? "ON" : "OFF", elapsed, motionTriggerDurationMs);
+                const char* modeDesc = (currentMode == MODE_MOTION_TRIGGER) ?
+                    "Detection (tout)" : "Detection (guirlande)";
+                LOG_PRINTF("Mode %s: Guirlande %s (temps écoulé: %lu ms / %lu ms)\n",
+                    modeDesc, shouldBeOn ? "ON" : "OFF", elapsed, motionTriggerDurationMs);
             }
             break;
     }
@@ -720,4 +724,8 @@ int getLightLevel() {
 
 bool isAnimationActive() {
     return (currentAnimation != ANIM_OFF) && garlandEnabled;
+}
+
+bool isGarlandEnabled() {
+    return garlandEnabled;
 }
