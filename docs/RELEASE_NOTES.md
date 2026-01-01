@@ -1,3 +1,127 @@
+# Release Notes - LED-Garland-Anim
+
+Complete version history for the LED-Garland-Anim project.
+
+---
+
+# [1.10.0] – 2026-01-01
+
+### Added (MINOR - New Animations + UX Improvements)
+
+**New Matrix Animations:**
+- **Campfire**: Realistic fire simulation with heat propagation algorithm (64-cell heat map, upward/lateral diffusion, red→orange→yellow→white gradient)
+- **Radar**: Military-style green radar sweep with blips (rotating sweep line, fading trail, concentric grid, random target blips)
+
+**Animation Redesign:**
+- **Stocking (Christmas)**: Completely redrawn for better recognition
+  - Clear stocking shape with white cuff, red body, green stripe, gold sparkle
+  - Realistic pendulum swing animation
+  - Now easily identifiable as Christmas stocking
+
+### Changed
+
+- **Web UI: No More Page Reloads (CRITICAL UX FIX)**
+  - Removed all `location.reload()` calls - no more white flash
+  - Implemented AJAX-only updates for smooth transitions
+  - New functions: `updateCurrentAnimation()`, `updateCurrentMode()`, `updateCurrentMatrix()`
+  - Instant visual feedback without page refresh
+
+### Technical
+- Total Animations: 37 → 39 (Campfire + Radar)
+- Updated enum, animation names array, switch cases
+- JavaScript DOM updates without page reload
+- Radio button CSS classes update instantly
+
+---
+
+# [1.9.0] – 2026-01-01
+
+### Changed (MINOR - UI Improvements)
+
+**Web Interface Modernization:**
+- **Radio Buttons Replace Dropdowns**: All selections now use radio button grids (Matrix: 37, Modes: 3, Garland: 11)
+- **Responsive 2-Column Layout**: 2 columns on wide screens, 1 column on narrow (<600px)
+- **Instant Selection**: Removed all "Apply" buttons - changes apply immediately via `onchange` events
+- **Enhanced Visual Feedback**: Selected items highlighted with green background/border, hover effects
+- **Faster Messages**: Reduced display time from 3s to 2.5s
+
+### Fixed
+- **BUGFIX #8**: Missing 3rd mode (MODE_MOTION_MATRIX_INDEPENDENT) now displays correctly in web UI
+
+### Technical
+- 8 new CSS classes for radio buttons and responsive grid
+- Replaced `<select>` with `<div class='radio-grid'>` + radio inputs
+- JavaScript functions accept ID parameter directly
+- Compact UI despite 51 total radio buttons
+- Mobile-optimized single-column layout
+
+---
+
+# [1.8.1] – 2026-01-01
+
+### Fixed (PATCH - Bug Fixes Only)
+
+**7 Numbered Bug Fixes:**
+- **BUGFIX #1**: Matrix Rain - Reduced fade (220→245) to keep bottom rows visible
+- **BUGFIX #2**: Clock - Reversed rotation direction (now clockwise)
+- **BUGFIX #3**: Countdown - Redrawn digits 3, 2, 1 for better clarity
+- **BUGFIX #4**: Icicles - Added all 8 icicles with animated water drops
+- **BUGFIX #5**: Candle - Base widened to 4px, flame narrowed to 2px with flicker
+- **BUGFIX #6**: Bell - Bell stays fixed, only clapper swings
+- **BUGFIX #7**: Web UI Layout - Reserved space with `visibility:hidden` prevents button displacement
+
+---
+
+# [1.8.0] – 2026-01-01
+
+### Added
+- **New Mode**: MODE_MOTION_MATRIX_INDEPENDENT (garland motion-triggered, matrix always on)
+- **Matrix Synchronization**: Matrix follows garland state in MODE_MOTION_TRIGGER
+- **Enhanced Mode Labels**: "Permanent", "Detection (tout)", "Detection (guirlande)"
+
+### Fixed (CRITICAL)
+- **GPIO Pin Mapping**: Restored matrix GPIO from 13 back to 32 (correct pin)
+- **Animation Timing Bugs**: Fixed 8 animations using broken `elapsed % N == 0` timing
+  - Affected: Meteor, Shooting Star, Snow, Champagne, Confetti, Sparkle Rain, Matrix Rain, Stars Field
+  - Solution: Threshold-based timing with static `lastUpdate` variables
+
+---
+
+# [1.7.0] – 2026-01-01
+
+### Added
+
+**27 New Matrix Animations** (total: 37)
+
+**Christmas (10):**
+- Candy Cane, Wreath, Stocking, Reindeer, Gingerbread Man
+- Hot Cocoa, Fireplace, Icicles, Northern Lights, Presents Stack
+
+**New Year (7):**
+- Fireworks, Champagne Bubbles, Countdown 3-2-1, Confetti
+- Clock, Party Popper, Disco Ball
+
+**Easter (4):**
+- Easter Egg, Hopping Bunny, Hatching Chick, Spring Flowers
+
+**Modern/Abstract (6):**
+- Rainbow Wave, Sparkle Rain, Plasma Effect, Matrix Digital Rain
+- Rotating Spiral, Pulsing Heart, Twinkling Stars Field
+
+---
+
+# [1.6.0] – 2026-01-01
+
+### Added
+- **8x8 NeoPixel Matrix Support**: WS2812B-64 matrix on GPIO 32
+- **10 Matrix Animations**: Star, Meteor, Shooting Star, Santa, Tree, Bell, Snow, Gift, Candle, Snowflake
+- **Dual Independent Control**: Garland and matrix operate independently
+- **Matrix Settings**: Animation selection, brightness control (0-255)
+- **NVS Persistence**: Matrix settings saved/restored automatically
+- **Web UI Integration**: Matrix controls added to dashboard
+
+---
+
 # [1.5.3] – 2025-12-31
 
 ### Changed
@@ -66,7 +190,7 @@
 - Web interface: Removed all blocking alert() and confirm() popups
 - Reboot button: Added visual feedback (color change) on first click
 - User experience: Non-blocking confirmations improve workflow
-- Version number incremented to 1.5.0 (SEMVER - MINOR)
+- Version 1.10.0 (SEMVER - MINOR)
 
 ### Fixed
 - Startup issue: Garland now animates immediately instead of waiting for user interaction
@@ -95,7 +219,7 @@
 - Quick access button to OTA update from the dashboard
 
 ### Changed
-- Version number incremented to 1.4.0 (SEMVER)
+- Version 1.10.0 (SEMVER)
 - User documentation completed with Web OTA instructions (EN/FR)
 - ArduinoOTA kept as alternative method (PlatformIO OTA)
 
@@ -113,7 +237,7 @@
 - Documentation and user guides updated (EN/FR)
 
 ### Changed
-- Version number incremented to 1.3.0 (SEMVER)
+- Version 1.10.0 (SEMVER)
 
 ---
 # [1.2.2] – 2025-12-31
@@ -146,14 +270,14 @@
 - Support for obsolete screens and boards (only ESP32 Classic + ST7789 supported)
 
 ---
-# Release Notes – LED-Garland-Anim v1.2.0
+# Release Notes – LED-Garland-Anim v1.10.0
 
 ## [1.2.0] – 2025-12-31
 
 ### Added
 - Automatic detection of motion sensor type (PIR HC-SR501 or RCWL-0516 Doppler radar) on GPIO 35
 - New technical documentation for RCWL-0516 (EN/FR)
-- All user and technical documentation updated for v1.2.0 (EN/FR)
+- All user and technical documentation updated for v1.10.0 (EN/FR)
 
 ### Changed
 - Pin mapping: PIR_SENSOR replaced by MOTION_SENSOR_PIN (GPIO 35)
@@ -172,14 +296,14 @@
 ---
 
 See CHANGELOG.md for detailed commit history.
-# Release Notes – LED-Garland-Anim v1.2.0
+# Release Notes – LED-Garland-Anim v1.10.0
 
 ## [1.2.0] – 2025-12-31
 
 ### Added
 - Automatic detection of motion sensor type (PIR HC-SR501 or Doppler radar RCWL-0516) on GPIO 35
 - New technical documentation for RCWL-0516 (EN/FR)
-- All user and technical documentation updated for v1.2.0 (EN/FR)
+- All user and technical documentation updated for v1.10.0 (EN/FR)
 
 ### Changed
 - Pin mapping: PIR_SENSOR replaced by MOTION_SENSOR_PIN (GPIO 35)
@@ -202,13 +326,13 @@ See CHANGELOG.md for detailed commit history.
 
 ### Added
 - Automatic save/restore of user configuration (mode, animation, intervals) using NVS. Settings persist across reboots and power cycles.
-# Release Notes - Version 1.1.0
+# Release Notes - Version 1.10.0
 
 **Release Date:** December 30, 2025
 
 ## 🎉 Major Release: ESP32 IdeaSpark Platform Unification
 
-Version 1.0.0 represents a complete platform modernization, focusing exclusively on the ESP32 IdeaSpark board with integrated 1.14" ST7789 LCD display.
+Version 1.10.0 represents a complete platform modernization, focusing exclusively on the ESP32 IdeaSpark board with integrated 1.14" ST7789 LCD display.
 
 ---
 
@@ -394,10 +518,10 @@ If upgrading from v0.x.x:
 
 ## 🙏 Thank You
 
-Thank you for using LED-Garland-Anim! This v1.0.0 release brings a modern, focused platform with beautiful visual animations.
+Thank you for using LED-Garland-Anim! This v1.10.0 release brings a modern, focused platform with beautiful visual animations.
 
 For issues, questions, or contributions, please visit the project repository.
 
 ---
 
-**LED-Garland-Anim v1.0.0** - Modern LED Garland Controller for ESP32 IdeaSpark 🎄✨
+**LED-Garland-Anim v1.10.0** - Modern LED Garland Controller for ESP32 IdeaSpark 🎄✨
