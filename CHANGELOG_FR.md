@@ -1,3 +1,27 @@
+# [1.11.1] – 2026-01-01
+
+### Corrections (PATCH - Synchronisation)
+
+**Synchronisation Intervalle Mode Auto Matrice**
+- **Problème** : Le mode auto matrice utilisait un intervalle fixe de 30 secondes, non synchronisé avec le mode auto guirlande
+- **Solution** : La matrice utilise maintenant `getAutoAnimationIntervalMs()` du contrôle guirlande
+- **Résultat** : Les modes auto guirlande et matrice partagent le même intervalle, configurable via l'interface web
+- **Bénéfice** : Un seul contrôle UI ajuste la durée d'animation pour la guirlande ET la matrice simultanément
+- **Fichiers** : `src/matrix8x8_control.cpp:21,1967-1983`
+
+### Technique
+
+- Suppression de la variable séparée `autoModeInterval` du contrôle matrice
+- Le mode auto matrice appelle `getAutoAnimationIntervalMs()` pour obtenir l'intervalle partagé
+- Intervalle par défaut : 30 secondes (configurable de 5s à 5 minutes via l'interface web)
+- La sortie log affiche maintenant l'intervalle actuel lors du changement d'animations
+
+### Version
+
+- **Classification SEMVER** : PATCH (1.11.1) - Correction de bug, synchronisation améliorée, pas de nouvelles fonctionnalités
+
+---
+
 # [1.11.0] – 2026-01-01
 
 ### Ajouts (MINOR - Nouvelles Fonctionnalités + Améliorations Majeures)
