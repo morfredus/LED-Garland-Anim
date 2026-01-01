@@ -1,3 +1,38 @@
+# [1.8.0] – 2026-01-01
+
+### Added
+- **New Garland Mode**: `MODE_MOTION_MATRIX_INDEPENDENT` - Garland is triggered by motion detection while matrix stays always on
+- **Matrix Synchronization**: Matrix now follows garland state in `MODE_MOTION_TRIGGER` mode (turns off/on together)
+- **Enhanced Mode Labels**: Clearer mode names - "Permanent", "Detection (tout)", "Detection (guirlande)"
+- **Matrix-Garland Coordination**: Matrix behavior now respects garland operating mode for better user control
+
+### Fixed
+- **CRITICAL: GPIO Pin Mapping**: Restored 8x8 matrix GPIO from 13 back to **32** (correct pin for hardware compatibility)
+- **CRITICAL: Animation Timing Bugs**: Fixed 8 animations using broken `elapsed % N == 0` timing that prevented display
+  - Fixed animations: Meteor, Shooting Star, Snow, Champagne, Confetti, Sparkle Rain, Matrix Rain, Stars Field
+  - Replaced with reliable threshold-based timing using static `lastUpdate` variables
+  - Animations now update every cycle regardless of loop timing variations
+- **Web Handler Logging**: Added comprehensive debug logging to matrix API handlers for better troubleshooting
+
+### Changed
+- **Version number**: Incremented to 1.8.0 (SEMVER - MINOR: new features + critical bug fixes)
+- **Mode Behavior**: `MODE_PERMANENT` - both always on | `MODE_MOTION_TRIGGER` - both follow motion | `MODE_MOTION_MATRIX_INDEPENDENT` - only garland follows motion
+- **Code Organization**: Matrix control now includes garland state awareness via `isGarlandEnabled()`
+
+### Technical
+- Added `MODE_MOTION_MATRIX_INDEPENDENT` to `GarlandMode` enum
+- New function: `isGarlandEnabled()` exposes garland state to matrix controller
+- Modified `updateMatrix8x8()` to check garland mode and state before updating
+- Enhanced `updateGarland()` with better mode-specific logging
+- Fixed timing pattern: `if (currentMillis - lastUpdate >= interval)` replaces `if (elapsed % interval == 0)`
+- Added `#include "garland_control.h"` to `matrix8x8_control.cpp` for mode access
+
+### Documentation
+- Updated all FR/EN documentation with new mode descriptions
+- Documented motion detection behavior for both garland and matrix
+- Added technical notes on GPIO pin requirements and timing fixes
+
+---
 # [1.7.0] – 2026-01-01
 
 ### Added

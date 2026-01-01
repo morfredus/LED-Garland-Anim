@@ -1,3 +1,38 @@
+# [1.8.0] – 2026-01-01
+
+### Ajouts
+- **Nouveau Mode Guirlande**: `MODE_MOTION_MATRIX_INDEPENDENT` - La guirlande est déclenchée par détection de mouvement tandis que la matrice reste toujours allumée
+- **Synchronisation Matrice**: La matrice suit maintenant l'état de la guirlande en mode `MODE_MOTION_TRIGGER` (s'éteint/s'allume ensemble)
+- **Libellés de Mode Améliorés**: Noms de modes plus clairs - "Permanent", "Détection (tout)", "Détection (guirlande)"
+- **Coordination Matrice-Guirlande**: Le comportement de la matrice respecte maintenant le mode de fonctionnement de la guirlande
+
+### Corrections
+- **CRITIQUE: Mapping GPIO**: Restauration du GPIO de la matrice 8x8 de 13 vers **32** (pin correct pour compatibilité matérielle)
+- **CRITIQUE: Bugs de Timing d'Animation**: Correction de 8 animations utilisant le timing défectueux `elapsed % N == 0` empêchant l'affichage
+  - Animations corrigées : Meteor, Shooting Star, Snow, Champagne, Confetti, Sparkle Rain, Matrix Rain, Stars Field
+  - Remplacé par un timing fiable basé sur seuil avec variables statiques `lastUpdate`
+  - Les animations se mettent maintenant à jour à chaque cycle indépendamment des variations de timing de la boucle
+- **Logging Web Handlers**: Ajout de logs de débogage complets aux gestionnaires d'API de la matrice
+
+### Modifications
+- **Numéro de version**: Incrémenté à 1.8.0 (SEMVER - MINOR : nouvelles fonctionnalités + corrections de bugs critiques)
+- **Comportement des Modes**: `MODE_PERMANENT` - tout toujours allumé | `MODE_MOTION_TRIGGER` - tout suit détection | `MODE_MOTION_MATRIX_INDEPENDENT` - seule guirlande suit détection
+- **Organisation du Code**: Le contrôle de la matrice inclut maintenant la conscience de l'état de la guirlande via `isGarlandEnabled()`
+
+### Technique
+- Ajout de `MODE_MOTION_MATRIX_INDEPENDENT` à l'enum `GarlandMode`
+- Nouvelle fonction : `isGarlandEnabled()` expose l'état de la guirlande au contrôleur de matrice
+- Modification de `updateMatrix8x8()` pour vérifier le mode et l'état de la guirlande avant mise à jour
+- Amélioration de `updateGarland()` avec meilleur logging spécifique au mode
+- Correction du pattern de timing : `if (currentMillis - lastUpdate >= interval)` remplace `if (elapsed % interval == 0)`
+- Ajout de `#include "garland_control.h"` à `matrix8x8_control.cpp` pour accès au mode
+
+### Documentation
+- Mise à jour de toute la documentation FR/EN avec descriptions des nouveaux modes
+- Documentation du comportement de détection de mouvement pour guirlande et matrice
+- Ajout de notes techniques sur exigences GPIO et corrections de timing
+
+---
 # [1.7.0] – 2026-01-01
 
 ### Ajouté
