@@ -1,3 +1,53 @@
+# [1.10.0] – 2026-01-01
+
+### Ajouts (MINOR - Nouvelles Animations + Améliorations UX)
+
+**Nouvelles Animations Matrice :**
+
+- **NOUVELLE ANIMATION #1 : Feu de Camp**
+  - **Description** : Simulation réaliste de feu avec algorithme de propagation de chaleur
+  - **Fonctionnalités** : Carte thermique 64 cellules, diffusion de chaleur vers le haut, gradient de couleur (rouge→orange→jaune→blanc)
+  - **Visuel** : Flammes s'élevant depuis les rangées inférieures avec mouvement organique scintillant
+  - **Fichier** : `src/matrix8x8_control.cpp:1529-1598`
+
+- **NOUVELLE ANIMATION #2 : Radar**
+  - **Description** : Balayage radar militaire vert avec cibles
+  - **Fonctionnalités** : Ligne de balayage rotative, traînée estompée, cercles concentriques, apparition/disparition aléatoire de cibles
+  - **Visuel** : Écran radar classique avec balayage fluide et détection de cibles
+  - **Fichier** : `src/matrix8x8_control.cpp:1603-1694`
+
+- **REFONTE ANIMATION : Chaussette** (Noël)
+  - **Problème** : Ancien design méconnaissable, clarté visuelle insuffisante
+  - **Solution** : Réécriture complète avec forme claire de chaussette
+  - **Nouvelles Fonctionnalités** : Bord blanc, corps rouge avec bande décorative verte, étoile dorée scintillante, crochet de suspension, balancement pendulaire réaliste
+  - **Visuel** : Désormais clairement identifiable comme chaussette de Noël avec couleurs festives
+  - **Fichiers** : `src/matrix8x8_control.cpp:240-250` (pattern), `727-788` (fonction)
+
+### Modifications
+
+- **Interface Web : Plus de Rechargement de Page (CORRECTION UX CRITIQUE)**
+  - **Problème** : Le rechargement de page provoquait un flash blanc et une expérience utilisateur désagréable
+  - **Solution** : Suppression de tous les appels `location.reload()`, implémentation de mises à jour AJAX
+  - **Nouvelles Fonctions** : `updateCurrentAnimation()`, `updateCurrentMode()`, `updateCurrentMatrix()`
+  - **Résultat** : Mises à jour UI fluides sans flash lors du changement d'animations/modes
+  - **Fichiers** : `include/web_pages.h:201-241`
+
+### Technique
+
+- **Total Animations** : 37 → 39 (Feu de Camp + Radar ajoutés)
+- **Enum Animations** : Mise à jour `Matrix8x8Animation` enum avec `MATRIX_ANIM_CAMPFIRE` et `MATRIX_ANIM_RADAR`
+- **Noms Animations** : Ajout de "Campfire" et "Radar" au tableau `animationNames[]`
+- **Switch Cases** : Ajout des gestionnaires dans la fonction `updateMatrix8x8()`
+- **Mises à Jour DOM** : JavaScript met maintenant à jour les éléments UI dynamiquement sans rafraîchissement complet
+- **Retour Visuel** : Sélections de boutons radio mises à jour instantanément avec changements de classes CSS
+
+### Version
+
+- **Classification SEMVER** : MINOR (1.10.0) - Nouvelles animations + améliorations UX significatives, pas de changements incompatibles
+- **Tous Fichiers Mis à Jour** : Chaîne de version mise à jour dans tous les headers, fichiers source, et platformio.ini
+
+---
+
 # [1.9.0] – 2026-01-01
 
 ### Modifications (MINOR - Améliorations Interface)
