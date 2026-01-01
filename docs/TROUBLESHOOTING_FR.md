@@ -12,7 +12,7 @@
 - Effacer la flash et reprogrammer le firmware
 - Vérifier les messages d’erreur sur la console série
 - Si le problème persiste, ouvrir un ticket avec les logs
-# Dépannage - LED-Garland-Anim v1.11.0
+# Dépannage - LED-Garland-Anim v1.11.1
 
 Guide rapide pour diagnostiquer les problèmes sur ESP32 IdeaSpark.
 
@@ -53,4 +53,4 @@ Si détection permanente, éloigner le capteur des sources de chaleur/soleil (PI
 
 ---
 
-**Version du document : v1.11.0 (2025-12-31)**
+**Version du document : v1.11.1 (2025-12-31)**

@@ -1,7 +1,7 @@
 /**
  * @file matrix8x8_control.cpp
  * @brief Implementation of 8x8 NeoPixel matrix control with festive animations
- * @version 1.11.0
+ * @version 1.11.1
  * @date 2026-01-01
  */
 
@@ -18,7 +18,7 @@ static Matrix8x8Animation currentAnimation = MATRIX_ANIM_STAR;  // Selected anim
 static Matrix8x8Animation activeAnimation = MATRIX_ANIM_STAR;   // Currently executing animation
 static unsigned long animationStartTime = 0;
 static unsigned long autoModeChangeTime = 0;  // Track last auto mode change
-static unsigned long autoModeInterval = 30000;  // 30 seconds per animation in auto mode
+// NOTE: Auto mode interval is shared with garland - uses getAutoAnimationIntervalMs()
 static uint8_t matrixBrightness = 128;  // Default brightness (50%)
 static bool matrixEnabled = true;
 static bool autoModeActive = false;  // Flag to track if auto mode is active
@@ -1965,9 +1965,11 @@ void updateMatrix8x8() {
     }
 
     // Auto mode: cycle through animations (excluding OFF and AUTO)
+    // Uses the same interval as garland auto mode (configurable via web UI)
     if (autoModeActive) {
         unsigned long elapsed = millis() - autoModeChangeTime;
-        if (elapsed > autoModeInterval) {
+        unsigned long interval = getAutoAnimationIntervalMs();  // Shared with garland
+        if (elapsed > interval) {
             // Move to next animation
             uint8_t nextAnim = (uint8_t)activeAnimation + 1;
             // Skip OFF (0) and AUTO (last), cycle from STAR (1) to RADAR (last-1)
@@ -1977,7 +1979,7 @@ void updateMatrix8x8() {
             activeAnimation = (Matrix8x8Animation)nextAnim;
             animationStartTime = millis();
             autoModeChangeTime = millis();
-            LOG_PRINTF("Auto Mode: Switched to %s\n", animationNames[activeAnimation]);
+            LOG_PRINTF("Auto Mode: Switched to %s (interval: %lu ms)\n", animationNames[activeAnimation], interval);
         }
     }
 

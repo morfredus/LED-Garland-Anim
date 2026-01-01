@@ -1,3 +1,27 @@
+# [1.11.1] – 2026-01-01
+
+### Fixed (PATCH - Synchronization)
+
+**Matrix Auto Mode Interval Synchronization**
+- **Issue**: Matrix auto mode used fixed 30-second interval, not synchronized with garland auto mode
+- **Solution**: Matrix now uses `getAutoAnimationIntervalMs()` from garland control
+- **Result**: Both garland and matrix auto modes now share the same interval, configurable via web UI
+- **Benefit**: Single UI control adjusts animation duration for both garland and matrix simultaneously
+- **Files**: `src/matrix8x8_control.cpp:21,1967-1983`
+
+### Technical
+
+- Removed separate `autoModeInterval` variable from matrix control
+- Matrix auto mode now calls `getAutoAnimationIntervalMs()` to get shared interval
+- Default interval: 30 seconds (configurable from 5s to 5 minutes via web UI)
+- Log output now displays current interval when switching animations
+
+### Version
+
+- **SEMVER Classification**: PATCH (1.11.1) - Bug fix, improved synchronization, no new features
+
+---
+
 # [1.11.0] – 2026-01-01
 
 ### Added (MINOR - New Features + Major Animation Improvements)
