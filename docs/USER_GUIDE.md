@@ -1,8 +1,8 @@
-# User Guide - LED-Garland-Anim v1.11.0
+# User Guide - LED-Garland-Anim v1.11.1
 
 Complete user guide for the LED-Garland-Anim LED garland and 8x8 matrix animation controller (ESP32 IdeaSpark + ST7789).
 
-**Document version: v1.11.0 (2026-01-01)**
+**Document version: v1.11.1 (2026-01-01)**
 
 ---
 
@@ -56,11 +56,11 @@ Example: `192.168.1.100`
 
 ## Web Interface
 
-### Modern UI Features (v1.11.0+)
+### Modern UI Features (v1.11.1+)
 - **Radio Button Grids**: All selections use intuitive radio buttons (no dropdowns)
 - **Responsive Layout**: 2 columns on desktop, 1 column on mobile (<600px)
 - **Instant Updates**: No "Apply" buttons - changes apply immediately
-- **Flash-Free Experience**: No page reloads when changing animations/modes (v1.11.0)
+- **Flash-Free Experience**: No page reloads when changing animations/modes (v1.11.1)
 - **Visual Feedback**: Selected items highlighted in green, inline confirmation messages
 
 ### Access
@@ -182,13 +182,13 @@ The system offers 3 operating modes:
 - **Bell**: Ringing bell animation
 - **Snow**: Falling snowflakes
 - **Gift**: Wrapped gift box
-- **Candle**: Flickering candle flame (redesigned in v1.11.0)
+- **Candle**: Flickering candle flame (redesigned in v1.11.1)
 - **Snowflake**: Rotating snowflake pattern
 
 #### Christmas Animations (10)
 - **Candy Cane**: Rotating red/white striped candy cane
 - **Wreath**: Christmas wreath with bow
-- **Stocking**: Hanging Christmas stocking (redesigned in v1.11.0)
+- **Stocking**: Hanging Christmas stocking (redesigned in v1.11.1)
 - **Reindeer**: Reindeer silhouette with blinking nose
 - **Gingerbread**: Gingerbread man with smile
 - **Hot Cocoa**: Steaming mug of hot chocolate
@@ -200,9 +200,9 @@ The system offers 3 operating modes:
 #### New Year Animations (7)
 - **Fireworks**: Colorful firework bursts
 - **Champagne**: Rising bubbles in champagne glass
-- **Countdown**: 3-2-1 countdown display (redesigned in v1.11.0)
+- **Countdown**: 3-2-1 countdown display (redesigned in v1.11.1)
 - **Confetti**: Falling colorful confetti
-- **Clock**: Analog clock face with moving hands (fixed in v1.11.0)
+- **Clock**: Analog clock face with moving hands (fixed in v1.11.1)
 - **Party Popper**: Exploding party popper
 - **Disco Ball**: Rotating disco ball with reflections
 
@@ -214,14 +214,14 @@ The system offers 3 operating modes:
 
 #### Modern/Abstract Animations (7)
 - **Rainbow Wave**: Flowing rainbow wave pattern
-- **Sparkle Rain**: Falling sparkles (fixed in v1.11.0)
+- **Sparkle Rain**: Falling sparkles (fixed in v1.11.1)
 - **Plasma**: Colorful plasma effect
-- **Matrix Rain**: Digital Matrix-style falling characters (fixed in v1.11.0)
+- **Matrix Rain**: Digital Matrix-style falling characters (fixed in v1.11.1)
 - **Spiral**: Rotating spiral pattern
 - **Heart**: Pulsing heart shape
 - **Stars Field**: Twinkling starfield
-- **Campfire**: Realistic fire simulation (NEW in v1.11.0)
-- **Radar**: Military green radar sweep (NEW in v1.11.0)
+- **Campfire**: Realistic fire simulation (NEW in v1.11.1)
+- **Radar**: Military green radar sweep (NEW in v1.11.1)
 
 ### Matrix Brightness Control
 - **Range**: 0-255
@@ -250,7 +250,7 @@ The system offers 3 operating modes:
 - **Angle**: 360 degrees (omnidirectional)
 - **Advantage**: Works through walls/glass
 
-### Auto-Detection Feature (v1.11.0+)
+### Auto-Detection Feature (v1.11.1+)
 The firmware automatically detects which sensor type is connected:
 1. Reads initial state on startup
 2. Determines sensor type (PIR or Radar)
@@ -365,4 +365,4 @@ For detailed troubleshooting, see [TROUBLESHOOTING.md](TROUBLESHOOTING.md)
 ---
 
 **End of User Guide**
-**Version: v1.11.0 (2026-01-01)**
+**Version: v1.11.1 (2026-01-01)**
