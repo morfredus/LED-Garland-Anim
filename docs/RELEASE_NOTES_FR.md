@@ -4,6 +4,24 @@ Historique complet des versions du projet LED-Garland-Anim.
 
 ---
 
+# [1.11.3] – 2026-01-01
+
+### Corrections (PATCH - Améliorations Qualité des Animations)
+
+**Animation Matrix Rain (Pluie Matrix)**
+- Correction de l'animation n'utilisant que les 2 premières lignes au lieu de l'affichage 8x8 complet
+- Refonte complète avec flux de chute indépendants par colonne
+- Chaque colonne a une vitesse différente et des positions de départ échelonnées
+- Dégradé de luminosité approprié créant un effet Matrix réaliste
+
+**Animation Horloge**
+- Redessinée pour remplacer le design brouillon et encombré par un design propre et élégant
+- Cadran circulaire en teinte bleue avec marqueurs d'heures dorés à 12, 3, 6, 9
+- Aiguille des secondes rouge fluide avec rotation de 60 secondes
+- Beaucoup plus lisible et visuellement attrayante
+
+---
+
 # [1.11.2] – 2026-01-01
 
 ### Corrections (PATCH - Correction Système de Coordonnées)
@@ -185,4 +203,4 @@ Historique complet des versions du projet LED-Garland-Anim.
 
 **Voir CHANGELOG_FR.md pour l'historique détaillé des commits.**
 
-**LED-Garland-Anim v1.11.2** - Contrôleur moderne de guirlande LED pour ESP32 IdeaSpark 🎄✨
+**LED-Garland-Anim v1.11.3** - Contrôleur moderne de guirlande LED pour ESP32 IdeaSpark 🎄✨
