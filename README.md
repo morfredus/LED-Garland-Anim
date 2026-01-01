@@ -28,9 +28,9 @@ pio run -e esp32s3_n16r8 -t upload
 ---
 # LED-Garland-Anim
 
-**Version: 1.5.3** (2025-12-31)
+**Version: 1.6.0** (2026-01-01)
 
-Controller for bi-directional LED garland animation on ESP32 Classic (IdeaSpark/DevKitC) with ST7789 display, auto-detection of PIR/RCWL-0516, web interface with inline confirmations, web-based OTA updates, physical buttons, 11 animations, smart modes, persistent configuration, automatic startup animation.
+Controller for bi-directional LED garland and 8x8 NeoPixel matrix animation on ESP32 Classic (IdeaSpark/DevKitC) with ST7789 display, auto-detection of PIR/RCWL-0516, web interface with inline confirmations, web-based OTA updates, physical buttons, 11 garland animations, 10 festive matrix animations, dual independent control, smart modes, persistent configuration, automatic startup animations.
 
 ---
 
@@ -39,17 +39,19 @@ Controller for bi-directional LED garland animation on ESP32 Classic (IdeaSpark/
 - **ESP32 Classic board (IdeaSpark/DevKitC)**
 - **TB6612FNG dual H-bridge driver**
 - **2-wire LED garland** (anti-parallel LEDs, ~50 LEDs)
+- **8x8 NeoPixel Matrix WS2812B-64** (64 addressable RGB LEDs)
 - **Motion sensor**: PIR HC-SR501 or RCWL-0516 (auto-detected)
-- **TFT ST7789 display** (optional)
-- **RGB NeoPixel LED** WS2812B (optional)
-- **Suitable power supply** for the garland
+- **TFT ST7789 display** (optional, built-in on IdeaSpark)
+- **Suitable power supply** for the garland and matrix (5V recommended for NeoPixels)
 
 ### Main pinout summary (ESP32 Classic)
-TB6612FNG :
+TB6612FNG (Garland):
   PWMA  → GPIO 12
   AIN1  → GPIO 25
   AIN2  → GPIO 33
   STBY  → GPIO 14
+8x8 NeoPixel Matrix:
+  DATA  → GPIO 13
 MOTION_SENSOR_PIN (PIR/RCWL-0516) → GPIO 35
 LCD_MOSI → GPIO 23
 LCD_SCLK → GPIO 18
@@ -64,15 +66,18 @@ BTN2     → GPIO 17
 
 ## 2. Key Features
 
-- Control a 2-wire LED garland with ESP32 Classic
-- 11 spectacular animations
+- **Dual LED Control**: 2-wire LED garland + 8x8 NeoPixel matrix with independent control
+- **21 Total Animations**: 11 for garland + 10 festive animations for 8x8 matrix
+- **Festive Matrix Animations**: Star, Meteor, Shooting Star, Santa, Christmas Tree, Bell, Falling Snow, Gift Box, Candle, Snowflake
+- **Matrix Brightness Control**: Independent brightness adjustment (0-255) for the matrix
+- **Startup Animation**: Sparkling star animation on matrix at boot
 - 2 smart operating modes (Permanent, Motion Trigger)
 - Auto-detection of PIR HC-SR501 or RCWL-0516
-- Color ST7789 display (optional)
-- Full-featured web interface
+- Color ST7789 display (optional, built-in on IdeaSpark)
+- Full-featured web interface with matrix controls
 - **Web-based OTA firmware updates** (new in v1.4.0)
 - Physical button controls
-- Persistent configuration (NVS)
+- Persistent configuration (NVS) for both garland and matrix
 - OTA updates (ArduinoOTA + Web)
 
 ---

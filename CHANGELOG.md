@@ -1,3 +1,31 @@
+# [1.6.0] – 2026-01-01
+
+### Added
+- **8x8 NeoPixel Matrix WS2812B-64**: Full support for 8x8 LED matrix on GPIO 13
+- **10 Festive Animations for Matrix**: Star, Meteor, Shooting Star, Santa, Christmas Tree, Bell, Falling Snow, Gift Box, Candle, Snowflake
+- **Sparkling Star Startup Animation**: Matrix automatically displays a twinkling star animation on boot
+- **Matrix Brightness Control**: Independent brightness control for the 8x8 matrix (0-255)
+- **Web UI for Matrix**: Dedicated card in web interface for matrix animation selection and brightness adjustment
+- **Matrix NVS Persistence**: Matrix settings (animation, brightness) saved to NVS
+- **Dual Animation System**: Garland and matrix run independently with separate controls
+
+### Changed
+- **Version number**: Incremented to 1.6.0 (SEMVER - MINOR: new feature)
+- **GPIO Configuration**: Added GPIO 13 for 8x8 NeoPixel matrix in `board_config.h`
+- **Web Interface**: Added "✨ Matrice 8x8 NeoPixel" card with animation selector and brightness slider
+- **Status API**: Extended `/status` endpoint with matrix_animation, matrix_animation_id, matrix_brightness
+- **Documentation**: Complete update of all FR/EN documentation with 8x8 matrix features
+
+### Technical
+- New files: `matrix8x8_control.h`, `matrix8x8_control.cpp`
+- New API endpoints: `/matrix_animation?id=X`, `/matrix_brightness?value=X`
+- Matrix uses Adafruit_NeoPixel library with 64 pixels (8×8)
+- XY coordinate mapping function for zigzag wiring pattern
+- Festive animation patterns defined as 8×8 bitmaps
+- Separate NVS namespace "matrix8x8" for matrix settings
+- Real-time status refresh includes both garland and matrix animations
+
+---
 # [1.5.3] – 2025-12-31
 
 ### Changed
