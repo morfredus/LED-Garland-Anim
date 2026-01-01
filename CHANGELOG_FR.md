@@ -1,3 +1,41 @@
+# [1.11.2] – 2026-01-01
+
+### Corrections (PATCH - Correction Système de Coordonnées)
+
+**Système de Mapping des Coordonnées de la Matrice**
+- **Problème** : La matrice utilisait un schéma d'indexation en zigzag (lignes paires gauche→droite, lignes impaires droite→gauche)
+- **Impact** : Causait un positionnement incorrect des pixels et des distorsions visuelles dans les animations
+- **Solution** : Implémentation d'une indexation linéaire uniforme (toutes les lignes 0-7 vont de gauche→droite)
+- **Résultat** : Les 38 animations de la matrice s'affichent maintenant correctement avec un alignement des coordonnées approprié
+- **Fichiers** : `src/matrix8x8_control.cpp:88-108`
+
+### Technique
+
+**Spécification du Système de Coordonnées**
+- Toutes les lignes suivent maintenant le même schéma : pixels 0-7 (gauche à droite)
+- Ligne 0 : pixels 0-7
+- Ligne 1 : pixels 8-15
+- Ligne 2 : pixels 16-23
+- Ligne 3 : pixels 24-31
+- Ligne 4 : pixels 32-39
+- Ligne 5 : pixels 40-47
+- Ligne 6 : pixels 48-55
+- Ligne 7 : pixels 56-63
+
+**Fonction Modifiée**
+```cpp
+static uint16_t xy(uint8_t x, uint8_t y) {
+    if (x >= 8 || y >= 8) return 0;
+    return y * 8 + x;  // Linéaire : toutes les lignes de gauche à droite
+}
+```
+
+### Version
+
+- **Classification SEMVER** : PATCH (1.11.2) - Correction de bug, corrige le mapping des coordonnées, pas de nouvelles fonctionnalités
+
+---
+
 # [1.11.1] – 2026-01-01
 
 ### Corrections (PATCH - Synchronisation)

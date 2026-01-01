@@ -1,7 +1,7 @@
 /**
  * @file matrix8x8_control.cpp
  * @brief Implementation of 8x8 NeoPixel matrix control with festive animations
- * @version 1.11.1
+ * @version 1.11.2
  * @date 2026-01-01
  */
 
@@ -91,24 +91,20 @@ static const char* animationNames[] = {
  * @param y Y coordinate (0-7)
  * @return Pixel index for NeoPixel array
  *
- * Assumes zigzag wiring pattern:
- * Row 0: 0->7 (left to right)
- * Row 1: 15->8 (right to left)
- * Row 2: 16->23 (left to right)
- * etc.
+ * Uses linear wiring pattern:
+ * All rows: 0->7 (left to right)
+ * Row 0: 0-7
+ * Row 1: 8-15
+ * Row 2: 16-23
+ * Row 3: 24-31
+ * Row 4: 32-39
+ * Row 5: 40-47
+ * Row 6: 48-55
+ * Row 7: 56-63
  */
 static uint16_t xy(uint8_t x, uint8_t y) {
     if (x >= 8 || y >= 8) return 0;
-
-    uint16_t index;
-    if (y % 2 == 0) {
-        // Even rows: left to right
-        index = y * 8 + x;
-    } else {
-        // Odd rows: right to left
-        index = y * 8 + (7 - x);
-    }
-    return index;
+    return y * 8 + x;  // Linear: all rows left to right
 }
 
 /**

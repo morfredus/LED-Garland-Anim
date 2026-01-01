@@ -4,6 +4,67 @@ Historique complet des versions du projet LED-Garland-Anim.
 
 ---
 
+# [1.11.2] – 2026-01-01
+
+### Corrections (PATCH - Correction Système de Coordonnées)
+
+**Système de Mapping des Coordonnées de la Matrice**
+- Correction du schéma d'indexation en zigzag incorrect dans la matrice NeoPixel 8x8
+- Implémentation d'une indexation linéaire uniforme (toutes les lignes 0-7 vont de gauche→droite)
+- Corrige le positionnement des pixels et les distorsions visuelles dans les 38 animations de la matrice
+- Modification de la fonction `xy()` pour utiliser un mapping linéaire simple : `return y * 8 + x;`
+
+### Technique
+- Toutes les lignes suivent maintenant le même schéma gauche-à-droite
+- Spécification des coordonnées : Ligne N = pixels (N×8) à (N×8+7)
+- Garantit l'alignement correct des animations avec la disposition physique des LEDs
+
+---
+
+# [1.11.1] – 2026-01-01
+
+### Corrections (PATCH - Synchronisation)
+
+**Synchronisation Intervalle Mode Auto Matrice**
+- Le mode auto matrice partage maintenant le même intervalle que le mode auto guirlande
+- Un seul contrôle UI ajuste la durée d'animation pour les deux simultanément
+- Les deux modules appellent `getAutoAnimationIntervalMs()` pour une synchronisation temporelle
+- Par défaut : 30 secondes (configurable de 5s à 5 minutes via l'interface web)
+
+---
+
+# [1.11.0] – 2026-01-01
+
+### Ajouts (MINOR - Nouvelles Fonctionnalités + Améliorations Majeures)
+
+**NOUVELLE FONCTIONNALITÉ : Mode Auto pour la Matrice**
+- Cycle automatique à travers toutes les animations de la matrice
+- Intervalle synchronisé avec le mode auto guirlande
+- N'utilise jamais l'état OFF - affichage d'animation continu
+
+**Corrections Logique Modes de Détection**
+- MODE_MOTION_TRIGGER : La matrice se rallume correctement lors de la détection de mouvement
+- Correction d'un bug critique où la matrice restait éteinte après le timeout
+- Préserve les paramètres d'animation et de luminosité pendant les cycles de détection de mouvement
+
+**Améliorations Qualité des Animations** (14 animations corrigées)
+- Canne en Sucre : Crochet diagonal réaliste avec rayures rouges/blanches rotatives
+- Horloge : Aiguille des secondes en temps réel, rotation horaire, marqueurs d'heures appropriés
+- Lapin : Yeux clignotants ajoutés
+- Fleur : Fleur reconnaissable à 8 pétales qui s'épanouit
+- Météore : Couverture diagonale complète de la matrice
+- Père Noël : Traits faciaux améliorés (chapeau, yeux, nez, barbe)
+- Cadeau : Boîte claire avec ruban et nœud
+- Flocon de Neige : Effet de pulsation battement de cœur
+- Vague Arc-en-Ciel : Mouvement d'onde sinusoïdale véritable
+- Plasma : Clarté visuelle améliorée
+- Radar : Persistance des cibles améliorée
+
+### Supprimé
+- Animation Glaçons complètement supprimée
+
+---
+
 # [1.10.0] – 2026-01-01
 
 ### Ajouts (MINOR - Nouvelles Animations + Améliorations UX)
@@ -124,4 +185,4 @@ Historique complet des versions du projet LED-Garland-Anim.
 
 **Voir CHANGELOG_FR.md pour l'historique détaillé des commits.**
 
-**LED-Garland-Anim v1.11.1** - Contrôleur moderne de guirlande LED pour ESP32 IdeaSpark 🎄✨
+**LED-Garland-Anim v1.11.2** - Contrôleur moderne de guirlande LED pour ESP32 IdeaSpark 🎄✨
