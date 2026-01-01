@@ -1,7 +1,7 @@
 /**
  * @file matrix8x8_control.cpp
  * @brief Implementation of 8x8 NeoPixel matrix control with festive animations
- * @version 1.8.1
+ * @version 1.9.0
  * @date 2026-01-01
  */
 

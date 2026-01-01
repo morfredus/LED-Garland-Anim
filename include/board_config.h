@@ -5,7 +5,7 @@
 /**
  * @file board_config.h
  * @brief Mapping optimisé pour ESP32 IdeaSpark (Écran 1.14" intégré)
- * @version 1.8.1
+ * @version 1.9.0
  * @date 2026-01-01
  */
 
