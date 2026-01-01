@@ -1,3 +1,31 @@
+# [1.11.3] – 2026-01-01
+
+### Corrections (PATCH - Améliorations Qualité des Animations)
+
+**Animation Matrix Rain (Pluie Matrix)**
+- **Problème** : L'animation n'utilisait que les 2 premières lignes, pas tout l'affichage 8x8
+- **Solution** : Refonte complète avec flux de chute indépendants par colonne
+- **Fonctionnalités** : Chaque colonne a une vitesse différente, positions de départ échelonnées, dégradé de luminosité approprié
+- **Résultat** : Utilisation de toute la hauteur avec effet de pluie Matrix fluide et dynamique
+- **Fichiers** : `src/matrix8x8_control.cpp:1582-1638`
+
+**Animation Horloge**
+- **Problème** : Design brouillon avec apparence encombrée et mauvaise lisibilité
+- **Solution** : Redessinée avec contour circulaire net et hiérarchie visuelle claire
+- **Fonctionnalités** :
+  - Contour de cadran circulaire en teinte bleue
+  - Marqueurs d'heures dorés aux positions 12, 3, 6, 9 (2 pixels chacun)
+  - Point central élégant bleu-gris
+  - Aiguille des secondes rouge fluide avec rotation de 60 secondes
+- **Résultat** : Beaucoup plus propre, élégante et facile à lire
+- **Fichiers** : `src/matrix8x8_control.cpp:1211-1279`
+
+### Version
+
+- **Classification SEMVER** : PATCH (1.11.3) - Corrections de bugs et améliorations visuelles, pas de nouvelles fonctionnalités
+
+---
+
 # [1.11.2] – 2026-01-01
 
 ### Corrections (PATCH - Correction Système de Coordonnées)
