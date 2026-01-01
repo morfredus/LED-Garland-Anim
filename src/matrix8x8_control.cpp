@@ -375,12 +375,16 @@ static void animateStar() {
 
 /**
  * @brief Animation: Meteor shower
+ * @note FIX #1: Changed from modulo timing to threshold-based timing
  */
 static void animateMeteor() {
-    unsigned long elapsed = millis() - animationStartTime;
+    static unsigned long lastUpdate = 0;
+    unsigned long currentMillis = millis();
 
     // Move every 100ms
-    if (elapsed % 100 == 0) {
+    if (currentMillis - lastUpdate >= 100) {
+        lastUpdate = currentMillis;
+
         // Fade all pixels
         for (uint8_t i = 0; i < 64; i++) {
             uint32_t color = matrix.getPixelColor(i);
@@ -407,15 +411,21 @@ static void animateMeteor() {
 
 /**
  * @brief Animation: Shooting star
+ * @note FIX #2: Changed from modulo timing to threshold-based timing
  */
 static void animateShootingStar() {
-    unsigned long elapsed = millis() - animationStartTime;
+    static unsigned long lastUpdate = 0;
+    static uint8_t frameCount = 0;
+    unsigned long currentMillis = millis();
 
-    if (elapsed % 50 == 0) {
+    if (currentMillis - lastUpdate >= 50) {
+        lastUpdate = currentMillis;
+        frameCount++;
+
         clearMatrix();
 
         // Calculate diagonal position
-        int8_t pos = (elapsed / 50) % 16;
+        int8_t pos = frameCount % 16;
 
         // Draw shooting star trail
         for (int8_t i = 0; i < 4; i++) {
@@ -518,11 +528,15 @@ static void animateBell() {
 
 /**
  * @brief Animation: Falling snow
+ * @note FIX #3: Changed from modulo timing to threshold-based timing
  */
 static void animateSnow() {
-    unsigned long elapsed = millis() - animationStartTime;
+    static unsigned long lastUpdate = 0;
+    unsigned long currentMillis = millis();
 
-    if (elapsed % 200 == 0) {
+    if (currentMillis - lastUpdate >= 200) {
+        lastUpdate = currentMillis;
+
         // Move everything down
         for (int8_t y = 7; y > 0; y--) {
             for (uint8_t x = 0; x < 8; x++) {
@@ -953,11 +967,15 @@ static void animateFireworks() {
 
 /**
  * @brief Animation: Champagne bubbles
+ * @note FIX #4: Changed from modulo timing to threshold-based timing
  */
 static void animateChampagne() {
-    unsigned long elapsed = millis() - animationStartTime;
+    static unsigned long lastUpdate = 0;
+    unsigned long currentMillis = millis();
 
-    if (elapsed % 150 == 0) {
+    if (currentMillis - lastUpdate >= 150) {
+        lastUpdate = currentMillis;
+
         // Move bubbles up
         for (int8_t y = 0; y < 7; y++) {
             for (uint8_t x = 0; x < 8; x++) {
@@ -1034,11 +1052,15 @@ static void animateCountdown() {
 
 /**
  * @brief Animation: Falling Confetti
+ * @note FIX #5: Changed from modulo timing to threshold-based timing
  */
 static void animateConfetti() {
-    unsigned long elapsed = millis() - animationStartTime;
+    static unsigned long lastUpdate = 0;
+    unsigned long currentMillis = millis();
 
-    if (elapsed % 200 == 0) {
+    if (currentMillis - lastUpdate >= 200) {
+        lastUpdate = currentMillis;
+
         // Move everything down
         for (int8_t y = 7; y > 0; y--) {
             for (uint8_t x = 0; x < 8; x++) {
@@ -1312,10 +1334,16 @@ static void animateRainbowWave() {
 /**
  * @brief Animation: Sparkling Rain
  */
+/**
+ * @note FIX #6: Changed from modulo timing to threshold-based timing
+ */
 static void animateSparkleRain() {
-    unsigned long elapsed = millis() - animationStartTime;
+    static unsigned long lastUpdate = 0;
+    unsigned long currentMillis = millis();
 
-    if (elapsed % 100 == 0) {
+    if (currentMillis - lastUpdate >= 100) {
+        lastUpdate = currentMillis;
+
         // Fade all pixels
         for (uint8_t i = 0; i < 64; i++) {
             matrix.setPixelColor(i, dimColor(matrix.getPixelColor(i), 200));
@@ -1369,10 +1397,16 @@ static void animatePlasma() {
 /**
  * @brief Animation: Matrix Digital Rain
  */
+/**
+ * @note FIX #7: Changed from modulo timing to threshold-based timing
+ */
 static void animateMatrixRain() {
-    unsigned long elapsed = millis() - animationStartTime;
+    static unsigned long lastUpdate = 0;
+    unsigned long currentMillis = millis();
 
-    if (elapsed % 150 == 0) {
+    if (currentMillis - lastUpdate >= 150) {
+        lastUpdate = currentMillis;
+
         // Move everything down
         for (int8_t y = 7; y > 0; y--) {
             for (uint8_t x = 0; x < 8; x++) {
@@ -1444,11 +1478,15 @@ static void animateHeart() {
 
 /**
  * @brief Animation: Twinkling Stars Field
+ * @note FIX #8: Changed from modulo timing to threshold-based timing
  */
 static void animateStarsField() {
-    unsigned long elapsed = millis() - animationStartTime;
+    static unsigned long lastUpdate = 0;
+    unsigned long currentMillis = millis();
 
-    if (elapsed % 200 == 0) {
+    if (currentMillis - lastUpdate >= 200) {
+        lastUpdate = currentMillis;
+
         // Slowly fade all stars
         for (uint8_t i = 0; i < 64; i++) {
             matrix.setPixelColor(i, dimColor(matrix.getPixelColor(i), 240));

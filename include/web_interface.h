@@ -174,33 +174,47 @@ void handleEraseSettings() {
 /**
  * @brief Handler pour changer l'animation de la matrice 8x8 (GET /matrix_animation?id=X)
  */
+/**
+ * @note FIX #9: Added debug logging to trace API calls
+ */
 void handleSetMatrix8x8Animation() {
+    LOG_PRINTLN("[WEB] handleSetMatrix8x8Animation() called");
     if (server.hasArg("id")) {
         int animId = server.arg("id").toInt();
+        LOG_PRINTF("[WEB] Animation ID requested: %d\n", animId);
         if (animId >= 0 && animId < MATRIX_ANIM_COUNT) {
             setMatrix8x8Animation((Matrix8x8Animation)animId);
             server.send(200, "text/plain", "Matrix animation changed");
+            LOG_PRINTLN("[WEB] Response sent: 200 OK");
         } else {
+            LOG_PRINTF("[WEB] ERROR: Invalid animation ID: %d (max: %d)\n", animId, MATRIX_ANIM_COUNT - 1);
             server.send(400, "text/plain", "Invalid animation ID");
         }
     } else {
+        LOG_PRINTLN("[WEB] ERROR: Missing 'id' parameter");
         server.send(400, "text/plain", "Missing parameter");
     }
 }
 
 /**
  * @brief Handler pour changer la luminosité de la matrice 8x8 (GET /matrix_brightness?value=X)
+ * @note FIX #10: Added debug logging to trace API calls
  */
 void handleSetMatrix8x8Brightness() {
+    LOG_PRINTLN("[WEB] handleSetMatrix8x8Brightness() called");
     if (server.hasArg("value")) {
         int brightness = server.arg("value").toInt();
+        LOG_PRINTF("[WEB] Brightness value requested: %d\n", brightness);
         if (brightness >= 0 && brightness <= 255) {
             setMatrix8x8Brightness((uint8_t)brightness);
             server.send(200, "text/plain", "Matrix brightness changed");
+            LOG_PRINTLN("[WEB] Response sent: 200 OK");
         } else {
+            LOG_PRINTF("[WEB] ERROR: Brightness out of range: %d\n", brightness);
             server.send(400, "text/plain", "Brightness out of range (0-255)");
         }
     } else {
+        LOG_PRINTLN("[WEB] ERROR: Missing 'value' parameter");
         server.send(400, "text/plain", "Missing parameter");
     }
 }
