@@ -1,3 +1,58 @@
+# [1.11.0] – 2026-01-01
+
+### Ajouts (MINOR - Nouvelles Fonctionnalités + Améliorations Majeures)
+
+**NOUVELLE FONCTIONNALITÉ : Mode Auto pour la Matrice**
+- **Description** : Cycle automatique à travers toutes les animations de la matrice
+- **Comportement** : Change d'animation toutes les 30 secondes (excluant OFF)
+- **Implémentation** : Nouvel enum `MATRIX_ANIM_AUTO`, logique auto dans `updateMatrix8x8()`
+- **Interface** : Nouvelle option "Auto" dans la sélection d'animation matrice
+
+### Corrections (CRITIQUE - Modes Détection + Animations)
+
+**CORRECTION CRITIQUE #1 : Réactivation Matrice en Mode Détection**
+- **Problème** : En MODE_MOTION_TRIGGER, la matrice ne se rallumait pas après détection de mouvement
+- **Cause** : `matrixEnabled` était mis à false de façon permanente
+- **Solution** : Modification de `updateMatrix8x8()` pour effacer la matrice sans changer `matrixEnabled`
+- **Résultat** : La matrice se rallume correctement lors de la détection, préservant animation et luminosité
+
+**Améliorations Animations (14 animations corrigées/améliorées) :**
+
+1. **Candy Cane** - Refonte complète avec forme réaliste de sucre d'orge
+2. **Clock** - Horloge analogique avec marqueurs heures corrects (12,3,6,9)
+3. **Bunny** - Ajout d'yeux animés qui clignent
+4. **Flower** - Fleurs réalistes qui s'ouvrent/ferment
+5. **Meteor** - Couverture diagonale complète de la matrice
+6. **Santa** - Visage Père Noël hautement reconnaissable  
+7. **Gift** - Boîte cadeau claire avec ruban et nœud
+8. **Snowflake** - Ajout effet pulsation battement de cœur
+9. **Rainbow Wave** - Vraie vague sinusoïdale arc-en-ciel
+10-14. **Améliorations mineures** : Matrix Rain, Plasma, Radar, Stocking, Countdown
+
+### Suppressions
+
+**Animation Supprimée : Icicles**
+- **Raison** : Demande utilisateur
+- **Impact** : 39 animations → 38 + Mode Auto = 39 options sélectionnables
+
+### Modifications
+
+**Comportement Détection :**
+- **MODE_MOTION_TRIGGER** : **CORRIGÉ** - Les deux s'éteignent après timeout, **les deux se rallument** avec détection
+
+### Technique
+
+- **Variables Mode Auto** : `autoModeActive`, `autoModeChangeTime`, `autoModeInterval`, `activeAnimation`
+- **Qualité Animations** : Toutes les animations corrigées utilisent la matrice 8x8 complète
+
+### Version
+
+- **Classification SEMVER** : MINOR (1.11.0) - Nouvelles fonctionnalités, corrections importantes, rétrocompatible
+- **Tous Fichiers Mis à Jour** : Version 1.11.0 dans headers, sources, platformio.ini, documentation
+
+---
+
+
 # [1.10.0] – 2026-01-01
 
 ### Ajouts (MINOR - Nouvelles Animations + Améliorations UX)
