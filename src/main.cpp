@@ -2,7 +2,7 @@
 /**
  * @file main.cpp
  * @brief Point d'entrée principal du projet LED-Garland-Anim
- * @version 1.8.0
+ * @version 1.8.1
  * @date 2026-01-01
  *
  * OTA support: ArduinoOTA (upload firmware over WiFi) + Web OTA (Update.h)

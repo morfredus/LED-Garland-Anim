@@ -28,7 +28,7 @@ pio run -e esp32s3_n16r8 -t upload
 ---
 # LED-Garland-Anim
 
-**Version: 1.8.0** (2026-01-01)
+**Version: 1.8.1** (2026-01-01)
 
 Controller for bi-directional LED garland and 8x8 NeoPixel matrix animation on ESP32 Classic (IdeaSpark/DevKitC) with ST7789 display, auto-detection of PIR/RCWL-0516, web interface with inline confirmations, web-based OTA updates, physical buttons, 11 garland animations, 37 festive matrix animations (Christmas, New Year, Easter), dual independent control, smart modes, persistent configuration, automatic startup animations.
 
@@ -231,7 +231,7 @@ In `include/garland_control.h`:
 
 ## 10. Versions
 
-**Current Version: v1.8.0** (2025-12-31)
+**Current Version: v1.8.1** (2025-12-31)
 See [CHANGELOG.md](./CHANGELOG.md)
 
 ---
@@ -422,7 +422,7 @@ static GarlandMode currentMode = MODE_PERMANENT;         // Or MODE_MOTION_TRIGG
 
 ## 📝 Versions
 
-**Current Version: v1.8.0** (2025-12-31)
+**Current Version: v1.8.1** (2025-12-31)
 
 See [CHANGELOG.md](./CHANGELOG.md) for complete history.
 

@@ -4,7 +4,7 @@
 /**
  * @file web_pages.h
  * @brief Génération des pages HTML pour l'interface web
- * @version 1.8.0
+ * @version 1.8.1
  *
  * Module dédié à la génération du contenu HTML de l'interface web.
  * Contient les fonctions pour construire les différentes cartes et sections.
@@ -56,8 +56,8 @@ String generateDashboardPage(
     html += "<div class='card card-full'>";
     html += "<div class='card-title'>🎄 Paramètres Guirlande <span style='float:right;font-size:0.9em;color:#1b5e20;'>En cours: <span id='current-anim' class='mono'>" + String(getGarlandAnimationName()) + "</span></span></div>";
 
-    // Zone de message inline pour animation/mode
-    html += "<div id='param-message' style='display:none;margin-bottom:12px;padding:10px;border-radius:8px;background:#d4edda;color:#155724;border:1px solid #c3e6cb;'></div>";
+    // Zone de message inline pour animation/mode (BUGFIX #7: reserved space)
+    html += "<div id='param-message' style='visibility:hidden;min-height:44px;margin-bottom:12px;padding:10px;border-radius:8px;background:#d4edda;color:#155724;border:1px solid #c3e6cb;'></div>";
 
     // Animation
     html += "<div class='card-item'><span class='card-label'>Animation:</span>";
@@ -117,8 +117,8 @@ String generateDashboardPage(
     html += "Ex: 30s/animation × 60s détection = 2 animations affichées.";
     html += "</div>";
 
-    // Zone de message de confirmation inline
-    html += "<div id='save-message' style='display:none;margin-top:12px;padding:10px;border-radius:8px;background:#d4edda;color:#155724;border:1px solid #c3e6cb;'></div>";
+    // Zone de message de confirmation inline (BUGFIX #7: reserved space)
+    html += "<div id='save-message' style='visibility:hidden;min-height:44px;margin-top:12px;padding:10px;border-radius:8px;background:#d4edda;color:#155724;border:1px solid #c3e6cb;'></div>";
 
     // Actions de persistance
     html += "<div class='actions'>";
@@ -132,8 +132,8 @@ String generateDashboardPage(
     html += "<div class='card card-full'>";
     html += "<div class='card-title'>✨ Matrice 8x8 NeoPixel <span style='float:right;font-size:0.9em;color:#7b1fa2;'>En cours: <span id='current-matrix' class='mono'>" + String(getMatrix8x8AnimationName()) + "</span></span></div>";
 
-    // Zone de message inline pour matrix
-    html += "<div id='matrix-message' style='display:none;margin-bottom:12px;padding:10px;border-radius:8px;background:#d4edda;color:#155724;border:1px solid #c3e6cb;'></div>";
+    // Zone de message inline pour matrix (BUGFIX #7: reserved space)
+    html += "<div id='matrix-message' style='visibility:hidden;min-height:44px;margin-bottom:12px;padding:10px;border-radius:8px;background:#d4edda;color:#155724;border:1px solid #c3e6cb;'></div>";
 
     // Animation selection
     html += "<div class='card-item'><span class='card-label'>Animation:</span>";
@@ -185,7 +185,7 @@ String generateDashboardPage(
     html += "<script>";
 
     // Fonction pour afficher les messages de paramètres
-    html += "function showParamMessage(msg) { var el = document.getElementById('param-message'); el.textContent = msg; el.style.display = 'block'; setTimeout(() => { el.style.display = 'none'; }, 3000); }";
+    html += "function showParamMessage(msg) { var el = document.getElementById('param-message'); el.textContent = msg; el.style.visibility = 'visible'; setTimeout(() => { el.style.visibility = 'hidden'; el.textContent = ''; }, 3000); }";
 
     html += "function changeAnimation() {";
     html += "  var id = document.getElementById('animSelect').value;";
@@ -202,8 +202,8 @@ String generateDashboardPage(
     html += "function applyAutoInterval() { var s = document.getElementById('auto-interval-seconds').value; var ms = Math.round(s*1000); fetch('/auto_interval?ms=' + ms); }";
     html += "function applyMotionDuration() { var s = document.getElementById('motion-duration-seconds').value; var ms = Math.round(s*1000); fetch('/motion_duration?ms=' + ms); }";
 
-    // Fonctions pour la matrice 8x8
-    html += "function showMatrixMessage(msg) { var el = document.getElementById('matrix-message'); el.textContent = msg; el.style.display = 'block'; setTimeout(() => { el.style.display = 'none'; }, 3000); }";
+    // Fonctions pour la matrice 8x8 (BUGFIX #7: use visibility instead of display)
+    html += "function showMatrixMessage(msg) { var el = document.getElementById('matrix-message'); el.textContent = msg; el.style.visibility = 'visible'; setTimeout(() => { el.style.visibility = 'hidden'; el.textContent = ''; }, 3000); }";
     html += "function changeMatrixAnimation() {";
     html += "  var id = document.getElementById('matrixAnimSelect').value;";
     html += "  var select = document.getElementById('matrixAnimSelect');";
@@ -216,8 +216,8 @@ String generateDashboardPage(
     html += "  fetch('/matrix_brightness?value=' + val).then(() => showMatrixMessage('✓ Luminosité changée : ' + val));";
     html += "}";
 
-    // Fonctions pour save/load/erase avec messages inline
-    html += "function showMessage(msg) { var el = document.getElementById('save-message'); el.textContent = msg; el.style.display = 'block'; setTimeout(() => { el.style.display = 'none'; }, 3000); }";
+    // Fonctions pour save/load/erase avec messages inline (BUGFIX #7: use visibility)
+    html += "function showMessage(msg) { var el = document.getElementById('save-message'); el.textContent = msg; el.style.visibility = 'visible'; setTimeout(() => { el.style.visibility = 'hidden'; el.textContent = ''; }, 3000); }";
     html += "function saveSettings() { fetch('/save').then(() => showMessage('✓ Sauvegarde effectuée.')); }";
     html += "function loadSettings() { fetch('/load').then(() => { showMessage('✓ Paramètres restaurés.'); setTimeout(() => location.reload(), 1000); }); }";
     html += "function eraseSettings() { fetch('/erase').then(() => showMessage('✓ Sauvegarde effacée.')); }";
