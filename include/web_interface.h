@@ -152,13 +152,15 @@ void handleSetMotionDuration() {
 /** Sauvegarde manuelle des paramètres en NVS */
 void handleSaveSettings() {
     saveGarlandSettings();
-    server.send(200, "text/plain", "Paramètres sauvegardés");
+    saveMatrix8x8Settings();
+    server.send(200, "text/plain", "Paramètres sauvegardés (guirlande + matrice)");
 }
 
 /** Recharge les paramètres depuis NVS */
 void handleLoadSettings() {
     loadGarlandSettings();
-    server.send(200, "text/plain", "Paramètres rechargés");
+    loadMatrix8x8Settings();
+    server.send(200, "text/plain", "Paramètres rechargés (guirlande + matrice)");
 }
 
 /** Efface l'espace NVS de l'application */

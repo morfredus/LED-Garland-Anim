@@ -141,21 +141,7 @@ String generateDashboardPage(
     for (int i = 0; i < MATRIX_ANIM_COUNT; i++) {
         html += "<option value='" + String(i) + "'";
         if (i == (int)getMatrix8x8Animation()) html += " selected";
-        html += ">";
-        switch(i) {
-            case MATRIX_ANIM_OFF: html += "Off"; break;
-            case MATRIX_ANIM_STAR: html += "Star"; break;
-            case MATRIX_ANIM_METEOR: html += "Meteor"; break;
-            case MATRIX_ANIM_SHOOTING_STAR: html += "Shooting Star"; break;
-            case MATRIX_ANIM_SANTA: html += "Santa"; break;
-            case MATRIX_ANIM_TREE: html += "Christmas Tree"; break;
-            case MATRIX_ANIM_BELL: html += "Bell"; break;
-            case MATRIX_ANIM_SNOW: html += "Falling Snow"; break;
-            case MATRIX_ANIM_GIFT: html += "Gift Box"; break;
-            case MATRIX_ANIM_CANDLE: html += "Candle"; break;
-            case MATRIX_ANIM_SNOWFLAKE: html += "Snowflake"; break;
-        }
-        html += "</option>";
+        html += ">" + String(getMatrix8x8AnimationNameById(i)) + "</option>";
     }
     html += "</select>";
     html += "<button onclick='changeMatrixAnimation()' style='margin-left:10px;padding:8px 12px;background:#7b1fa2;color:white;border:none;border-radius:8px;cursor:pointer;'>Appliquer</button>";
