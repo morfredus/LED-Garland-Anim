@@ -4,15 +4,15 @@
 /**
  * @file web_styles.h
  * @brief Feuilles de style pour l'interface web
- * @version 1.5.3
- * @date 2025-12-30
- * 
+ * @version 1.9.0
+ * @date 2026-01-01
+ *
  * Module dédié à la gestion des styles CSS de l'interface web.
  * Contient tous les styles pour les cartouches, grille responsive, animations, etc.
  */
 
 // CSS pour l'interface web
-const char* WEB_STYLES = 
+const char* WEB_STYLES =
     "* {margin:0;padding:0;box-sizing:border-box;}"
     "body{font-family:'Segoe UI',Arial,sans-serif;background:linear-gradient(135deg,#d32f2f 0%,#e53935 25%,#fbc02d 60%,#43a047 100%);min-height:100vh;padding:24px;}"
     ".container{max-width:900px;margin:0 auto;}"
@@ -35,6 +35,15 @@ const char* WEB_STYLES =
     "button:hover{transform:scale(1.05);box-shadow:0 6px 14px rgba(229,57,53,0.35);}"
     "button.danger{background:linear-gradient(135deg,#6a1b9a,#8e24aa);}"
     "button.danger:hover{box-shadow:0 6px 14px rgba(142,36,170,0.35);}"
-    "button.apply{background:linear-gradient(135deg,#43a047,#66bb6a);margin-left:10px;padding:8px 12px;}";
+    "button.apply{background:linear-gradient(135deg,#43a047,#66bb6a);margin-left:10px;padding:8px 12px;}"
+    ".radio-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px;}"
+    "@media (max-width:600px){.radio-grid{grid-template-columns:1fr;}}"
+    ".radio-item{display:flex;align-items:center;padding:8px 10px;background:#f9f9f9;border:2px solid #e0e0e0;border-radius:8px;cursor:pointer;transition:all 0.2s;}"
+    ".radio-item:hover{background:#e8f5e9;border-color:#43a047;}"
+    ".radio-item input[type='radio']{margin-right:8px;cursor:pointer;width:16px;height:16px;}"
+    ".radio-item input[type='radio']:checked + label{font-weight:bold;color:#1b5e20;}"
+    ".radio-item.selected{background:#e8f5e9;border-color:#43a047;border-width:2px;}"
+    ".radio-item label{cursor:pointer;flex:1;font-size:0.95em;user-select:none;}"
+    ".section-label{display:block;font-weight:700;color:#1b5e20;margin-top:15px;margin-bottom:5px;font-size:1em;}";
 
 #endif // WEB_STYLES_H
