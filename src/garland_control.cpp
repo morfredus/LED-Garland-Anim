@@ -36,6 +36,59 @@ static float animationPhase = 0.0;
 // Type de capteur de mouvement détecté
 static MotionSensorType motionSensorType = MOTION_SENSOR_UNKNOWN;
 
+// Mode d'affichage de l'écran LCD
+static DisplayMode currentDisplayMode = DEFAULT_DISPLAY_MODE;
+
+DisplayMode getDisplayMode() {
+    return currentDisplayMode;
+}
+
+void setDisplayMode(DisplayMode mode) {
+    currentDisplayMode = mode;
+    saveDisplayModeToNVS();
+}
+
+const char* getDisplayModeName() {
+    switch (currentDisplayMode) {
+        case DISPLAY_MODE_ANIMATED: return "Animé";
+        case DISPLAY_MODE_STATIC:   return "Statique";
+        case DISPLAY_MODE_OFF:      return "Éteint";
+        default: return "Inconnu";
+    }
+}
+
+const char* getDisplayModeNameById(int id) {
+    switch ((DisplayMode)id) {
+        case DISPLAY_MODE_ANIMATED: return "Animé";
+        case DISPLAY_MODE_STATIC:   return "Statique";
+        case DISPLAY_MODE_OFF:      return "Éteint";
+        default: return "Inconnu";
+    }
+}
+
+void loadDisplayModeFromNVS() {
+    nvs_handle_t handle;
+    esp_err_t err = nvs_open(NVS_NAMESPACE, NVS_READONLY, &handle);
+    if (err == ESP_OK) {
+        int32_t mode = 0;
+        err = nvs_get_i32(handle, "display_mode", &mode);
+        if (err == ESP_OK && mode >= 0 && mode < DISPLAY_MODE_COUNT) {
+            currentDisplayMode = (DisplayMode)mode;
+        }
+        nvs_close(handle);
+    }
+}
+
+void saveDisplayModeToNVS() {
+    nvs_handle_t handle;
+    esp_err_t err = nvs_open(NVS_NAMESPACE, NVS_READWRITE, &handle);
+    if (err == ESP_OK) {
+        nvs_set_i32(handle, "display_mode", (int32_t)currentDisplayMode);
+        nvs_commit(handle);
+        nvs_close(handle);
+    }
+}
+
 MotionSensorType getMotionSensorType() {
     return motionSensorType;
 }
@@ -81,12 +134,10 @@ void loadGarlandSettings() {
     }
     
     // Charger le mode
-    uint8_t mode = (uint8_t)MODE_PERMANENT;
-    if (nvs_get_u8(handle, "mode", &mode) == ESP_OK) {
-        savedMode = (GarlandMode)mode;
-        currentMode = savedMode;
-        LOG_PRINTF("Mode restauré: %s\n", modeNames[currentMode]);
-    }
+        int32_t mode = 0;
+        if (nvs_get_i32(handle, "mode", &mode) == ESP_OK && mode >= 0 && mode < MODE_COUNT) {
+            currentMode = (GarlandMode)mode;
+        }
 
     // Charger l'animation
     uint8_t anim = (uint8_t)ANIM_FADE_ALTERNATE;
@@ -146,7 +197,6 @@ void saveGarlandSettings() {
     }
 }
 
-// =============================================================================
 // FONCTIONS DE CONTRÔLE TB6612FNG
 // =============================================================================
 

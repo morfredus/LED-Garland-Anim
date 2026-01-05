@@ -86,20 +86,30 @@ Exemple : `192.168.1.100`
 
 ---
 
+
 ## Interface Web
 - Accès via l'adresse IP affichée sur le LCD
 - Tableau de bord : infos système, mémoire, WiFi
 - Contrôle guirlande : sélection animation/mode
+- **Sélection du mode d’affichage écran** (Animé, Statique, Éteint)
 - Visualisation capteurs
+- Actions Sauvegarder/Restaurer/Effacer la configuration
 
 ---
 
+
 ## Affichage LCD ST7789
 - Écran couleur 1.14" 135x240px
-- Écran de démarrage moderne : nom projet, version, progression WiFi
-- Interface principale : en-têtes centrés, infos compactes, grande zone d'animation
-- 11 visualisations animées (une par animation)
-- Mises à jour temps réel à 10 FPS
+- **3 modes d’affichage sélectionnables** :
+  - **Animé** : Visuels animés classiques (par défaut)
+  - **Statique** : Affichage fixe (nom projet, version, SSID, IP)
+  - **Éteint** : Écran et rétroéclairage coupés
+- Sélection à la volée depuis l’interface web (radio)
+- Valeur par défaut configurable dans `config.h`
+- Persistance automatique (NVS, restauré au boot)
+- Effet immédiat, sans reboot
+- 11 visualisations animées (une par animation, mode animé)
+- Mises à jour temps réel à 10 FPS (mode animé)
 
 ---
 
@@ -125,4 +135,4 @@ Voir [TROUBLESHOOTING_FR.md](TROUBLESHOOTING_FR.md) pour l'aide.
 
 ---
 
-**Version du document : v1.11.3 (2025-12-31)**
+**Version du document : v1.12.0 (2026-01-05)**

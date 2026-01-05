@@ -27,7 +27,7 @@ Vous pouvez choisir la méthode de téléversement (USB ou OTA) à chaque upload
 ---
 # LED-Garland-Anim
 
-**Version : 1.10.0** (2026-01-01)
+**Version : 1.12.0** (2026-01-05)
 
 Contrôleur d'animation de guirlande LED bi-directionnelle et matrice NeoPixel 8x8 pour ESP32 Classic (IdeaSpark/DevKitC) avec écran ST7789, auto-détection PIR/RCWL-0516, interface web modernisée avec boutons radio, layout responsive et mises à jour AJAX sans flash, boutons physiques, 11 animations de guirlande, 39 animations festives pour matrice (Noël, Nouvel An, Pâques, Feu de Camp, Radar), contrôle double indépendant, modes intelligents, configuration persistante, animations de démarrage automatiques.
 
@@ -45,18 +45,18 @@ Contrôleur d'animation de guirlande LED bi-directionnelle et matrice NeoPixel 8
 
 ### Schéma des pins principaux (ESP32 Classic)
 TB6612FNG (Guirlande) :
-  PWMA  → GPIO 12
-  AIN1  → GPIO 25
-  AIN2  → GPIO 33
-  STBY  → GPIO 14
+  PWMA  → GPIO 13
+  AIN1  → GPIO 26
+  AIN2  → GPIO 25
+  STBY  → GPIO 15
 Matrice NeoPixel 8x8 :
-  DATA  → GPIO 13
+  DATA  → GPIO 34
 MOTION_SENSOR_PIN (PIR/RCWL-0516) → GPIO 35
 LCD_MOSI → GPIO 23
 LCD_SCLK → GPIO 18
-LCD_CS   → GPIO 15
-LCD_DC   → GPIO 2
-LCD_RST  → GPIO 4
+LCD_CS   → GPIO 5
+LCD_DC   → GPIO 27
+LCD_RST  → GPIO 33
 LCD_BLK  → GPIO 32
 BTN1     → GPIO 16
 BTN2     → GPIO 17
@@ -67,6 +67,15 @@ BTN2     → GPIO 17
 
 - **Double contrôle LED** : Guirlande LED 2 fils + matrice NeoPixel 8x8 avec contrôle indépendant
 - **48 animations au total** : 11 pour la guirlande + 37 animations festives pour la matrice 8x8
+- **3 modes d’affichage écran** :
+  - **Animé** : Visuels animés classiques (par défaut)
+  - **Statique** : Affichage fixe (nom projet, version, SSID, IP)
+  - **Éteint** : Écran et rétroéclairage coupés
+- **Sélection du mode d’affichage** :
+  - Sélection à la volée depuis l’UI web (boutons radio)
+  - Valeur par défaut configurable dans `config.h`
+  - Persistance automatique (NVS, restauré au boot)
+  - Effet immédiat, sans reboot
 - **37 animations pour matrice** organisées par thème :
   - **Originales (10)** : Étoile, Météore, Étoile filante, Père Noël, Sapin, Cloche, Neige, Cadeau, Bougie, Flocon
   - **Noël (10)** : Canne à sucre, Couronne, Chaussette, Renne, Pain d'épices, Chocolat chaud, Cheminée, Glaçons, Aurore boréale, Cadeaux
@@ -128,10 +137,15 @@ BTN2     → GPIO 17
 - **Bouton 2** : Changement de mode
 - **Bouton BOOT** : Redémarrage (appui long)
 
+
 ### Interface web
-- Tableau de bord, sélection animation/mode, visualisation capteurs, actions à distance
-- **Confirmations inline** pour les opérations save/restore/erase (pas de popups bloquants)
-- **Double-clic pour confirmer** le redémarrage (sécurité)
+- UI moderne avec boutons radio pour toutes les sélections
+- Layout responsive (2 colonnes desktop, 1 colonne mobile)
+- Mises à jour instantanées, sans rechargement de page
+- **Mode d’affichage** : Sélection Animé, Statique, Éteint (effet immédiat)
+- Tous les réglages (animation, mode, affichage, durées) sont persistants et restaurés au boot
+- SSID et IP toujours visibles
+- Actions Sauvegarder/Restaurer/Effacer la configuration
 
 ### Bot Telegram (optionnel)
 - Commandes `/anim`, `/mode`, `/nextanim`, `/nextmode`, `/status`, `/liste`

@@ -1,7 +1,7 @@
 /**
  * @file config.h
  * @brief Configuration globale du projet
- * @version 1.11.3
+ * @version 1.12.0
  * @date 2026-01-01
  */
 
@@ -43,4 +43,19 @@
 #define COLOR_PURPLE     0x8010
 #define COLOR_ORANGE     0xFD20
 
+#define DEFAULT_DISPLAY_MODE DISPLAY_MODE_ANIMATED // Mode d'affichage par défaut (animé/statique/éteint)
+
+#ifndef DISPLAY_MODE_ENUM
+#define DISPLAY_MODE_ENUM
+/**
+ * @enum DisplayMode
+ * @brief Modes d'affichage de l'écran LCD
+ */
+enum DisplayMode {
+    DISPLAY_MODE_ANIMATED = 0,   // Animations actuelles
+    DISPLAY_MODE_STATIC,         // Affichage fixe (nom, version, SSID, IP)
+    DISPLAY_MODE_OFF,            // Écran complètement éteint (backlight + contenu)
+    DISPLAY_MODE_COUNT
+};
+#endif
 #endif

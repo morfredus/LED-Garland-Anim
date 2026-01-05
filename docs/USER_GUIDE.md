@@ -284,18 +284,8 @@ The system automatically saves all settings to ESP32's NVS:
 - **No User Action**: Fully automatic
 
 ### Manual Control (Web Interface)
-- **Save Button**: Force save current settings to NVS
-- **Restore Button**: Reload settings from NVS (refresh from saved state)
-- **Erase Button**: Clear all NVS data (reset to factory defaults)
 
 ---
-
-## Daily Usage
-
-### Typical Workflows
-
-#### Morning: Activate Permanent Mode
-1. Open web interface
 2. Select "Permanent" mode
 3. Choose desired animations (garland + matrix)
 4. Both devices stay on all day

@@ -1,7 +1,7 @@
 /**
  * @file garland_control.h
  * @brief Contrôle des animations de guirlande LED bi-directionnelle
- * @version 1.11.3
+ * @version 1.12.0
  * @date 2026-01-01
  *
  * Module de gestion des animations pour guirlande LED à 2 fils avec LEDs en anti-parallèle.
@@ -16,6 +16,14 @@
 #include "config.h"
 #include <nvs_flash.h>
 #include <nvs.h>
+
+// Mode d'affichage de l'écran LCD
+DisplayMode getDisplayMode();
+void setDisplayMode(DisplayMode mode);
+const char* getDisplayModeName();
+const char* getDisplayModeNameById(int id);
+void loadDisplayModeFromNVS();
+void saveDisplayModeToNVS();
 
 // =============================================================================
 // CONSTANTES D'ANIMATION

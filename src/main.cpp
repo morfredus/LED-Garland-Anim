@@ -2,7 +2,7 @@
 /**
  * @file main.cpp
  * @brief Point d'entrée principal du projet LED-Garland-Anim
- * @version 1.11.3
+ * @version 1.12.0
  * @date 2026-01-01
  *
  * OTA support: ArduinoOTA (upload firmware over WiFi) + Web OTA (Update.h)
@@ -65,7 +65,7 @@ void handleBtn1Click() {
     LOG_PRINTF(">> Bouton 1 : Animation changée -> %s\n", getGarlandAnimationName());
 
     #ifdef HAS_ST7789
-        displayMainScreen(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName());
+        displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName());
     #endif
 }
 
@@ -75,7 +75,7 @@ void handleBtn2Click() {
     LOG_PRINTF(">> Bouton 2 : Mode changé -> %s\n", getGarlandModeName());
 
     #ifdef HAS_ST7789
-        displayMainScreen(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName());
+        displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName());
     #endif
 }
 
@@ -114,7 +114,7 @@ void setupWifi() {
         LOG_PRINT("IP: "); LOG_PRINTLN(WiFi.localIP());
 
         // Affichage de l'écran principal avec toutes les infos
-        displayMainScreen(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName());
+        displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName());
 
         delay(2000); // Pause pour laisser voir l'écran
     } else {
@@ -224,12 +224,11 @@ void loop() {
         #endif
     }
 
-    // 7. Rafraîchissement de l'animation ST7789
+    // 7. Rafraîchissement de l'animation ST7789 (uniquement si mode animé)
     #ifdef HAS_ST7789
         if (currentMillis - lastDisplayUpdate >= displayUpdateInterval) {
             lastDisplayUpdate = currentMillis;
-            // Mettre à jour uniquement la zone d'animation
-            if (WiFi.status() == WL_CONNECTED) {
+            if (WiFi.status() == WL_CONNECTED && getDisplayMode() == DISPLAY_MODE_ANIMATED) {
                 updateAnimationVisual(getGarlandAnimationName());
             }
         }

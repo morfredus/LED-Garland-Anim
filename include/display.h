@@ -1,7 +1,7 @@
 /**
  * @file display.h
  * @brief Module de gestion de l'écran ST7789 (ESP32 IdeaSpark 1.14" LCD)
- * @version 1.5.3
+ * @version 1.6.0
  * @date 2025-12-30
  *
  * Ce module fournit une interface pour gérer l'affichage sur l'écran
@@ -28,6 +28,15 @@
 #endif
 
 // --- PROTOTYPES DE FONCTIONS ---
+
+/**
+ * @brief Affiche l'écran selon le mode d'affichage sélectionné (Animé, Statique, Éteint)
+ * @param ssid Nom du réseau WiFi
+ * @param ip Adresse IP
+ * @param modeName Nom du mode courant
+ * @param animationName Nom de l'animation courante
+ */
+void displayScreenByMode(const char* ssid, IPAddress ip, const char* modeName, const char* animationName);
 
 /**
  * @brief Initialise l'écran ST7789
@@ -75,5 +84,10 @@ void displayMainScreen(const char* ssid, IPAddress ip, const char* modeName, con
  * @param animationName Nom de l'animation active
  */
 void updateAnimationVisual(const char* animationName);
+
+/**
+ * @brief Affiche l'écran selon le mode d'affichage sélectionné
+ */
+void displayScreenByMode(const char* ssid, IPAddress ip, const char* modeName, const char* animationName);
 
 #endif // DISPLAY_H

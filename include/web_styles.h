@@ -12,7 +12,7 @@
  */
 
 // CSS pour l'interface web
-const char* WEB_STYLES =
+static constexpr const char* WEB_STYLES =
     "* {margin:0;padding:0;box-sizing:border-box;}"
     "body{font-family:'Segoe UI',Arial,sans-serif;background:linear-gradient(135deg,#d32f2f 0%,#e53935 25%,#fbc02d 60%,#43a047 100%);min-height:100vh;padding:24px;}"
     ".container{max-width:900px;margin:0 auto;}"

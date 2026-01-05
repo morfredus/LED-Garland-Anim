@@ -1,13 +1,69 @@
 /**
  * @file display.cpp
  * @brief Implémentation du module de gestion de l'écran ST7789
- * @version 1.5.3
+ * @version 1.6.0
  * @date 2025-12-30
  */
 
 #include "display.h"
+#include "config.h"
+#include "garland_control.h"
 
 #ifdef HAS_ST7789
+// --- Affichage selon le mode d'écran sélectionné ---
+/**
+ * @brief Affiche l'écran selon le mode d'affichage sélectionné
+ * @param ssid Nom du réseau WiFi
+ * @param ip Adresse IP
+ * @param modeName Nom du mode courant
+ * @param animationName Nom de l'animation courante
+ */
+void displayScreenByMode(const char* ssid, IPAddress ip, const char* modeName, const char* animationName) {
+    DisplayMode mode = getDisplayMode();
+    switch (mode) {
+        case DISPLAY_MODE_ANIMATED:
+            displayMainScreen(ssid, ip, modeName, animationName);
+            break;
+        case DISPLAY_MODE_STATIC: {
+            // Affichage statique : nom projet, version, SSID, IP uniquement
+            display.fillScreen(COLOR_BLACK);
+            int16_t x1, y1; uint16_t w, h;
+            int centerX;
+            display.setTextSize(2);
+            display.setTextColor(COLOR_CYAN);
+            display.getTextBounds(PROJECT_NAME, 0, 0, &x1, &y1, &w, &h);
+            centerX = (ST7789_WIDTH - w) / 2;
+            display.setCursor(centerX, 20);
+            display.println(PROJECT_NAME);
+            display.setTextSize(1);
+            display.setTextColor(COLOR_WHITE);
+            String versionStr = "v" + String(PROJECT_VERSION);
+            display.getTextBounds(versionStr.c_str(), 0, 0, &x1, &y1, &w, &h);
+            centerX = (ST7789_WIDTH - w) / 2;
+            display.setCursor(centerX, 45);
+            display.println(versionStr);
+            display.setTextColor(COLOR_YELLOW);
+            display.setCursor(10, 80);
+            display.print("SSID: ");
+            display.setTextColor(COLOR_WHITE);
+            display.println(ssid);
+            display.setTextColor(COLOR_GREEN);
+            display.setCursor(10, 100);
+            display.print("IP: ");
+            display.setTextColor(COLOR_WHITE);
+            display.println(ip.toString().c_str());
+            break;
+        }
+        case DISPLAY_MODE_OFF:
+            // Éteint : backlight + contenu off
+            digitalWrite(LCD_BLK, LOW); // coupe le rétroéclairage
+            display.fillScreen(COLOR_BLACK);
+            break;
+        default:
+            displayMainScreen(ssid, ip, modeName, animationName);
+            break;
+    }
+}
 
 // =============================================================================
 // INSTANCIATION DE L'OBJET DISPLAY
@@ -191,6 +247,8 @@ void updateAnimationVisual(const char* animationName) {
         return;
     }
 
+
+// --- Affichage selon le mode d'écran sélectionné ---
     // Incrémenter le frame à chaque appel
     animFrame = (animFrame + 1) % 256;
 
@@ -343,4 +401,6 @@ void updateAnimationVisual(const char* animationName) {
     // Rien
 }
 
+
 #endif
+

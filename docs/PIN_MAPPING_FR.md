@@ -1,4 +1,4 @@
-# Guide de Connexion des Pins - LED-Garland-Anim v1.11.3
+# Guide de Connexion des Pins - LED-Garland-Anim v1.12.0
 
 > 📌 **Guide débutant** : Ce document explique comment connecter physiquement les composants à votre carte ESP32 IdeaSpark pour le projet LED-Garland-Anim.
 
@@ -6,6 +6,7 @@
 - [Carte ESP32 IdeaSpark](#carte-esp32-ideaspark)
 - [Schémas de connexion détaillés](#schémas-de-connexion-détaillés)
 - [Module TB6612FNG](#module-tb6612fng-contrôleur-de-guirlande)
+- [Matrice NeoPixel 8x8](#matrice-neopixel-8x8)
 - [Conseils pour débutants](#conseils-pour-débutants)
 
 ---
@@ -19,19 +20,20 @@
 | **BUTTON_BOOT**   | Bouton     | GPIO 0   | Bouton intégré sur la carte| Déjà présent                |
 | **BUTTON_1**      | Bouton     | GPIO 16  | Bouton externe             | Changement animation        |
 | **BUTTON_2**      | Bouton     | GPIO 17  | Bouton externe             | Changement mode             |
-| **LED_BUILTIN**   | LED        | GPIO 2   | LED bleue intégrée         | Heartbeat visuel            |
+| **LED_BUILTIN**   | LED        | GPIO 2   | LED bleue intégrée         | ⚠️ Partagée avec LCD_DC     |
 | **I2C_SDA**       | SDA        | GPIO 21  | Données I2C                | Pour extension future       |
 | **I2C_SCL**       | SCL        | GPIO 22  | Horloge I2C                | Pour extension future       |
 | **LCD ST7789**    | MOSI       | GPIO 23  | Données SPI                | LCD_MOSI                    |
 | **LCD ST7789**    | SCLK       | GPIO 18  | Horloge SPI                | LCD_SCLK                    |
-| **LCD ST7789**    | CS         | GPIO 15  | Chip Select                | LCD_CS                      |
-| **LCD ST7789**    | DC         | GPIO 2   | Data/Command               | LCD_DC                      |
-| **LCD ST7789**    | RST        | GPIO 4   | Reset                      | LCD_RST                     |
-| **LCD ST7789**    | BLK        | GPIO 32  | Backlight                  | LCD_BLK                     |
-| **TB6612_PWMA**   | PWMA       | GPIO 12  | PWM Sens A                 | Contrôle intensité lumineuse|
-| **TB6612_AIN1**   | AIN1       | GPIO 25  | Direction bit 1            | Contrôle direction courant  |
-| **TB6612_AIN2**   | AIN2       | GPIO 33  | Direction bit 2            | Contrôle direction courant  |
-| **TB6612_STBY**   | STBY       | GPIO 14  | Standby                    | Activation module (HIGH)    |
+| **LCD ST7789**    | CS         | GPIO 5   | Chip Select                | LCD_CS                      |
+| **LCD ST7789**    | DC         | GPIO 27  | Data/Command               | LCD_DC                      |
+| **LCD ST7789**    | RST        | GPIO 33  | Reset                      | LCD_RST                     |
+| **LCD ST7789**    | BLK        | GPIO 32  | Backlight                  | LCD_BLK (DOIT être HIGH)    |
+| **TB6612_PWMA**   | PWMA       | GPIO 13  | PWM Sens A                 | Contrôle intensité lumineuse|
+| **TB6612_AIN1**   | AIN1       | GPIO 26  | Direction bit 1            | Contrôle direction courant  |
+| **TB6612_AIN2**   | AIN2       | GPIO 25  | Direction bit 2            | ⚠️ Déplacé pour éviter conflit avec LCD_BLK |
+| **TB6612_STBY**   | STBY       | GPIO 15  | Standby                    | Activation module (HIGH)    |
+| **MATRIX8X8**     | DIN        | GPIO 34  | WS2812B Data               | Pin dédié pour la matrice  |
 | **MOTION_SENSOR_PIN** | OUT        | GPIO 35  | Capteur de mouvement (PIR ou RCWL-0516, auto-détecté) | Voir docs pour détails |
 
 ### 🎨 Schéma de connexion LCD ST7789
@@ -41,10 +43,10 @@ ESP32 IdeaSpark      LCD ST7789
 ┌─────────┐        ┌──────────┐
 │ GPIO 23 ├───────►│ MOSI     │
 │ GPIO 18 ├───────►│ SCLK     │
-│ GPIO 15 ├───────►│ CS       │
-│ GPIO 2  ├───────►│ DC       │
-│ GPIO 4  ├───────►│ RST      │
-│ GPIO 32 ├───────►│ BLK      │
+│ GPIO 5  ├───────►│ CS       │
+│ GPIO 27 ├───────►│ DC       │
+│ GPIO 33 ├───────►│ RST      │
+│ GPIO 32 ├───────►│ BLK      │ ⚠️ DOIT être à HIGH pour voir l'image
 │   3V3   ├───────►│ VCC      │
 │   GND   ├───────►│ GND      │
 └─────────┘        └──────────┘
@@ -55,10 +57,10 @@ ESP32 IdeaSpark      LCD ST7789
 ```
 ESP32 IdeaSpark      TB6612FNG              Guirlande LED
 ┌─────────┐        ┌──────────┐           ┌──────────┐
-│ GPIO 12 ├───────►│ PWMA     │           │          │
-│ GPIO 25 ├───────►│ AIN1     │           │          │
-│ GPIO 33 ├───────►│ AIN2     │           │          │
-│ GPIO 14 ├───────►│ STBY     │           │          │
+│ GPIO 13 ├───────►│ PWMA     │           │          │
+│ GPIO 26 ├───────►│ AIN1     │           │          │
+│ GPIO 25 ├───────►│ AIN2     │           │          │ ⚠️ Déplacé sur GPIO 25
+│ GPIO 15 ├───────►│ STBY     │           │          │
 │   3V3   ├───────►│ VCC      │           │          │
 │   GND   ├───────►│ GND      ├──────────►│ GND (-)  │
 │         │    ┌──►│ VM       │           │          │
@@ -72,6 +74,17 @@ ESP32 IdeaSpark      TB6612FNG              Guirlande LED
        │  +   ├──────┘
        │  -   ├────────────────────────────►GND commun
        └──────┘
+```
+
+### 🌈 Schéma de connexion Matrice NeoPixel 8x8
+
+```
+ESP32 IdeaSpark      Matrice WS2812B 8x8
+┌─────────┐        ┌──────────┐
+│ GPIO 34 ├───────►│ DIN      │
+│   5V    ├───────►│ VCC      │ (Alimentation externe recommandée)
+│   GND   ├───────►│ GND      │
+└─────────┘        └──────────┘
 ```
 
 ---

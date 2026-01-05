@@ -1,3 +1,96 @@
+# [1.12.0] – 2026-01-05
+
+### Changed (MAJOR - Pin Mapping Change)
+
+**NeoPixel 8x8 Matrix - Pin Change**
+- **Modification**: MATRIX8X8_PIN moved from GPIO 13 to GPIO 34
+- **Reason**: Eliminated pin sharing conflict with TB6612_PWMA (GPIO 13)
+- **Impact**: 
+  - NeoPixel 8x8 matrix now operates on dedicated pin (GPIO 34)
+  - No more conflict between garland (TB6612_PWMA) and matrix
+  - Both peripherals can operate simultaneously without issues
+- **Required Action**: 
+  - ⚠️ **Physical wiring must be changed**: Move matrix data wire from GPIO 13 to GPIO 34
+  - Recompile and upload firmware
+- **Files**: [include/board_config.h](include/board_config.h)
+
+### Version
+
+- **SEMVER Classification**: MAJOR (1.12.0) - Hardware pin mapping change requiring physical reconfiguration
+
+---
+
+# [1.11.4] – 2026-01-05
+
+### Fixed (PATCH - Web Interface and Code Architecture)
+
+**1. Header File Structure**
+- **Issue**: File `include/web_pages.h` contained executable code (`html +=` statements) instead of function declarations
+- **Error**: `error: 'html' does not name a type` during compilation
+- **Solution**: Complete cleanup of `web_pages.h` (162 lines → 35 lines) to keep only function declarations
+- **Impact**: Clean architecture compliant with C++ standards (header/source separation)
+- **Files**: [include/web_pages.h](include/web_pages.h)
+
+**2. Global Constant Declarations**
+- **Issue**: Constant `WEB_STYLES` in `include/web_styles.h` caused multiple definition errors
+- **Error**: Multiple definition error during linking
+- **Solution**: Added `static constexpr` to ensure single definition
+- **Files**: [include/web_styles.h](include/web_styles.h)
+
+**3. Header Include Order**
+- **Issue**: `#include "web_pages.h"` was placed after code using it in `src/web_pages.cpp`
+- **Solution**: Moved include to the beginning of source file
+- **Impact**: Proper dependency resolution
+- **Files**: [src/web_pages.cpp](src/web_pages.cpp)
+
+**4. Web Interface - Complete Rebuild**
+- **Issue**: All web interface commands were missing (animations, detector, screen, 8x8 matrix)
+- **Solution**: Complete reconstruction of `generateDashboardPage()` function with:
+  - Garland animation selector (radio buttons for each animation)
+  - Operation modes (MANUAL, AUTO, MOTION) with parameters
+  - Auto interval and motion duration settings
+  - Matrix 8x8 controls (animation selection + brightness slider)
+  - LCD display modes (selector with preview)
+  - Save/Load/Erase configuration buttons
+  - System information (Chip ID, Flash, RAM, PSRAM, CPU)
+  - WiFi information (SSID, IP, signal)
+  - JavaScript handlers for all interactions
+- **Impact**: Complete and functional user interface
+- **Files**: [src/web_pages.cpp](src/web_pages.cpp)
+
+**5. Display Mode Management**
+- **Issue**: HTTP parameter for display mode was named `"mode"` instead of `"id"`
+- **Solution**: Modified `handleSetDisplayMode()` to accept `"id"` parameter
+- **Impact**: Consistency with other endpoints and web interface
+- **Files**: [src/web_interface.cpp](src/web_interface.cpp)
+
+**6. Display Mode Name Retrieval Function**
+- **Issue**: Function `getDisplayModeNameById(int id)` was missing for displaying names in interface
+- **Error**: `'getDisplayModeNameById' was not declared in this scope`
+- **Solution**: Added function in `garland_control.cpp` and declaration in `garland_control.h`
+- **Impact**: Correct labels in display mode selector
+- **Files**: [src/garland_control.cpp](src/garland_control.cpp), [include/garland_control.h](include/garland_control.h)
+
+**7. C++ Syntax Correction**
+- **Issue**: Function `getDisplayModeNameById()` was initially nested inside `getDisplayModeName()`
+- **Error**: `a function-definition is not allowed here before '{' token`
+- **Solution**: Restructured to place both functions at same indentation level
+- **Impact**: Code compliant with C++ syntax rules
+- **Files**: [src/garland_control.cpp](src/garland_control.cpp)
+
+### Build
+
+**Result**: ✅ Build successful
+- RAM: 15.8% (51,644 / 327,680 bytes)
+- Flash: 79.9% (1,047,189 / 1,310,720 bytes)
+- Firmware generated: `firmware.bin` ready for upload
+
+### Version
+
+- **SEMVER Classification**: PATCH (1.11.4) - Architecture bug fixes and restoration of missing functionality
+
+---
+
 # [1.11.3] – 2026-01-01
 
 ### Fixed (PATCH - Animation Quality Improvements)

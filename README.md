@@ -28,7 +28,7 @@ pio run -e esp32s3_n16r8 -t upload
 ---
 # LED-Garland-Anim
 
-**Version: 1.10.0** (2026-01-01)
+**Version: 1.12.0** (2026-01-05)
 
 Controller for bi-directional LED garland and 8x8 NeoPixel matrix animation on ESP32 Classic (IdeaSpark/DevKitC) with ST7789 display, auto-detection of PIR/RCWL-0516, modern web interface with radio buttons, responsive 2-column layout, and flash-free AJAX updates, web-based OTA updates, physical buttons, 11 garland animations, 39 festive matrix animations (Christmas, New Year, Easter, Campfire, Radar), dual independent control, smart modes, persistent configuration, automatic startup animations.
 
@@ -46,18 +46,18 @@ Controller for bi-directional LED garland and 8x8 NeoPixel matrix animation on E
 
 ### Main pinout summary (ESP32 Classic)
 TB6612FNG (Garland):
-  PWMA  → GPIO 12
-  AIN1  → GPIO 25
-  AIN2  → GPIO 33
-  STBY  → GPIO 14
+  PWMA  → GPIO 13
+  AIN1  → GPIO 26
+  AIN2  → GPIO 25
+  STBY  → GPIO 15
 8x8 NeoPixel Matrix:
-  DATA  → GPIO 13
+  DATA  → GPIO 34
 MOTION_SENSOR_PIN (PIR/RCWL-0516) → GPIO 35
 LCD_MOSI → GPIO 23
 LCD_SCLK → GPIO 18
-LCD_CS   → GPIO 15
-LCD_DC   → GPIO 2
-LCD_RST  → GPIO 4
+LCD_CS   → GPIO 5
+LCD_DC   → GPIO 27
+LCD_RST  → GPIO 33
 LCD_BLK  → GPIO 32
 BTN1     → GPIO 16
 BTN2     → GPIO 17
@@ -68,12 +68,21 @@ BTN2     → GPIO 17
 
 - **Dual LED Control**: 2-wire LED garland + 8x8 NeoPixel matrix with independent control
 - **48 Total Animations**: 11 for garland + 37 festive animations for 8x8 matrix
+- **3 Display Modes (Screen)**:
+   - **Animated**: Classic animated visuals (default)
+   - **Static**: Fixed display (project name, version, SSID, IP)
+   - **Off**: Screen and backlight fully off
+- **Display Mode Selection**:
+   - Selectable live from the web UI (radio buttons)
+   - Default value set in `config.h`
+   - Persistent (saved in NVS, restored at boot)
+   - Immediate effect, no reboot required
 - **37 Matrix Animations** organized by theme:
-  - **Original (10)**: Star, Meteor, Shooting Star, Santa, Tree, Bell, Snow, Gift, Candle, Snowflake
-  - **Christmas (10)**: Candy Cane, Wreath, Stocking, Reindeer, Gingerbread, Hot Cocoa, Fireplace, Icicles, Northern Lights, Presents
-  - **New Year (7)**: Fireworks, Champagne, Countdown, Confetti, Clock, Party Popper, Disco Ball
-  - **Easter (4)**: Easter Egg, Bunny, Chick, Flowers
-  - **Modern/Abstract (6)**: Rainbow Wave, Sparkle Rain, Plasma, Matrix Rain, Spiral, Heart, Stars Field
+   - **Original (10)**: Star, Meteor, Shooting Star, Santa, Tree, Bell, Snow, Gift, Candle, Snowflake
+   - **Christmas (10)**: Candy Cane, Wreath, Stocking, Reindeer, Gingerbread, Hot Cocoa, Fireplace, Icicles, Northern Lights, Presents
+   - **New Year (7)**: Fireworks, Champagne, Countdown, Confetti, Clock, Party Popper, Disco Ball
+   - **Easter (4)**: Easter Egg, Bunny, Chick, Flowers
+   - **Modern/Abstract (6)**: Rainbow Wave, Sparkle Rain, Plasma, Matrix Rain, Spiral, Heart, Stars Field
 - **Matrix Brightness Control**: Independent brightness adjustment (0-255) for the matrix
 - **Startup Animation**: Sparkling star animation on matrix at boot
 - **3 Smart Operating Modes**: Permanent (both always on), Motion Trigger (both follow motion), Motion Independent (garland follows motion, matrix always on)
@@ -115,36 +124,14 @@ BTN2     → GPIO 17
 
 ---
 
-## 5. Usage
-
-### Startup
-1. The garland starts with a **10-second intro animation** (Fade Alternate)
-2. After the intro, it automatically switches to the saved animation and mode
-3. The display shows WiFi progress then the IP address
-4. Web access: `http://[ESP32_IP]`
-5. **Note:** The intro animation starts immediately, even in motion detection mode
-
-### Physical controls
-- **Button 1**: Next animation / auto mode
-- **Button 2**: Change mode
-- **BOOT button**: Restart (long press)
-
-### Web interface
-- Dashboard, animation/mode selection, sensor visualization, remote actions
-- **Inline confirmations** for save/restore/erase operations (no blocking popups)
-- **Double-click confirmation** for reboot (safety feature)
-
-### Telegram bot (optional)
-- Commands `/anim`, `/mode`, `/nextanim`, `/nextmode`, `/status`, `/list`
-
----
-
-
-
-
-## 6. OTA Updates (Over-the-Air)
-
-See the detailed guide: [docs/OTA_UPDATE.md](docs/OTA_UPDATE.md)
+- **Web Interface**
+   - Modern UI with radio button grids for all selections
+   - Responsive layout (2 columns desktop, 1 column mobile)
+   - Instant updates, no page reloads
+   - **Display Mode**: Select between Animated, Static, Off (immediate effect)
+   - All settings (animation, mode, display mode, durations) are persistent and restored at boot
+   - SSID and IP always visible
+   - Save/Restore/Erase configuration actions
 
 The firmware supports **two OTA update methods**:
 

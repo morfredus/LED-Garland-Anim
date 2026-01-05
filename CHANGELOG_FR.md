@@ -1,3 +1,96 @@
+# [1.12.0] – 2026-01-05
+
+### Modifié (MAJEUR - Changement de Pin Mapping)
+
+**Matrice NeoPixel 8x8 - Changement de Pin**
+- **Modification** : Pin MATRIX8X8_PIN déplacé de GPIO 13 vers GPIO 34
+- **Raison** : Élimination du conflit de partage de pin avec TB6612_PWMA (GPIO 13)
+- **Impact** : 
+  - La matrice NeoPixel 8x8 fonctionne maintenant sur un pin dédié (GPIO 34)
+  - Plus de conflit entre la guirlande (TB6612_PWMA) et la matrice
+  - Les deux périphériques peuvent fonctionner simultanément sans problème
+- **Action requise** : 
+  - ⚠️ **Câblage physique à modifier** : Déplacer le fil de données de la matrice de GPIO 13 vers GPIO 34
+  - Recompiler et téléverser le firmware
+- **Fichiers** : [include/board_config.h](include/board_config.h)
+
+### Version
+
+- **Classification SEMVER** : MAJEUR (1.12.0) - Changement de pin mapping matériel nécessitant reconfiguration physique
+
+---
+
+# [1.11.4] – 2026-01-05
+
+### Corrigé (PATCH - Interface Web et Architecture du Code)
+
+**1. Structure des Fichiers d'En-tête (Headers)**
+- **Problème** : Le fichier `include/web_pages.h` contenait du code exécutable (instructions `html +=`) au lieu de simples déclarations
+- **Erreur** : `error: 'html' does not name a type` lors de la compilation
+- **Solution** : Nettoyage complet de `web_pages.h` (162 lignes → 35 lignes) pour ne conserver que les déclarations de fonctions
+- **Impact** : Architecture propre et conforme aux standards C++ (séparation header/source)
+- **Fichiers** : [include/web_pages.h](include/web_pages.h)
+
+**2. Déclarations de Constantes Globales**
+- **Problème** : La constante `WEB_STYLES` dans `include/web_styles.h` causait des erreurs de définitions multiples
+- **Erreur** : Multiple definition error lors du link
+- **Solution** : Ajout de `static constexpr` pour garantir une définition unique
+- **Fichiers** : [include/web_styles.h](include/web_styles.h)
+
+**3. Ordre d'Inclusion des Headers**
+- **Problème** : `#include "web_pages.h"` était placé après du code qui l'utilisait dans `src/web_pages.cpp`
+- **Solution** : Déplacement de l'include au début du fichier source
+- **Impact** : Résolution des dépendances correcte
+- **Fichiers** : [src/web_pages.cpp](src/web_pages.cpp)
+
+**4. Interface Web - Reconstruction Complète**
+- **Problème** : Toutes les commandes de l'interface web étaient manquantes (animations, détecteur, écran, matrice 8x8)
+- **Solution** : Reconstruction complète de la fonction `generateDashboardPage()` avec :
+  - Sélecteur d'animations de guirlande (boutons radio pour chaque animation)
+  - Modes de fonctionnement (MANUAL, AUTO, MOTION) avec paramètres
+  - Réglages d'intervalle automatique et durée de détection
+  - Contrôles de la matrice 8x8 (sélection animation + curseur de luminosité)
+  - Modes d'affichage LCD (sélecteur avec aperçu)
+  - Boutons Save/Load/Erase configuration
+  - Informations système (Chip ID, Flash, RAM, PSRAM, CPU)
+  - Informations WiFi (SSID, IP, signal)
+  - Handlers JavaScript pour toutes les interactions
+- **Impact** : Interface utilisateur complète et fonctionnelle
+- **Fichiers** : [src/web_pages.cpp](src/web_pages.cpp)
+
+**5. Gestion des Modes d'Affichage**
+- **Problème** : Le paramètre HTTP pour le mode d'affichage était nommé `"mode"` au lieu de `"id"`
+- **Solution** : Modification de `handleSetDisplayMode()` pour accepter le paramètre `"id"`
+- **Impact** : Cohérence avec les autres endpoints et l'interface web
+- **Fichiers** : [src/web_interface.cpp](src/web_interface.cpp)
+
+**6. Fonction de Récupération des Noms de Modes**
+- **Problème** : Fonction `getDisplayModeNameById(int id)` manquante pour l'affichage des noms dans l'interface
+- **Erreur** : `'getDisplayModeNameById' was not declared in this scope`
+- **Solution** : Ajout de la fonction dans `garland_control.cpp` et déclaration dans `garland_control.h`
+- **Impact** : Labels corrects dans le sélecteur de modes d'affichage
+- **Fichiers** : [src/garland_control.cpp](src/garland_control.cpp), [include/garland_control.h](include/garland_control.h)
+
+**7. Correction Syntaxe C++**
+- **Problème** : La fonction `getDisplayModeNameById()` était initialement imbriquée à l'intérieur de `getDisplayModeName()`
+- **Erreur** : `a function-definition is not allowed here before '{' token`
+- **Solution** : Restructuration pour placer les deux fonctions au même niveau d'indentation
+- **Impact** : Code conforme aux règles de syntaxe C++
+- **Fichiers** : [src/garland_control.cpp](src/garland_control.cpp)
+
+### Compilation
+
+**Résultat** : ✅ Build réussi
+- RAM : 15.8% (51,644 / 327,680 bytes)
+- Flash : 79.9% (1,047,189 / 1,310,720 bytes)
+- Firmware généré : `firmware.bin` prêt pour upload
+
+### Version
+
+- **Classification SEMVER** : PATCH (1.11.4) - Corrections de bugs d'architecture et restauration de fonctionnalités manquantes
+
+---
+
 # [1.11.3] – 2026-01-01
 
 ### Corrections (PATCH - Améliorations Qualité des Animations)
