@@ -6,6 +6,39 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
 et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/spec/v2.0.0.html).
 
 ---
+# [3.0.1] - 2026-01-06
+
+## 🐛 Corrigé
+
+**Bug d'affichage TFT - Bordure d'animation**
+- **Problème** : La bordure du carré d'animation et la ligne de séparation cyan disparaissaient dès le début de l'animation
+- **Cause racine** : `fillRect` dans `updateAnimationVisual()` effaçait trop de zone, débordant sur les lignes de bordure
+  - Marges utilisées : `animX + 1, animY + 1, animWidth - 2, animHeight - 2`
+  - Épaisseur bordure : 1 pixel → pas assez de dégagement
+- **Solution** : Augmentation des marges de sécurité dans l'opération de remplissage
+  - Changé en : `animX + 2, animY + 2, animWidth - 4, animHeight - 4`
+  - Fournit un dégagement de 2 pixels des bordures au lieu de 1 pixel
+  - Empêche le rendu d'animation d'effacer les bordures du rectangle et la ligne cyan
+- **Fichier** : [src/display.cpp](src/display.cpp#L265)
+- **Impact** : Le carré d'animation et la ligne de séparation restent maintenant visibles pendant toutes les animations
+
+## 🔧 Technique
+
+**Fichiers modifiés** :
+- [src/display.cpp](src/display.cpp) : Correction des marges fillRect dans fonction `updateAnimationVisual()`
+- Version mise à jour à 3.0.1 dans tous les fichiers du projet
+
+**Statistiques de compilation** :
+- Attendu : Similaire à v3.0.0 (Flash ~81,3%, RAM 15,8%)
+
+### Classification de version
+
+**SEMVER** : 3.0.1 (PATCH)
+- **Justification** : Correction de bug uniquement - pas de changements majeurs, pas de nouvelles fonctionnalités
+- **Portée** : Correction du rendu d'affichage
+
+---
+
 
 # [3.0.0] - 2026-01-06
 

@@ -18,7 +18,7 @@ String generateDashboardPage(uint32_t chipId, uint32_t flashSize, uint32_t flash
     html += "</div>";
     
     html += "<div class='container'>";
-    html += "<div class='header'><h1>🎄 LED Garland Control v3.0</h1></div>";
+    html += "<div class='header'><h1>🎄 LED Garland Control v3.0.1</h1></div>";
     
     // ============================================================================
     // CARTE 1 : ANIMATIONS GUIRLANDE (EN PREMIER)

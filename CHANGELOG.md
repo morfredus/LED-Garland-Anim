@@ -7,6 +7,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+# [3.0.1] - 2026-01-06
+
+## 🐛 Fixed
+
+**TFT Display Animation Border Bug**
+- **Problem**: Animation box border and cyan separation line disappeared when animation started rendering
+- **Root Cause**: `fillRect` in `updateAnimationVisual()` erased too much area, overlapping with border lines
+  - Used margins: `animX + 1, animY + 1, animWidth - 2, animHeight - 2`
+  - Border thickness: 1 pixel → not enough clearance
+- **Solution**: Increased safety margins in fill operation
+  - Changed to: `animX + 2, animY + 2, animWidth - 4, animHeight - 4`
+  - Provides 2-pixel clearance from borders instead of 1 pixel
+  - Prevents animation rendering from erasing rectangle borders and cyan line
+- **File**: [src/display.cpp](src/display.cpp#L265)
+- **Impact**: Animation box and separation line now remain visible during all animations
+
+## 🔧 Technical
+
+**Files Modified**:
+- [src/display.cpp](src/display.cpp): Fixed fillRect margins in `updateAnimationVisual()` function
+- Version updated to 3.0.1 across all project files
+
+**Compilation Statistics**:
+- Expected: Similar to v3.0.0 (Flash ~81.3%, RAM 15.8%)
+
+### Version Classification
+
+**SEMVER**: 3.0.1 (PATCH)
+- **Justification**: Bug fix only - no breaking changes, no new features
+- **Scope**: Display rendering correction
+
+---
+
 # [3.0.0] - 2026-01-06
 
 ## 💥 BREAKING CHANGES (MAJOR)

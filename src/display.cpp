@@ -1,7 +1,7 @@
 /**
  * @file display.cpp
  * @brief Implémentation du module de gestion de l'écran ST7789
- * @version 3.0.0
+ * @version 3.0.1
  * @date 2026-01-06
  */
 
@@ -258,8 +258,8 @@ void updateAnimationVisual(const char* animationName, bool hasMatrix) {
     int animWidth = ST7789_WIDTH - 6;  // 240 - 6 = 234
     int animHeight = hasMatrix ? ST7789_HEIGHT - 90 : ST7789_HEIGHT - 78;  // Hauteur réduite si matrice affichée
 
-    // Effacer la zone d'animation (garder le rectangle)
-    display.fillRect(animX + 1, animY + 1, animWidth - 2, animHeight - 2, COLOR_BLACK);
+    // Effacer la zone d'animation (garder le rectangle avec marge de sécurité)
+    display.fillRect(animX + 2, animY + 2, animWidth - 4, animHeight - 4, COLOR_BLACK);
 
     // Animation "Éteint" : afficher seulement le texte
     if (strcmp(animationName, "Eteint") == 0) {
