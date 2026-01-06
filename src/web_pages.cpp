@@ -18,7 +18,8 @@ String generateDashboardPage(uint32_t chipId, uint32_t flashSize, uint32_t flash
     html += "</div>";
     
     html += "<div class='container'>";
-    html += "<div class='header'><h1>🎄 LED Garland Control v3.0.2</h1></div>";
+    html += "<div class='header'><h1>🎄 LED Garland Control v3.0.2</h1>";
+    html += "<div class='view-toggle'><span class='toggle-label'>Mode compact</span><label class='switch'><input type='checkbox' id='compactToggle'><span class='slider'></span></label></div></div>";
     
     // ============================================================================
     // CARTE 1 : ANIMATIONS GUIRLANDE (EN PREMIER)
@@ -243,6 +244,10 @@ String generateDashboardPage(uint32_t chipId, uint32_t flashSize, uint32_t flash
     html += "    fetch('/reboot'); document.getElementById('reboot-message').textContent = '✅ Redémarrage...'; document.getElementById('reboot-message').style.background = '#d4edda'; document.getElementById('reboot-message').style.color = '#155724';";
     html += "  }";
     html += "}";
+
+    // Mode compact (toggle CSS overrides)
+    html += "function applyCompactMode(enabled) { document.body.classList.toggle('compact-mode', enabled); localStorage.setItem('compactMode', enabled ? '1' : '0'); }";
+    html += "document.addEventListener('DOMContentLoaded', function() { var toggle = document.getElementById('compactToggle'); if (!toggle) return; var saved = localStorage.getItem('compactMode') === '1'; toggle.checked = saved; applyCompactMode(saved); toggle.addEventListener('change', function() { applyCompactMode(this.checked); }); });";
     html += "</script>";
     
     html += "</div></body></html>";
