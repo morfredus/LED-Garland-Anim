@@ -2,7 +2,7 @@
 /**
  * @file main.cpp
  * @brief Point d'entrée principal du projet LED-Garland-Anim
- * @version 1.12.0
+ * @version 1.12.1
  * @date 2026-01-01
  *
  * OTA support: ArduinoOTA (upload firmware over WiFi) + Web OTA (Update.h)
@@ -40,7 +40,7 @@ bool ledState = false;
 
 // Variables pour l'animation ST7789
 unsigned long lastDisplayUpdate = 0;
-const long displayUpdateInterval = 100;  // Mise à jour animation ST7789 toutes les 100ms
+const long displayUpdateInterval = 200;  // Mise à jour animation ST7789 toutes les 200ms (allège la charge SPI)
 
 // --- CALLBACKS BOUTONS ---
 

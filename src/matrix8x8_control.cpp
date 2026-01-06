@@ -1,7 +1,7 @@
 /**
  * @file matrix8x8_control.cpp
  * @brief Implementation of 8x8 NeoPixel matrix control with festive animations
- * @version 1.12.0
+ * @version 1.12.1
  * @date 2026-01-06
  */
 
@@ -1960,6 +1960,14 @@ void setupMatrix8x8() {
 }
 
 void updateMatrix8x8() {
+    // Throttle to keep UI fluid and avoid saturating CPU
+    static unsigned long lastMatrixUpdate = 0;
+    unsigned long now = millis();
+    if (now - lastMatrixUpdate < 15) {
+        return;
+    }
+    lastMatrixUpdate = now;
+
     // Get current garland mode to determine matrix behavior
     GarlandMode mode = getGarlandMode();
 

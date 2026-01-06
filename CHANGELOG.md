@@ -1,3 +1,13 @@
+# [1.12.1] – 2026-01-06
+
+### Changed (PATCH - Performance / Responsiveness)
+- Throttled 8x8 matrix refresh to a minimum 15 ms step to avoid loop saturation while keeping visuals intact.
+- Throttled garland animation engine to a minimum 10 ms step to reduce CPU load without changing behaviors.
+- ST7789 animated screen refresh set to 200 ms (previously 100 ms) to lower SPI overhead.
+- No functional changes; goal is smoother UI/loop responsiveness.
+- Release notes: [docs/RELEASE_v1.12.1.md](docs/RELEASE_v1.12.1.md)
+- **SEMVER Classification**: PATCH (1.12.1) - performance tuning only.
+
 # [1.12.0] – 2026-01-06
 
 ### Added (MINOR - mDNS Support for Easy Access)
@@ -36,7 +46,7 @@
 - Comprehensive mDNS documentation added to `README.md` and `README_FR.md`
 - New section "Web Interface and Network Access" with access methods
 - Updated all version numbers to 1.12.0
-- Created release notes: [RELEASE_v1.12.0.md](RELEASE_v1.12.0.md)
+- Created release notes: [docs/RELEASE_v1.12.0.md](docs/RELEASE_v1.12.0.md)
 - Restructured README sections for better organization
 
 **Version Bumps**

@@ -1,3 +1,13 @@
+# [1.12.1] – 2026-01-06
+
+### Modifié (PATCH - Performance / Fluidité)
+- Rafraîchissement de la matrice 8x8 limité à un pas minimal de 15 ms pour éviter de saturer la loop tout en gardant le visuel identique.
+- Boucle d’animation guirlande bridée à 10 ms minimum pour réduire la charge CPU sans changer le comportement.
+- Rafraîchissement de l’écran ST7789 animé passé à 200 ms (au lieu de 100 ms) pour alléger le SPI.
+- Aucun changement fonctionnel ; objectif : une loop plus fluide.
+- Notes de version : [docs/RELEASE_v1.12.1.md](docs/RELEASE_v1.12.1.md)
+- **Classification SEMVER** : PATCH (1.12.1) - optimisation de performance uniquement.
+
 # [1.12.0] – 2026-01-06
 
 ### Ajouté (MINEUR - Support mDNS pour un Accès Facile)
@@ -36,7 +46,7 @@
 - Documentation mDNS complète ajoutée à `README.md` et `README_FR.md`
 - Nouvelle section "Interface Web et Accès Réseau" avec les méthodes d'accès
 - Tous les numéros de version mis à jour vers 1.12.0
-- Notes de version créées : [RELEASE_v1.12.0.md](RELEASE_v1.12.0.md)
+- Notes de version créées : [docs/RELEASE_v1.12.0.md](docs/RELEASE_v1.12.0.md)
 - Restructuration des sections README pour une meilleure organisation
 
 **Mise à Jour des Versions**

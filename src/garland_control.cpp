@@ -1,7 +1,7 @@
 /**
  * @file garland_control.cpp
  * @brief Implémentation du contrôle des animations de guirlande
- * @version 1.12.0
+ * @version 1.12.1
  * @date 2026-01-06
  */
 
@@ -590,6 +590,14 @@ void setupGarland() {
 }
 
 void updateGarland() {
+    // Throttle global to avoid monopolizing loop while keeping animations smooth
+    static unsigned long lastUpdate = 0;
+    unsigned long now = millis();
+    if (now - lastUpdate < 10) {
+        return;
+    }
+    lastUpdate = now;
+
     // Vérifier si l'animation d'intro est terminée
     if (introAnimationActive) {
         unsigned long elapsed = millis() - bootTime;
