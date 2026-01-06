@@ -1,7 +1,7 @@
 /**
  * @file display.h
  * @brief Module de gestion de l'écran ST7789 (ESP32 IdeaSpark 1.14" LCD)
- * @version 4.0.0
+ * @version 5.0.0
  * @date 2026-01-06
  *
  * Ce module fournit une interface pour gérer l'affichage sur l'écran
@@ -63,14 +63,13 @@ void setupDisplay();
 void displayBootScreen(const char* projectName, const char* projectVersion, int wifiProgress = -1);
 
 /**
- * @brief Affiche l'écran principal avec les informations système
+ * @brief Affiche l'écran principal animé avec le style festif
  *
  * Affiche :
- * - En-tête (Nom + Version)
- * - SSID + IP
- * - Mode (Manuel / Auto / Permanent)
- * - Animation en cours
- * - Zone graphique représentant l'animation active
+ * - En-tête (Nom + Version) dans un bandeau décoré
+ * - Mode, animation guirlande, animation matrice (si présente)
+ * - SSID + IP dans un panneau textuel
+ * - Zone graphique d'animation réduite, encadrée et décorée
  *
  * @param ssid Nom du réseau WiFi connecté
  * @param ip Adresse IP locale

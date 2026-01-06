@@ -13,7 +13,7 @@ Le système utilise la NVS (mémoire non-volatile) de l’ESP32 pour sauvegarder
 - Les réglages sont conservés même après redémarrage ou coupure d’alimentation.
 
 **Aucune action requise de l’utilisateur** : la gestion est entièrement automatique.
-# Guide Utilisateur - LED-Garland-Anim v4.0.0
+# Guide Utilisateur - LED-Garland-Anim v5.0.0
 ## 🚦 Détection automatique du capteur de mouvement
 
 À partir de la version 1.11.0, le système détecte automatiquement si un capteur PIR (HC-SR501) ou un capteur radar Doppler (RCWL-0516) est connecté sur le GPIO 35 :
@@ -30,7 +30,7 @@ Guide utilisateur complet pour le contrôleur d'animation de guirlande LED (ESP3
 
 ## Table des Matières
 
-- [Guide Utilisateur - LED-Garland-Anim v4.0.0](#guide-utilisateur---led-garland-anim-v400)
+- [Guide Utilisateur - LED-Garland-Anim v5.0.0](#guide-utilisateur---led-garland-anim-v500)
   - [🚦 Détection automatique du capteur de mouvement](#-détection-automatique-du-capteur-de-mouvement)
   - [Table des Matières](#table-des-matières)
   - [Mises à jour OTA](#mises-à-jour-ota)
@@ -101,7 +101,7 @@ Exemple : `192.168.1.100`
 ## Affichage LCD ST7789
 - Écran couleur 1.14" 135x240px
 - **3 modes d’affichage sélectionnables** :
-  - **Animé** : Visuels animés classiques (par défaut)
+  - **Animé (v5.0.0)** : Style festif identique au statique (fond texturé, cadres ruban, scintillements, double guirlande) avec cartouche Mode/Anim guirlande/Anim matrice/SSID/IP et **fenêtre d’animation réduite** « Mini show »
   - **Statique** : Tableau de bord festif affichant nom du projet, version, SSID, IP et mDNS (`*.local`)
   - **Éteint** : Écran et rétroéclairage coupés
 - Sélection à la volée depuis l’interface web (radio)
@@ -135,4 +135,4 @@ Voir [TROUBLESHOOTING_FR.md](TROUBLESHOOTING_FR.md) pour l'aide.
 
 ---
 
-**Version du document : v4.0.0 (2026-01-06)**
+**Version du document : v5.0.0 (2026-01-06)**

@@ -1,7 +1,7 @@
 /**
  * @file display.cpp
  * @brief Implémentation du module de gestion de l'écran ST7789
- * @version 4.0.0
+ * @version 5.0.0
  * @date 2026-01-06
  */
 
@@ -150,6 +150,24 @@ Adafruit_ST7789 display = Adafruit_ST7789(LCD_CS, LCD_DC, LCD_RST);
 // =============================================================================
 static uint8_t animFrame = 0;  // Frame d'animation pour les effets visuels
 
+struct AnimationViewport {
+    int x;
+    int y;
+    int w;
+    int h;
+    bool initialized;
+};
+
+static AnimationViewport animViewport = {3, 74, ST7789_WIDTH - 6, ST7789_HEIGHT - 78, false};
+
+static void setAnimationViewport(int x, int y, int w, int h) {
+    animViewport.x = x;
+    animViewport.y = y;
+    animViewport.w = w;
+    animViewport.h = h;
+    animViewport.initialized = true;
+}
+
 // =============================================================================
 // FONCTIONS PUBLIQUES
 // =============================================================================
@@ -228,113 +246,165 @@ void displayBootScreen(const char* projectName, const char* projectVersion, int 
 }
 
 void displayMainScreen(const char* ssid, IPAddress ip, const char* modeName, const char* animationName, const char* matrixAnimationName) {
-    display.fillScreen(COLOR_BLACK);
+    const uint16_t deepNight = display.color565(5, 12, 24);
+    const uint16_t stripe = display.color565(8, 28, 48);
+    const uint16_t panelDark = display.color565(10, 22, 42);
+    const uint16_t panelBright = display.color565(22, 62, 118);
 
-    int16_t x1, y1;
-    uint16_t w, h;
+    display.setTextWrap(false);
 
-    // --- NOM DE L'APPLICATION (ligne 1, centré) ---
+    // Fond texturé façon écran statique
+    display.fillScreen(deepNight);
+    for (int y = 0; y < ST7789_HEIGHT; y += 8) {
+        display.drawFastHLine(0, y, ST7789_WIDTH, stripe);
+    }
+
+    // Cadres principaux
+    display.drawRoundRect(4, 4, ST7789_WIDTH - 8, ST7789_HEIGHT - 8, 12, COLOR_CYAN);
+    display.drawRoundRect(9, 9, ST7789_WIDTH - 18, ST7789_HEIGHT - 18, 10, COLOR_PURPLE);
+
+    auto drawSparkle = [&](int x, int y, uint16_t color) {
+        display.drawPixel(x, y, color);
+        display.drawFastHLine(x - 2, y, 5, color);
+        display.drawFastVLine(x, y - 2, 5, color);
+        display.drawLine(x - 2, y - 2, x + 2, y + 2, color);
+        display.drawLine(x - 2, y + 2, x + 2, y - 2, color);
+    };
+
+    auto drawFestiveGarland = [&](int yBase) {
+        int prevX = 12;
+        int prevY = yBase;
+        for (int i = 0; i <= 12; i++) {
+            const int x = 12 + i * 18;
+            const int y = yBase + (int)(sin(i * 0.7f) * 6);
+            display.drawLine(prevX, prevY, x, y, COLOR_GREEN);
+            const uint16_t bulbColor = (i % 3 == 0) ? COLOR_YELLOW : (i % 3 == 1 ? COLOR_MAGENTA : COLOR_CYAN);
+            display.fillCircle(x, y, 3, bulbColor);
+            display.drawCircle(x, y, 4, COLOR_WHITE);
+            prevX = x;
+            prevY = y;
+        }
+    };
+
+    auto centerText = [&](const String& text, int16_t y, uint8_t size, uint16_t color) {
+        int16_t x1, y1; uint16_t w, h;
+        display.setTextSize(size);
+        display.getTextBounds(text.c_str(), 0, 0, &x1, &y1, &w, &h);
+        const int16_t cx = (ST7789_WIDTH - w) / 2;
+        display.setCursor(cx, y);
+        display.setTextColor(color);
+        display.println(text);
+    };
+
+    // En-tête festif
+    const int headerY = 14;
+    display.fillRoundRect(14, headerY, ST7789_WIDTH - 28, 58, 12, panelBright);
+    display.drawRoundRect(14, headerY, ST7789_WIDTH - 28, 58, 12, COLOR_YELLOW);
+    centerText(PROJECT_NAME, headerY + 6, 2, COLOR_WHITE);
+    centerText("v" + String(PROJECT_VERSION), headerY + 34, 1, COLOR_CYAN);
+
+    // Décors
+    drawSparkle(18, 18, COLOR_YELLOW);
+    drawSparkle(ST7789_WIDTH - 18, 18, COLOR_ORANGE);
+    drawSparkle(18, ST7789_HEIGHT - 18, COLOR_CYAN);
+    drawSparkle(ST7789_WIDTH - 18, ST7789_HEIGHT - 18, COLOR_GREEN);
+    drawFestiveGarland(headerY + 64);
+
+    // Cartes info et mini-animation
+    const int margin = 8;
+    const int infoX = margin;
+    const int infoY = headerY + 74;
+    const int infoW = 128;
+    const int infoH = 170;
+
+    const int animPanelX = infoX + infoW + 8;
+    const int animPanelW = ST7789_WIDTH - animPanelX - margin;
+    const int animPanelY = infoY;
+    const int animPanelH = 128;
+
+    // Panneau info (mode + réseau)
+    display.fillRoundRect(infoX, infoY, infoW, infoH, 12, panelDark);
+    display.drawRoundRect(infoX, infoY, infoW, infoH, 12, COLOR_GREEN);
+    display.drawRoundRect(infoX + 3, infoY + 3, infoW - 6, infoH - 6, 10, COLOR_ORANGE);
+
     display.setTextSize(1);
-    display.setTextColor(COLOR_CYAN);
-    display.getTextBounds(PROJECT_NAME, 0, 0, &x1, &y1, &w, &h);
-    int centerX = (ST7789_WIDTH - w) / 2;
-    display.setCursor(centerX, 2);
-    display.println(PROJECT_NAME);
-
-    // --- VERSION (ligne 2, centrée) ---
-    String versionStr = "v" + String(PROJECT_VERSION);
+    display.setTextColor(COLOR_YELLOW);
+    display.setCursor(infoX + 10, infoY + 10);
+    display.println("Mode");
     display.setTextColor(COLOR_WHITE);
-    display.getTextBounds(versionStr.c_str(), 0, 0, &x1, &y1, &w, &h);
-    centerX = (ST7789_WIDTH - w) / 2;
-    display.setCursor(centerX, 12);
-    display.println(versionStr);
-
-    // --- LIGNE DE SÉPARATION 1 ---
-    display.drawLine(0, 22, ST7789_WIDTH, 22, COLOR_CYAN);
-
-    // --- MODE + ANIMATION GUIRLANDE (compact) ---
-    display.setTextSize(1);
-    display.setTextColor(COLOR_MAGENTA);
-    display.setCursor(3, 26);
-    display.print("Mode:");
-    display.setTextColor(COLOR_WHITE);
-    display.setCursor(35, 26);
+    display.setCursor(infoX + 10, infoY + 22);
     display.println(modeName);
 
     display.setTextColor(COLOR_ORANGE);
-    display.setCursor(3, 36);
-    display.print("Anim:");
+    display.setCursor(infoX + 10, infoY + 38);
+    display.println("Anim guirlande");
     display.setTextColor(COLOR_WHITE);
-    display.setCursor(35, 36);
+    display.setCursor(infoX + 10, infoY + 50);
     display.println(animationName);
 
-    // --- AFFICHER L'ANIMATION MATRICE SI DISPONIBLE ---
-    if (matrixAnimationName != nullptr) {
-        display.setTextColor(COLOR_RED);
-        display.setCursor(3, 46);
-        display.print("Matrix:");
-        display.setTextColor(COLOR_WHITE);
-        display.setCursor(40, 46);
-        display.println(matrixAnimationName);
-        // Décaler le reste de l'écran vers le bas
-        display.drawLine(0, 56, ST7789_WIDTH, 56, COLOR_CYAN);
-        display.setTextSize(1);
-        display.setTextColor(COLOR_YELLOW);
-        display.setCursor(3, 60);
-        display.print("SSID:");
-        display.setTextColor(COLOR_WHITE);
-        display.setCursor(35, 60);
-        display.println(ssid);
-        display.setTextColor(COLOR_GREEN);
-        display.setCursor(3, 70);
-        display.print("IP:");
-        display.setTextColor(COLOR_WHITE);
-        display.setCursor(35, 70);
-        display.println(ip.toString().c_str());
-        display.drawLine(0, 80, ST7789_WIDTH, 80, COLOR_CYAN);
-    } else {
-        // --- LIGNE DE SÉPARATION 2 ---
-        display.drawLine(0, 46, ST7789_WIDTH, 46, COLOR_CYAN);
+    display.setTextColor(COLOR_RED);
+    display.setCursor(infoX + 10, infoY + 66);
+    display.println("Anim matrice");
+    display.setTextColor(COLOR_WHITE);
+    display.setCursor(infoX + 10, infoY + 78);
+    display.println(matrixAnimationName != nullptr ? matrixAnimationName : "--");
 
-        // --- RÉSEAU WiFi : SSID + IP ---
-        display.setTextSize(1);
-        display.setTextColor(COLOR_YELLOW);
-        display.setCursor(3, 50);
-        display.print("SSID:");
-        display.setTextColor(COLOR_WHITE);
-        display.setCursor(35, 50);
-        display.println(ssid);
+    display.drawFastHLine(infoX + 8, infoY + 94, infoW - 16, COLOR_CYAN);
 
-        display.setTextColor(COLOR_GREEN);
-        display.setCursor(3, 60);
-        display.print("IP:");
-        display.setTextColor(COLOR_WHITE);
-        display.setCursor(35, 60);
-        display.println(ip.toString().c_str());
+    display.setTextColor(COLOR_YELLOW);
+    display.setCursor(infoX + 10, infoY + 104);
+    display.print("SSID: ");
+    display.setTextColor(COLOR_WHITE);
+    display.println(ssid);
 
-        // --- LIGNE DE SÉPARATION 3 ---
-        display.drawLine(0, 70, ST7789_WIDTH, 70, COLOR_CYAN);
-    }
+    display.setTextColor(COLOR_GREEN);
+    display.setCursor(infoX + 10, infoY + 120);
+    display.print("IP:   ");
+    display.setTextColor(COLOR_WHITE);
+    display.println(ip.toString().c_str());
 
-    // --- ZONE GRAPHIQUE D'ANIMATION (réduite pour ligne matrice) ---
-    // Rectangle de la zone d'animation ajusté pour 3 lignes de texte
-    int rectY = matrixAnimationName != nullptr ? 84 : 73;
-    int rectHeight = matrixAnimationName != nullptr ? ST7789_HEIGHT - 88 : ST7789_HEIGHT - 76;
-    display.drawRect(2, rectY, ST7789_WIDTH - 4, rectHeight, COLOR_WHITE);
+    // Panneau mini-animation (réduit)
+    display.fillRoundRect(animPanelX, animPanelY, animPanelW, animPanelH, 12, panelDark);
+    display.drawRoundRect(animPanelX, animPanelY, animPanelW, animPanelH, 12, COLOR_CYAN);
+    display.drawRoundRect(animPanelX + 2, animPanelY + 2, animPanelW - 4, animPanelH - 4, 10, COLOR_MAGENTA);
 
-    // Affichage visuel de l'animation
+    display.setTextColor(COLOR_YELLOW);
+    display.setCursor(animPanelX + 8, animPanelY + 6);
+    display.println("Mini show");
+
+    // Zone d'animation fortement réduite
+    const int animAreaX = animPanelX + 6;
+    const int animAreaY = animPanelY + 20;
+    const int animAreaW = animPanelW - 12;
+    const int animAreaH = animPanelH - 30; // réduit pour laisser place aux décors
+
+    display.drawRoundRect(animAreaX, animAreaY, animAreaW, animAreaH, 8, COLOR_WHITE);
+    display.drawRoundRect(animAreaX + 2, animAreaY + 2, animAreaW - 4, animAreaH - 4, 6, COLOR_CYAN);
+
+    // Décorations autour de la zone
+    drawSparkle(animAreaX + 4, animAreaY + 4, COLOR_YELLOW);
+    drawSparkle(animAreaX + animAreaW - 6, animAreaY + 4, COLOR_ORANGE);
+    drawSparkle(animAreaX + 4, animAreaY + animAreaH - 6, COLOR_CYAN);
+    drawSparkle(animAreaX + animAreaW - 6, animAreaY + animAreaH - 6, COLOR_GREEN);
+
+    // Mémoriser la nouvelle fenêtre d'animation pour les rafraîchissements
+    setAnimationViewport(animAreaX + 2, animAreaY + 2, animAreaW - 4, animAreaH - 4);
+
+    // Affichage visuel de l'animation dans la zone réduite
     updateAnimationVisual(animationName, matrixAnimationName != nullptr);
+
+    display.setTextWrap(true);
 }
 
 void updateAnimationVisual(const char* animationName, bool hasMatrix) {
-    // Zone d'animation ajustée selon présence ligne matrice
-    int animX = 3;
-    int animY = hasMatrix ? 85 : 74;
-    int animWidth = ST7789_WIDTH - 6;  // 240 - 6 = 234
-    int animHeight = hasMatrix ? ST7789_HEIGHT - 90 : ST7789_HEIGHT - 78;  // Hauteur réduite si matrice affichée
+    // Utiliser la fenêtre mémorisée (ou fallback si non initialisée)
+    int animX = animViewport.initialized ? animViewport.x : 3;
+    int animY = animViewport.initialized ? animViewport.y : (hasMatrix ? 85 : 74);
+    int animWidth = animViewport.initialized ? animViewport.w : (ST7789_WIDTH - 6);
+    int animHeight = animViewport.initialized ? animViewport.h : (hasMatrix ? ST7789_HEIGHT - 90 : ST7789_HEIGHT - 78);
 
-    // Effacer la zone d'animation (garder le rectangle avec marge de sécurité)
-    display.fillRect(animX + 2, animY + 2, animWidth - 4, animHeight - 4, COLOR_BLACK);
+    // Effacer la zone d'animation réduite tout en préservant les cadres
+    display.fillRect(animX, animY, animWidth, animHeight, COLOR_BLACK);
 
     // Animation "Éteint" : afficher seulement le texte
     if (strcmp(animationName, "Eteint") == 0) {

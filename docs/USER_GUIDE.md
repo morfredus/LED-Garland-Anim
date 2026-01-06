@@ -1,8 +1,8 @@
-# User Guide - LED-Garland-Anim v4.0.0
+# User Guide - LED-Garland-Anim v5.0.0
 
 Complete user guide for the LED-Garland-Anim LED garland and 8x8 matrix animation controller (ESP32 IdeaSpark + ST7789).
 
-**Document version: v4.0.0 (2026-01-06)**
+**Document version: v5.0.0 (2026-01-06)**
 
 ---
 
@@ -102,11 +102,11 @@ Example: `192.168.1.100`
 ### Display Information
 - **Boot Screen**: Project name, version, WiFi connection progress
 - **Static Screen**: Festive dashboard with ribbon frame showing Program name, Version, SSID, IP address, and mDNS (`*.local`)
-- **Main UI**:
-  - Centered headers with version
-  - Compact system info (WiFi, IP, memory)
-  - Large animation visualization zone
-  - Real-time animation updates (10 FPS)
+- **Animated Screen (v5.0.0)**:
+  - Same festive look as Static: textured background, ribbon frames, sparkles, twin garlands
+  - Info card with Mode, Garland animation, Matrix animation, SSID, and IP
+  - **Reduced mini animation window** (“Mini show”) framed separately to prioritize text and decorations
+  - Real-time animation refresh (~10 FPS) inside the compact window
 - **11 Animated Visualizations**: One for each garland animation
 
 ---
@@ -356,4 +356,4 @@ For detailed troubleshooting, see [TROUBLESHOOTING.md](TROUBLESHOOTING.md)
 ---
 
 **End of User Guide**
-**Version: v1.11.3 (2026-01-01)**
+**Version: v5.0.0 (2026-01-06)**

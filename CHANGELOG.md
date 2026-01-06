@@ -25,6 +25,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## SEMVER
 - Classification: PATCH (pending release)
 
+# [5.0.0] - 2026-01-06
+
+## ✨ Changed
+1. Animated LCD screen restyled to mirror the festive static layout (textured background, ribbon frames, sparkles, twin garlands).
+2. Animation zone shrunk into a framed “Mini show” window to free space for mode/network details without losing visual feedback.
+3. Animated info card now highlights Mode, Garland animation, Matrix animation, SSID, and IP with colorful accents.
+
+## 📚 Documentation
+1. README.md / README_FR.md bumped to 5.0.0 with the new animated LCD description.
+2. docs/USER_GUIDE.md / docs/USER_GUIDE_FR.md updated to describe the festive animated screen and reduced animation window.
+3. Added release notes: docs/RELEASE_v5.0.0.md and docs/RELEASE_v5.0.0_FR.md.
+
+### Version Classification
+
+**SEMVER**: 5.0.0 (MAJOR)
+- **Justification**: Complete redesign of the animated LCD screen (layout, visuals, and reduced animation area) while preserving all displayed information.
+
 # [4.0.0] - 2026-01-06
 
 ## ✨ Added

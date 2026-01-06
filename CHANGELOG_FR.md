@@ -25,6 +25,23 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/spec/v2
 ## SEMVER
 - Classification : PATCH (en attente de publication)
 
+# [5.0.0] - 2026-01-06
+
+## ✨ Changements
+1. Écran LCD animé restylé pour refléter le design festif du statique (fond texturé, cadres ruban, scintillements, double guirlande).
+2. Zone d’animation fortement réduite en « Mini show » encadré, libérant l’espace pour le texte et les décors tout en gardant le retour visuel.
+3. Cartouche d’infos enrichie : Mode, animation guirlande, animation matrice, SSID et IP avec accents colorés.
+
+## 📚 Documentation
+1. README.md / README_FR.md mis à jour en 5.0.0 avec la description du nouvel écran animé.
+2. docs/USER_GUIDE.md / docs/USER_GUIDE_FR.md décrivent l’écran animé festif et la fenêtre d’animation réduite.
+3. Notes de version ajoutées : docs/RELEASE_v5.0.0.md et docs/RELEASE_v5.0.0_FR.md.
+
+### Classification de version
+
+**SEMVER** : 5.0.0 (MAJEUR)
+- **Justification** : Refonte complète de l’écran LCD animé (layout, visuel, zone réduite) en conservant toutes les informations affichées.
+
 # [4.0.0] - 2026-01-06
 
 ## ✨ Ajouté
