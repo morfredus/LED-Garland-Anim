@@ -1,8 +1,8 @@
 /**
  * @file matrix8x8_control.h
  * @brief Control for 8x8 NeoPixel WS2812B-64 matrix with festive animations
- * @version 1.11.3
- * @date 2026-01-01
+ * @version 1.12.0
+ * @date 2026-01-06
  *
  * Module for managing animations on an 8x8 NeoPixel matrix.
  * Features 30 festive holiday-themed animations for Christmas, New Year, and Easter.

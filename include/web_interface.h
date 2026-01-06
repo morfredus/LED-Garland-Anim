@@ -101,6 +101,16 @@ void handleOTAUploadComplete();
 void handleNotFound();
 
 /**
+ * @brief Handler pour récupérer le nom d'appareil (GET /device_name)
+ */
+void handleGetDeviceName();
+
+/**
+ * @brief Handler pour définir le nom d'appareil (POST /device_name?name=X)
+ */
+void handleSetDeviceName();
+
+/**
  * @brief Initialise les routes du serveur web
  * À appeler dans setup() après la connexion WiFi
  */

@@ -1,4 +1,55 @@
-# [1.12.0] – 2026-01-05
+# [1.12.0] – 2026-01-06
+
+### Ajouté (MINEUR - Support mDNS pour un Accès Facile)
+
+**Nom d'Appareil Unique via mDNS**
+- **Fonctionnalité** : Accès à l'interface web via un nom unique au lieu de l'adresse IP
+  - Nom par défaut : `garland.local`
+  - Personnalisable depuis l'interface web
+  - Sauvegarde persistante en NVS
+  - Validation en temps réel (alphanumérique, tiret, underscore, max 32 caractères)
+- **Avantages** :
+  - Plus besoin de chercher l'IP !
+  - Compatible multi-plateforme (Windows 10+, macOS, Linux, iOS, Android)
+  - URLs mémorisables et conviviales
+- **Implémentation** :
+  - Intégration de la bibliothèque `ESPmDNS`
+  - Nouvelles fonctions dans `garland_control.cpp` : `getDeviceName()`, `setDeviceName()`, `loadDeviceNameFromNVS()`, `saveDeviceNameToNVS()`, `isValidDeviceName()`
+  - Nouveaux endpoints API web : `GET /device_name`, `POST /device_name?name=X`
+  - Section UI web pour la configuration du nom avec aperçu en direct
+  - Redémarrage automatique de mDNS lors du changement de nom
+  - Hostname OTA synchronisé avec le nom mDNS
+- **Configuration** : Nouvelles constantes dans `config.h` :
+  - `DEFAULT_DEVICE_NAME "garland"`
+  - `MAX_DEVICE_NAME_LEN 32`
+- **Fichiers** : [include/config.h](include/config.h), [include/garland_control.h](include/garland_control.h), [src/garland_control.cpp](src/garland_control.cpp), [src/main.cpp](src/main.cpp), [include/web_interface.h](include/web_interface.h), [src/web_interface.cpp](src/web_interface.cpp), [src/web_pages.cpp](src/web_pages.cpp)
+
+### Modifié
+
+**Mises à Jour de l'Interface Web**
+- Section d'informations WiFi mise à jour pour afficher le nom mDNS
+- Ajout d'une carte de configuration du nom avec validation
+- Mise à jour de l'endpoint `/status` pour inclure le champ `device_name`
+- Mise à jour du tableau de bord pour afficher l'URL d'accès `http://[nom-appareil].local`
+
+**Mises à Jour de la Documentation**
+- Documentation mDNS complète ajoutée à `README.md` et `README_FR.md`
+- Nouvelle section "Interface Web et Accès Réseau" avec les méthodes d'accès
+- Tous les numéros de version mis à jour vers 1.12.0
+- Notes de version créées : [RELEASE_v1.12.0.md](RELEASE_v1.12.0.md)
+- Restructuration des sections README pour une meilleure organisation
+
+**Mise à Jour des Versions**
+- Tous les en-têtes de fichiers source mis à jour vers v1.12.0
+- Configuration de build mise à jour dans `platformio.ini`
+
+### Version
+
+- **Classification SEMVER** : MINEUR (1.12.0) - Nouvelle fonctionnalité (mDNS) avec compatibilité ascendante
+
+---
+
+# [1.11.4] – 2026-01-05 (Changement de Pin Mapping Précédent)
 
 ### Modifié (MAJEUR - Changement de Pin Mapping)
 

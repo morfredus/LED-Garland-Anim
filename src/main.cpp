@@ -16,6 +16,7 @@
 #include <OneButton.h>
 #include <nvs_flash.h>
 #include <nvs.h>
+#include <ESPmDNS.h>
 
 #include "config.h"
 #include "board_config.h"
@@ -173,7 +174,16 @@ void setup() {
 
     // OTA: configuration et démarrage si WiFi OK
     if(WiFi.status() == WL_CONNECTED) {
-        ArduinoOTA.setHostname(PROJECT_NAME);
+        // Démarrage mDNS avec le nom d'appareil configuré
+        const char* deviceName = getDeviceName();
+        if (MDNS.begin(deviceName)) {
+            LOG_PRINTF("✓ mDNS démarré : %s.local\n", deviceName);
+            MDNS.addService("http", "tcp", 80);
+        } else {
+            LOG_PRINTLN("✗ Erreur démarrage mDNS");
+        }
+        
+        ArduinoOTA.setHostname(deviceName);
         ArduinoOTA.onStart([]() {
             LOG_PRINTLN("[OTA] Start updating...");
         });

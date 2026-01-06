@@ -210,4 +210,38 @@ bool isAnimationActive();
  */
 bool isGarlandEnabled();
 
+// =============================================================================
+// GESTION DU NOM D'APPAREIL (mDNS)
+// =============================================================================
+
+/**
+ * @brief Récupère le nom d'appareil configuré
+ * @return Pointeur vers le nom d'appareil (chaîne constante)
+ */
+const char* getDeviceName();
+
+/**
+ * @brief Définit un nouveau nom d'appareil et le sauvegarde en NVS
+ * @param name Nouveau nom d'appareil (max 32 caractères, alphanumérique et tiret uniquement)
+ * @return true si le nom est valide et a été sauvegardé, false sinon
+ */
+bool setDeviceName(const char* name);
+
+/**
+ * @brief Charge le nom d'appareil depuis NVS
+ */
+void loadDeviceNameFromNVS();
+
+/**
+ * @brief Sauvegarde le nom d'appareil en NVS
+ */
+void saveDeviceNameToNVS();
+
+/**
+ * @brief Valide un nom d'appareil (alphanumérique et tiret uniquement, max 32 caractères)
+ * @param name Nom à valider
+ * @return true si le nom est valide, false sinon
+ */
+bool isValidDeviceName(const char* name);
+
 #endif // GARLAND_CONTROL_H

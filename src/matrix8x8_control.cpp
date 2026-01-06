@@ -1,8 +1,8 @@
 /**
  * @file matrix8x8_control.cpp
  * @brief Implementation of 8x8 NeoPixel matrix control with festive animations
- * @version 1.11.3
- * @date 2026-01-01
+ * @version 1.12.0
+ * @date 2026-01-06
  */
 
 #include "matrix8x8_control.h"
@@ -583,7 +583,7 @@ static void animateSnow() {
         lastUpdate = currentMillis;
 
         // Move everything down
-        for (int8_t y = 7; y > 0; y--) {
+        for (int8_t y = 7; y >= 1; y--) {
             for (uint8_t x = 0; x < 8; x++) {
                 setPixel(x, y, getPixel(x, y - 1));
             }
@@ -1084,7 +1084,7 @@ static void animateChampagne() {
         lastUpdate = currentMillis;
 
         // Move bubbles up
-        for (int8_t y = 0; y < 7; y++) {
+        for (int8_t y = 0; y <= 6; y++) {
             for (uint8_t x = 0; x < 8; x++) {
                 setPixel(x, y, getPixel(x, y + 1));
             }
@@ -1179,7 +1179,7 @@ static void animateConfetti() {
         lastUpdate = currentMillis;
 
         // Move everything down
-        for (int8_t y = 7; y > 0; y--) {
+        for (int8_t y = 7; y >= 1; y--) {
             for (uint8_t x = 0; x < 8; x++) {
                 setPixel(x, y, getPixel(x, y - 1));
             }

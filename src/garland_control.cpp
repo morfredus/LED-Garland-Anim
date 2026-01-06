@@ -1,8 +1,8 @@
 /**
  * @file garland_control.cpp
  * @brief Implémentation du contrôle des animations de guirlande
- * @version 1.11.3
- * @date 2026-01-01
+ * @version 1.12.0
+ * @date 2026-01-06
  */
 
 #include "garland_control.h"
@@ -38,6 +38,91 @@ static MotionSensorType motionSensorType = MOTION_SENSOR_UNKNOWN;
 
 // Mode d'affichage de l'écran LCD
 static DisplayMode currentDisplayMode = DEFAULT_DISPLAY_MODE;
+
+// Nom d'appareil pour mDNS
+static char deviceName[MAX_DEVICE_NAME_LEN + 1] = DEFAULT_DEVICE_NAME;
+
+// =============================================================================
+// FONCTIONS DE GESTION DU NOM D'APPAREIL
+// =============================================================================
+
+const char* getDeviceName() {
+    return deviceName;
+}
+
+bool isValidDeviceName(const char* name) {
+    if (!name) return false;
+    
+    size_t len = strlen(name);
+    if (len == 0 || len > MAX_DEVICE_NAME_LEN) return false;
+    
+    // Vérifier que le nom contient uniquement des caractères alphanumériques, tirets et underscores
+    for (size_t i = 0; i < len; i++) {
+        char c = name[i];
+        if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || 
+              (c >= '0' && c <= '9') || c == '-' || c == '_')) {
+            return false;
+        }
+    }
+    
+    // Le nom ne doit pas commencer ou finir par un tiret
+    if (name[0] == '-' || name[len - 1] == '-') return false;
+    
+    return true;
+}
+
+bool setDeviceName(const char* name) {
+    if (!isValidDeviceName(name)) {
+        LOG_PRINTLN("✗ Nom d'appareil invalide");
+        return false;
+    }
+    
+    strncpy(deviceName, name, MAX_DEVICE_NAME_LEN);
+    deviceName[MAX_DEVICE_NAME_LEN] = '\0';
+    
+    saveDeviceNameToNVS();
+    LOG_PRINTF("✓ Nom d'appareil défini: %s\n", deviceName);
+    
+    return true;
+}
+
+void loadDeviceNameFromNVS() {
+    nvs_handle_t handle;
+    esp_err_t err = nvs_open(NVS_NAMESPACE, NVS_READONLY, &handle);
+    if (err == ESP_OK) {
+        size_t len = MAX_DEVICE_NAME_LEN + 1;
+        err = nvs_get_str(handle, "device_name", deviceName, &len);
+        if (err == ESP_OK) {
+            LOG_PRINTF("✓ Nom d'appareil restauré: %s\n", deviceName);
+        } else {
+            // Si aucun nom sauvegardé, utiliser le nom par défaut
+            strncpy(deviceName, DEFAULT_DEVICE_NAME, MAX_DEVICE_NAME_LEN);
+            deviceName[MAX_DEVICE_NAME_LEN] = '\0';
+        }
+        nvs_close(handle);
+    } else {
+        // Si erreur NVS, utiliser le nom par défaut
+        strncpy(deviceName, DEFAULT_DEVICE_NAME, MAX_DEVICE_NAME_LEN);
+        deviceName[MAX_DEVICE_NAME_LEN] = '\0';
+    }
+}
+
+void saveDeviceNameToNVS() {
+    nvs_handle_t handle;
+    esp_err_t err = nvs_open(NVS_NAMESPACE, NVS_READWRITE, &handle);
+    if (err == ESP_OK) {
+        nvs_set_str(handle, "device_name", deviceName);
+        nvs_commit(handle);
+        nvs_close(handle);
+        LOG_PRINTLN("✓ Nom d'appareil sauvegardé en NVS");
+    } else {
+        LOG_PRINTLN("✗ Erreur lors de la sauvegarde du nom d'appareil");
+    }
+}
+
+// =============================================================================
+// FONCTIONS DE MODE D'AFFICHAGE
+// =============================================================================
 
 DisplayMode getDisplayMode() {
     return currentDisplayMode;
@@ -130,6 +215,8 @@ void loadGarlandSettings() {
     
     if (err != ESP_OK) {
         LOG_PRINTLN("⚠ NVS non initialisé ou espace vide");
+        // Charger le nom d'appareil par défaut même si NVS échoue
+        loadDeviceNameFromNVS();
         return;
     }
     
@@ -163,6 +250,9 @@ void loadGarlandSettings() {
     }
     
     nvs_close(handle);
+    
+    // Charger le nom d'appareil
+    loadDeviceNameFromNVS();
 }
 
 /**

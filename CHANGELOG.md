@@ -1,4 +1,55 @@
-# [1.12.0] – 2026-01-05
+# [1.12.0] – 2026-01-06
+
+### Added (MINOR - mDNS Support for Easy Access)
+
+**Unique Device Name via mDNS**
+- **Feature**: Access web interface via unique device name instead of IP address
+  - Default name: `garland.local`
+  - Customizable from web UI
+  - Persistent storage in NVS
+  - Real-time validation (alphanumeric, dash, underscore, max 32 chars)
+- **Benefits**:
+  - No more IP hunting!
+  - Cross-platform compatible (Windows 10+, macOS, Linux, iOS, Android)
+  - Memorable, user-friendly URLs
+- **Implementation**:
+  - Added `ESPmDNS` library integration
+  - New functions in `garland_control.cpp`: `getDeviceName()`, `setDeviceName()`, `loadDeviceNameFromNVS()`, `saveDeviceNameToNVS()`, `isValidDeviceName()`
+  - New web API endpoints: `GET /device_name`, `POST /device_name?name=X`
+  - Web UI section for device name configuration with live preview
+  - Automatic mDNS restart when name changes
+  - OTA hostname synchronized with mDNS name
+- **Configuration**: New constants in `config.h`:
+  - `DEFAULT_DEVICE_NAME "garland"`
+  - `MAX_DEVICE_NAME_LEN 32`
+- **Files**: [include/config.h](include/config.h), [include/garland_control.h](include/garland_control.h), [src/garland_control.cpp](src/garland_control.cpp), [src/main.cpp](src/main.cpp), [include/web_interface.h](include/web_interface.h), [src/web_interface.cpp](src/web_interface.cpp), [src/web_pages.cpp](src/web_pages.cpp)
+
+### Changed
+
+**Web Interface Updates**
+- Updated WiFi info section to display mDNS name
+- Added device name configuration card with validation
+- Updated `/status` endpoint to include `device_name` field
+- Updated dashboard to show `http://[device-name].local` access URL
+
+**Documentation Updates**
+- Comprehensive mDNS documentation added to `README.md` and `README_FR.md`
+- New section "Web Interface and Network Access" with access methods
+- Updated all version numbers to 1.12.0
+- Created release notes: [RELEASE_v1.12.0.md](RELEASE_v1.12.0.md)
+- Restructured README sections for better organization
+
+**Version Bumps**
+- All source file headers updated to v1.12.0
+- Build configuration updated in `platformio.ini`
+
+### Version
+
+- **SEMVER Classification**: MINOR (1.12.0) - New feature (mDNS) with backward compatibility
+
+---
+
+# [1.11.4] – 2026-01-05 (Previous Pin Mapping Change)
 
 ### Changed (MAJOR - Pin Mapping Change)
 

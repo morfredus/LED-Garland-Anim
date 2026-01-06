@@ -12,6 +12,10 @@
 #define SERIAL_BAUD_RATE 115200
 #define WIFI_TIMEOUT_MS  10000 // 10 secondes pour tenter la connexion
 
+// --- Configuration mDNS (Nom unique d'accès) ---
+#define DEFAULT_DEVICE_NAME "garland"  // Nom par défaut pour mDNS (ex: garland.local)
+#define MAX_DEVICE_NAME_LEN 32         // Longueur maximale du nom d'appareil
+
 // Debug : Décommenter pour voir les logs détaillées
 #define ENABLE_DEBUG_LOG
 

@@ -1,6 +1,7 @@
 
 #include <WebServer.h>
 #include <Update.h>
+#include <ESPmDNS.h>
 #include "matrix8x8_control.h"
 #include "display.h"
 #include "web_pages.h"
@@ -84,6 +85,7 @@ void handleStatus() {
     json += "\"matrix_brightness\":" + String(getMatrix8x8Brightness()) + ",";
     json += "\"display_mode\":\"" + String(getDisplayModeName()) + "\",";
     json += "\"display_mode_id\":" + String((int)getDisplayMode()) + ",";
+    json += "\"device_name\":\"" + String(getDeviceName()) + "\",";
     json += "\"ip\":\"" + WiFi.localIP().toString() + "\"";
     json += "}";
     server.send(200, "application/json", json);
@@ -260,6 +262,36 @@ void handleNotFound() {
     server.send(404, "text/plain", "Page non trouvée");
 }
 
+void handleGetDeviceName() {
+    String json = "{";
+    json += "\"device_name\":\"" + String(getDeviceName()) + "\"";
+    json += "}";
+    server.send(200, "application/json", json);
+}
+
+void handleSetDeviceName() {
+    if (!server.hasArg("name")) {
+        server.send(400, "text/plain", "Paramètre 'name' manquant");
+        return;
+    }
+    
+    String newName = server.arg("name");
+    
+    if (setDeviceName(newName.c_str())) {
+        // Redémarrer mDNS avec le nouveau nom
+        MDNS.end();
+        if (MDNS.begin(getDeviceName())) {
+            MDNS.addService("http", "tcp", 80);
+            server.send(200, "text/plain", "Nom d'appareil mis à jour. Accessible via http://" + String(getDeviceName()) + ".local");
+            LOG_PRINTF("✓ mDNS redémarré avec le nouveau nom: %s.local\n", getDeviceName());
+        } else {
+            server.send(200, "text/plain", "Nom sauvegardé mais erreur mDNS. Redémarrage requis.");
+            LOG_PRINTLN("✗ Erreur lors du redémarrage mDNS");
+        }
+    } else {
+        server.send(400, "text/plain", "Nom invalide. Utilisez uniquement des lettres, chiffres, tirets et underscores (max 32 caractères)");
+    }
+}
 
 void setupWebServer() {
     server.on("/", handleRoot);
@@ -273,6 +305,10 @@ void setupWebServer() {
     server.on("/load", handleLoadSettings);
     server.on("/erase", handleEraseSettings);
     server.on("/status", handleStatus);
+    
+    // Routes pour le nom d'appareil
+    server.on("/device_name", HTTP_GET, handleGetDeviceName);
+    server.on("/device_name", HTTP_POST, handleSetDeviceName);
 
     // Routes pour la matrice 8x8
     server.on("/matrix_animation", handleSetMatrix8x8Animation);
@@ -285,6 +321,7 @@ void setupWebServer() {
     server.onNotFound([]() { server.send(404, "text/plain", "Page non trouvée"); });
     server.begin();
     LOG_PRINTLN("Serveur web démarré sur http://" + WiFi.localIP().toString());
+    LOG_PRINTF("Accessible via mDNS : http://%s.local\n", getDeviceName());
 }
 
 void handleSetDisplayMode() {
