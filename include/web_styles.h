@@ -4,7 +4,7 @@
 /**
  * @file web_styles.h
  * @brief Feuilles de style pour l'interface web
- * @version 1.13.0
+ * @version 2.0.0
  * @date 2026-01-06
  *
  * Module dédié à la gestion des styles CSS de l'interface web.
@@ -43,9 +43,9 @@ static constexpr const char* WEB_STYLES =
     "button.apply{background:linear-gradient(135deg,#43a047,#66bb6a);margin-left:10px;padding:8px 12px;}"
     ".radio-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px;}"
     "@media (max-width:600px){.radio-grid{grid-template-columns:1fr;}}"
-    ".radio-item{display:flex;align-items:center;padding:8px 10px;background:#f9f9f9;border:2px solid #e0e0e0;border-radius:8px;cursor:pointer;transition:all 0.2s;}"
+    ".radio-item{display:flex;align-items:center;padding:6px 10px;background:#f9f9f9;border:2px solid #e0e0e0;border-radius:8px;cursor:pointer;transition:all 0.2s;min-height:38px;}"
     ".radio-item:hover{background:#e8f5e9;border-color:#43a047;}"
-    ".radio-item input[type='radio']{margin-right:8px;cursor:pointer;width:16px;height:16px;}"
+    ".radio-item input[type='radio']{margin-right:8px;cursor:pointer;width:16px;height:16px;flex-shrink:0;}"
     ".radio-item input[type='radio']:checked + label{font-weight:bold;color:#1b5e20;}"
     ".radio-item.selected{background:#e8f5e9;border-color:#43a047;border-width:2px;}"
     ".radio-item label{cursor:pointer;flex:1;font-size:0.95em;user-select:none;}"

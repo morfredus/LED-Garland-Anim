@@ -85,6 +85,6 @@ void displayMainScreen(const char* ssid, IPAddress ip, const char* modeName, con
  *
  * @param animationName Nom de l'animation active
  */
-void updateAnimationVisual(const char* animationName);
+void updateAnimationVisual(const char* animationName, bool hasMatrix = false);
 
 #endif // DISPLAY_H

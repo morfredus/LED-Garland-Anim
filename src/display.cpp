@@ -241,20 +241,22 @@ void displayMainScreen(const char* ssid, IPAddress ip, const char* modeName, con
         display.drawLine(0, 70, ST7789_WIDTH, 70, COLOR_CYAN);
     }
 
-    // --- ZONE GRAPHIQUE D'ANIMATION (réduite) ---
-    // Rectangle de la zone d'animation : de Y=73 à Y=132 (hauteur=59 pixels)
-    display.drawRect(2, 73, ST7789_WIDTH - 4, ST7789_HEIGHT - 76, COLOR_WHITE);
+    // --- ZONE GRAPHIQUE D'ANIMATION (réduite pour ligne matrice) ---
+    // Rectangle de la zone d'animation ajusté pour 3 lignes de texte
+    int rectY = matrixAnimationName != nullptr ? 84 : 73;
+    int rectHeight = matrixAnimationName != nullptr ? ST7789_HEIGHT - 88 : ST7789_HEIGHT - 76;
+    display.drawRect(2, rectY, ST7789_WIDTH - 4, rectHeight, COLOR_WHITE);
 
     // Affichage visuel de l'animation
-    updateAnimationVisual(animationName);
+    updateAnimationVisual(animationName, matrixAnimationName != nullptr);
 }
 
-void updateAnimationVisual(const char* animationName) {
-    // Zone d'animation (intérieur du rectangle) : X=3, Y=74, Width=234, Height=59
+void updateAnimationVisual(const char* animationName, bool hasMatrix) {
+    // Zone d'animation ajustée selon présence ligne matrice
     int animX = 3;
-    int animY = 74;
+    int animY = hasMatrix ? 85 : 74;
     int animWidth = ST7789_WIDTH - 6;  // 240 - 6 = 234
-    int animHeight = ST7789_HEIGHT - 78;  // 135 - 78 = 57 (zone réduite pour afficher réseau)
+    int animHeight = hasMatrix ? ST7789_HEIGHT - 90 : ST7789_HEIGHT - 78;  // Hauteur réduite si matrice affichée
 
     // Effacer la zone d'animation (garder le rectangle)
     display.fillRect(animX + 1, animY + 1, animWidth - 2, animHeight - 2, COLOR_BLACK);

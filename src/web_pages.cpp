@@ -39,21 +39,21 @@ String generateDashboardPage(uint32_t chipId, uint32_t flashSize, uint32_t flash
     html += "<div style='margin-top:20px;padding:15px;background:#f8f9fa;border-radius:8px;'>";
     html += "<div style='font-weight:bold;margin-bottom:15px;color:#333;font-size:14px;'>📊 Paramètres temporels</div>";
     
-    // Intervalle guirlande AUTO
-    html += "<div style='margin-bottom:15px;'>"; 
-    html += "<label class='section-label'>⏱️ Intervalle changement guirlande (secondes) :</label>";
-    html += "<input type='range' id='auto-interval-seconds' value='" + String(getAutoAnimationIntervalMs() / 1000) + "' min='5' max='300' step='5' oninput='updateIntervalDisplay(this, \"auto-interval-value\")' onchange='applyAutoInterval(this.value)' style='width:100%;margin-top:5px;'>"; 
-    html += "<div style='text-align:center;margin-top:5px;font-weight:bold;color:#43a047;'><span id='auto-interval-value'>" + String(getAutoAnimationIntervalMs() / 1000) + "</span> secondes</div>";
-    html += "</div>";
-    
-    // Durée détection mouvement
+    // 1. Durée détection mouvement (EN PREMIER)
     html += "<div style='margin-bottom:15px;'>"; 
     html += "<label class='section-label'>🎯 Durée après détection mouvement (secondes) :</label>";
     html += "<input type='range' id='motion-duration-seconds' value='" + String(getMotionTriggerDurationMs() / 1000) + "' min='5' max='600' step='5' oninput='updateIntervalDisplay(this, \"motion-duration-value\")' onchange='applyMotionDuration(this.value)' style='width:100%;margin-top:5px;'>";
     html += "<div style='text-align:center;margin-top:5px;font-weight:bold;color:#43a047;'><span id='motion-duration-value'>" + String(getMotionTriggerDurationMs() / 1000) + "</span> secondes</div>";
     html += "</div>";
     
-    // Intervalle matrice
+    // 2. Intervalle guirlande AUTO
+    html += "<div style='margin-bottom:15px;'>"; 
+    html += "<label class='section-label'>⏱️ Intervalle changement guirlande (secondes) :</label>";
+    html += "<input type='range' id='auto-interval-seconds' value='" + String(getAutoAnimationIntervalMs() / 1000) + "' min='5' max='300' step='5' oninput='updateIntervalDisplay(this, \"auto-interval-value\")' onchange='applyAutoInterval(this.value)' style='width:100%;margin-top:5px;'>"; 
+    html += "<div style='text-align:center;margin-top:5px;font-weight:bold;color:#43a047;'><span id='auto-interval-value'>" + String(getAutoAnimationIntervalMs() / 1000) + "</span> secondes</div>";
+    html += "</div>";
+    
+    // 3. Intervalle matrice
     html += "<div>";
     html += "<label class='section-label'>🔲 Intervalle changement matrice (secondes) :</label>";
     html += "<input type='range' id='matrix-interval-seconds' value='" + String(getMatrix8x8AnimationIntervalMs() / 1000) + "' min='5' max='300' step='5' oninput='updateIntervalDisplay(this, \"matrix-interval-value\")' onchange='applyMatrixInterval(this.value)' style='width:100%;margin-top:5px;'>";
