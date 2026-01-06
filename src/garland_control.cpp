@@ -1,8 +1,8 @@
 /**
  * @file garland_control.cpp
  * @brief Implémentation du contrôle des animations de guirlande
- * @version 1.11.3
- * @date 2026-01-01
+ * @version 3.0.1
+ * @date 2026-01-06
  */
 
 #include "garland_control.h"
@@ -21,8 +21,8 @@ static GarlandMode savedMode = MODE_PERMANENT;                    // Mode sauveg
 static unsigned long animationStartTime = 0;
 static unsigned long bootTime = 0;                                // Temps du démarrage pour gérer l'intro
 static unsigned long motionDetectedTime = 0;
-static unsigned long autoAnimationIntervalMs = 30000;   // Intervalle entre changements en mode AUTO
-static unsigned long motionTriggerDurationMs = MOTION_TRIGGER_DURATION; // Durée d'allumage après détection
+static unsigned long autoAnimationIntervalMs = DEFAULT_GARLAND_ANIM_INTERVAL;   // Intervalle entre changements en mode AUTO
+static unsigned long motionTriggerDurationMs = MOTION_TRIGGER_DEFAULT; // Durée d'allumage après détection
 static bool garlandEnabled = true;
 static bool autoModeActive = false;  // Flag pour suivre si le mode AUTO est actif
 static bool lastMotionState = false;  // État précédent du capteur PIR pour détecter les fronts
@@ -35,6 +35,144 @@ static float animationPhase = 0.0;
 
 // Type de capteur de mouvement détecté
 static MotionSensorType motionSensorType = MOTION_SENSOR_UNKNOWN;
+
+// Mode d'affichage de l'écran LCD
+static DisplayMode currentDisplayMode = DEFAULT_DISPLAY_MODE;
+
+// Nom d'appareil pour mDNS
+static char deviceName[MAX_DEVICE_NAME_LEN + 1] = DEFAULT_DEVICE_NAME;
+
+// =============================================================================
+// FONCTIONS DE GESTION DU NOM D'APPAREIL
+// =============================================================================
+
+const char* getDeviceName() {
+    return deviceName;
+}
+
+bool isValidDeviceName(const char* name) {
+    if (!name) return false;
+    
+    size_t len = strlen(name);
+    if (len == 0 || len > MAX_DEVICE_NAME_LEN) return false;
+    
+    // Vérifier que le nom contient uniquement des caractères alphanumériques, tirets et underscores
+    for (size_t i = 0; i < len; i++) {
+        char c = name[i];
+        if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || 
+              (c >= '0' && c <= '9') || c == '-' || c == '_')) {
+            return false;
+        }
+    }
+    
+    // Le nom ne doit pas commencer ou finir par un tiret
+    if (name[0] == '-' || name[len - 1] == '-') return false;
+    
+    return true;
+}
+
+bool setDeviceName(const char* name) {
+    if (!isValidDeviceName(name)) {
+        LOG_PRINTLN("✗ Nom d'appareil invalide");
+        return false;
+    }
+    
+    strncpy(deviceName, name, MAX_DEVICE_NAME_LEN);
+    deviceName[MAX_DEVICE_NAME_LEN] = '\0';
+    
+    saveDeviceNameToNVS();
+    LOG_PRINTF("✓ Nom d'appareil défini: %s\n", deviceName);
+    
+    return true;
+}
+
+void loadDeviceNameFromNVS() {
+    nvs_handle_t handle;
+    esp_err_t err = nvs_open(NVS_NAMESPACE, NVS_READONLY, &handle);
+    if (err == ESP_OK) {
+        size_t len = MAX_DEVICE_NAME_LEN + 1;
+        err = nvs_get_str(handle, "device_name", deviceName, &len);
+        if (err == ESP_OK) {
+            LOG_PRINTF("✓ Nom d'appareil restauré: %s\n", deviceName);
+        } else {
+            // Si aucun nom sauvegardé, utiliser le nom par défaut
+            strncpy(deviceName, DEFAULT_DEVICE_NAME, MAX_DEVICE_NAME_LEN);
+            deviceName[MAX_DEVICE_NAME_LEN] = '\0';
+        }
+        nvs_close(handle);
+    } else {
+        // Si erreur NVS, utiliser le nom par défaut
+        strncpy(deviceName, DEFAULT_DEVICE_NAME, MAX_DEVICE_NAME_LEN);
+        deviceName[MAX_DEVICE_NAME_LEN] = '\0';
+    }
+}
+
+void saveDeviceNameToNVS() {
+    nvs_handle_t handle;
+    esp_err_t err = nvs_open(NVS_NAMESPACE, NVS_READWRITE, &handle);
+    if (err == ESP_OK) {
+        nvs_set_str(handle, "device_name", deviceName);
+        nvs_commit(handle);
+        nvs_close(handle);
+        LOG_PRINTLN("✓ Nom d'appareil sauvegardé en NVS");
+    } else {
+        LOG_PRINTLN("✗ Erreur lors de la sauvegarde du nom d'appareil");
+    }
+}
+
+// =============================================================================
+// FONCTIONS DE MODE D'AFFICHAGE
+// =============================================================================
+
+DisplayMode getDisplayMode() {
+    return currentDisplayMode;
+}
+
+void setDisplayMode(DisplayMode mode) {
+    currentDisplayMode = mode;
+    saveDisplayModeToNVS();
+}
+
+const char* getDisplayModeName() {
+    switch (currentDisplayMode) {
+        case DISPLAY_MODE_ANIMATED: return "Animé";
+        case DISPLAY_MODE_STATIC:   return "Statique";
+        case DISPLAY_MODE_OFF:      return "Éteint";
+        default: return "Inconnu";
+    }
+}
+
+const char* getDisplayModeNameById(int id) {
+    switch ((DisplayMode)id) {
+        case DISPLAY_MODE_ANIMATED: return "Animé";
+        case DISPLAY_MODE_STATIC:   return "Statique";
+        case DISPLAY_MODE_OFF:      return "Éteint";
+        default: return "Inconnu";
+    }
+}
+
+void loadDisplayModeFromNVS() {
+    nvs_handle_t handle;
+    esp_err_t err = nvs_open(NVS_NAMESPACE, NVS_READONLY, &handle);
+    if (err == ESP_OK) {
+        int32_t mode = 0;
+        err = nvs_get_i32(handle, "display_mode", &mode);
+        if (err == ESP_OK && mode >= 0 && mode < DISPLAY_MODE_COUNT) {
+            currentDisplayMode = (DisplayMode)mode;
+        }
+        nvs_close(handle);
+    }
+}
+
+void saveDisplayModeToNVS() {
+    nvs_handle_t handle;
+    esp_err_t err = nvs_open(NVS_NAMESPACE, NVS_READWRITE, &handle);
+    if (err == ESP_OK) {
+        nvs_set_i32(handle, "display_mode", (int32_t)currentDisplayMode);
+        nvs_commit(handle);
+        nvs_close(handle);
+    }
+}
 
 MotionSensorType getMotionSensorType() {
     return motionSensorType;
@@ -77,16 +215,16 @@ void loadGarlandSettings() {
     
     if (err != ESP_OK) {
         LOG_PRINTLN("⚠ NVS non initialisé ou espace vide");
+        // Charger le nom d'appareil par défaut même si NVS échoue
+        loadDeviceNameFromNVS();
         return;
     }
     
     // Charger le mode
-    uint8_t mode = (uint8_t)MODE_PERMANENT;
-    if (nvs_get_u8(handle, "mode", &mode) == ESP_OK) {
-        savedMode = (GarlandMode)mode;
-        currentMode = savedMode;
-        LOG_PRINTF("Mode restauré: %s\n", modeNames[currentMode]);
-    }
+        int32_t mode = 0;
+        if (nvs_get_i32(handle, "mode", &mode) == ESP_OK && mode >= 0 && mode < MODE_COUNT) {
+            currentMode = (GarlandMode)mode;
+        }
 
     // Charger l'animation
     uint8_t anim = (uint8_t)ANIM_FADE_ALTERNATE;
@@ -112,6 +250,9 @@ void loadGarlandSettings() {
     }
     
     nvs_close(handle);
+    
+    // Charger le nom d'appareil
+    loadDeviceNameFromNVS();
 }
 
 /**
@@ -146,7 +287,6 @@ void saveGarlandSettings() {
     }
 }
 
-// =============================================================================
 // FONCTIONS DE CONTRÔLE TB6612FNG
 // =============================================================================
 
@@ -450,6 +590,14 @@ void setupGarland() {
 }
 
 void updateGarland() {
+    // Throttle global to avoid monopolizing loop while keeping animations smooth
+    static unsigned long lastUpdate = 0;
+    unsigned long now = millis();
+    if (now - lastUpdate < 10) {
+        return;
+    }
+    lastUpdate = now;
+
     // Vérifier si l'animation d'intro est terminée
     if (introAnimationActive) {
         unsigned long elapsed = millis() - bootTime;

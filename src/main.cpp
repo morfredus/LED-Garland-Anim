@@ -2,8 +2,8 @@
 /**
  * @file main.cpp
  * @brief Point d'entrée principal du projet LED-Garland-Anim
- * @version 1.11.3
- * @date 2026-01-01
+ * @version 3.0.1
+ * @date 2026-01-06
  *
  * OTA support: ArduinoOTA (upload firmware over WiFi) + Web OTA (Update.h)
  */
@@ -16,6 +16,7 @@
 #include <OneButton.h>
 #include <nvs_flash.h>
 #include <nvs.h>
+#include <ESPmDNS.h>
 
 #include "config.h"
 #include "board_config.h"
@@ -39,7 +40,7 @@ bool ledState = false;
 
 // Variables pour l'animation ST7789
 unsigned long lastDisplayUpdate = 0;
-const long displayUpdateInterval = 100;  // Mise à jour animation ST7789 toutes les 100ms
+const long displayUpdateInterval = 200;  // Mise à jour animation ST7789 toutes les 200ms (allège la charge SPI)
 
 // --- CALLBACKS BOUTONS ---
 
@@ -65,7 +66,7 @@ void handleBtn1Click() {
     LOG_PRINTF(">> Bouton 1 : Animation changée -> %s\n", getGarlandAnimationName());
 
     #ifdef HAS_ST7789
-        displayMainScreen(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName());
+        displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName());
     #endif
 }
 
@@ -75,7 +76,7 @@ void handleBtn2Click() {
     LOG_PRINTF(">> Bouton 2 : Mode changé -> %s\n", getGarlandModeName());
 
     #ifdef HAS_ST7789
-        displayMainScreen(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName());
+        displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName());
     #endif
 }
 
@@ -114,7 +115,7 @@ void setupWifi() {
         LOG_PRINT("IP: "); LOG_PRINTLN(WiFi.localIP());
 
         // Affichage de l'écran principal avec toutes les infos
-        displayMainScreen(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName());
+        displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName());
 
         delay(2000); // Pause pour laisser voir l'écran
     } else {
@@ -173,7 +174,16 @@ void setup() {
 
     // OTA: configuration et démarrage si WiFi OK
     if(WiFi.status() == WL_CONNECTED) {
-        ArduinoOTA.setHostname(PROJECT_NAME);
+        // Démarrage mDNS avec le nom d'appareil configuré
+        const char* deviceName = getDeviceName();
+        if (MDNS.begin(deviceName)) {
+            LOG_PRINTF("✓ mDNS démarré : %s.local\n", deviceName);
+            MDNS.addService("http", "tcp", 80);
+        } else {
+            LOG_PRINTLN("✗ Erreur démarrage mDNS");
+        }
+        
+        ArduinoOTA.setHostname(deviceName);
         ArduinoOTA.onStart([]() {
             LOG_PRINTLN("[OTA] Start updating...");
         });
@@ -224,12 +234,11 @@ void loop() {
         #endif
     }
 
-    // 7. Rafraîchissement de l'animation ST7789
+    // 7. Rafraîchissement de l'animation ST7789 (uniquement si mode animé)
     #ifdef HAS_ST7789
         if (currentMillis - lastDisplayUpdate >= displayUpdateInterval) {
             lastDisplayUpdate = currentMillis;
-            // Mettre à jour uniquement la zone d'animation
-            if (WiFi.status() == WL_CONNECTED) {
+            if (WiFi.status() == WL_CONNECTED && getDisplayMode() == DISPLAY_MODE_ANIMATED) {
                 updateAnimationVisual(getGarlandAnimationName());
             }
         }

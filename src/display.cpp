@@ -1,13 +1,69 @@
 /**
  * @file display.cpp
  * @brief Implémentation du module de gestion de l'écran ST7789
- * @version 1.5.3
- * @date 2025-12-30
+ * @version 3.0.1
+ * @date 2026-01-06
  */
 
 #include "display.h"
+#include "config.h"
+#include "garland_control.h"
 
 #ifdef HAS_ST7789
+// --- Affichage selon le mode d'écran sélectionné ---
+/**
+ * @brief Affiche l'écran selon le mode d'affichage sélectionné
+ * @param ssid Nom du réseau WiFi
+ * @param ip Adresse IP
+ * @param modeName Nom du mode courant
+ * @param animationName Nom de l'animation courante
+ */
+void displayScreenByMode(const char* ssid, IPAddress ip, const char* modeName, const char* animationName, const char* matrixAnimationName) {
+    DisplayMode mode = getDisplayMode();
+    switch (mode) {
+        case DISPLAY_MODE_ANIMATED:
+            displayMainScreen(ssid, ip, modeName, animationName, matrixAnimationName);
+            break;
+        case DISPLAY_MODE_STATIC: {
+            // Affichage statique : nom projet, version, SSID, IP uniquement
+            display.fillScreen(COLOR_BLACK);
+            int16_t x1, y1; uint16_t w, h;
+            int centerX;
+            display.setTextSize(2);
+            display.setTextColor(COLOR_CYAN);
+            display.getTextBounds(PROJECT_NAME, 0, 0, &x1, &y1, &w, &h);
+            centerX = (ST7789_WIDTH - w) / 2;
+            display.setCursor(centerX, 20);
+            display.println(PROJECT_NAME);
+            display.setTextSize(1);
+            display.setTextColor(COLOR_WHITE);
+            String versionStr = "v" + String(PROJECT_VERSION);
+            display.getTextBounds(versionStr.c_str(), 0, 0, &x1, &y1, &w, &h);
+            centerX = (ST7789_WIDTH - w) / 2;
+            display.setCursor(centerX, 45);
+            display.println(versionStr);
+            display.setTextColor(COLOR_YELLOW);
+            display.setCursor(10, 80);
+            display.print("SSID: ");
+            display.setTextColor(COLOR_WHITE);
+            display.println(ssid);
+            display.setTextColor(COLOR_GREEN);
+            display.setCursor(10, 100);
+            display.print("IP: ");
+            display.setTextColor(COLOR_WHITE);
+            display.println(ip.toString().c_str());
+            break;
+        }
+        case DISPLAY_MODE_OFF:
+            // Éteint : efface d'abord puis coupe le rétroéclairage
+            display.fillScreen(COLOR_BLACK);
+            digitalWrite(LCD_BLK, LOW); // coupe le rétroéclairage
+            break;
+        default:
+            displayMainScreen(ssid, ip, modeName, animationName, matrixAnimationName);
+            break;
+    }
+}
 
 // =============================================================================
 // INSTANCIATION DE L'OBJET DISPLAY
@@ -96,7 +152,7 @@ void displayBootScreen(const char* projectName, const char* projectVersion, int 
     }
 }
 
-void displayMainScreen(const char* ssid, IPAddress ip, const char* modeName, const char* animationName) {
+void displayMainScreen(const char* ssid, IPAddress ip, const char* modeName, const char* animationName, const char* matrixAnimationName) {
     display.fillScreen(COLOR_BLACK);
 
     int16_t x1, y1;
@@ -121,7 +177,7 @@ void displayMainScreen(const char* ssid, IPAddress ip, const char* modeName, con
     // --- LIGNE DE SÉPARATION 1 ---
     display.drawLine(0, 22, ST7789_WIDTH, 22, COLOR_CYAN);
 
-    // --- MODE + ANIMATION (compact) ---
+    // --- MODE + ANIMATION GUIRLANDE (compact) ---
     display.setTextSize(1);
     display.setTextColor(COLOR_MAGENTA);
     display.setCursor(3, 26);
@@ -137,45 +193,73 @@ void displayMainScreen(const char* ssid, IPAddress ip, const char* modeName, con
     display.setCursor(35, 36);
     display.println(animationName);
 
-    // --- LIGNE DE SÉPARATION 2 ---
-    display.drawLine(0, 46, ST7789_WIDTH, 46, COLOR_CYAN);
+    // --- AFFICHER L'ANIMATION MATRICE SI DISPONIBLE ---
+    if (matrixAnimationName != nullptr) {
+        display.setTextColor(COLOR_RED);
+        display.setCursor(3, 46);
+        display.print("Matrix:");
+        display.setTextColor(COLOR_WHITE);
+        display.setCursor(40, 46);
+        display.println(matrixAnimationName);
+        // Décaler le reste de l'écran vers le bas
+        display.drawLine(0, 56, ST7789_WIDTH, 56, COLOR_CYAN);
+        display.setTextSize(1);
+        display.setTextColor(COLOR_YELLOW);
+        display.setCursor(3, 60);
+        display.print("SSID:");
+        display.setTextColor(COLOR_WHITE);
+        display.setCursor(35, 60);
+        display.println(ssid);
+        display.setTextColor(COLOR_GREEN);
+        display.setCursor(3, 70);
+        display.print("IP:");
+        display.setTextColor(COLOR_WHITE);
+        display.setCursor(35, 70);
+        display.println(ip.toString().c_str());
+        display.drawLine(0, 80, ST7789_WIDTH, 80, COLOR_CYAN);
+    } else {
+        // --- LIGNE DE SÉPARATION 2 ---
+        display.drawLine(0, 46, ST7789_WIDTH, 46, COLOR_CYAN);
 
-    // --- RÉSEAU WiFi : SSID + IP ---
-    display.setTextSize(1);
-    display.setTextColor(COLOR_YELLOW);
-    display.setCursor(3, 50);
-    display.print("SSID:");
-    display.setTextColor(COLOR_WHITE);
-    display.setCursor(35, 50);
-    display.println(ssid);
+        // --- RÉSEAU WiFi : SSID + IP ---
+        display.setTextSize(1);
+        display.setTextColor(COLOR_YELLOW);
+        display.setCursor(3, 50);
+        display.print("SSID:");
+        display.setTextColor(COLOR_WHITE);
+        display.setCursor(35, 50);
+        display.println(ssid);
 
-    display.setTextColor(COLOR_GREEN);
-    display.setCursor(3, 60);
-    display.print("IP:");
-    display.setTextColor(COLOR_WHITE);
-    display.setCursor(35, 60);
-    display.println(ip.toString().c_str());
+        display.setTextColor(COLOR_GREEN);
+        display.setCursor(3, 60);
+        display.print("IP:");
+        display.setTextColor(COLOR_WHITE);
+        display.setCursor(35, 60);
+        display.println(ip.toString().c_str());
 
-    // --- LIGNE DE SÉPARATION 3 ---
-    display.drawLine(0, 70, ST7789_WIDTH, 70, COLOR_CYAN);
+        // --- LIGNE DE SÉPARATION 3 ---
+        display.drawLine(0, 70, ST7789_WIDTH, 70, COLOR_CYAN);
+    }
 
-    // --- ZONE GRAPHIQUE D'ANIMATION (réduite) ---
-    // Rectangle de la zone d'animation : de Y=73 à Y=132 (hauteur=59 pixels)
-    display.drawRect(2, 73, ST7789_WIDTH - 4, ST7789_HEIGHT - 76, COLOR_WHITE);
+    // --- ZONE GRAPHIQUE D'ANIMATION (réduite pour ligne matrice) ---
+    // Rectangle de la zone d'animation ajusté pour 3 lignes de texte
+    int rectY = matrixAnimationName != nullptr ? 84 : 73;
+    int rectHeight = matrixAnimationName != nullptr ? ST7789_HEIGHT - 88 : ST7789_HEIGHT - 76;
+    display.drawRect(2, rectY, ST7789_WIDTH - 4, rectHeight, COLOR_WHITE);
 
     // Affichage visuel de l'animation
-    updateAnimationVisual(animationName);
+    updateAnimationVisual(animationName, matrixAnimationName != nullptr);
 }
 
-void updateAnimationVisual(const char* animationName) {
-    // Zone d'animation (intérieur du rectangle) : X=3, Y=74, Width=234, Height=59
+void updateAnimationVisual(const char* animationName, bool hasMatrix) {
+    // Zone d'animation ajustée selon présence ligne matrice
     int animX = 3;
-    int animY = 74;
+    int animY = hasMatrix ? 85 : 74;
     int animWidth = ST7789_WIDTH - 6;  // 240 - 6 = 234
-    int animHeight = ST7789_HEIGHT - 78;  // 135 - 78 = 57 (zone réduite pour afficher réseau)
+    int animHeight = hasMatrix ? ST7789_HEIGHT - 90 : ST7789_HEIGHT - 78;  // Hauteur réduite si matrice affichée
 
-    // Effacer la zone d'animation (garder le rectangle)
-    display.fillRect(animX + 1, animY + 1, animWidth - 2, animHeight - 2, COLOR_BLACK);
+    // Effacer la zone d'animation (garder le rectangle avec marge de sécurité)
+    display.fillRect(animX + 2, animY + 2, animWidth - 4, animHeight - 4, COLOR_BLACK);
 
     // Animation "Éteint" : afficher seulement le texte
     if (strcmp(animationName, "Eteint") == 0) {
@@ -191,6 +275,8 @@ void updateAnimationVisual(const char* animationName) {
         return;
     }
 
+
+// --- Affichage selon le mode d'écran sélectionné ---
     // Incrémenter le frame à chaque appel
     animFrame = (animFrame + 1) % 256;
 
@@ -335,7 +421,7 @@ void displayBootScreen(const char* projectName, const char* projectVersion, int 
     // Rien
 }
 
-void displayMainScreen(const char* ssid, IPAddress ip, const char* modeName, const char* animationName) {
+void displayMainScreen(const char* ssid, IPAddress ip, const char* modeName, const char* animationName, const char* matrixAnimationName) {
     // Rien
 }
 
@@ -343,4 +429,6 @@ void updateAnimationVisual(const char* animationName) {
     // Rien
 }
 
+
 #endif
+

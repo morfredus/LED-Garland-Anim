@@ -4,17 +4,22 @@
 /**
  * @file web_styles.h
  * @brief Feuilles de style pour l'interface web
- * @version 1.11.3
- * @date 2026-01-01
+ * @version 3.0.1
+ * @date 2026-01-06
  *
  * Module dédié à la gestion des styles CSS de l'interface web.
  * Contient tous les styles pour les cartouches, grille responsive, animations, etc.
  */
 
 // CSS pour l'interface web
-const char* WEB_STYLES =
+static constexpr const char* WEB_STYLES =
     "* {margin:0;padding:0;box-sizing:border-box;}"
-    "body{font-family:'Segoe UI',Arial,sans-serif;background:linear-gradient(135deg,#d32f2f 0%,#e53935 25%,#fbc02d 60%,#43a047 100%);min-height:100vh;padding:24px;}"
+    "body{font-family:'Segoe UI',Arial,sans-serif;background:linear-gradient(135deg,#d32f2f 0%,#e53935 25%,#fbc02d 60%,#43a047 100%);min-height:100vh;padding:24px;padding-top:80px;}"
+    "#notification-bar{position:fixed;top:0;left:0;right:0;height:60px;background:white;box-shadow:0 4px 10px rgba(0,0,0,0.15);z-index:9999;display:flex;align-items:center;justify-content:center;border-bottom:3px solid #fbc02d;}"
+    "#notification-bar.hidden{display:none;}"
+    ".notification-content{padding:0 20px;font-weight:bold;font-size:1.05em;text-align:center;word-break:break-word;max-width:100%;}"
+    ".notification-content.success{color:#1b5e20;background:rgba(232,245,233,0.5);}"
+    ".notification-content.error{color:#c62828;background:rgba(255,235,238,0.5);}"
     ".container{max-width:900px;margin:0 auto;}"
     ".header{text-align:center;color:white;margin-bottom:30px;}"
     ".header h1{font-size:2.6em;margin-bottom:6px;text-shadow:2px 2px 6px rgba(0,0,0,0.35);}"
@@ -38,9 +43,9 @@ const char* WEB_STYLES =
     "button.apply{background:linear-gradient(135deg,#43a047,#66bb6a);margin-left:10px;padding:8px 12px;}"
     ".radio-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px;}"
     "@media (max-width:600px){.radio-grid{grid-template-columns:1fr;}}"
-    ".radio-item{display:flex;align-items:center;padding:8px 10px;background:#f9f9f9;border:2px solid #e0e0e0;border-radius:8px;cursor:pointer;transition:all 0.2s;}"
+    ".radio-item{display:flex;align-items:center;padding:6px 10px;background:#f9f9f9;border:2px solid #e0e0e0;border-radius:8px;cursor:pointer;transition:all 0.2s;min-height:38px;}"
     ".radio-item:hover{background:#e8f5e9;border-color:#43a047;}"
-    ".radio-item input[type='radio']{margin-right:8px;cursor:pointer;width:16px;height:16px;}"
+    ".radio-item input[type='radio']{margin-right:8px;cursor:pointer;width:16px;height:16px;flex-shrink:0;}"
     ".radio-item input[type='radio']:checked + label{font-weight:bold;color:#1b5e20;}"
     ".radio-item.selected{background:#e8f5e9;border-color:#43a047;border-width:2px;}"
     ".radio-item label{cursor:pointer;flex:1;font-size:0.95em;user-select:none;}"

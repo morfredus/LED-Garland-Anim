@@ -27,9 +27,54 @@ Vous pouvez choisir la méthode de téléversement (USB ou OTA) à chaque upload
 ---
 # LED-Garland-Anim
 
-**Version : 1.10.0** (2026-01-01)
+**Version : 3.0.0** (2026-01-06)
 
-Contrôleur d'animation de guirlande LED bi-directionnelle et matrice NeoPixel 8x8 pour ESP32 Classic (IdeaSpark/DevKitC) avec écran ST7789, auto-détection PIR/RCWL-0516, interface web modernisée avec boutons radio, layout responsive et mises à jour AJAX sans flash, boutons physiques, 11 animations de guirlande, 39 animations festives pour matrice (Noël, Nouvel An, Pâques, Feu de Camp, Radar), contrôle double indépendant, modes intelligents, configuration persistante, animations de démarrage automatiques.
+Contrôleur d'animation de guirlande LED bi-directionnelle et matrice NeoPixel 8x8 pour ESP32 Classic (IdeaSpark/DevKitC) avec écran ST7789, auto-détection PIR/RCWL-0516, **interface web modernisée avec sauvegarde instantanée**, layout responsive, mises à jour AJAX sans flash, **support mDNS pour un accès facile via nom unique**, boutons physiques, 11 animations de guirlande, 39 animations festives pour matrice (Noël, Nouvel An, Pâques, Feu de Camp, Radar), contrôle double indépendant, modes intelligents, configuration persistante, animations de démarrage automatiques.
+
+## ✨ Nouveautés v3.0.0
+
+### 💥 Réorganisation Complète des Cartes de l'Interface Web (BREAKING CHANGE)
+- **Nouveau flux de navigation** - Ordre des cartes complètement restructuré pour une meilleure UX
+- **Animations prioritaires** - Animations Guirlande et Matrice maintenant en haut (plus fréquemment consultées)
+- **Carte Mode 3 zones** - Mode + LCD côte à côte, tous paramètres dessous en section unifiée
+- **Mode LCD intégré** - Mode d'affichage LCD maintenant dans carte Mode (carte séparée supprimée)
+- **Paramètres consolidés** - Tous paramètres temporels + luminosité matrice en un seul endroit
+- **Défilement réduit** - Disposition plus compacte avec regroupement logique
+
+### 📋 Nouvel Ordre des Cartes (v3.0.0)
+1. 🎄 **Animations Guirlande** - Toutes les animations guirlande (était Carte 2)
+2. 🎨 **Matrice 8x8** - Toutes les animations matrice (était Carte 3)
+3. 🎯 **Mode de fonctionnement** - Disposition 3 zones :
+   - Zone A (gauche) : Sélection mode (Auto/Manuel/Détection)
+   - Zone B (droite) : Mode affichage LCD (était Carte 4 séparée)
+   - Zone C (dessous) : Tous paramètres temporels + luminosité matrice
+4. ℹ️ **Système & Réseau** - Informations système et réseau
+5. 🏷️ **Nom d'appareil** - Configuration nom d'appareil
+
+### 🎨 Design Amélioré de la Carte Mode
+**Disposition Côte à Côte** (CSS Grid) :
+- **Moitié gauche** : Sélection mode de fonctionnement (Auto | Manuel | Détection mouvement)
+- **Moitié droite** : Mode affichage LCD (Animation + matrice | Animation seule | Écran éteint)
+- **Pleine largeur dessous** : Tous paramètres temporels (durée mouvement, intervalle guirlande, intervalle matrice) + luminosité matrice
+
+**Avantages** :
+- Toute la configuration en un seul endroit
+- Défilement vertical réduit
+- Meilleure hiérarchie visuelle
+- Regroupement logique des paramètres
+
+---
+
+## Versions Précédentes
+
+### v2.0.0 (2026-01-06) - Refonte Complète de l'Interface
+- **Sauvegarde instantanée sur tous les contrôles** - Plus de boutons "Appliquer" ! Les changements prennent effet immédiatement
+- **Curseurs modernes** - Tous les intervalles temporels utilisent des sliders avec affichage en temps réel
+- **Notifications centralisées** - Barre de notification fixe en haut pour toutes les confirmations
+- **Regroupement logique** - Tous les paramètres temporels regroupés dans la carte "Mode de fonctionnement"
+- **Corrections de Bugs Critiques** :
+  1. **Mode écran éteint** - L'affichage efface maintenant les pixels avant de couper le rétro-éclairage
+  2. **Démarrage auto matrice** - Le mode auto s'active correctement au démarrage avec les paramètres sauvegardés
 
 ---
 
@@ -45,18 +90,18 @@ Contrôleur d'animation de guirlande LED bi-directionnelle et matrice NeoPixel 8
 
 ### Schéma des pins principaux (ESP32 Classic)
 TB6612FNG (Guirlande) :
-  PWMA  → GPIO 12
-  AIN1  → GPIO 25
-  AIN2  → GPIO 33
-  STBY  → GPIO 14
+  PWMA  → GPIO 13
+  AIN1  → GPIO 26
+  AIN2  → GPIO 25
+  STBY  → GPIO 15
 Matrice NeoPixel 8x8 :
-  DATA  → GPIO 13
+  DATA  → GPIO 34
 MOTION_SENSOR_PIN (PIR/RCWL-0516) → GPIO 35
 LCD_MOSI → GPIO 23
 LCD_SCLK → GPIO 18
-LCD_CS   → GPIO 15
-LCD_DC   → GPIO 2
-LCD_RST  → GPIO 4
+LCD_CS   → GPIO 5
+LCD_DC   → GPIO 27
+LCD_RST  → GPIO 33
 LCD_BLK  → GPIO 32
 BTN1     → GPIO 16
 BTN2     → GPIO 17
@@ -67,6 +112,15 @@ BTN2     → GPIO 17
 
 - **Double contrôle LED** : Guirlande LED 2 fils + matrice NeoPixel 8x8 avec contrôle indépendant
 - **48 animations au total** : 11 pour la guirlande + 37 animations festives pour la matrice 8x8
+- **3 modes d’affichage écran** :
+  - **Animé** : Visuels animés classiques (par défaut)
+  - **Statique** : Affichage fixe (nom projet, version, SSID, IP)
+  - **Éteint** : Écran et rétroéclairage coupés
+- **Sélection du mode d’affichage** :
+  - Sélection à la volée depuis l’UI web (boutons radio)
+  - Valeur par défaut configurable dans `config.h`
+  - Persistance automatique (NVS, restauré au boot)
+  - Effet immédiat, sans reboot
 - **37 animations pour matrice** organisées par thème :
   - **Originales (10)** : Étoile, Météore, Étoile filante, Père Noël, Sapin, Cloche, Neige, Cadeau, Bougie, Flocon
   - **Noël (10)** : Canne à sucre, Couronne, Chaussette, Renne, Pain d'épices, Chocolat chaud, Cheminée, Glaçons, Aurore boréale, Cadeaux
@@ -114,13 +168,67 @@ BTN2     → GPIO 17
 
 ---
 
-## 5. Utilisation
+## 5. Interface Web et Accès Réseau
+
+### 5.1. Accès à l'Interface Web
+
+L'appareil est accessible de **deux manières** :
+
+1. **Via l'adresse IP** (méthode traditionnelle) :
+   ```
+   http://192.168.x.x
+   ```
+   Trouvez l'adresse IP de votre ESP32 dans :
+   - La sortie du moniteur série
+   - L'écran LCD (si équipé)
+   - La liste des appareils connectés de votre routeur
+
+2. **Via le nom mDNS** (recommandé) 🆕 :
+   ```
+   http://garland.local
+   ```
+   - Plus besoin de mémoriser les adresses IP !
+   - Fonctionne sur la plupart des appareils (Windows 10+, macOS, Linux, iOS, Android)
+   - **Nom par défaut** : `garland` (personnalisable)
+
+### 5.2. Personnalisation du Nom d'Appareil
+
+Vous pouvez changer le nom mDNS directement depuis l'interface web :
+
+1. Accédez à l'interface web (`http://garland.local` ou `http://[IP]`)
+2. Faites défiler jusqu'à la section **"🏷️ Nom d'appareil (mDNS)"**
+3. Entrez le nom souhaité (alphanumérique, tiret, underscore, max 32 caractères)
+4. Cliquez sur **"Appliquer"**
+5. Votre appareil est maintenant accessible via `http://[votre-nom].local`
+
+**Exemples :**
+- `lumieres-noel.local`
+- `led-salon.local`
+- `sapin-noel.local`
+
+**Configuration sauvegardée automatiquement** en mémoire non-volatile (NVS).
+
+### 5.3. Fonctionnalités de l'Interface Web
+
+- **Interface Web**
+  - UI moderne avec boutons radio pour toutes les sélections
+  - Layout responsive (2 colonnes desktop, 1 colonne mobile)
+  - Mises à jour instantanées, sans rechargement de page
+  - **Mode d'affichage** : Sélection Animé, Statique, Éteint (effet immédiat)
+  - **Configuration du Nom** : Changement du nom mDNS à la volée
+  - Tous les réglages (animation, mode, affichage, durées, nom) sont persistants et restaurés au boot
+  - SSID, IP et nom mDNS toujours visibles
+  - Actions Sauvegarder/Restaurer/Effacer la configuration
+
+---
+
+## 6. Utilisation
 
 ### Démarrage
 1. La guirlande démarre avec une **animation d'intro de 10 secondes** (Fade Alterné)
 2. Après l'intro, elle bascule automatiquement vers l'animation et le mode sauvegardés
-3. L'écran affiche la progression WiFi puis l'adresse IP
-4. Accès web : `http://[IP_ESP32]`
+3. L'écran affiche la progression WiFi puis l'adresse IP et le nom mDNS
+4. Accès web : `http://garland.local` (ou `http://[IP_ESP32]`)
 5. **Note:** L'animation d'intro démarre immédiatement, même en mode détection
 
 ### Contrôles physiques
@@ -128,28 +236,19 @@ BTN2     → GPIO 17
 - **Bouton 2** : Changement de mode
 - **Bouton BOOT** : Redémarrage (appui long)
 
-### Interface web
-- Tableau de bord, sélection animation/mode, visualisation capteurs, actions à distance
-- **Confirmations inline** pour les opérations save/restore/erase (pas de popups bloquants)
-- **Double-clic pour confirmer** le redémarrage (sécurité)
 
 ### Bot Telegram (optionnel)
 - Commandes `/anim`, `/mode`, `/nextanim`, `/nextmode`, `/status`, `/liste`
 
 ---
 
-
-
-
-Le firmware prend en charge **deux méthodes de mise à jour OTA** :
-
-## 6. Mises à jour OTA (Over-the-Air)
+## 7. Mises à jour OTA (Over-the-Air)
 
 Voir le guide détaillé : [docs/OTA_UPDATE_FR.md](docs/OTA_UPDATE_FR.md)
 
 Le firmware prend en charge **deux méthodes de mise à jour OTA** :
 
-### 6.1. Mise à jour OTA via Interface Web (Nouveau v1.4.0) ⭐
+### 7.1. Mise à jour OTA via Interface Web (Nouveau v1.4.0) ⭐
 
 **La méthode la plus simple et recommandée !**
 
@@ -183,7 +282,7 @@ Le firmware prend en charge **deux méthodes de mise à jour OTA** :
 
 **⚠️ Important :** Ne débranchez pas l'appareil pendant la mise à jour !
 
-### 6.2. Mise à jour OTA via ArduinoOTA (PlatformIO)
+### 7.2. Mise à jour OTA via ArduinoOTA (PlatformIO)
 
 **Méthode traditionnelle pour les développeurs :**
 
@@ -198,7 +297,7 @@ Le firmware prend en charge **deux méthodes de mise à jour OTA** :
 **Sécurité :** OTA n'est activé que lorsque l'ESP32 est connecté au WiFi.
 
 ---
-## 7. Configuration avancée
+## 8. Configuration avancée
 
 Dans `include/config.h` :
 ```cpp
@@ -212,7 +311,7 @@ Dans `include/garland_control.h` :
 
 ---
 
-## 8. Spécifications techniques
+## 9. Spécifications techniques
 
 - Guirlande LED : 2 fils, LEDs anti-parallèle, PWM 8 bits 5kHz
 - TB6612FNG : double pont H, contrôle sens/intensité
@@ -223,21 +322,21 @@ Dans `include/garland_control.h` :
 
 ---
 
-## 9. Dépannage
+## 10. Dépannage
 
 - Vérifier câblage, alimentation, configuration WiFi
 - Voir [docs/TROUBLESHOOTING_FR.md](docs/TROUBLESHOOTING_FR.md)
 
 ---
 
-## 10. Versions
+## 11. Versions
 
 **Version Actuelle : v1.11.3** (2026-01-01)
 Voir [CHANGELOG_FR.md](./CHANGELOG_FR.md)
 
 ---
 
-## 11. Documentation
+## 12. Documentation
 
 - [Guide utilisateur](docs/USER_GUIDE_FR.md)
 - [Architecture technique](docs/ARCHITECTURE_FR.md)
@@ -247,7 +346,7 @@ Voir [CHANGELOG_FR.md](./CHANGELOG_FR.md)
 
 ---
 
-## 12. Contribution
+## 13. Contribution
 
 1. Fork le projet
 2. Créer une branche (`git checkout -b feature/amelioration`)
@@ -257,19 +356,19 @@ Voir [CHANGELOG_FR.md](./CHANGELOG_FR.md)
 
 ---
 
-## 13. Licence
+## 14. Licence
 
 Ce projet est fourni tel quel à des fins éducatives et personnelles.
 
 ---
 
-## 14. Auteur
+## 15. Auteur
 
 Projet ESP32 pour guirlandes LED bi-directionnelles avec animations avancées et modes intelligents.
 
 ---
 
-## 15. Remerciements
+## 16. Remerciements
 
 - Équipe PlatformIO
 - Adafruit (librairies GFX, NeoPixel, ST7789)

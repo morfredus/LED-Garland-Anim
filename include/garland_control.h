@@ -1,8 +1,8 @@
 /**
  * @file garland_control.h
  * @brief Contrôle des animations de guirlande LED bi-directionnelle
- * @version 1.11.3
- * @date 2026-01-01
+ * @version 1.13.0
+ * @date 2026-01-06
  *
  * Module de gestion des animations pour guirlande LED à 2 fils avec LEDs en anti-parallèle.
  * Utilise le module TB6612FNG pour contrôler la direction du courant et l'intensité lumineuse.
@@ -16,6 +16,14 @@
 #include "config.h"
 #include <nvs_flash.h>
 #include <nvs.h>
+
+// Mode d'affichage de l'écran LCD
+DisplayMode getDisplayMode();
+void setDisplayMode(DisplayMode mode);
+const char* getDisplayModeName();
+const char* getDisplayModeNameById(int id);
+void loadDisplayModeFromNVS();
+void saveDisplayModeToNVS();
 
 // =============================================================================
 // CONSTANTES D'ANIMATION
@@ -201,5 +209,39 @@ bool isAnimationActive();
  * @return true si la guirlande doit être allumée, false sinon
  */
 bool isGarlandEnabled();
+
+// =============================================================================
+// GESTION DU NOM D'APPAREIL (mDNS)
+// =============================================================================
+
+/**
+ * @brief Récupère le nom d'appareil configuré
+ * @return Pointeur vers le nom d'appareil (chaîne constante)
+ */
+const char* getDeviceName();
+
+/**
+ * @brief Définit un nouveau nom d'appareil et le sauvegarde en NVS
+ * @param name Nouveau nom d'appareil (max 32 caractères, alphanumérique et tiret uniquement)
+ * @return true si le nom est valide et a été sauvegardé, false sinon
+ */
+bool setDeviceName(const char* name);
+
+/**
+ * @brief Charge le nom d'appareil depuis NVS
+ */
+void loadDeviceNameFromNVS();
+
+/**
+ * @brief Sauvegarde le nom d'appareil en NVS
+ */
+void saveDeviceNameToNVS();
+
+/**
+ * @brief Valide un nom d'appareil (alphanumérique et tiret uniquement, max 32 caractères)
+ * @param name Nom à valider
+ * @return true si le nom est valide, false sinon
+ */
+bool isValidDeviceName(const char* name);
 
 #endif // GARLAND_CONTROL_H

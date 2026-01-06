@@ -1,3 +1,442 @@
+# Journal des modifications - LED Garland Animation Controller
+
+Toutes les modifications notables de ce projet seront documentées dans ce fichier.
+
+Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
+et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/spec/v2.0.0.html).
+
+---
+# [3.0.1] - 2026-01-06
+
+## 🐛 Corrigé
+
+**Bug d'affichage TFT - Bordure d'animation**
+- **Problème** : La bordure du carré d'animation et la ligne de séparation cyan disparaissaient dès le début de l'animation
+- **Cause racine** : `fillRect` dans `updateAnimationVisual()` effaçait trop de zone, débordant sur les lignes de bordure
+  - Marges utilisées : `animX + 1, animY + 1, animWidth - 2, animHeight - 2`
+  - Épaisseur bordure : 1 pixel → pas assez de dégagement
+- **Solution** : Augmentation des marges de sécurité dans l'opération de remplissage
+  - Changé en : `animX + 2, animY + 2, animWidth - 4, animHeight - 4`
+  - Fournit un dégagement de 2 pixels des bordures au lieu de 1 pixel
+  - Empêche le rendu d'animation d'effacer les bordures du rectangle et la ligne cyan
+- **Fichier** : [src/display.cpp](src/display.cpp#L265)
+- **Impact** : Le carré d'animation et la ligne de séparation restent maintenant visibles pendant toutes les animations
+
+## 🔧 Technique
+
+**Fichiers modifiés** :
+- [src/display.cpp](src/display.cpp) : Correction des marges fillRect dans fonction `updateAnimationVisual()`
+- Version mise à jour à 3.0.1 dans tous les fichiers du projet
+
+**Statistiques de compilation** :
+- Attendu : Similaire à v3.0.0 (Flash ~81,3%, RAM 15,8%)
+
+### Classification de version
+
+**SEMVER** : 3.0.1 (PATCH)
+- **Justification** : Correction de bug uniquement - pas de changements majeurs, pas de nouvelles fonctionnalités
+- **Portée** : Correction du rendu d'affichage
+
+---
+
+
+# [3.0.0] - 2026-01-06
+
+## 💥 CHANGEMENTS MAJEURS (BREAKING)
+
+### **Réorganisation complète des cartes de l'interface Web**
+Restructuration complète de l'ordre des cartes de l'interface web - les utilisateurs doivent réapprendre le flux de navigation.
+
+**NOUVEL ordre des cartes** (v3.0.0) :
+1. 🎄 **Animations Guirlande** (était Carte 2)
+2. 🎨 **Matrice 8x8** (était Carte 3)
+3. 🎯 **Mode de fonctionnement** (redesigné - était Carte 1)
+4. ℹ️ **Système & Réseau** (était Carte 4)
+5. 🏷️ **Nom d'appareil** (était Carte 5)
+
+**ANCIEN ordre des cartes** (v2.0.0) :
+1. Mode de fonctionnement
+2. Animations Guirlande
+3. Matrice 8x8
+4. Mode affichage LCD (carte séparée)
+5. Système & Réseau
+6. Nom d'appareil
+
+**Justification** : Les animations (Guirlande + Matrice) sont maintenant prioritaires en haut car ce sont les fonctionnalités les plus consultées. La configuration (Mode + paramètres) est regroupée en troisième position. Les informations système sont repoussées vers le bas car moins fréquemment consultées.
+
+### **Carte Mode redesignée avec disposition 3 zones**
+
+La carte Mode présente maintenant une disposition sophistiquée à 3 zones qui consolide toute la configuration en un seul endroit :
+
+**Zone A (Moitié gauche)** : Sélection du mode
+- 🎯 Mode actif : Auto | Manuel | Détection mouvement
+- Disposition verticale des boutons radio (`flex-direction:column`)
+
+**Zone B (Moitié droite)** : Mode d'affichage LCD
+- 📺 Affichage LCD : Animation + matrice | Animation seule | Écran éteint
+- Intégré dans la carte Mode (était Carte 4 séparée dans v2.0.0)
+- Disposition verticale des boutons radio
+
+**Zone C (Pleine largeur dessous)** : Paramètres temporels + Luminosité
+- ⏱️ Durée d'allumage après détection mouvement
+- 🔄 Intervalle auto changement guirlande
+- 🔄 Intervalle auto changement matrice
+- 💡 Luminosité matrice (déplacée depuis Carte 2 - Matrice 8x8)
+
+**Implémentation CSS Grid** :
+```css
+<div style='display:grid;grid-template-columns:1fr 1fr;gap:15px;'>
+  <!-- Zone A: Mode --> <!-- Zone B: LCD -->
+</div>
+<div style='padding:15px;background:#f8f9fa;'>
+  <!-- Zone C: Params + Luminosité -->
+</div>
+```
+
+### ✨ Ajouté
+
+**Organisation améliorée de la carte Mode**
+- **Intégration Mode LCD** : Sélection du mode d'affichage LCD maintenant directement intégrée dans carte Mode (carte séparée supprimée)
+- **Paramètres consolidés** : Tous les paramètres temporels et luminosité matrice dans une seule section unifiée
+- **Regroupement logique** : Toute la configuration en un seul endroit - réduit le défilement et améliore l'UX
+- **Disposition côte à côte** : Mode et LCD affichés côte à côte grâce à CSS grid
+
+**Améliorations visuelles**
+- **Boutons radio verticaux** : Tous les groupes radio utilisent maintenant `flex-direction:column` (empilement vertical)
+- **Meilleure hiérarchie** : Séparation visuelle claire entre Mode/LCD (haut) et paramètres (bas)
+- **Défilement réduit** : Disposition 3 zones plus compacte que l'approche multi-cartes précédente
+
+### 📝 Modifié
+
+**Flux de navigation de l'interface**
+- **Animations en premier** : Animations Guirlande et Matrice prioritaires en haut (plus fréquemment utilisées)
+- **Configuration en second** : Carte Mode avec tous les paramètres en troisième position (regroupement logique)
+- **Système en dernier** : Informations système et nom d'appareil repoussés vers le bas (moins fréquemment consultés)
+- **Relocalisation luminosité** : Contrôle luminosité matrice déplacé de carte Matrice vers carte Mode (consolidé avec autres paramètres)
+
+**Modifications du contenu des cartes**
+- **Carte Matrice 8x8** : Curseur luminosité supprimé (maintenant dans carte Mode Zone C)
+- **Carte LCD** : Complètement supprimée - fonctionnalité intégrée dans carte Mode Zone B
+- **Carte Mode** : Étendue de simple sélection de mode à centre de configuration complet 3 zones
+
+### 🔧 Technique
+
+**Fichiers modifiés** :
+- [src/web_pages.cpp](src/web_pages.cpp) : Restructuration complète des cartes (remplacement 128 lignes aux lignes 20-148)
+  * En-tête version : "v2.0" → "v3.0"
+  * Carte 1 : Animations Guirlande (structure complète depuis ancienne Carte 2)
+  * Carte 2 : Matrice 8x8 (structure depuis ancienne Carte 3, luminosité supprimée)
+  * Carte 3 : Mode de fonctionnement (complètement redesigné avec 3 zones)
+  * Cartes 4-5 : Système & Nom d'appareil (mise à jour commentaires uniquement)
+  * JavaScript : Inchangé (tous les IDs HTML préservés pour compatibilité)
+- [platformio.ini](platformio.ini) : PROJECT_VERSION "2.0.0" → "3.0.0"
+- [include/config.h](include/config.h) : @version 2.0.0 → 3.0.0
+- [src/main.cpp](src/main.cpp) : @version 1.13.0 → 3.0.0
+- [src/display.cpp](src/display.cpp) : @version 2.0.0 → 3.0.0
+- [include/display.h](include/display.h) : @version 1.13.0 → 3.0.0
+- [src/garland_control.cpp](src/garland_control.cpp) : @version 1.13.0 → 3.0.0
+- [src/matrix8x8_control.cpp](src/matrix8x8_control.cpp) : @version 2.0.0 → 3.0.0
+- [include/web_styles.h](include/web_styles.h) : @version 2.0.0 → 3.0.0
+
+**Statistiques de compilation** :
+```
+Processing esp32devkitc
+RAM:   [==        ]  15,8% (utilisé 51 700 octets sur 327 680 octets)
+Flash: [========  ]  81,3% (utilisé 1 065 553 octets sur 1 310 720 octets)
+[SUCCESS] Durée 74,60 secondes
+```
+
+**Rétrocompatibilité** :
+- ✅ Toutes les fonctions JavaScript inchangées (IDs des éléments HTML préservés)
+- ✅ Format de stockage NVS inchangé (aucune migration requise)
+- ✅ Toutes les fonctionnalités de v2.0.0 préservées
+- ❌ Flux de navigation UI complètement différent (BREAKING - nécessite réapprentissage utilisateur)
+
+### 📚 Documentation
+
+**Fichiers mis à jour** (bilingue) :
+- CHANGELOG.md + CHANGELOG_FR.md : Entrée v3.0.0 avec détails complets de la réorganisation
+- README.md + README_FR.md : Mise à jour avec description du nouvel ordre des cartes
+- docs/USER_GUIDE.md + docs/USER_GUIDE_FR.md : Instructions de navigation mises à jour
+
+### Classification de version
+
+**SEMVER** : 3.0.0 (MAJEUR)
+- **Justification** : Réorganisation complète des cartes UI constitue un changement majeur dans l'expérience utilisateur
+- **Impact** : Les utilisateurs doivent réapprendre le flux de navigation de l'interface (ordre des cartes complètement différent)
+- **Portée** : UI uniquement - aucun changement majeur sur l'API, le format de stockage ou les fonctionnalités
+
+---
+
+# [2.0.0] - 2026-01-06
+
+## 💥 CHANGEMENTS MAJEURS (BREAKING)
+
+### **Refonte complète de l'interface Web**
+- **Interface moderne et intuitive** : Sauvegarde instantanée sur tous les paramètres (sauf nom d'appareil)
+- **Nouveau pattern d'interaction** : Plus de boutons "Appliquer" inutiles - changements appliqués immédiatement
+- **Curseurs améliorés** : Tous les intervalles temporels utilisent des sliders avec affichage en temps réel
+- **Regroupement logique** : Paramètres temporels regroupés dans la carte "Mode de fonctionnement"
+- **Notifications centralisées** : Barre fixe en haut pour toutes les confirmations
+- **Ordre des cartes optimisé** : Mode → Guirlande → Matrice → LCD (flux logique)
+
+### 🐛 Corrigé (Bugs Critiques)
+
+1. **Mode Écran Éteint**
+   - **Problème** : Mode écran éteint laissait pixels visibles malgré rétro-éclairage coupé
+   - **Cause** : `digitalWrite(LCD_BLK, LOW)` appelé avant `fillScreen(BLACK)`
+   - **Solution** : Inversion de l'ordre - pixels effacés avant coupure rétro-éclairage
+   - **Fichier** : [src/display.cpp](src/display.cpp#L57-L60)
+
+2. **Démarrage Auto Matrice**
+   - **Problème** : Mode auto matrice ne démarrait pas automatiquement au boot
+   - **Cause** : Flag `autoModeActive` jamais initialisé après chargement NVS
+   - **Solution** : Initialisation de `autoModeActive=true` dans `setupMatrix8x8()` quand `currentAnimation==MATRIX_ANIM_AUTO`
+   - **Fichier** : [src/matrix8x8_control.cpp](src/matrix8x8_control.cpp#L1963-L1975)
+
+### ✨ Ajouté (Fonctionnalités)
+
+**Sauvegarde instantanée**
+- Événements `onchange` sur tous les contrôles interactifs
+- Validation côté client pour intervalles (multiples de 5s, 5-300s)
+- Feedback visuel immédiat via barre de notification
+- Pas de latence - expérience fluide et réactive
+
+**Curseurs temporels avec affichage**
+- Intervalle guirlande : curseur + valeur affichée en temps réel
+- Durée mouvement : curseur + valeur affichée en temps réel
+- Intervalle matrice : curseur + valeur affichée en temps réel
+- Luminosité matrice : curseur + valeur affichée en temps réel
+
+**Informations système compactées**
+- Carte Système : Chip ID, Flash, RAM, CPU (grille 2x2 responsive)
+- Carte Réseau : SSID, IP, mDNS (dans même section)
+- Suppression infos redondantes (PSRAM, vitesse Flash, taille Heap)
+- Mise en page responsive avec `grid-template-columns`
+
+### 📝 Modifié (Interface)
+
+**Réorganisation des cartes** (avant → après) :
+1. ~~Animations guirlande~~ → **Mode de fonctionnement** (+ tous params temporels)
+2. ~~Mode de fonctionnement~~ → **Animations guirlande**
+3. **Matrice 8x8** (inchangée)
+4. **Mode affichage LCD** (passage de onclick à onchange)
+5. ~~Sauvegarde/Restauration~~ → **Supprimée** (fonctionnalité conservée, UI simplifiée)
+6. ~~Informations Système + Réseau WiFi~~ → **Système & Réseau** (fusionnées en grille 2 colonnes)
+7. **Nom d'appareil** (conservé - validation requise)
+8. **Actions** (Actualiser, OTA, Redémarrer)
+
+**Modifications JavaScript**
+- `changeAnimation(id)`, `changeMode(id)`, `changeMatrixAnimation(id)` : sauvegarde instantanée
+- `applyAutoInterval(val)`, `applyMotionDuration(val)`, `applyMatrixInterval(val)` : acceptent paramètre direct (plus de `getElementById`)
+- `applyMatrixBrightness(val)` : accepte paramètre direct
+- `changeDisplayMode(id)` : sauvegarde instantanée
+- `updateIntervalDisplay(slider, spanId)` : nouvelle fonction helper pour mettre à jour spans
+- Suppression de toutes les fonctions inutilisées (`showParamMessage`, `showMatrixMessage`, `showMessage`)
+
+**Pattern de code HTML/JS** (transformation complète) :
+```javascript
+// AVANT v2.0.0 (pattern obsolète) :
+<input type='number' id='auto-interval-seconds' min='5' max='300' step='5'>
+<button onclick='applyAutoInterval()'>Appliquer</button>
+function applyAutoInterval() {
+  var val = document.getElementById('auto-interval-seconds').value;
+  fetch('/auto_interval?ms=' + (val * 1000));
+}
+
+// APRÈS v2.0.0 (pattern moderne) :
+<input type='range' id='auto-interval-seconds' min='5' max='300' step='5'
+  onchange='applyAutoInterval(this.value)'
+  oninput='updateIntervalDisplay(this, "auto-interval-value")'>
+<span id='auto-interval-value'>30</span>s
+function applyAutoInterval(val) {
+  fetch('/auto_interval?ms=' + (val * 1000));
+  showNotification('✓ Intervalle : ' + val + 's');
+}
+```
+
+### 🔧 Technique
+
+**Fichiers modifiés** (6 fichiers) :
+- [src/display.cpp](src/display.cpp) - Correction bug écran éteint + version 2.0.0
+- [src/matrix8x8_control.cpp](src/matrix8x8_control.cpp) - Correction bug démarrage auto + version 2.0.0
+- [src/web_pages.cpp](src/web_pages.cpp) - Refonte complète UI (HTML + JavaScript)
+- [platformio.ini](platformio.ini) - Version 2.0.0
+- [include/config.h](include/config.h) - Version 2.0.0
+- [include/display.h](include/display.h) - Version 2.0.0 (?)
+
+**Statistiques compilation** :
+- RAM : 15.8% (51,700 octets / 327,680 octets) - inchangé
+- Flash : 81.3% (1,065,377 octets / 1,310,720 octets) - gain 0.2%
+- Durée : 203.02 secondes (build complet)
+
+### 📚 Documentation
+
+- Versions mises à jour : tous les en-têtes de fichiers source v2.0.0
+- CHANGELOG.md et CHANGELOG_FR.md mis à jour
+- README.md et README_FR.md mis à jour avec nouvelle UI
+- USER_GUIDE.md et USER_GUIDE_FR.md mis à jour avec captures d'écran
+
+### Version
+
+- **Classification SEMVER** : MAJEUR (2.0.0) - Changements breaking UI complète
+
+---
+
+# [1.12.1] – 2026-01-06
+
+### Modifié (PATCH - Performance / Fluidité)
+- Rafraîchissement de la matrice 8x8 limité à un pas minimal de 15 ms pour éviter de saturer la loop tout en gardant le visuel identique.
+- Boucle d’animation guirlande bridée à 10 ms minimum pour réduire la charge CPU sans changer le comportement.
+- Rafraîchissement de l’écran ST7789 animé passé à 200 ms (au lieu de 100 ms) pour alléger le SPI.
+- Aucun changement fonctionnel ; objectif : une loop plus fluide.
+- Notes de version : [docs/RELEASE_v1.12.1.md](docs/RELEASE_v1.12.1.md)
+- **Classification SEMVER** : PATCH (1.12.1) - optimisation de performance uniquement.
+
+# [1.12.0] – 2026-01-06
+
+### Ajouté (MINEUR - Support mDNS pour un Accès Facile)
+
+**Nom d'Appareil Unique via mDNS**
+- **Fonctionnalité** : Accès à l'interface web via un nom unique au lieu de l'adresse IP
+  - Nom par défaut : `garland.local`
+  - Personnalisable depuis l'interface web
+  - Sauvegarde persistante en NVS
+  - Validation en temps réel (alphanumérique, tiret, underscore, max 32 caractères)
+- **Avantages** :
+  - Plus besoin de chercher l'IP !
+  - Compatible multi-plateforme (Windows 10+, macOS, Linux, iOS, Android)
+  - URLs mémorisables et conviviales
+- **Implémentation** :
+  - Intégration de la bibliothèque `ESPmDNS`
+  - Nouvelles fonctions dans `garland_control.cpp` : `getDeviceName()`, `setDeviceName()`, `loadDeviceNameFromNVS()`, `saveDeviceNameToNVS()`, `isValidDeviceName()`
+  - Nouveaux endpoints API web : `GET /device_name`, `POST /device_name?name=X`
+  - Section UI web pour la configuration du nom avec aperçu en direct
+  - Redémarrage automatique de mDNS lors du changement de nom
+  - Hostname OTA synchronisé avec le nom mDNS
+- **Configuration** : Nouvelles constantes dans `config.h` :
+  - `DEFAULT_DEVICE_NAME "garland"`
+  - `MAX_DEVICE_NAME_LEN 32`
+- **Fichiers** : [include/config.h](include/config.h), [include/garland_control.h](include/garland_control.h), [src/garland_control.cpp](src/garland_control.cpp), [src/main.cpp](src/main.cpp), [include/web_interface.h](include/web_interface.h), [src/web_interface.cpp](src/web_interface.cpp), [src/web_pages.cpp](src/web_pages.cpp)
+
+### Modifié
+
+**Mises à Jour de l'Interface Web**
+- Section d'informations WiFi mise à jour pour afficher le nom mDNS
+- Ajout d'une carte de configuration du nom avec validation
+- Mise à jour de l'endpoint `/status` pour inclure le champ `device_name`
+- Mise à jour du tableau de bord pour afficher l'URL d'accès `http://[nom-appareil].local`
+
+**Mises à Jour de la Documentation**
+- Documentation mDNS complète ajoutée à `README.md` et `README_FR.md`
+- Nouvelle section "Interface Web et Accès Réseau" avec les méthodes d'accès
+- Tous les numéros de version mis à jour vers 1.12.0
+- Notes de version créées : [docs/RELEASE_v1.12.0.md](docs/RELEASE_v1.12.0.md)
+- Restructuration des sections README pour une meilleure organisation
+
+**Mise à Jour des Versions**
+- Tous les en-têtes de fichiers source mis à jour vers v1.12.0
+- Configuration de build mise à jour dans `platformio.ini`
+
+### Version
+
+- **Classification SEMVER** : MINEUR (1.12.0) - Nouvelle fonctionnalité (mDNS) avec compatibilité ascendante
+
+---
+
+# [1.11.4] – 2026-01-05 (Changement de Pin Mapping Précédent)
+
+### Modifié (MAJEUR - Changement de Pin Mapping)
+
+**Matrice NeoPixel 8x8 - Changement de Pin**
+- **Modification** : Pin MATRIX8X8_PIN déplacé de GPIO 13 vers GPIO 34
+- **Raison** : Élimination du conflit de partage de pin avec TB6612_PWMA (GPIO 13)
+- **Impact** : 
+  - La matrice NeoPixel 8x8 fonctionne maintenant sur un pin dédié (GPIO 34)
+  - Plus de conflit entre la guirlande (TB6612_PWMA) et la matrice
+  - Les deux périphériques peuvent fonctionner simultanément sans problème
+- **Action requise** : 
+  - ⚠️ **Câblage physique à modifier** : Déplacer le fil de données de la matrice de GPIO 13 vers GPIO 34
+  - Recompiler et téléverser le firmware
+- **Fichiers** : [include/board_config.h](include/board_config.h)
+
+### Version
+
+- **Classification SEMVER** : MAJEUR (1.12.0) - Changement de pin mapping matériel nécessitant reconfiguration physique
+
+---
+
+# [1.11.4] – 2026-01-05
+
+### Corrigé (PATCH - Interface Web et Architecture du Code)
+
+**1. Structure des Fichiers d'En-tête (Headers)**
+- **Problème** : Le fichier `include/web_pages.h` contenait du code exécutable (instructions `html +=`) au lieu de simples déclarations
+- **Erreur** : `error: 'html' does not name a type` lors de la compilation
+- **Solution** : Nettoyage complet de `web_pages.h` (162 lignes → 35 lignes) pour ne conserver que les déclarations de fonctions
+- **Impact** : Architecture propre et conforme aux standards C++ (séparation header/source)
+- **Fichiers** : [include/web_pages.h](include/web_pages.h)
+
+**2. Déclarations de Constantes Globales**
+- **Problème** : La constante `WEB_STYLES` dans `include/web_styles.h` causait des erreurs de définitions multiples
+- **Erreur** : Multiple definition error lors du link
+- **Solution** : Ajout de `static constexpr` pour garantir une définition unique
+- **Fichiers** : [include/web_styles.h](include/web_styles.h)
+
+**3. Ordre d'Inclusion des Headers**
+- **Problème** : `#include "web_pages.h"` était placé après du code qui l'utilisait dans `src/web_pages.cpp`
+- **Solution** : Déplacement de l'include au début du fichier source
+- **Impact** : Résolution des dépendances correcte
+- **Fichiers** : [src/web_pages.cpp](src/web_pages.cpp)
+
+**4. Interface Web - Reconstruction Complète**
+- **Problème** : Toutes les commandes de l'interface web étaient manquantes (animations, détecteur, écran, matrice 8x8)
+- **Solution** : Reconstruction complète de la fonction `generateDashboardPage()` avec :
+  - Sélecteur d'animations de guirlande (boutons radio pour chaque animation)
+  - Modes de fonctionnement (MANUAL, AUTO, MOTION) avec paramètres
+  - Réglages d'intervalle automatique et durée de détection
+  - Contrôles de la matrice 8x8 (sélection animation + curseur de luminosité)
+  - Modes d'affichage LCD (sélecteur avec aperçu)
+  - Boutons Save/Load/Erase configuration
+  - Informations système (Chip ID, Flash, RAM, PSRAM, CPU)
+  - Informations WiFi (SSID, IP, signal)
+  - Handlers JavaScript pour toutes les interactions
+- **Impact** : Interface utilisateur complète et fonctionnelle
+- **Fichiers** : [src/web_pages.cpp](src/web_pages.cpp)
+
+**5. Gestion des Modes d'Affichage**
+- **Problème** : Le paramètre HTTP pour le mode d'affichage était nommé `"mode"` au lieu de `"id"`
+- **Solution** : Modification de `handleSetDisplayMode()` pour accepter le paramètre `"id"`
+- **Impact** : Cohérence avec les autres endpoints et l'interface web
+- **Fichiers** : [src/web_interface.cpp](src/web_interface.cpp)
+
+**6. Fonction de Récupération des Noms de Modes**
+- **Problème** : Fonction `getDisplayModeNameById(int id)` manquante pour l'affichage des noms dans l'interface
+- **Erreur** : `'getDisplayModeNameById' was not declared in this scope`
+- **Solution** : Ajout de la fonction dans `garland_control.cpp` et déclaration dans `garland_control.h`
+- **Impact** : Labels corrects dans le sélecteur de modes d'affichage
+- **Fichiers** : [src/garland_control.cpp](src/garland_control.cpp), [include/garland_control.h](include/garland_control.h)
+
+**7. Correction Syntaxe C++**
+- **Problème** : La fonction `getDisplayModeNameById()` était initialement imbriquée à l'intérieur de `getDisplayModeName()`
+- **Erreur** : `a function-definition is not allowed here before '{' token`
+- **Solution** : Restructuration pour placer les deux fonctions au même niveau d'indentation
+- **Impact** : Code conforme aux règles de syntaxe C++
+- **Fichiers** : [src/garland_control.cpp](src/garland_control.cpp)
+
+### Compilation
+
+**Résultat** : ✅ Build réussi
+- RAM : 15.8% (51,644 / 327,680 bytes)
+- Flash : 79.9% (1,047,189 / 1,310,720 bytes)
+- Firmware généré : `firmware.bin` prêt pour upload
+
+### Version
+
+- **Classification SEMVER** : PATCH (1.11.4) - Corrections de bugs d'architecture et restauration de fonctionnalités manquantes
+
+---
+
 # [1.11.3] – 2026-01-01
 
 ### Corrections (PATCH - Améliorations Qualité des Animations)

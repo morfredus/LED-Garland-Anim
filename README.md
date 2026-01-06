@@ -28,9 +28,54 @@ pio run -e esp32s3_n16r8 -t upload
 ---
 # LED-Garland-Anim
 
-**Version: 1.10.0** (2026-01-01)
+**Version: 3.0.0** (2026-01-06)
 
-Controller for bi-directional LED garland and 8x8 NeoPixel matrix animation on ESP32 Classic (IdeaSpark/DevKitC) with ST7789 display, auto-detection of PIR/RCWL-0516, modern web interface with radio buttons, responsive 2-column layout, and flash-free AJAX updates, web-based OTA updates, physical buttons, 11 garland animations, 39 festive matrix animations (Christmas, New Year, Easter, Campfire, Radar), dual independent control, smart modes, persistent configuration, automatic startup animations.
+Controller for bi-directional LED garland and 8x8 NeoPixel matrix animation on ESP32 Classic (IdeaSpark/DevKitC) with ST7789 display, auto-detection of PIR/RCWL-0516, **modern web interface with instant save**, responsive layout, flash-free AJAX updates, web-based OTA updates, **mDNS support for easy access via unique device name**, physical buttons, 11 garland animations, 39 festive matrix animations (Christmas, New Year, Easter, Campfire, Radar), dual independent control, smart modes, persistent configuration, automatic startup animations.
+
+## ✨ What's New in v3.0.0
+
+### 💥 Complete Web UI Card Reorganization (BREAKING CHANGE)
+- **New navigation flow** - Card order completely restructured for better UX
+- **Animations prioritized** - Garland and Matrix animations now at top (most frequently accessed)
+- **3-zone Mode card** - Mode + LCD side-by-side, all parameters below in unified section
+- **Integrated LCD mode** - LCD display mode now part of Mode card (removed separate card)
+- **Consolidated parameters** - All temporal parameters + matrix brightness in one place
+- **Reduced scrolling** - More compact layout with logical grouping
+
+### 📋 New Card Order (v3.0.0)
+1. 🎄 **Animations Guirlande** - All garland animations (was Card 2)
+2. 🎨 **Matrice 8x8** - All matrix animations (was Card 3)
+3. 🎯 **Mode de fonctionnement** - 3-zone layout:
+   - Zone A (left): Mode selection (Auto/Manuel/Détection)
+   - Zone B (right): LCD display mode (was separate Card 4)
+   - Zone C (below): All temporal parameters + matrix brightness
+4. ℹ️ **Système & Réseau** - System and network information
+5. 🏷️ **Nom d'appareil** - Device name configuration
+
+### 🎨 Enhanced Mode Card Design
+**Side-by-Side Layout** (CSS Grid):
+- **Left Half**: Operating mode selection (Auto | Manuel | Détection mouvement)
+- **Right Half**: LCD display mode (Animation + matrice | Animation seule | Écran éteint)
+- **Full Width Below**: All temporal parameters (motion duration, garland interval, matrix interval) + matrix brightness
+
+**Benefits**:
+- All configuration in one place
+- Reduced vertical scrolling
+- Better visual hierarchy
+- Logical parameter grouping
+
+---
+
+## Previous Releases
+
+### v2.0.0 (2026-01-06) - Complete UI Overhaul
+- **Instant save on all controls** - No more "Apply" buttons! Changes take effect immediately
+- **Modern slider controls** - All time intervals use range sliders with real-time value display
+- **Centralized notifications** - Fixed notification bar at top for all confirmations
+- **Logical grouping** - All temporal parameters grouped in "Mode de fonctionnement" card
+- **Critical Bug Fixes**:
+  1. **Screen off mode** - Display now properly clears pixels before cutting backlight
+  2. **Matrix auto-start** - Auto mode now correctly activates on boot with saved settings
 
 ---
 
@@ -46,18 +91,18 @@ Controller for bi-directional LED garland and 8x8 NeoPixel matrix animation on E
 
 ### Main pinout summary (ESP32 Classic)
 TB6612FNG (Garland):
-  PWMA  → GPIO 12
-  AIN1  → GPIO 25
-  AIN2  → GPIO 33
-  STBY  → GPIO 14
+  PWMA  → GPIO 13
+  AIN1  → GPIO 26
+  AIN2  → GPIO 25
+  STBY  → GPIO 15
 8x8 NeoPixel Matrix:
-  DATA  → GPIO 13
+  DATA  → GPIO 34
 MOTION_SENSOR_PIN (PIR/RCWL-0516) → GPIO 35
 LCD_MOSI → GPIO 23
 LCD_SCLK → GPIO 18
-LCD_CS   → GPIO 15
-LCD_DC   → GPIO 2
-LCD_RST  → GPIO 4
+LCD_CS   → GPIO 5
+LCD_DC   → GPIO 27
+LCD_RST  → GPIO 33
 LCD_BLK  → GPIO 32
 BTN1     → GPIO 16
 BTN2     → GPIO 17
@@ -68,12 +113,21 @@ BTN2     → GPIO 17
 
 - **Dual LED Control**: 2-wire LED garland + 8x8 NeoPixel matrix with independent control
 - **48 Total Animations**: 11 for garland + 37 festive animations for 8x8 matrix
+- **3 Display Modes (Screen)**:
+   - **Animated**: Classic animated visuals (default)
+   - **Static**: Fixed display (project name, version, SSID, IP)
+   - **Off**: Screen and backlight fully off
+- **Display Mode Selection**:
+   - Selectable live from the web UI (radio buttons)
+   - Default value set in `config.h`
+   - Persistent (saved in NVS, restored at boot)
+   - Immediate effect, no reboot required
 - **37 Matrix Animations** organized by theme:
-  - **Original (10)**: Star, Meteor, Shooting Star, Santa, Tree, Bell, Snow, Gift, Candle, Snowflake
-  - **Christmas (10)**: Candy Cane, Wreath, Stocking, Reindeer, Gingerbread, Hot Cocoa, Fireplace, Icicles, Northern Lights, Presents
-  - **New Year (7)**: Fireworks, Champagne, Countdown, Confetti, Clock, Party Popper, Disco Ball
-  - **Easter (4)**: Easter Egg, Bunny, Chick, Flowers
-  - **Modern/Abstract (6)**: Rainbow Wave, Sparkle Rain, Plasma, Matrix Rain, Spiral, Heart, Stars Field
+   - **Original (10)**: Star, Meteor, Shooting Star, Santa, Tree, Bell, Snow, Gift, Candle, Snowflake
+   - **Christmas (10)**: Candy Cane, Wreath, Stocking, Reindeer, Gingerbread, Hot Cocoa, Fireplace, Icicles, Northern Lights, Presents
+   - **New Year (7)**: Fireworks, Champagne, Countdown, Confetti, Clock, Party Popper, Disco Ball
+   - **Easter (4)**: Easter Egg, Bunny, Chick, Flowers
+   - **Modern/Abstract (6)**: Rainbow Wave, Sparkle Rain, Plasma, Matrix Rain, Spiral, Heart, Stars Field
 - **Matrix Brightness Control**: Independent brightness adjustment (0-255) for the matrix
 - **Startup Animation**: Sparkling star animation on matrix at boot
 - **3 Smart Operating Modes**: Permanent (both always on), Motion Trigger (both follow motion), Motion Independent (garland follows motion, matrix always on)
@@ -115,36 +169,61 @@ BTN2     → GPIO 17
 
 ---
 
-## 5. Usage
+## 5. Web Interface and Network Access
 
-### Startup
-1. The garland starts with a **10-second intro animation** (Fade Alternate)
-2. After the intro, it automatically switches to the saved animation and mode
-3. The display shows WiFi progress then the IP address
-4. Web access: `http://[ESP32_IP]`
-5. **Note:** The intro animation starts immediately, even in motion detection mode
+### 5.1. Accessing the Web Interface
 
-### Physical controls
-- **Button 1**: Next animation / auto mode
-- **Button 2**: Change mode
-- **BOOT button**: Restart (long press)
+The device can be accessed in **two ways**:
 
-### Web interface
-- Dashboard, animation/mode selection, sensor visualization, remote actions
-- **Inline confirmations** for save/restore/erase operations (no blocking popups)
-- **Double-click confirmation** for reboot (safety feature)
+1. **Via IP Address** (traditional):
+   ```
+   http://192.168.x.x
+   ```
+   Find your ESP32's IP address in:
+   - Serial monitor output
+   - LCD display (if equipped)
+   - Your router's connected devices list
 
-### Telegram bot (optional)
-- Commands `/anim`, `/mode`, `/nextanim`, `/nextmode`, `/status`, `/list`
+2. **Via mDNS Name** (recommended) 🆕:
+   ```
+   http://garland.local
+   ```
+   - No need to memorize IP addresses!
+   - Works on most devices (Windows 10+, macOS, Linux, iOS, Android)
+   - **Default name**: `garland` (customizable)
+
+### 5.2. Customizing the Device Name
+
+You can change the mDNS device name directly from the web interface:
+
+1. Access the web interface (`http://garland.local` or `http://[IP]`)
+2. Scroll to **"🏷️ Device Name (mDNS)"** section
+3. Enter your desired name (alphanumeric, dash, underscore, max 32 chars)
+4. Click **"Apply"**
+5. Your device is now accessible at `http://[your-name].local`
+
+**Examples:**
+- `christmas-lights.local`
+- `living-room-led.local`
+- `xmas-tree.local`
+
+**Configuration saved automatically** in non-volatile memory (NVS).
+
+### 5.3. Web Interface Features
+
+- **Web Interface**
+   - Modern UI with radio button grids for all selections
+   - Responsive layout (2 columns desktop, 1 column mobile)
+   - Instant updates, no page reloads
+   - **Display Mode**: Select between Animated, Static, Off (immediate effect)
+   - **Device Name Configuration**: Change mDNS name on the fly
+   - All settings (animation, mode, display mode, durations, device name) are persistent and restored at boot
+   - SSID, IP, and mDNS name always visible
+   - Save/Restore/Erase configuration actions
 
 ---
 
-
-
-
-## 6. OTA Updates (Over-the-Air)
-
-See the detailed guide: [docs/OTA_UPDATE.md](docs/OTA_UPDATE.md)
+## 6. Firmware Updates (OTA)
 
 The firmware supports **two OTA update methods**:
 

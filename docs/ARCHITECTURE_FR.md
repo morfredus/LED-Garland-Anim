@@ -7,11 +7,11 @@ La configuration (mode, animation, intervalles) est stockée dans la NVS de l’
 - Si la NVS est vide ou corrompue, les valeurs par défaut sont utilisées puis sauvegardées.
 
 Ceci garantit la restauration automatique des réglages utilisateur après redémarrage ou coupure d’alimentation.
-# 📚 Architecture - LED-Garland-Anim v1.11.3
+# 📚 Architecture - LED-Garland-Anim v1.13.0
 
 ## 🎯 Vue d'ensemble
 
-LED-Garland-Anim v1.11.3 est désormais unifié pour la carte ESP32 IdeaSpark avec écran LCD ST7789 intégré (1.14").
+LED-Garland-Anim v1.13.0 est désormais unifié pour la carte ESP32 IdeaSpark avec écran LCD ST7789 intégré (1.14").
 - **Interface Web** : Contrôle à distance et configuration
 - **Affichage Local** : LCD ST7789 (plus d'OLED/TFT/ILI9341)
 - **Contrôle Physique** : Boutons pour changement d'animation/mode
@@ -79,5 +79,5 @@ Voir [PIN_MAPPING_FR.md](PIN_MAPPING_FR.md) pour le détail. Seule la carte ESP3
 
 ## Versionnement
 
-- Ce document : v1.11.3 (2025-12-31)
+- Ce document : v1.13.0 (2026-01-06)
 - Voir CHANGELOG_FR.md pour le détail
