@@ -1,8 +1,8 @@
 /**
  * @file config.h
  * @brief Configuration globale du projet
- * @version 1.12.1
- * @date 2026-01-01
+ * @version 1.13.0
+ * @date 2026-01-06
  */
 
 #ifndef CONFIG_H
@@ -15,6 +15,13 @@
 // --- Configuration mDNS (Nom unique d'accès) ---
 #define DEFAULT_DEVICE_NAME "garland"  // Nom par défaut pour mDNS (ex: garland.local)
 #define MAX_DEVICE_NAME_LEN 32         // Longueur maximale du nom d'appareil
+
+// --- Configuration Durées d'animations (en millisecondes) ---
+#define DEFAULT_GARLAND_ANIM_INTERVAL 30000  // Intervalle par défaut guirlande (mode AUTO)
+#define DEFAULT_MATRIX_ANIM_INTERVAL 30000   // Intervalle par défaut matrice (mode AUTO)
+#define MOTION_TRIGGER_DEFAULT 30000         // Durée d'allumage après détection mouvement
+#define MIN_ANIMATION_INTERVAL 5000          // Minimum : 5 secondes
+#define MAX_ANIMATION_INTERVAL 300000        // Maximum : 5 minutes
 
 // Debug : Décommenter pour voir les logs détaillées
 #define ENABLE_DEBUG_LOG
@@ -31,8 +38,8 @@
 
 // --- Configuration ST7789 (Écran LCD intégré IdeaSpark) ---
 #define HAS_ST7789
-#define ST7789_WIDTH     135   // Largeur de l'écran 1.14" (135x240)
-#define ST7789_HEIGHT    240   // Hauteur de l'écran 1.14"
+#define ST7789_WIDTH     240   // Largeur de l'écran 1.14" (135x240)
+#define ST7789_HEIGHT    320   // Hauteur de l'écran 1.14"
 #define ST7789_ROTATION  0     // Rotation de l'écran (0, 1, 2, 3)
 
 // Couleurs de base pour ST7789 (RGB565)

@@ -46,7 +46,7 @@ void handleSetAnimation() {
         int animId = server.arg("id").toInt();
         if (animId >= 0 && animId < ANIM_COUNT) {
             setGarlandAnimation((GarlandAnimation)animId);
-            displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName());
+            displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName());
             server.send(200, "text/plain", "Animation changée");
         } else {
             server.send(400, "text/plain", "ID animation invalide");
@@ -61,7 +61,7 @@ void handleSetMode() {
         int modeId = server.arg("id").toInt();
         if (modeId >= 0 && modeId < MODE_COUNT) {
             setGarlandMode((GarlandMode)modeId);
-            displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName());
+            displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName());
             server.send(200, "text/plain", "Mode changé");
         } else {
             server.send(400, "text/plain", "ID mode invalide");
@@ -83,6 +83,7 @@ void handleStatus() {
     json += "\"matrix_animation\":\"" + String(getMatrix8x8AnimationName()) + "\",";
     json += "\"matrix_animation_id\":" + String((int)getMatrix8x8Animation()) + ",";
     json += "\"matrix_brightness\":" + String(getMatrix8x8Brightness()) + ",";
+    json += "\"matrix_interval_ms\":" + String(getMatrix8x8AnimationIntervalMs()) + ",";
     json += "\"display_mode\":\"" + String(getDisplayModeName()) + "\",";
     json += "\"display_mode_id\":" + String((int)getDisplayMode()) + ",";
     json += "\"device_name\":\"" + String(getDeviceName()) + "\",";
@@ -106,6 +107,16 @@ void handleSetMotionDuration() {
         unsigned long val = server.arg("ms").toInt();
         setMotionTriggerDurationMs(val);
         server.send(200, "text/plain", "Motion duration updated");
+    } else {
+        server.send(400, "text/plain", "Paramètre manquant");
+    }
+}
+
+void handleSetMatrixInterval() {
+    if (server.hasArg("ms")) {
+        unsigned long val = server.arg("ms").toInt();
+        setMatrix8x8AnimationIntervalMs(val);
+        server.send(200, "text/plain", "Matrix animation interval updated");
     } else {
         server.send(400, "text/plain", "Paramètre manquant");
     }
@@ -313,6 +324,7 @@ void setupWebServer() {
     // Routes pour la matrice 8x8
     server.on("/matrix_animation", handleSetMatrix8x8Animation);
     server.on("/matrix_brightness", handleSetMatrix8x8Brightness);
+    server.on("/matrix_interval", handleSetMatrixInterval);
 
     // Routes OTA
     server.on("/update", HTTP_GET, handleOTAPage);

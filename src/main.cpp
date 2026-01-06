@@ -2,8 +2,8 @@
 /**
  * @file main.cpp
  * @brief Point d'entrée principal du projet LED-Garland-Anim
- * @version 1.12.1
- * @date 2026-01-01
+ * @version 1.13.0
+ * @date 2026-01-06
  *
  * OTA support: ArduinoOTA (upload firmware over WiFi) + Web OTA (Update.h)
  */
@@ -66,7 +66,7 @@ void handleBtn1Click() {
     LOG_PRINTF(">> Bouton 1 : Animation changée -> %s\n", getGarlandAnimationName());
 
     #ifdef HAS_ST7789
-        displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName());
+        displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName());
     #endif
 }
 
@@ -76,7 +76,7 @@ void handleBtn2Click() {
     LOG_PRINTF(">> Bouton 2 : Mode changé -> %s\n", getGarlandModeName());
 
     #ifdef HAS_ST7789
-        displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName());
+        displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName());
     #endif
 }
 
@@ -115,7 +115,7 @@ void setupWifi() {
         LOG_PRINT("IP: "); LOG_PRINTLN(WiFi.localIP());
 
         // Affichage de l'écran principal avec toutes les infos
-        displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName());
+        displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName());
 
         delay(2000); // Pause pour laisser voir l'écran
     } else {

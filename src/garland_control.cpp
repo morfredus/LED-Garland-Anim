@@ -1,7 +1,7 @@
 /**
  * @file garland_control.cpp
  * @brief Implémentation du contrôle des animations de guirlande
- * @version 1.12.1
+ * @version 1.13.0
  * @date 2026-01-06
  */
 
@@ -21,8 +21,8 @@ static GarlandMode savedMode = MODE_PERMANENT;                    // Mode sauveg
 static unsigned long animationStartTime = 0;
 static unsigned long bootTime = 0;                                // Temps du démarrage pour gérer l'intro
 static unsigned long motionDetectedTime = 0;
-static unsigned long autoAnimationIntervalMs = 30000;   // Intervalle entre changements en mode AUTO
-static unsigned long motionTriggerDurationMs = MOTION_TRIGGER_DURATION; // Durée d'allumage après détection
+static unsigned long autoAnimationIntervalMs = DEFAULT_GARLAND_ANIM_INTERVAL;   // Intervalle entre changements en mode AUTO
+static unsigned long motionTriggerDurationMs = MOTION_TRIGGER_DEFAULT; // Durée d'allumage après détection
 static bool garlandEnabled = true;
 static bool autoModeActive = false;  // Flag pour suivre si le mode AUTO est actif
 static bool lastMotionState = false;  // État précédent du capteur PIR pour détecter les fronts

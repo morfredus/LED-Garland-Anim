@@ -1,4 +1,4 @@
-# Pin Connection Guide - LED-Garland-Anim v1.12.0
+# Pin Connection Guide - LED-Garland-Anim v1.13.0
 
 > 📌 **Beginner's Guide**: This document explains how to physically connect components to your ESP32 IdeaSpark board for the LED-Garland-Anim project.
 
@@ -25,15 +25,15 @@
 | **I2C_SCL**       | SCL        | GPIO 22  | I2C Clock                  | For future expansion        |
 | **LCD ST7789**    | MOSI       | GPIO 23  | SPI Data                   | LCD_MOSI                    |
 | **LCD ST7789**    | SCLK       | GPIO 18  | SPI Clock                  | LCD_SCLK                    |
-| **LCD ST7789**    | CS         | GPIO 5   | Chip Select                | LCD_CS                      |
-| **LCD ST7789**    | DC         | GPIO 27  | Data/Command               | LCD_DC                      |
-| **LCD ST7789**    | RST        | GPIO 33  | Reset                      | LCD_RST                     |
+| **LCD ST7789**    | CS         | GPIO 15  | Chip Select                | LCD_CS                      |
+| **LCD ST7789**    | DC         | GPIO 2   | Data/Command               | LCD_DC (⚠️ Shared with LED_BUILTIN) |
+| **LCD ST7789**    | RST        | GPIO 4   | Reset                      | LCD_RST                     |
 | **LCD ST7789**    | BLK        | GPIO 32  | Backlight                  | LCD_BLK (MUST be HIGH)      |
-| **TB6612_PWMA**   | PWMA       | GPIO 13  | PWM Direction A            | Light intensity control      |
-| **TB6612_AIN1**   | AIN1       | GPIO 26  | Direction bit 1            | Current direction control    |
-| **TB6612_AIN2**   | AIN2       | GPIO 25  | Direction bit 2            | ⚠️ Moved to avoid conflict with LCD_BLK |
-| **TB6612_STBY**   | STBY       | GPIO 15  | Standby                    | Module activation (HIGH)    |
-| **MATRIX8X8**     | DIN        | GPIO 34  | WS2812B Data               | Dedicated pin for matrix    |
+| **TB6612_PWMA**   | PWMA       | GPIO 12  | PWM Direction A            | Light intensity control      |
+| **TB6612_AIN1**   | AIN1       | GPIO 25  | Direction bit 1            | Current direction control    |
+| **TB6612_AIN2**   | AIN2       | GPIO 33  | Direction bit 2            | Current direction control    |
+| **TB6612_STBY**   | STBY       | GPIO 14  | Standby                    | Module activation (HIGH)    |
+| **MATRIX8X8**     | DIN        | GPIO 27  | WS2812B Data               | Dedicated pin for matrix    |
 | **MOTION_SENSOR_PIN** | OUT        | GPIO 35  | Motion sensor (PIR or RCWL-0516, auto-detected) | See docs for details |
 
 ### 🎨 LCD ST7789 Connection Schematic
@@ -43,9 +43,9 @@ ESP32 IdeaSpark      LCD ST7789
 ┌─────────┐        ┌──────────┐
 │ GPIO 23 ├───────►│ MOSI     │
 │ GPIO 18 ├───────►│ SCLK     │
-│ GPIO 5  ├───────►│ CS       │
-│ GPIO 27 ├───────►│ DC       │
-│ GPIO 33 ├───────►│ RST      │
+│ GPIO 15 ├───────►│ CS       │
+│ GPIO 2  ├───────►│ DC       │ ⚠️ Shared with LED_BUILTIN
+│ GPIO 4  ├───────►│ RST      │
 │ GPIO 32 ├───────►│ BLK      │ ⚠️ MUST be HIGH to see display
 │   3V3   ├───────►│ VCC      │
 │   GND   ├───────►│ GND      │
@@ -57,10 +57,10 @@ ESP32 IdeaSpark      LCD ST7789
 ```
 ESP32 IdeaSpark      TB6612FNG              LED Garland
 ┌─────────┐        ┌──────────┐           ┌──────────┐
-│ GPIO 13 ├───────►│ PWMA     │           │          │
-│ GPIO 26 ├───────►│ AIN1     │           │          │
-│ GPIO 25 ├───────►│ AIN2     │           │          │ ⚠️ Moved to GPIO 25
-│ GPIO 15 ├───────►│ STBY     │           │          │
+│ GPIO 12 ├───────►│ PWMA     │           │          │
+│ GPIO 25 ├───────►│ AIN1     │           │          │
+│ GPIO 33 ├───────►│ AIN2     │           │          │
+│ GPIO 14 ├───────►│ STBY     │           │          │
 │   3V3   ├───────►│ VCC      │           │          │
 │   GND   ├───────►│ GND      ├──────────►│ GND (-)  │
 │         │    ┌──►│ VM       │           │          │
@@ -81,7 +81,7 @@ ESP32 IdeaSpark      TB6612FNG              LED Garland
 ```
 ESP32 IdeaSpark      WS2812B 8x8 Matrix
 ┌─────────┐        ┌──────────┐
-│ GPIO 34 ├───────►│ DIN      │
+│ GPIO 27 ├───────►│ DIN      │
 │   5V    ├───────►│ VCC      │ (External power supply recommended)
 │   GND   ├───────►│ GND      │
 └─────────┘        └──────────┘
@@ -105,4 +105,4 @@ You may use any ESP32 board with a compatible ST7789 display, but you must respe
 
 ---
 
-**Document version: v1.11.3 (2025-12-31)**
+**Document version: v1.13.0 (2026-01-06)**

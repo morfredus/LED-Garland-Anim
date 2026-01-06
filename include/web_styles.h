@@ -4,7 +4,7 @@
 /**
  * @file web_styles.h
  * @brief Feuilles de style pour l'interface web
- * @version 1.12.1
+ * @version 1.13.0
  * @date 2026-01-06
  *
  * Module dédié à la gestion des styles CSS de l'interface web.
@@ -14,7 +14,12 @@
 // CSS pour l'interface web
 static constexpr const char* WEB_STYLES =
     "* {margin:0;padding:0;box-sizing:border-box;}"
-    "body{font-family:'Segoe UI',Arial,sans-serif;background:linear-gradient(135deg,#d32f2f 0%,#e53935 25%,#fbc02d 60%,#43a047 100%);min-height:100vh;padding:24px;}"
+    "body{font-family:'Segoe UI',Arial,sans-serif;background:linear-gradient(135deg,#d32f2f 0%,#e53935 25%,#fbc02d 60%,#43a047 100%);min-height:100vh;padding:24px;padding-top:80px;}"
+    "#notification-bar{position:fixed;top:0;left:0;right:0;height:60px;background:white;box-shadow:0 4px 10px rgba(0,0,0,0.15);z-index:9999;display:flex;align-items:center;justify-content:center;border-bottom:3px solid #fbc02d;}"
+    "#notification-bar.hidden{display:none;}"
+    ".notification-content{padding:0 20px;font-weight:bold;font-size:1.05em;text-align:center;word-break:break-word;max-width:100%;}"
+    ".notification-content.success{color:#1b5e20;background:rgba(232,245,233,0.5);}"
+    ".notification-content.error{color:#c62828;background:rgba(255,235,238,0.5);}"
     ".container{max-width:900px;margin:0 auto;}"
     ".header{text-align:center;color:white;margin-bottom:30px;}"
     ".header h1{font-size:2.6em;margin-bottom:6px;text-shadow:2px 2px 6px rgba(0,0,0,0.35);}"

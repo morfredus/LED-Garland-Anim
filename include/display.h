@@ -1,8 +1,8 @@
 /**
  * @file display.h
  * @brief Module de gestion de l'écran ST7789 (ESP32 IdeaSpark 1.14" LCD)
- * @version 1.6.0
- * @date 2025-12-30
+ * @version 1.13.0
+ * @date 2026-01-06
  *
  * Ce module fournit une interface pour gérer l'affichage sur l'écran
  * ST7789 intégré à l'ESP32 IdeaSpark.
@@ -33,10 +33,11 @@
  * @brief Affiche l'écran selon le mode d'affichage sélectionné (Animé, Statique, Éteint)
  * @param ssid Nom du réseau WiFi
  * @param ip Adresse IP
- * @param modeName Nom du mode courant
- * @param animationName Nom de l'animation courante
+ * @param modeName Nom du mode courant de la guirlande
+ * @param animationName Nom de l'animation courante de la guirlande
+ * @param matrixAnimationName Nom de l'animation courante de la matrice
  */
-void displayScreenByMode(const char* ssid, IPAddress ip, const char* modeName, const char* animationName);
+void displayScreenByMode(const char* ssid, IPAddress ip, const char* modeName, const char* animationName, const char* matrixAnimationName = nullptr);
 
 /**
  * @brief Initialise l'écran ST7789
@@ -75,8 +76,9 @@ void displayBootScreen(const char* projectName, const char* projectVersion, int 
  * @param ip Adresse IP locale
  * @param modeName Nom du mode actuel
  * @param animationName Nom de l'animation active
+ * @param matrixAnimationName Nom de l'animation matrice active (optionnel)
  */
-void displayMainScreen(const char* ssid, IPAddress ip, const char* modeName, const char* animationName);
+void displayMainScreen(const char* ssid, IPAddress ip, const char* modeName, const char* animationName, const char* matrixAnimationName = nullptr);
 
 /**
  * @brief Met à jour uniquement la zone d'animation sans redessiner tout l'écran
@@ -84,10 +86,5 @@ void displayMainScreen(const char* ssid, IPAddress ip, const char* modeName, con
  * @param animationName Nom de l'animation active
  */
 void updateAnimationVisual(const char* animationName);
-
-/**
- * @brief Affiche l'écran selon le mode d'affichage sélectionné
- */
-void displayScreenByMode(const char* ssid, IPAddress ip, const char* modeName, const char* animationName);
 
 #endif // DISPLAY_H

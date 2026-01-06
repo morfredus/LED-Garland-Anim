@@ -1,7 +1,7 @@
 /**
  * @file matrix8x8_control.cpp
  * @brief Implementation of 8x8 NeoPixel matrix control with festive animations
- * @version 1.12.1
+ * @version 1.13.0
  * @date 2026-01-06
  */
 
@@ -20,6 +20,7 @@ static unsigned long animationStartTime = 0;
 static unsigned long autoModeChangeTime = 0;  // Track last auto mode change
 // NOTE: Auto mode interval is shared with garland - uses getAutoAnimationIntervalMs()
 static uint8_t matrixBrightness = 128;  // Default brightness (50%)
+static unsigned long matrixAnimationIntervalMs = DEFAULT_MATRIX_ANIM_INTERVAL;  // Intervalle animations matrice (indépendant de guirlande)
 static bool matrixEnabled = true;
 static bool autoModeActive = false;  // Flag to track if auto mode is active
 
@@ -1909,6 +1910,13 @@ void loadMatrix8x8Settings() {
         LOG_PRINTF("Matrix brightness restored: %d\n", matrixBrightness);
     }
 
+    // Load animation interval
+    uint32_t interval = DEFAULT_MATRIX_ANIM_INTERVAL;
+    if (nvs_get_u32(handle, "anim_interval", &interval) == ESP_OK) {
+        matrixAnimationIntervalMs = constrain(interval, MIN_ANIMATION_INTERVAL, MAX_ANIMATION_INTERVAL);
+        LOG_PRINTF("Matrix animation interval restored: %lu ms\n", matrixAnimationIntervalMs);
+    }
+
     nvs_close(handle);
 }
 
@@ -1923,6 +1931,7 @@ void saveMatrix8x8Settings() {
 
     nvs_set_u8(handle, "animation", (uint8_t)currentAnimation);
     nvs_set_u8(handle, "brightness", matrixBrightness);
+    nvs_set_u32(handle, "anim_interval", matrixAnimationIntervalMs);
 
     err = nvs_commit(handle);
     nvs_close(handle);
@@ -2212,6 +2221,17 @@ void setMatrix8x8Brightness(uint8_t brightness) {
 
 uint8_t getMatrix8x8Brightness() {
     return matrixBrightness;
+}
+
+unsigned long getMatrix8x8AnimationIntervalMs() {
+    return matrixAnimationIntervalMs;
+}
+
+void setMatrix8x8AnimationIntervalMs(unsigned long ms) {
+    // Constrainer entre 5 secondes et 5 minutes
+    matrixAnimationIntervalMs = constrain(ms, MIN_ANIMATION_INTERVAL, MAX_ANIMATION_INTERVAL);
+    LOG_PRINTF("Matrix animation interval set to: %lu ms\n", matrixAnimationIntervalMs);
+    saveMatrix8x8Settings();
 }
 
 bool isMatrix8x8Active() {

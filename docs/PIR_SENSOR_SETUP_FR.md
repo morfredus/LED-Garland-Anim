@@ -51,4 +51,4 @@ Le capteur PIR (HC-SR501) permet de détecter les mouvements pour déclencher la
 - Sortie instable : vérifier l’alimentation et la masse commune
 
 ---
-**Version du document : v1.11.3 (2025-12-31)**
+**Version du document : v1.13.0 (2026-01-06)**

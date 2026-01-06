@@ -11,6 +11,12 @@ String generateDashboardPage(uint32_t chipId, uint32_t flashSize, uint32_t flash
     html += "<style>";
     html += String(WEB_STYLES);
     html += "</style></head><body>";
+    
+    // --- Barre de notification fixe (sans décalage de contenu) ---
+    html += "<div id='notification-bar' class='hidden'>";
+    html += "<div id='notification-content' class='notification-content success'></div>";
+    html += "</div>";
+    
     html += "<div class='container'>";
     html += "<div class='header'><h1>🎄 LED Garland Dashboard</h1></div>";
     
@@ -19,7 +25,6 @@ String generateDashboardPage(uint32_t chipId, uint32_t flashSize, uint32_t flash
     html += "<div class='card-title'>🎨 Animations de la guirlande";
     html += "<span style='float:right;font-size:0.85em;color:#43a047;font-weight:normal'>Actuelle : <span id='current-anim'>" + String(getGarlandAnimationName()) + "</span></span>";
     html += "</div>";
-    html += "<div id='param-message' style='visibility:hidden;margin-bottom:10px;padding:8px;border-radius:6px;background:#e8f5e9;color:#1b5e20;text-align:center;font-weight:bold;'></div>";
     html += "<div class='radio-grid'>";
     for (int i = 0; i < ANIM_COUNT; i++) {
         bool isSelected = (i == (int)getGarlandAnimation());
@@ -45,22 +50,20 @@ String generateDashboardPage(uint32_t chipId, uint32_t flashSize, uint32_t flash
     
     // Paramètres pour mode AUTO
     html += "<div style='margin-top:15px;'>"; 
-    html += "<label class='section-label'>⏱️ Intervalle auto (secondes):</label>";
+    html += "<label class='section-label'>⏱️ Intervalle guirlande (secondes, pas de 5s):</label>";
     html += "<div style='display:flex;gap:8px;align-items:center;'>"; 
-    html += "<input type='number' id='auto-interval-seconds' value='" + String(getAutoAnimationIntervalMs() / 1000) + "' min='1' max='300' style='flex:1'>"; 
+    html += "<input type='number' id='auto-interval-seconds' value='" + String(getAutoAnimationIntervalMs() / 1000) + "' min='5' max='300' step='5' style='flex:1'>"; 
     html += "<button class='apply' onclick='applyAutoInterval()'>Appliquer</button>";
     html += "</div>";
-    html += "<div id='auto-interval-message' style='visibility:hidden;margin-top:8px;padding:6px;border-radius:4px;background:#e8f5e9;color:#1b5e20;font-size:12px;text-align:center;font-weight:bold;'></div>";
     html += "</div>";
     
     // Paramètres pour mode MOTION
     html += "<div style='margin-top:15px;'>"; 
-    html += "<label class='section-label'>🎯 Durée détection mouvement (secondes):</label>";
+    html += "<label class='section-label'>🎯 Durée détection mouvement (secondes, pas de 5s):</label>";
     html += "<div style='display:flex;gap:8px;align-items:center;'>";
-    html += "<input type='number' id='motion-duration-seconds' value='" + String(getMotionTriggerDurationMs() / 1000) + "' min='1' max='300' style='flex:1'>";
+    html += "<input type='number' id='motion-duration-seconds' value='" + String(getMotionTriggerDurationMs() / 1000) + "' min='5' max='300' step='5' style='flex:1'>";
     html += "<button class='apply' onclick='applyMotionDuration()'>Appliquer</button>";
     html += "</div>";
-    html += "<div id='motion-duration-message' style='visibility:hidden;margin-top:8px;padding:6px;border-radius:4px;background:#e8f5e9;color:#1b5e20;font-size:12px;text-align:center;font-weight:bold;'></div>";
     html += "</div>";
     html += "</div>";
 
@@ -69,7 +72,6 @@ String generateDashboardPage(uint32_t chipId, uint32_t flashSize, uint32_t flash
     html += "<div class='card-title'>🔲 Matrice LED 8x8";
     html += "<span style='float:right;font-size:0.85em;color:#43a047;font-weight:normal'>Actuelle : <span id='current-matrix'>" + String(getMatrix8x8AnimationName()) + "</span></span>";
     html += "</div>";
-    html += "<div id='matrix-message' style='visibility:hidden;margin-bottom:10px;padding:8px;border-radius:6px;background:#e8f5e9;color:#1b5e20;text-align:center;font-weight:bold;'></div>";
     html += "<div class='radio-grid'>";
     for (int i = 0; i < MATRIX_ANIM_COUNT; i++) {
         bool isSelected = (i == (int)getMatrix8x8Animation());
@@ -87,7 +89,15 @@ String generateDashboardPage(uint32_t chipId, uint32_t flashSize, uint32_t flash
     html += "<input type='range' id='matrixBrightness' min='0' max='255' value='" + String(getMatrix8x8Brightness()) + "' oninput='updateBrightnessValue(this.value)' style='flex:1'>";
     html += "<button class='apply' onclick='applyMatrixBrightness()'>Appliquer</button>";
     html += "</div>";
-    html += "<div id='matrix-brightness-message' style='visibility:hidden;margin-top:8px;padding:6px;border-radius:4px;background:#e8f5e9;color:#1b5e20;font-size:12px;text-align:center;font-weight:bold;'></div>";
+    html += "</div>";
+    
+    // Intervalle animations matrice
+    html += "<div style='margin-top:15px;'>";
+    html += "<label class='section-label'>⏱️ Intervalle matrice (secondes, pas de 5s):</label>";
+    html += "<div style='display:flex;gap:8px;align-items:center;'>";
+    html += "<input type='number' id='matrix-interval-seconds' value='" + String(getMatrix8x8AnimationIntervalMs() / 1000) + "' min='5' max='300' step='5' style='flex:1'>";
+    html += "<button class='apply' onclick='applyMatrixInterval()'>Appliquer</button>";
+    html += "</div>";
     html += "</div>";
     html += "</div>";
 
@@ -107,7 +117,6 @@ String generateDashboardPage(uint32_t chipId, uint32_t flashSize, uint32_t flash
     // --- Carte Sauvegarde/Chargement ---
     html += "<div class='card card-full'>";
     html += "<div class='card-title'>💾 Sauvegarde et restauration</div>";
-    html += "<div id='save-message' style='visibility:hidden;margin-bottom:10px;padding:8px;border-radius:6px;background:#e8f5e9;color:#1b5e20;text-align:center;font-weight:bold;'></div>";
     html += "<div style='display:flex;gap:10px;flex-wrap:wrap;'>";
     html += "<button onclick='saveConfig()' style='flex:1'>💾 Sauvegarder la config</button>";
     html += "<button onclick='loadConfig()' style='flex:1;background:linear-gradient(135deg,#43a047,#66bb6a)'>📂 Charger la config</button>";
@@ -134,7 +143,6 @@ String generateDashboardPage(uint32_t chipId, uint32_t flashSize, uint32_t flash
     // --- Carte Nom d'appareil ---
     html += "<div class='card card-full'>";
     html += "<div class='card-title'>🏷️ Nom d'appareil (mDNS)</div>";
-    html += "<div id='device-name-message' style='visibility:hidden;margin-bottom:10px;padding:8px;border-radius:6px;background:#e8f5e9;color:#1b5e20;text-align:center;font-weight:bold;'></div>";
     html += "<div style='display:flex;gap:10px;align-items:center;'>";
     html += "<input type='text' id='deviceNameInput' value='" + String(getDeviceName()) + "' placeholder='Nom unique' maxlength='32' style='flex:1;padding:10px;border:2px solid #ddd;border-radius:8px;font-size:14px;'>";
     html += "<button onclick='applyDeviceName()' class='apply'>Appliquer</button>";
@@ -155,9 +163,11 @@ String generateDashboardPage(uint32_t chipId, uint32_t flashSize, uint32_t flash
     
     // --- SCRIPT JAVASCRIPT ---
     html += "<script>";
-    html += "function showParamMessage(msg) { var el = document.getElementById('param-message'); el.textContent = msg; el.style.visibility = 'visible'; setTimeout(() => { el.style.visibility = 'hidden'; el.textContent = ''; }, 2500); }";
-    html += "function showMatrixMessage(msg) { var el = document.getElementById('matrix-message'); el.textContent = msg; el.style.visibility = 'visible'; setTimeout(() => { el.style.visibility = 'hidden'; el.textContent = ''; }, 2500); }";
-    html += "function showMessage(msg) { var el = document.getElementById('save-message'); el.textContent = msg; el.style.visibility = 'visible'; setTimeout(() => { el.style.visibility = 'hidden'; el.textContent = ''; }, 3000); }";
+    html += "function showNotification(msg, isError=false) { var bar = document.getElementById('notification-bar'); var content = document.getElementById('notification-content'); content.textContent = msg; content.className = 'notification-content ' + (isError ? 'error' : 'success'); bar.classList.remove('hidden'); setTimeout(() => { bar.classList.add('hidden'); }, 3000); }";
+    
+    html += "function showParamMessage(msg) { showNotification(msg); }";
+    html += "function showMatrixMessage(msg) { showNotification(msg); }";
+    html += "function showMessage(msg) { showNotification(msg); }";
     
     html += "function updateCurrentAnimation(animName) {";
     html += "  var el = document.getElementById('current-anim');";
@@ -201,13 +211,15 @@ String generateDashboardPage(uint32_t chipId, uint32_t flashSize, uint32_t flash
     html += "function updateBrightnessValue(val) { document.getElementById('brightnessValue').textContent = val; }";
     html += "function applyMatrixBrightness() { var val = document.getElementById('matrixBrightness').value; var msg = document.getElementById('matrix-brightness-message'); msg.textContent = '✓ Luminosité : ' + val; msg.style.visibility = 'visible'; setTimeout(() => { msg.style.visibility = 'hidden'; }, 3000); fetch('/matrix_brightness?value=' + val); }";
     
-    html += "function applyAutoInterval() { var val = document.getElementById('auto-interval-seconds').value; var msg = document.getElementById('auto-interval-message'); if (val < 1 || val > 300) { msg.textContent = '❌ Valeur invalide'; msg.style.background = '#ffebee'; msg.style.color = '#c62828'; } else { msg.textContent = '✓ Intervalle : ' + val + 's'; msg.style.background = '#e8f5e9'; msg.style.color = '#1b5e20'; fetch('/auto_interval?ms=' + (val * 1000)); } msg.style.visibility = 'visible'; setTimeout(() => { msg.style.visibility = 'hidden'; }, 3000); }";
+    html += "function applyAutoInterval() { var val = document.getElementById('auto-interval-seconds').value; var msg = document.getElementById('auto-interval-message'); if (val < 5 || val % 5 !== 0 || val > 300) { msg.textContent = '❌ Doit être multiple de 5 (5-300s)'; msg.style.background = '#ffebee'; msg.style.color = '#c62828'; } else { msg.textContent = '✓ Intervalle guirlande : ' + val + 's'; msg.style.background = '#e8f5e9'; msg.style.color = '#1b5e20'; fetch('/auto_interval?ms=' + (val * 1000)); } msg.style.visibility = 'visible'; setTimeout(() => { msg.style.visibility = 'hidden'; }, 3000); }";
     
-    html += "function applyMotionDuration() { var val = document.getElementById('motion-duration-seconds').value; var msg = document.getElementById('motion-duration-message'); if (val < 1 || val > 300) { msg.textContent = '❌ Valeur invalide'; msg.style.background = '#ffebee'; msg.style.color = '#c62828'; } else { msg.textContent = '✓ Durée : ' + val + 's'; msg.style.background = '#e8f5e9'; msg.style.color = '#1b5e20'; fetch('/motion_duration?ms=' + (val * 1000)); } msg.style.visibility = 'visible'; setTimeout(() => { msg.style.visibility = 'hidden'; }, 3000); }";
+    html += "function applyMotionDuration() { var val = document.getElementById('motion-duration-seconds').value; var msg = document.getElementById('motion-duration-message'); if (val < 5 || val % 5 !== 0 || val > 300) { msg.textContent = '❌ Doit être multiple de 5 (5-300s)'; msg.style.background = '#ffebee'; msg.style.color = '#c62828'; } else { msg.textContent = '✓ Durée mouvement : ' + val + 's'; msg.style.background = '#e8f5e9'; msg.style.color = '#1b5e20'; fetch('/motion_duration?ms=' + (val * 1000)); } msg.style.visibility = 'visible'; setTimeout(() => { msg.style.visibility = 'hidden'; }, 3000); }";
+    
+    html += "function applyMatrixInterval() { var val = document.getElementById('matrix-interval-seconds').value; var msg = document.getElementById('matrix-interval-message'); if (val < 5 || val % 5 !== 0 || val > 300) { msg.textContent = '❌ Doit être multiple de 5 (5-300s)'; msg.style.background = '#ffebee'; msg.style.color = '#c62828'; } else { msg.textContent = '✓ Intervalle matrice : ' + val + 's'; msg.style.background = '#e8f5e9'; msg.style.color = '#1b5e20'; fetch('/matrix_interval?ms=' + (val * 1000)); } msg.style.visibility = 'visible'; setTimeout(() => { msg.style.visibility = 'hidden'; }, 3000); }";
     
     html += "function changeDisplayMode(id) { var radio = document.getElementById('displayMode' + id); var dispName = radio.nextElementSibling.textContent; fetch('/display_mode?id=' + id).then(() => { showParamMessage('✓ Affichage changé : ' + dispName); }); }";
     
-    html += "function showDeviceNameMessage(msg, isError) { var el = document.getElementById('device-name-message'); el.textContent = msg; el.style.visibility = 'visible'; el.style.background = isError ? '#ffebee' : '#e8f5e9'; el.style.color = isError ? '#c62828' : '#1b5e20'; setTimeout(() => { el.style.visibility = 'hidden'; el.textContent = ''; }, isError ? 5000 : 3000); }";
+    html += "function showDeviceNameMessage(msg, isError) { showNotification(msg, isError); }";
     
     html += "function applyDeviceName() {";
     html += "  var name = document.getElementById('deviceNameInput').value.trim();";
