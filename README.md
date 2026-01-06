@@ -28,9 +28,15 @@ pio run -e esp32s3_n16r8 -t upload
 ---
 # LED-Garland-Anim
 
-**Version: 3.0.0** (2026-01-06)
+**Version: 4.0.0** (2026-01-06)
 
 Controller for bi-directional LED garland and 8x8 NeoPixel matrix animation on ESP32 Classic (IdeaSpark/DevKitC) with ST7789 display, auto-detection of PIR/RCWL-0516, **modern web interface with instant save**, responsive layout, flash-free AJAX updates, web-based OTA updates, **mDNS support for easy access via unique device name**, physical buttons, 11 garland animations, 39 festive matrix animations (Christmas, New Year, Easter, Campfire, Radar), dual independent control, smart modes, persistent configuration, automatic startup animations.
+
+## ✨ What's New in v4.0.0
+
+1. **Festive static LCD dashboard (MAJOR)** – Static mode is now a decorated scene with ribbon frame, sparkle corners, and a bright banner for the program name + version.
+2. **Always-on connectivity panel** – The LCD now permanently shows SSID, IP address, and mDNS (`*.local`) in colorful badges to make pairing effortless.
+3. **Playful separators** – Twin garland strings and starbursts keep the screen lively without animation or performance cost.
 
 ## ✨ What's New in v3.0.0
 
@@ -115,7 +121,7 @@ BTN2     → GPIO 17
 - **48 Total Animations**: 11 for garland + 37 festive animations for 8x8 matrix
 - **3 Display Modes (Screen)**:
    - **Animated**: Classic animated visuals (default)
-   - **Static**: Fixed display (project name, version, SSID, IP)
+   - **Static**: Festive dashboard with project name, version, SSID, IP, and mDNS on a decorated frame
    - **Off**: Screen and backlight fully off
 - **Display Mode Selection**:
    - Selectable live from the web UI (radio buttons)

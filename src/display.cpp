@@ -1,7 +1,7 @@
 /**
  * @file display.cpp
  * @brief Implémentation du module de gestion de l'écran ST7789
- * @version 3.0.2
+ * @version 4.0.0
  * @date 2026-01-06
  */
 
@@ -26,34 +26,106 @@ void displayScreenByMode(const char* ssid, IPAddress ip, const char* modeName, c
             displayMainScreen(ssid, ip, modeName, animationName, matrixAnimationName);
             break;
         case DISPLAY_MODE_STATIC: {
-            // Affichage statique : nom projet, version, SSID, IP uniquement
             digitalWrite(LCD_BLK, HIGH);
-            display.fillScreen(COLOR_BLACK);
-            int16_t x1, y1; uint16_t w, h;
-            int centerX;
-            display.setTextSize(2);
-            display.setTextColor(COLOR_CYAN);
-            display.getTextBounds(PROJECT_NAME, 0, 0, &x1, &y1, &w, &h);
-            centerX = (ST7789_WIDTH - w) / 2;
-            display.setCursor(centerX, 20);
-            display.println(PROJECT_NAME);
-            display.setTextSize(1);
-            display.setTextColor(COLOR_WHITE);
-            String versionStr = "v" + String(PROJECT_VERSION);
-            display.getTextBounds(versionStr.c_str(), 0, 0, &x1, &y1, &w, &h);
-            centerX = (ST7789_WIDTH - w) / 2;
-            display.setCursor(centerX, 45);
-            display.println(versionStr);
-            display.setTextColor(COLOR_YELLOW);
-            display.setCursor(10, 80);
-            display.print("SSID: ");
-            display.setTextColor(COLOR_WHITE);
-            display.println(ssid);
-            display.setTextColor(COLOR_GREEN);
-            display.setCursor(10, 100);
-            display.print("IP: ");
-            display.setTextColor(COLOR_WHITE);
-            display.println(ip.toString().c_str());
+
+            const String versionStr = "v" + String(PROJECT_VERSION);
+            const String ssidStr = (ssid != nullptr && strlen(ssid) > 0) ? String(ssid) : String("Offline");
+            const String ipStr = ip.toString();
+            const String mdnsStr = String(getDeviceName()) + ".local";
+
+            display.setTextWrap(false);
+
+            auto centerText = [&](const String& text, int16_t y, uint8_t size, uint16_t color) {
+                int16_t x1, y1; uint16_t w, h;
+                display.setTextSize(size);
+                display.getTextBounds(text.c_str(), 0, 0, &x1, &y1, &w, &h);
+                const int16_t cx = (ST7789_WIDTH - w) / 2;
+                display.setCursor(cx, y);
+                display.setTextColor(color);
+                display.println(text);
+            };
+
+            auto drawSparkle = [&](int x, int y, uint16_t color) {
+                display.drawPixel(x, y, color);
+                display.drawFastHLine(x - 2, y, 5, color);
+                display.drawFastVLine(x, y - 2, 5, color);
+                display.drawLine(x - 2, y - 2, x + 2, y + 2, color);
+                display.drawLine(x - 2, y + 2, x + 2, y - 2, color);
+            };
+
+            auto drawFestiveGarland = [&](int yBase) {
+                int prevX = 12;
+                int prevY = yBase;
+                for (int i = 0; i <= 12; i++) {
+                    const int x = 12 + i * 18;
+                    const int y = yBase + (int)(sin(i * 0.7f) * 6);
+                    display.drawLine(prevX, prevY, x, y, COLOR_GREEN);
+                    const uint16_t bulbColor = (i % 3 == 0) ? COLOR_YELLOW : (i % 3 == 1 ? COLOR_MAGENTA : COLOR_CYAN);
+                    display.fillCircle(x, y, 4, bulbColor);
+                    display.drawCircle(x, y, 5, COLOR_WHITE);
+                    prevX = x;
+                    prevY = y;
+                }
+            };
+
+            auto drawInfoRow = [&](int x, int y, const char* label, String value, uint16_t accentColor) {
+                if (value.length() > 20) {
+                    value = value.substring(0, 19) + "...";
+                }
+                display.setTextSize(1);
+                display.setTextColor(accentColor);
+                display.setCursor(x, y);
+                display.print(label);
+                display.setTextColor(COLOR_WHITE);
+                display.setCursor(x + 74, y);
+                display.println(value);
+            };
+
+            // Fond texturé
+            const uint16_t deepNight = display.color565(5, 12, 24);
+            const uint16_t stripe = display.color565(8, 28, 48);
+            display.fillScreen(deepNight);
+            for (int y = 0; y < ST7789_HEIGHT; y += 8) {
+                display.drawFastHLine(0, y, ST7789_WIDTH, stripe);
+            }
+
+            // Cadre principal
+            display.drawRoundRect(4, 4, ST7789_WIDTH - 8, ST7789_HEIGHT - 8, 12, COLOR_CYAN);
+            display.drawRoundRect(9, 9, ST7789_WIDTH - 18, ST7789_HEIGHT - 18, 10, COLOR_PURPLE);
+            drawSparkle(18, 18, COLOR_YELLOW);
+            drawSparkle(ST7789_WIDTH - 18, 18, COLOR_ORANGE);
+            drawSparkle(18, ST7789_HEIGHT - 18, COLOR_CYAN);
+            drawSparkle(ST7789_WIDTH - 18, ST7789_HEIGHT - 18, COLOR_GREEN);
+
+            // En-tête festif
+            const int headerY = 16;
+            display.fillRoundRect(14, headerY, ST7789_WIDTH - 28, 70, 12, display.color565(22, 62, 118));
+            display.drawRoundRect(14, headerY, ST7789_WIDTH - 28, 70, 12, COLOR_YELLOW);
+            centerText(PROJECT_NAME, headerY + 12, 2, COLOR_WHITE);
+            centerText(versionStr, headerY + 40, 1, COLOR_CYAN);
+
+            drawFestiveGarland(headerY + 82);
+
+            // Carte info réseau
+            const int panelX = 18;
+            const int panelY = headerY + 96;
+            const int panelW = ST7789_WIDTH - 36;
+            const int panelH = 182;
+            display.fillRoundRect(panelX, panelY, panelW, panelH, 14, display.color565(10, 22, 42));
+            display.drawRoundRect(panelX, panelY, panelW, panelH, 14, COLOR_GREEN);
+            display.drawRoundRect(panelX + 3, panelY + 3, panelW - 6, panelH - 6, 12, COLOR_ORANGE);
+            centerText("Festive Network Card", panelY + 12, 1, COLOR_YELLOW);
+
+            int rowY = panelY + 32;
+            drawInfoRow(panelX + 16, rowY, "SSID", ssidStr, COLOR_YELLOW); rowY += 32;
+            drawInfoRow(panelX + 16, rowY, "IP", ipStr, COLOR_CYAN); rowY += 32;
+            drawInfoRow(panelX + 16, rowY, "mDNS", mdnsStr, COLOR_ORANGE);
+
+            // Bandeau décoratif bas
+            drawFestiveGarland(panelY + panelH - 18);
+            centerText("Ready to sparkle!", panelY + panelH - 36, 1, COLOR_GREEN);
+
+            display.setTextWrap(true);
             break;
         }
         case DISPLAY_MODE_OFF:

@@ -1,8 +1,8 @@
-# User Guide - LED-Garland-Anim v1.13.0
+# User Guide - LED-Garland-Anim v4.0.0
 
 Complete user guide for the LED-Garland-Anim LED garland and 8x8 matrix animation controller (ESP32 IdeaSpark + ST7789).
 
-**Document version: v1.13.0 (2026-01-06)**
+**Document version: v4.0.0 (2026-01-06)**
 
 ---
 
@@ -101,6 +101,7 @@ Example: `192.168.1.100`
 
 ### Display Information
 - **Boot Screen**: Project name, version, WiFi connection progress
+- **Static Screen**: Festive dashboard with ribbon frame showing Program name, Version, SSID, IP address, and mDNS (`*.local`)
 - **Main UI**:
   - Centered headers with version
   - Compact system info (WiFi, IP, memory)
