@@ -18,7 +18,7 @@ String generateDashboardPage(uint32_t chipId, uint32_t flashSize, uint32_t flash
     html += "</div>";
     
     html += "<div class='container'>";
-    html += "<div class='header'><h1>🎄 LED Garland Control v5.0.0</h1>";
+    html += "<div class='header'><h1>🎄 LED Garland Control v" + String(PROJECT_VERSION) + "</h1>";
     html += "<div class='view-toggle'><span class='toggle-label'>Mode compact</span><label class='switch'><input type='checkbox' id='compactToggle'><span class='slider'></span></label></div></div>";
     
     // ============================================================================

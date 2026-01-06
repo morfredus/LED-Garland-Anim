@@ -27,14 +27,20 @@ Vous pouvez choisir la méthode de téléversement (USB ou OTA) à chaque upload
 ---
 # LED-Garland-Anim
 
-**Version : 5.0.0** (2026-01-06)
+**Version : 5.1.0** (2026-01-06)
 
 Contrôleur d'animation de guirlande LED bi-directionnelle et matrice NeoPixel 8x8 pour ESP32 Classic (IdeaSpark/DevKitC) avec écran ST7789, auto-détection PIR/RCWL-0516, **interface web modernisée avec sauvegarde instantanée**, layout responsive, mises à jour AJAX sans flash, **support mDNS pour un accès facile via nom unique**, boutons physiques, 11 animations de guirlande, 39 animations festives pour matrice (Noël, Nouvel An, Pâques, Feu de Camp, Radar), contrôle double indépendant, modes intelligents, configuration persistante, animations de démarrage automatiques.
+
+## ✨ Nouveautés v5.1.0
+
+1. **Réorganisation de l'écran animé** en **zones empilées pleine largeur** : en-tête festif, large cartouche d'infos, puis zone d'animation plus grande pour une meilleure lisibilité.
+2. **Tronquage du SSID** à 20 caractères avec « ... » pour éviter les débordements dans la cartouche.
+3. **Affichage du mDNS en animé** : `garland.local` apparaît désormais avec Mode, SSID et IP.
 
 ## ✨ Nouveautés v5.0.0
 
 1. **Écran LCD animé festif (MAJEUR)** – Le mode animé adopte le même style que l’écran statique : fond texturé, cadres ruban, scintillements et double guirlande.
-2. **Mini fenêtre d’animation** – La zone animée est fortement réduite et encadrée en « Mini show », libérant de l’espace pour le texte et les décors.
+2. (Remplacé) **Mini fenêtre d’animation** – Remplacée en v5.1.0 par la disposition empilée pleine largeur pour plus de clarté.
 3. **Cartouche d’infos enrichie** – Mode, animation guirlande, animation matrice, SSID et IP sont regroupés dans un panneau décoré pour une lecture immédiate.
 
 ## ✨ Nouveautés v4.0.0
@@ -343,7 +349,7 @@ Dans `include/garland_control.h` :
 
 ## 11. Versions
 
-**Version Actuelle : v1.11.3** (2026-01-01)
+**Version Actuelle : v5.1.0** (2026-01-06)
 Voir [CHANGELOG_FR.md](./CHANGELOG_FR.md)
 
 ---
