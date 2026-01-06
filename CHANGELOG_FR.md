@@ -7,6 +7,44 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/spec/v2
 
 ---
 
+# [Non publié]
+
+## 🐛 Corrections
+
+**Persistance du mode d'affichage et gestion du rétroéclairage TFT**
+- Le mode d'affichage (Animé/Statique/Éteint) est de nouveau restauré depuis la NVS après redémarrage.
+- Le changement de mode d'affichage applique immédiatement l'état écran : rétroéclairage réactivé pour les modes actifs, coupé pour "Éteint".
+
+**Persistance du mode guirlande après l'intro**
+- Le mode sauvegardé est réappliqué après l'animation d'intro au lieu de revenir systématiquement sur "Permanent".
+
+## 🔧 Technique
+- Le handler web `/display_mode` appelle `displayScreenByMode(...)` pour appliquer le changement à la volée (dont l'état du rétroéclairage).
+- `loadGarlandSettings()` synchronise `savedMode` avec la valeur persistée et charge aussi le mode d'affichage depuis la NVS.
+
+## SEMVER
+- Classification : PATCH (en attente de publication)
+
+# [4.0.0] - 2026-01-06
+
+## ✨ Ajouté
+1. Tableau de bord LCD statique festif avec cadre ruban, coins scintillants et double guirlande décorative en mode Statique.
+2. L'écran statique affiche désormais en continu le nom du programme, la version, le SSID, l'IP et le mDNS (`*.local`) pour un appairage plus simple.
+
+## 📝 Modifié
+1. Texte non replié en mode statique afin de garder les SSID longs lisibles sans casser la mise en page décorative.
+2. Rendu LCD mis à jour tout en conservant le comportement du rétroéclairage en mode Statique.
+
+## 📚 Documentation
+1. README.md / README_FR.md mis à jour en 4.0.0 avec la description du nouvel écran statique festif.
+2. docs/USER_GUIDE.md / docs/USER_GUIDE_FR.md actualisés pour détailler le nouveau tableau de bord LCD.
+3. Ajout des notes de version bilingues : docs/RELEASE_v4.0.0.md et docs/RELEASE_v4.0.0_FR.md.
+
+### Classification de version
+
+**SEMVER** : 4.0.0 (MAJEUR)
+- **Justification** : Refonte complète de l'écran statique LCD avec nouvelles données affichées (mDNS) et nouveau visuel.
+
 # [3.0.2] - 2026-01-06
 
 ## 🐛 Corrigé

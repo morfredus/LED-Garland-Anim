@@ -27,9 +27,15 @@ Vous pouvez choisir la méthode de téléversement (USB ou OTA) à chaque upload
 ---
 # LED-Garland-Anim
 
-**Version : 3.0.0** (2026-01-06)
+**Version : 4.0.0** (2026-01-06)
 
 Contrôleur d'animation de guirlande LED bi-directionnelle et matrice NeoPixel 8x8 pour ESP32 Classic (IdeaSpark/DevKitC) avec écran ST7789, auto-détection PIR/RCWL-0516, **interface web modernisée avec sauvegarde instantanée**, layout responsive, mises à jour AJAX sans flash, **support mDNS pour un accès facile via nom unique**, boutons physiques, 11 animations de guirlande, 39 animations festives pour matrice (Noël, Nouvel An, Pâques, Feu de Camp, Radar), contrôle double indépendant, modes intelligents, configuration persistante, animations de démarrage automatiques.
+
+## ✨ Nouveautés v4.0.0
+
+1. **Dashboard LCD statique festif (MAJEUR)** – Écran statique entièrement redessiné avec cadre ruban, coins scintillants et bannière centrale nom + version.
+2. **Panneau de connexion permanent** – SSID, IP et mDNS (`*.local`) affichés en continu dans des badges colorés pour faciliter l'appairage.
+3. **Séparateurs guirlandes** – Double guirlande décorative et étoiles pour un rendu joyeux sans animation ni coût CPU.
 
 ## ✨ Nouveautés v3.0.0
 
@@ -114,7 +120,7 @@ BTN2     → GPIO 17
 - **48 animations au total** : 11 pour la guirlande + 37 animations festives pour la matrice 8x8
 - **3 modes d’affichage écran** :
   - **Animé** : Visuels animés classiques (par défaut)
-  - **Statique** : Affichage fixe (nom projet, version, SSID, IP)
+  - **Statique** : Tableau de bord festif affichant nom du projet, version, SSID, IP et mDNS sur un cadre décoré
   - **Éteint** : Écran et rétroéclairage coupés
 - **Sélection du mode d’affichage** :
   - Sélection à la volée depuis l’UI web (boutons radio)

@@ -13,8 +13,8 @@ Le système utilise la NVS (mémoire non-volatile) de l’ESP32 pour sauvegarder
 - Les réglages sont conservés même après redémarrage ou coupure d’alimentation.
 
 **Aucune action requise de l’utilisateur** : la gestion est entièrement automatique.
-# Guide Utilisateur - LED-Garland-Anim v1.13.0
-## 🚦 Détection automatique du capteur de mouvement (v1.13.0)
+# Guide Utilisateur - LED-Garland-Anim v4.0.0
+## 🚦 Détection automatique du capteur de mouvement
 
 À partir de la version 1.11.0, le système détecte automatiquement si un capteur PIR (HC-SR501) ou un capteur radar Doppler (RCWL-0516) est connecté sur le GPIO 35 :
 - **PIR** : LOW au repos, HIGH sur détection
@@ -30,8 +30,8 @@ Guide utilisateur complet pour le contrôleur d'animation de guirlande LED (ESP3
 
 ## Table des Matières
 
-- [Guide Utilisateur - LED-Garland-Anim v1.11.3](#guide-utilisateur---led-garland-anim-v121)
-  - [🚦 Détection automatique du capteur de mouvement (v1.11.3)](#-détection-automatique-du-capteur-de-mouvement-v121)
+- [Guide Utilisateur - LED-Garland-Anim v4.0.0](#guide-utilisateur---led-garland-anim-v400)
+  - [🚦 Détection automatique du capteur de mouvement](#-détection-automatique-du-capteur-de-mouvement)
   - [Table des Matières](#table-des-matières)
   - [Mises à jour OTA](#mises-à-jour-ota)
   - [Premier Démarrage](#premier-démarrage)
@@ -102,7 +102,7 @@ Exemple : `192.168.1.100`
 - Écran couleur 1.14" 135x240px
 - **3 modes d’affichage sélectionnables** :
   - **Animé** : Visuels animés classiques (par défaut)
-  - **Statique** : Affichage fixe (nom projet, version, SSID, IP)
+  - **Statique** : Tableau de bord festif affichant nom du projet, version, SSID, IP et mDNS (`*.local`)
   - **Éteint** : Écran et rétroéclairage coupés
 - Sélection à la volée depuis l’interface web (radio)
 - Valeur par défaut configurable dans `config.h`
@@ -135,4 +135,4 @@ Voir [TROUBLESHOOTING_FR.md](TROUBLESHOOTING_FR.md) pour l'aide.
 
 ---
 
-**Version du document : v1.12.0 (2026-01-05)**
+**Version du document : v4.0.0 (2026-01-06)**

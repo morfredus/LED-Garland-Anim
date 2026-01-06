@@ -4,7 +4,7 @@
 /**
  * @file web_styles.h
  * @brief Feuilles de style pour l'interface web
- * @version 3.0.2
+ * @version 4.0.0
  * @date 2026-01-06
  *
  * Module dédié à la gestion des styles CSS de l'interface web.
@@ -49,6 +49,25 @@ static constexpr const char* WEB_STYLES =
     ".radio-item input[type='radio']:checked + label{font-weight:bold;color:#1b5e20;}"
     ".radio-item.selected{background:#e8f5e9;border-color:#43a047;border-width:2px;}"
     ".radio-item label{cursor:pointer;flex:1;font-size:0.95em;user-select:none;}"
-    ".section-label{display:block;font-weight:700;color:#1b5e20;margin-top:15px;margin-bottom:5px;font-size:1em;}";
+    ".section-label{display:block;font-weight:700;color:#1b5e20;margin-top:15px;margin-bottom:5px;font-size:1em;}"
+    ".view-toggle{display:flex;align-items:center;justify-content:flex-end;gap:10px;margin-top:10px;}"
+    ".toggle-label{color:white;font-weight:700;}"
+    ".switch{position:relative;display:inline-block;width:52px;height:28px;}"
+    ".switch input{opacity:0;width:0;height:0;}"
+    ".slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#ccc;transition:.2s;border-radius:28px;}"
+    ".slider:before{position:absolute;content:'';height:22px;width:22px;left:3px;bottom:3px;background:white;transition:.2s;border-radius:50%;}"
+    ".switch input:checked + .slider{background:linear-gradient(135deg,#43a047,#66bb6a);}"
+    ".switch input:checked + .slider:before{transform:translateX(24px);}"
+    "body.compact-mode{padding:16px;padding-top:72px;}"
+    "body.compact-mode .container{max-width:1100px;}"
+    "body.compact-mode .card{padding:14px;border-radius:10px;box-shadow:0 8px 14px rgba(0,0,0,0.1);}"
+    "body.compact-mode .card-title{font-size:1.1em;margin-bottom:10px;}"
+    "body.compact-mode .radio-grid{grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:6px;}"
+    "body.compact-mode .radio-item{padding:4px 8px;min-height:32px;}"
+    "body.compact-mode .section-label{margin-top:10px;margin-bottom:4px;font-size:0.95em;}"
+    "body.compact-mode button{padding:8px 14px;font-size:0.95em;}"
+    "body.compact-mode .actions{gap:6px;}"
+    "body.compact-mode .header h1{font-size:2.2em;}"
+    "body.compact-mode .toggle-label{color:#e8f5e9;}";
 
 #endif // WEB_STYLES_H

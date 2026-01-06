@@ -7,6 +7,44 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+# [Unreleased]
+
+## 🐛 Fixed
+
+**Display mode persistence and TFT power handling**
+- Restored display mode load from NVS so "Animated/Static/Off" survives reboots.
+- Applying a display mode now immediately updates the TFT, restoring backlight for active modes and cutting it for "Off".
+
+**Mode persistence through intro**
+- Saved garland mode is now restored after the intro animation instead of reverting to Permanent.
+
+## 🔧 Technical
+- Web handler `/display_mode` triggers `displayScreenByMode(...)` to apply the change instantly (including backlight state).
+- `loadGarlandSettings()` now syncs `savedMode` with persisted mode and loads display mode from NVS.
+
+## SEMVER
+- Classification: PATCH (pending release)
+
+# [4.0.0] - 2026-01-06
+
+## ✨ Added
+1. Festive static LCD dashboard with ribbon frame, sparkle corners, and dual garland separators in Static mode.
+2. Static screen now surfaces Program name, Version, SSID, IP, and mDNS (`*.local`) at all times for easier pairing.
+
+## 📝 Changed
+1. Static view uses non-wrapping text to keep long SSIDs readable without breaking the decorative layout.
+2. Updated LCD rendering while keeping backlight behavior unchanged in Static mode.
+
+## 📚 Documentation
+1. README.md / README_FR.md bumped to 4.0.0 with the festive static screen description.
+2. docs/USER_GUIDE.md / docs/USER_GUIDE_FR.md refreshed to explain the new LCD dashboard contents.
+3. Added bilingual release notes: docs/RELEASE_v4.0.0.md and docs/RELEASE_v4.0.0_FR.md.
+
+### Version Classification
+
+**SEMVER**: 4.0.0 (MAJOR)
+- **Justification**: Complete redesign of the LCD static screen with new visible data (mDNS) and a new layout.
+
 # [3.0.2] - 2026-01-06
 
 ## 🐛 Fixed
