@@ -292,7 +292,7 @@ String generateOTAPage() {
     html += "</div>";
     html += "<div class='info-box'>";
     html += "ℹ️ <strong>Fichier requis :</strong> firmware.bin (compilé avec PlatformIO)<br>";
-    html += "📍 <strong>Emplacement :</strong> <code>.pio/build/esp32devkitc/firmware.bin</code>";
+    html += "📍 <strong>Emplacement :</strong> <code>.pio/LED-Garland-Anim/build/esp32devkitc/firmware.bin</code>";
     html += "</div>";
     html += "<form id='uploadForm' enctype='multipart/form-data'>";
     html += "<div class='file-input-wrapper'>";
