@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+# [3.0.2] - 2026-01-06
+
+## 🐛 Fixed
+
+**TFT Display Border still disappearing with matrix animations**
+- **Problem**: During animated mode with matrix info shown, the animation clear area overlapped the header/separator, causing the white rectangle top edge and cyan line to vanish once animations started.
+- **Root Cause**: The ST7789 refresh loop called `updateAnimationVisual()` without passing the `hasMatrix` flag, so the clear rectangle used the non-matrix coordinates while the UI drew the matrix layout.
+- **Solution**: Pass the `hasMatrix` flag from the main loop when refreshing the ST7789 animation area so clearing/drawing uses the correct rectangle bounds.
+- **File**: [src/main.cpp](src/main.cpp#L235-L249)
+- **Impact**: Animation border and cyan separation line now remain visible for all animations, with or without matrix info displayed.
+
+## 🔧 Technical
+
+- ST7789 refresh: `updateAnimationVisual(getGarlandAnimationName(), getMatrix8x8AnimationName() != nullptr)`
+- Version bumped to 3.0.2 across project files
+- Added [docs/RELEASE_v3.0.2.md](docs/RELEASE_v3.0.2.md)
+
+### Version Classification
+
+**SEMVER**: 3.0.2 (PATCH)
+- **Justification**: Bug fix only; no new features; no breaking changes
+
+---
+
 # [3.0.1] - 2026-01-06
 
 ## 🐛 Fixed

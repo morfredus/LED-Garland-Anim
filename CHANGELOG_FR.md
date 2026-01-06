@@ -6,6 +6,31 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
 et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/spec/v2.0.0.html).
 
 ---
+
+# [3.0.2] - 2026-01-06
+
+## 🐛 Corrigé
+
+**Bordure TFT toujours effacée avec animations matrice**
+- **Problème** : En mode animé avec la ligne matrice affichée, la zone de nettoyage empiétait sur l'en-tête/séparateur, faisant disparaître le bord supérieur du rectangle et la ligne cyan dès que les animations démarraient.
+- **Cause racine** : La boucle de rafraîchissement ST7789 appelait `updateAnimationVisual()` sans transmettre le flag `hasMatrix`, utilisant donc les coordonnées sans matrice alors que l'UI dessinait la version avec matrice.
+- **Solution** : Passer le flag `hasMatrix` depuis la boucle principale lors du rafraîchissement ST7789 pour utiliser les bonnes bornes de rectangle lors du nettoyage/affichage.
+- **Fichier** : [src/main.cpp](src/main.cpp#L235-L249)
+- **Impact** : La bordure du carré d'animation et la ligne cyan restent visibles pour toutes les animations, avec ou sans affichage matrice.
+
+## 🔧 Technique
+
+- Rafraîchissement ST7789 : `updateAnimationVisual(getGarlandAnimationName(), getMatrix8x8AnimationName() != nullptr)`
+- Version passée en 3.0.2 sur l'ensemble du projet
+- Ajout de [docs/RELEASE_v3.0.2.md](docs/RELEASE_v3.0.2.md)
+
+### Classification de version
+
+**SEMVER** : 3.0.2 (PATCH)
+- **Justification** : Correction de bug uniquement ; aucune nouvelle fonctionnalité ; aucun breaking change
+
+---
+
 # [3.0.1] - 2026-01-06
 
 ## 🐛 Corrigé

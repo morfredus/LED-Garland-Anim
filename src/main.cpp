@@ -2,7 +2,7 @@
 /**
  * @file main.cpp
  * @brief Point d'entrée principal du projet LED-Garland-Anim
- * @version 3.0.1
+ * @version 3.0.2
  * @date 2026-01-06
  *
  * OTA support: ArduinoOTA (upload firmware over WiFi) + Web OTA (Update.h)
@@ -239,7 +239,8 @@ void loop() {
         if (currentMillis - lastDisplayUpdate >= displayUpdateInterval) {
             lastDisplayUpdate = currentMillis;
             if (WiFi.status() == WL_CONNECTED && getDisplayMode() == DISPLAY_MODE_ANIMATED) {
-                updateAnimationVisual(getGarlandAnimationName());
+                const bool hasMatrix = getMatrix8x8AnimationName() != nullptr;
+                updateAnimationVisual(getGarlandAnimationName(), hasMatrix);
             }
         }
     #endif
