@@ -1,3 +1,140 @@
+# Changelog - LED Garland Animation Controller
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+
+# [3.0.0] - 2026-01-06
+
+## 💥 BREAKING CHANGES (MAJOR)
+
+### **Complete Web UI Card Reorganization**
+Complete restructuring of the web interface card order - users must relearn the navigation flow.
+
+**NEW Card Order** (v3.0.0):
+1. 🎄 **Animations Guirlande** (was Card 2)
+2. 🎨 **Matrice 8x8** (was Card 3)
+3. 🎯 **Mode de fonctionnement** (redesigned - was Card 1)
+4. ℹ️ **Système & Réseau** (was Card 4)
+5. 🏷️ **Nom d'appareil** (was Card 5)
+
+**OLD Card Order** (v2.0.0):
+1. Mode de fonctionnement
+2. Animations Guirlande
+3. Matrice 8x8
+4. Mode affichage LCD (separate card)
+5. Système & Réseau
+6. Nom d'appareil
+
+**Rationale**: Animations (Guirlande + Matrice) are now prioritized at the top since they are the most frequently accessed features. Configuration (Mode + parameters) is grouped in the third position. System information is pushed lower as it's less frequently consulted.
+
+### **Mode Card Redesigned with 3-Zone Layout**
+
+The Mode card now features a sophisticated 3-zone layout that consolidates all configuration in one place:
+
+**Zone A (Left Half)**: Mode selection
+- 🎯 Mode actif: Auto | Manuel | Détection mouvement
+- Vertical radio button layout (`flex-direction:column`)
+
+**Zone B (Right Half)**: LCD Display Mode
+- 📺 Affichage LCD: Animation + matrice | Animation seule | Écran éteint
+- Integrated into Mode card (was separate Card 4 in v2.0.0)
+- Vertical radio button layout
+
+**Zone C (Full Width Below)**: Temporal Parameters + Brightness
+- ⏱️ Durée d'allumage après détection mouvement
+- 🔄 Intervalle auto changement guirlande
+- 🔄 Intervalle auto changement matrice
+- 💡 Luminosité matrice (moved from Card 2 - Matrice 8x8)
+
+**CSS Grid Implementation**:
+```css
+<div style='display:grid;grid-template-columns:1fr 1fr;gap:15px;'>
+  <!-- Zone A: Mode --> <!-- Zone B: LCD -->
+</div>
+<div style='padding:15px;background:#f8f9fa;'>
+  <!-- Zone C: Params + Brightness -->
+</div>
+```
+
+### ✨ Added
+
+**Enhanced Mode Card Organization**
+- **LCD Mode Integration**: LCD display mode selection now directly integrated into Mode card (removed separate card)
+- **Consolidated Parameters**: All temporal parameters and matrix brightness in single, unified section
+- **Logical Grouping**: All configuration in one place - reduces scrolling and improves UX
+- **Side-by-Side Layout**: Mode and LCD selection displayed side-by-side using CSS grid
+
+**Visual Improvements**
+- **Vertical Radio Buttons**: All radio groups now use `flex-direction:column` (vertical stacking)
+- **Better Hierarchy**: Clear visual separation between Mode/LCD (top) and parameters (bottom)
+- **Reduced Scrolling**: 3-zone layout more compact than previous multi-card approach
+
+### 📝 Changed
+
+**UI Navigation Flow**
+- **Animations First**: Guirlande and Matrice animations prioritized at top (most frequently used)
+- **Configuration Second**: Mode card with all parameters in third position (logical grouping)
+- **System Last**: System information and device name pushed lower (less frequently accessed)
+- **Brightness Relocation**: Matrix brightness control moved from Matrice card to Mode card (consolidated with other parameters)
+
+**Card Content Modifications**
+- **Matrice 8x8 Card**: Removed brightness slider (now in Mode card Zone C)
+- **LCD Card**: Completely removed - functionality integrated into Mode card Zone B
+- **Mode Card**: Expanded from simple mode selection to comprehensive 3-zone configuration center
+
+### 🔧 Technical
+
+**Files Modified**:
+- [src/web_pages.cpp](src/web_pages.cpp): Complete card restructure (128-line replacement in lines 20-148)
+  * Version header: "v2.0" → "v3.0"
+  * Card 1: Animations Guirlande (entire structure from old Card 2)
+  * Card 2: Matrice 8x8 (structure from old Card 3, brightness removed)
+  * Card 3: Mode de fonctionnement (completely redesigned with 3 zones)
+  * Cards 4-5: Système & Device Name (comment updates only)
+  * JavaScript: Unchanged (all HTML IDs preserved for compatibility)
+- [platformio.ini](platformio.ini): PROJECT_VERSION "2.0.0" → "3.0.0"
+- [include/config.h](include/config.h): @version 2.0.0 → 3.0.0
+- [src/main.cpp](src/main.cpp): @version 1.13.0 → 3.0.0
+- [src/display.cpp](src/display.cpp): @version 2.0.0 → 3.0.0
+- [include/display.h](include/display.h): @version 1.13.0 → 3.0.0
+- [src/garland_control.cpp](src/garland_control.cpp): @version 1.13.0 → 3.0.0
+- [src/matrix8x8_control.cpp](src/matrix8x8_control.cpp): @version 2.0.0 → 3.0.0
+- [include/web_styles.h](include/web_styles.h): @version 2.0.0 → 3.0.0
+
+**Compilation Statistics**:
+```
+Processing esp32devkitc
+RAM:   [==        ]  15.8% (used 51,700 bytes from 327,680 bytes)
+Flash: [========  ]  81.3% (used 1,065,553 bytes from 1,310,720 bytes)
+[SUCCESS] Took 74.60 seconds
+```
+
+**Backward Compatibility**:
+- ✅ All JavaScript functions unchanged (HTML element IDs preserved)
+- ✅ NVS storage format unchanged (no migration required)
+- ✅ All functionality from v2.0.0 preserved
+- ❌ UI navigation flow completely different (BREAKING - requires user relearning)
+
+### 📚 Documentation
+
+**Updated Files** (bilingual):
+- CHANGELOG.md + CHANGELOG_FR.md: v3.0.0 entry with complete reorganization details
+- README.md + README_FR.md: Updated with new card order description
+- docs/USER_GUIDE.md + docs/USER_GUIDE_FR.md: Updated navigation instructions
+
+### Version Classification
+
+**SEMVER**: 3.0.0 (MAJOR)
+- **Justification**: Complete UI card reorganization constitutes a breaking change in user experience
+- **Impact**: Users must relearn interface navigation flow (card order completely different)
+- **Scope**: UI only - no breaking changes to API, storage format, or functionality
+
+---
+
 # [2.0.0] - 2026-01-06
 
 ## 💥 BREAKING CHANGES (MAJOR)

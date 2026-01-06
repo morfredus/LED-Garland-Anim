@@ -18,51 +18,10 @@ String generateDashboardPage(uint32_t chipId, uint32_t flashSize, uint32_t flash
     html += "</div>";
     
     html += "<div class='container'>";
-    html += "<div class='header'><h1>🎄 LED Garland Control v2.0</h1></div>";
+    html += "<div class='header'><h1>🎄 LED Garland Control v3.0</h1></div>";
     
     // ============================================================================
-    // CARTE 1 : MODE DE FONCTIONNEMENT + TOUS LES PARAMÈTRES
-    // ============================================================================
-    html += "<div class='card card-full'>";
-    html += "<div class='card-title'>⚙️ Mode de fonctionnement</div>";
-    html += "<div class='radio-grid'>";
-    for (int i = 0; i < MODE_COUNT; i++) {
-        bool isSelected = (i == (int)getGarlandMode());
-        html += "<div class='radio-item" + String(isSelected ? " selected" : "") + "'>";
-        html += "<input type='radio' id='mode" + String(i) + "' name='garlandMode' value='" + String(i) + "' onchange='changeMode(" + String(i) + ")'" + String(isSelected ? " checked" : "") + ">";
-        html += "<label for='mode" + String(i) + "'>" + String(getGarlandModeNameById(i)) + "</label>";
-        html += "</div>";
-    }
-    html += "</div>";
-    
-    // Paramètres regroupés
-    html += "<div style='margin-top:20px;padding:15px;background:#f8f9fa;border-radius:8px;'>";
-    html += "<div style='font-weight:bold;margin-bottom:15px;color:#333;font-size:14px;'>📊 Paramètres temporels</div>";
-    
-    // 1. Durée détection mouvement (EN PREMIER)
-    html += "<div style='margin-bottom:15px;'>"; 
-    html += "<label class='section-label'>🎯 Durée après détection mouvement (secondes) :</label>";
-    html += "<input type='range' id='motion-duration-seconds' value='" + String(getMotionTriggerDurationMs() / 1000) + "' min='5' max='600' step='5' oninput='updateIntervalDisplay(this, \"motion-duration-value\")' onchange='applyMotionDuration(this.value)' style='width:100%;margin-top:5px;'>";
-    html += "<div style='text-align:center;margin-top:5px;font-weight:bold;color:#43a047;'><span id='motion-duration-value'>" + String(getMotionTriggerDurationMs() / 1000) + "</span> secondes</div>";
-    html += "</div>";
-    
-    // 2. Intervalle guirlande AUTO
-    html += "<div style='margin-bottom:15px;'>"; 
-    html += "<label class='section-label'>⏱️ Intervalle changement guirlande (secondes) :</label>";
-    html += "<input type='range' id='auto-interval-seconds' value='" + String(getAutoAnimationIntervalMs() / 1000) + "' min='5' max='300' step='5' oninput='updateIntervalDisplay(this, \"auto-interval-value\")' onchange='applyAutoInterval(this.value)' style='width:100%;margin-top:5px;'>"; 
-    html += "<div style='text-align:center;margin-top:5px;font-weight:bold;color:#43a047;'><span id='auto-interval-value'>" + String(getAutoAnimationIntervalMs() / 1000) + "</span> secondes</div>";
-    html += "</div>";
-    
-    // 3. Intervalle matrice
-    html += "<div>";
-    html += "<label class='section-label'>🔲 Intervalle changement matrice (secondes) :</label>";
-    html += "<input type='range' id='matrix-interval-seconds' value='" + String(getMatrix8x8AnimationIntervalMs() / 1000) + "' min='5' max='300' step='5' oninput='updateIntervalDisplay(this, \"matrix-interval-value\")' onchange='applyMatrixInterval(this.value)' style='width:100%;margin-top:5px;'>";
-    html += "<div style='text-align:center;margin-top:5px;font-weight:bold;color:#43a047;'><span id='matrix-interval-value'>" + String(getMatrix8x8AnimationIntervalMs() / 1000) + "</span> secondes</div>";
-    html += "</div>";
-    html += "</div></div>";
-
-    // ============================================================================
-    // CARTE 2 : ANIMATIONS GUIRLANDE
+    // CARTE 1 : ANIMATIONS GUIRLANDE (EN PREMIER)
     // ============================================================================
     html += "<div class='card card-full'>";
     html += "<div class='card-title'>🎨 Animations de la guirlande";
@@ -79,7 +38,7 @@ String generateDashboardPage(uint32_t chipId, uint32_t flashSize, uint32_t flash
     html += "</div></div>";
 
     // ============================================================================
-    // CARTE 3 : MATRICE 8x8
+    // CARTE 2 : MATRICE 8x8 (EN DEUXIÈME)
     // ============================================================================
     html += "<div class='card card-full'>";
     html += "<div class='card-title'>🔲 Matrice LED 8x8";
@@ -93,35 +52,77 @@ String generateDashboardPage(uint32_t chipId, uint32_t flashSize, uint32_t flash
         html += "<label for='matrixAnim" + String(i) + "'>" + String(getMatrix8x8AnimationNameById(i)) + "</label>";
         html += "</div>";
     }
-    html += "</div>";
-    
-    // Luminosité matrice
-    html += "<div style='margin-top:15px;padding:15px;background:#f8f9fa;border-radius:8px;'>";
-    html += "<label class='section-label'>💡 Luminosité : <span id='brightnessValue' style='color:#43a047;font-weight:bold;'>" + String(getMatrix8x8Brightness()) + "</span></label>";
-    html += "<input type='range' id='matrixBrightness' min='0' max='255' value='" + String(getMatrix8x8Brightness()) + "' oninput='updateBrightnessValue(this.value)' onchange='applyMatrixBrightness(this.value)' style='width:100%;margin-top:5px;'>";
     html += "</div></div>";
 
     // ============================================================================
-    // CARTE 4 : MODE D'AFFICHAGE LCD
-    // ============================================================================
-    // ============================================================================
-    // CARTE 4 : MODE D'AFFICHAGE LCD
+    // CARTE 3 : MODE DE FONCTIONNEMENT (RÉORGANISÉ EN 3 ZONES)
     // ============================================================================
     html += "<div class='card card-full'>";
-    html += "<div class='card-title'>📺 Mode d'affichage LCD</div>";
-    html += "<div class='radio-grid'>";
+    html += "<div class='card-title'>⚙️ Mode de fonctionnement</div>";
+    
+    // Zone supérieure : Mode (gauche) + LCD (droite) côte à côte
+    html += "<div style='display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-bottom:20px;'>"; 
+    
+    // ZONE A : Sélection du mode (moitié gauche)
+    html += "<div>";
+    html += "<div style='font-weight:bold;margin-bottom:10px;color:#1b5e20;font-size:14px;'>🎯 Mode actif</div>";
+    html += "<div style='display:flex;flex-direction:column;gap:8px;'>";
+    for (int i = 0; i < MODE_COUNT; i++) {
+        bool isSelected = (i == (int)getGarlandMode());
+        html += "<div class='radio-item" + String(isSelected ? " selected" : "") + "' style='margin:0;'>";
+        html += "<input type='radio' id='mode" + String(i) + "' name='garlandMode' value='" + String(i) + "' onchange='changeMode(" + String(i) + ")'" + String(isSelected ? " checked" : "") + ">";
+        html += "<label for='mode" + String(i) + "'>" + String(getGarlandModeNameById(i)) + "</label>";
+        html += "</div>";
+    }
+    html += "</div></div>";
+    
+    // ZONE B : Mode d'affichage LCD (moitié droite)
+    html += "<div>";
+    html += "<div style='font-weight:bold;margin-bottom:10px;color:#1b5e20;font-size:14px;'>📺 Affichage LCD</div>";
+    html += "<div style='display:flex;flex-direction:column;gap:8px;'>";
     for (int i = 0; i < DISPLAY_MODE_COUNT; i++) {
         bool isSelected = (i == (int)getDisplayMode());
-        html += "<div class='radio-item" + String(isSelected ? " selected" : "") + "'>";
+        html += "<div class='radio-item" + String(isSelected ? " selected" : "") + "' style='margin:0;'>";
         html += "<input type='radio' id='displayMode" + String(i) + "' name='displayMode' value='" + String(i) + "' onchange='changeDisplayMode(" + String(i) + ")'" + String(isSelected ? " checked" : "") + ">";
         html += "<label for='displayMode" + String(i) + "'>" + String(getDisplayModeNameById(i)) + "</label>";
         html += "</div>";
     }
     html += "</div></div>";
-
-    // ============================================================================
-    // CARTE 5 : SYSTÈME & RÉSEAU (regroupé + compact)
-    // ============================================================================
+    
+    html += "</div>"; // Fin grille 2 colonnes
+    
+    // ZONE C : Paramètres temporels + Luminosité (toute la largeur en dessous)
+    html += "<div style='padding:15px;background:#f8f9fa;border-radius:8px;'>";
+    html += "<div style='font-weight:bold;margin-bottom:15px;color:#333;font-size:14px;'>📊 Paramètres temporels</div>";
+    
+    // 1. Durée détection mouvement
+    html += "<div style='margin-bottom:15px;'>"; 
+    html += "<label class='section-label'>🎯 Durée après détection mouvement (secondes) :</label>";
+    html += "<input type='range' id='motion-duration-seconds' value='" + String(getMotionTriggerDurationMs() / 1000) + "' min='5' max='600' step='5' oninput='updateIntervalDisplay(this, \"motion-duration-value\")' onchange='applyMotionDuration(this.value)' style='width:100%;margin-top:5px;'>";
+    html += "<div style='text-align:center;margin-top:5px;font-weight:bold;color:#43a047;'><span id='motion-duration-value'>" + String(getMotionTriggerDurationMs() / 1000) + "</span> secondes</div>";
+    html += "</div>";
+    
+    // 2. Intervalle guirlande AUTO
+    html += "<div style='margin-bottom:15px;'>"; 
+    html += "<label class='section-label'>⏱️ Intervalle changement guirlande (secondes) :</label>";
+    html += "<input type='range' id='auto-interval-seconds' value='" + String(getAutoAnimationIntervalMs() / 1000) + "' min='5' max='300' step='5' oninput='updateIntervalDisplay(this, \"auto-interval-value\")' onchange='applyAutoInterval(this.value)' style='width:100%;margin-top:5px;'>"; 
+    html += "<div style='text-align:center;margin-top:5px;font-weight:bold;color:#43a047;'><span id='auto-interval-value'>" + String(getAutoAnimationIntervalMs() / 1000) + "</span> secondes</div>";
+    html += "</div>";
+    
+    // 3. Intervalle matrice
+    html += "<div style='margin-bottom:15px;'>";
+    html += "<label class='section-label'>🔲 Intervalle changement matrice (secondes) :</label>";
+    html += "<input type='range' id='matrix-interval-seconds' value='" + String(getMatrix8x8AnimationIntervalMs() / 1000) + "' min='5' max='300' step='5' oninput='updateIntervalDisplay(this, \"matrix-interval-value\")' onchange='applyMatrixInterval(this.value)' style='width:100%;margin-top:5px;'>";
+    html += "<div style='text-align:center;margin-top:5px;font-weight:bold;color:#43a047;'><span id='matrix-interval-value'>" + String(getMatrix8x8AnimationIntervalMs() / 1000) + "</span> secondes</div>";
+    html += "</div>";
+    
+    // 4. Luminosité matrice
+    html += "<div>";
+    html += "<label class='section-label'>💡 Luminosité matrice : <span id='brightnessValue' style='color:#43a047;font-weight:bold;'>" + String(getMatrix8x8Brightness()) + "</span></label>";
+    html += "<input type='range' id='matrixBrightness' min='0' max='255' value='" + String(getMatrix8x8Brightness()) + "' oninput='updateBrightnessValue(this.value)' onchange='applyMatrixBrightness(this.value)' style='width:100%;margin-top:5px;'>";
+    html += "</div>";
+    
+    html += "</div></div>"; // Fin zone paramètres + fin carte Mode
     html += "<div style='display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:15px;'>";
     
     // Infos Système
@@ -142,7 +143,7 @@ String generateDashboardPage(uint32_t chipId, uint32_t flashSize, uint32_t flash
     html += "</div>";
     
     // ============================================================================
-    // CARTE 6 : NOM D'APPAREIL
+    // CARTE 5 : NOM D'APPAREIL
     // ============================================================================
     html += "<div class='card card-full'>";
     html += "<div class='card-title'>🏷️ Nom d'appareil (mDNS)</div>";

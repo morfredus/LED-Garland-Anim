@@ -28,23 +28,54 @@ pio run -e esp32s3_n16r8 -t upload
 ---
 # LED-Garland-Anim
 
-**Version: 2.0.0** (2026-01-06)
+**Version: 3.0.0** (2026-01-06)
 
 Controller for bi-directional LED garland and 8x8 NeoPixel matrix animation on ESP32 Classic (IdeaSpark/DevKitC) with ST7789 display, auto-detection of PIR/RCWL-0516, **modern web interface with instant save**, responsive layout, flash-free AJAX updates, web-based OTA updates, **mDNS support for easy access via unique device name**, physical buttons, 11 garland animations, 39 festive matrix animations (Christmas, New Year, Easter, Campfire, Radar), dual independent control, smart modes, persistent configuration, automatic startup animations.
 
-## ✨ What's New in v2.0.0
+## ✨ What's New in v3.0.0
 
-### 💥 Complete UI Overhaul
+### 💥 Complete Web UI Card Reorganization (BREAKING CHANGE)
+- **New navigation flow** - Card order completely restructured for better UX
+- **Animations prioritized** - Garland and Matrix animations now at top (most frequently accessed)
+- **3-zone Mode card** - Mode + LCD side-by-side, all parameters below in unified section
+- **Integrated LCD mode** - LCD display mode now part of Mode card (removed separate card)
+- **Consolidated parameters** - All temporal parameters + matrix brightness in one place
+- **Reduced scrolling** - More compact layout with logical grouping
+
+### 📋 New Card Order (v3.0.0)
+1. 🎄 **Animations Guirlande** - All garland animations (was Card 2)
+2. 🎨 **Matrice 8x8** - All matrix animations (was Card 3)
+3. 🎯 **Mode de fonctionnement** - 3-zone layout:
+   - Zone A (left): Mode selection (Auto/Manuel/Détection)
+   - Zone B (right): LCD display mode (was separate Card 4)
+   - Zone C (below): All temporal parameters + matrix brightness
+4. ℹ️ **Système & Réseau** - System and network information
+5. 🏷️ **Nom d'appareil** - Device name configuration
+
+### 🎨 Enhanced Mode Card Design
+**Side-by-Side Layout** (CSS Grid):
+- **Left Half**: Operating mode selection (Auto | Manuel | Détection mouvement)
+- **Right Half**: LCD display mode (Animation + matrice | Animation seule | Écran éteint)
+- **Full Width Below**: All temporal parameters (motion duration, garland interval, matrix interval) + matrix brightness
+
+**Benefits**:
+- All configuration in one place
+- Reduced vertical scrolling
+- Better visual hierarchy
+- Logical parameter grouping
+
+---
+
+## Previous Releases
+
+### v2.0.0 (2026-01-06) - Complete UI Overhaul
 - **Instant save on all controls** - No more "Apply" buttons! Changes take effect immediately
 - **Modern slider controls** - All time intervals use range sliders with real-time value display
 - **Centralized notifications** - Fixed notification bar at top for all confirmations
 - **Logical grouping** - All temporal parameters grouped in "Mode de fonctionnement" card
-- **Optimized card order** - Mode → Garland → Matrix → LCD (logical flow)
-- **Streamlined system info** - Compact 2-column grid for System & Network
-
-### 🐛 Critical Bug Fixes
-1. **Screen off mode** - Display now properly clears pixels before cutting backlight
-2. **Matrix auto-start** - Auto mode now correctly activates on boot with saved settings
+- **Critical Bug Fixes**:
+  1. **Screen off mode** - Display now properly clears pixels before cutting backlight
+  2. **Matrix auto-start** - Auto mode now correctly activates on boot with saved settings
 
 ---
 

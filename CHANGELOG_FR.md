@@ -1,3 +1,140 @@
+# Journal des modifications - LED Garland Animation Controller
+
+Toutes les modifications notables de ce projet seront documentées dans ce fichier.
+
+Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
+et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/spec/v2.0.0.html).
+
+---
+
+# [3.0.0] - 2026-01-06
+
+## 💥 CHANGEMENTS MAJEURS (BREAKING)
+
+### **Réorganisation complète des cartes de l'interface Web**
+Restructuration complète de l'ordre des cartes de l'interface web - les utilisateurs doivent réapprendre le flux de navigation.
+
+**NOUVEL ordre des cartes** (v3.0.0) :
+1. 🎄 **Animations Guirlande** (était Carte 2)
+2. 🎨 **Matrice 8x8** (était Carte 3)
+3. 🎯 **Mode de fonctionnement** (redesigné - était Carte 1)
+4. ℹ️ **Système & Réseau** (était Carte 4)
+5. 🏷️ **Nom d'appareil** (était Carte 5)
+
+**ANCIEN ordre des cartes** (v2.0.0) :
+1. Mode de fonctionnement
+2. Animations Guirlande
+3. Matrice 8x8
+4. Mode affichage LCD (carte séparée)
+5. Système & Réseau
+6. Nom d'appareil
+
+**Justification** : Les animations (Guirlande + Matrice) sont maintenant prioritaires en haut car ce sont les fonctionnalités les plus consultées. La configuration (Mode + paramètres) est regroupée en troisième position. Les informations système sont repoussées vers le bas car moins fréquemment consultées.
+
+### **Carte Mode redesignée avec disposition 3 zones**
+
+La carte Mode présente maintenant une disposition sophistiquée à 3 zones qui consolide toute la configuration en un seul endroit :
+
+**Zone A (Moitié gauche)** : Sélection du mode
+- 🎯 Mode actif : Auto | Manuel | Détection mouvement
+- Disposition verticale des boutons radio (`flex-direction:column`)
+
+**Zone B (Moitié droite)** : Mode d'affichage LCD
+- 📺 Affichage LCD : Animation + matrice | Animation seule | Écran éteint
+- Intégré dans la carte Mode (était Carte 4 séparée dans v2.0.0)
+- Disposition verticale des boutons radio
+
+**Zone C (Pleine largeur dessous)** : Paramètres temporels + Luminosité
+- ⏱️ Durée d'allumage après détection mouvement
+- 🔄 Intervalle auto changement guirlande
+- 🔄 Intervalle auto changement matrice
+- 💡 Luminosité matrice (déplacée depuis Carte 2 - Matrice 8x8)
+
+**Implémentation CSS Grid** :
+```css
+<div style='display:grid;grid-template-columns:1fr 1fr;gap:15px;'>
+  <!-- Zone A: Mode --> <!-- Zone B: LCD -->
+</div>
+<div style='padding:15px;background:#f8f9fa;'>
+  <!-- Zone C: Params + Luminosité -->
+</div>
+```
+
+### ✨ Ajouté
+
+**Organisation améliorée de la carte Mode**
+- **Intégration Mode LCD** : Sélection du mode d'affichage LCD maintenant directement intégrée dans carte Mode (carte séparée supprimée)
+- **Paramètres consolidés** : Tous les paramètres temporels et luminosité matrice dans une seule section unifiée
+- **Regroupement logique** : Toute la configuration en un seul endroit - réduit le défilement et améliore l'UX
+- **Disposition côte à côte** : Mode et LCD affichés côte à côte grâce à CSS grid
+
+**Améliorations visuelles**
+- **Boutons radio verticaux** : Tous les groupes radio utilisent maintenant `flex-direction:column` (empilement vertical)
+- **Meilleure hiérarchie** : Séparation visuelle claire entre Mode/LCD (haut) et paramètres (bas)
+- **Défilement réduit** : Disposition 3 zones plus compacte que l'approche multi-cartes précédente
+
+### 📝 Modifié
+
+**Flux de navigation de l'interface**
+- **Animations en premier** : Animations Guirlande et Matrice prioritaires en haut (plus fréquemment utilisées)
+- **Configuration en second** : Carte Mode avec tous les paramètres en troisième position (regroupement logique)
+- **Système en dernier** : Informations système et nom d'appareil repoussés vers le bas (moins fréquemment consultés)
+- **Relocalisation luminosité** : Contrôle luminosité matrice déplacé de carte Matrice vers carte Mode (consolidé avec autres paramètres)
+
+**Modifications du contenu des cartes**
+- **Carte Matrice 8x8** : Curseur luminosité supprimé (maintenant dans carte Mode Zone C)
+- **Carte LCD** : Complètement supprimée - fonctionnalité intégrée dans carte Mode Zone B
+- **Carte Mode** : Étendue de simple sélection de mode à centre de configuration complet 3 zones
+
+### 🔧 Technique
+
+**Fichiers modifiés** :
+- [src/web_pages.cpp](src/web_pages.cpp) : Restructuration complète des cartes (remplacement 128 lignes aux lignes 20-148)
+  * En-tête version : "v2.0" → "v3.0"
+  * Carte 1 : Animations Guirlande (structure complète depuis ancienne Carte 2)
+  * Carte 2 : Matrice 8x8 (structure depuis ancienne Carte 3, luminosité supprimée)
+  * Carte 3 : Mode de fonctionnement (complètement redesigné avec 3 zones)
+  * Cartes 4-5 : Système & Nom d'appareil (mise à jour commentaires uniquement)
+  * JavaScript : Inchangé (tous les IDs HTML préservés pour compatibilité)
+- [platformio.ini](platformio.ini) : PROJECT_VERSION "2.0.0" → "3.0.0"
+- [include/config.h](include/config.h) : @version 2.0.0 → 3.0.0
+- [src/main.cpp](src/main.cpp) : @version 1.13.0 → 3.0.0
+- [src/display.cpp](src/display.cpp) : @version 2.0.0 → 3.0.0
+- [include/display.h](include/display.h) : @version 1.13.0 → 3.0.0
+- [src/garland_control.cpp](src/garland_control.cpp) : @version 1.13.0 → 3.0.0
+- [src/matrix8x8_control.cpp](src/matrix8x8_control.cpp) : @version 2.0.0 → 3.0.0
+- [include/web_styles.h](include/web_styles.h) : @version 2.0.0 → 3.0.0
+
+**Statistiques de compilation** :
+```
+Processing esp32devkitc
+RAM:   [==        ]  15,8% (utilisé 51 700 octets sur 327 680 octets)
+Flash: [========  ]  81,3% (utilisé 1 065 553 octets sur 1 310 720 octets)
+[SUCCESS] Durée 74,60 secondes
+```
+
+**Rétrocompatibilité** :
+- ✅ Toutes les fonctions JavaScript inchangées (IDs des éléments HTML préservés)
+- ✅ Format de stockage NVS inchangé (aucune migration requise)
+- ✅ Toutes les fonctionnalités de v2.0.0 préservées
+- ❌ Flux de navigation UI complètement différent (BREAKING - nécessite réapprentissage utilisateur)
+
+### 📚 Documentation
+
+**Fichiers mis à jour** (bilingue) :
+- CHANGELOG.md + CHANGELOG_FR.md : Entrée v3.0.0 avec détails complets de la réorganisation
+- README.md + README_FR.md : Mise à jour avec description du nouvel ordre des cartes
+- docs/USER_GUIDE.md + docs/USER_GUIDE_FR.md : Instructions de navigation mises à jour
+
+### Classification de version
+
+**SEMVER** : 3.0.0 (MAJEUR)
+- **Justification** : Réorganisation complète des cartes UI constitue un changement majeur dans l'expérience utilisateur
+- **Impact** : Les utilisateurs doivent réapprendre le flux de navigation de l'interface (ordre des cartes complètement différent)
+- **Portée** : UI uniquement - aucun changement majeur sur l'API, le format de stockage ou les fonctionnalités
+
+---
+
 # [2.0.0] - 2026-01-06
 
 ## 💥 CHANGEMENTS MAJEURS (BREAKING)

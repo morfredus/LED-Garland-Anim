@@ -1,7 +1,7 @@
 /**
  * @file garland_control.cpp
  * @brief Implémentation du contrôle des animations de guirlande
- * @version 1.13.0
+ * @version 3.0.0
  * @date 2026-01-06
  */
 

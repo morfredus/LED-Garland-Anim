@@ -27,23 +27,54 @@ Vous pouvez choisir la méthode de téléversement (USB ou OTA) à chaque upload
 ---
 # LED-Garland-Anim
 
-**Version : 2.0.0** (2026-01-06)
+**Version : 3.0.0** (2026-01-06)
 
 Contrôleur d'animation de guirlande LED bi-directionnelle et matrice NeoPixel 8x8 pour ESP32 Classic (IdeaSpark/DevKitC) avec écran ST7789, auto-détection PIR/RCWL-0516, **interface web modernisée avec sauvegarde instantanée**, layout responsive, mises à jour AJAX sans flash, **support mDNS pour un accès facile via nom unique**, boutons physiques, 11 animations de guirlande, 39 animations festives pour matrice (Noël, Nouvel An, Pâques, Feu de Camp, Radar), contrôle double indépendant, modes intelligents, configuration persistante, animations de démarrage automatiques.
 
-## ✨ Nouveautés v2.0.0
+## ✨ Nouveautés v3.0.0
 
-### 💥 Refonte Complète de l'Interface
+### 💥 Réorganisation Complète des Cartes de l'Interface Web (BREAKING CHANGE)
+- **Nouveau flux de navigation** - Ordre des cartes complètement restructuré pour une meilleure UX
+- **Animations prioritaires** - Animations Guirlande et Matrice maintenant en haut (plus fréquemment consultées)
+- **Carte Mode 3 zones** - Mode + LCD côte à côte, tous paramètres dessous en section unifiée
+- **Mode LCD intégré** - Mode d'affichage LCD maintenant dans carte Mode (carte séparée supprimée)
+- **Paramètres consolidés** - Tous paramètres temporels + luminosité matrice en un seul endroit
+- **Défilement réduit** - Disposition plus compacte avec regroupement logique
+
+### 📋 Nouvel Ordre des Cartes (v3.0.0)
+1. 🎄 **Animations Guirlande** - Toutes les animations guirlande (était Carte 2)
+2. 🎨 **Matrice 8x8** - Toutes les animations matrice (était Carte 3)
+3. 🎯 **Mode de fonctionnement** - Disposition 3 zones :
+   - Zone A (gauche) : Sélection mode (Auto/Manuel/Détection)
+   - Zone B (droite) : Mode affichage LCD (était Carte 4 séparée)
+   - Zone C (dessous) : Tous paramètres temporels + luminosité matrice
+4. ℹ️ **Système & Réseau** - Informations système et réseau
+5. 🏷️ **Nom d'appareil** - Configuration nom d'appareil
+
+### 🎨 Design Amélioré de la Carte Mode
+**Disposition Côte à Côte** (CSS Grid) :
+- **Moitié gauche** : Sélection mode de fonctionnement (Auto | Manuel | Détection mouvement)
+- **Moitié droite** : Mode affichage LCD (Animation + matrice | Animation seule | Écran éteint)
+- **Pleine largeur dessous** : Tous paramètres temporels (durée mouvement, intervalle guirlande, intervalle matrice) + luminosité matrice
+
+**Avantages** :
+- Toute la configuration en un seul endroit
+- Défilement vertical réduit
+- Meilleure hiérarchie visuelle
+- Regroupement logique des paramètres
+
+---
+
+## Versions Précédentes
+
+### v2.0.0 (2026-01-06) - Refonte Complète de l'Interface
 - **Sauvegarde instantanée sur tous les contrôles** - Plus de boutons "Appliquer" ! Les changements prennent effet immédiatement
 - **Curseurs modernes** - Tous les intervalles temporels utilisent des sliders avec affichage en temps réel
 - **Notifications centralisées** - Barre de notification fixe en haut pour toutes les confirmations
 - **Regroupement logique** - Tous les paramètres temporels regroupés dans la carte "Mode de fonctionnement"
-- **Ordre des cartes optimisé** - Mode → Guirlande → Matrice → LCD (flux logique)
-- **Infos système compactes** - Grille 2 colonnes responsive pour Système & Réseau
-
-### 🐛 Corrections de Bugs Critiques
-1. **Mode écran éteint** - L'affichage efface maintenant les pixels avant de couper le rétro-éclairage
-2. **Démarrage auto matrice** - Le mode auto s'active correctement au démarrage avec les paramètres sauvegardés
+- **Corrections de Bugs Critiques** :
+  1. **Mode écran éteint** - L'affichage efface maintenant les pixels avant de couper le rétro-éclairage
+  2. **Démarrage auto matrice** - Le mode auto s'active correctement au démarrage avec les paramètres sauvegardés
 
 ---
 
