@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+# [Unreleased]
+
+## 🐛 Fixed
+
+**Display mode persistence and TFT power handling**
+- Restored display mode load from NVS so "Animated/Static/Off" survives reboots.
+- Applying a display mode now immediately updates the TFT, restoring backlight for active modes and cutting it for "Off".
+
+**Mode persistence through intro**
+- Saved garland mode is now restored after the intro animation instead of reverting to Permanent.
+
+## 🔧 Technical
+- Web handler `/display_mode` triggers `displayScreenByMode(...)` to apply the change instantly (including backlight state).
+- `loadGarlandSettings()` now syncs `savedMode` with persisted mode and loads display mode from NVS.
+
+## SEMVER
+- Classification: PATCH (pending release)
+
 # [3.0.2] - 2026-01-06
 
 ## 🐛 Fixed

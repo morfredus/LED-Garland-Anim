@@ -348,5 +348,6 @@ void handleSetDisplayMode() {
     }
     setDisplayMode((DisplayMode)mode);
     saveDisplayModeToNVS();
+    displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName());
     server.send(200, "text/plain", "Mode d'affichage mis à jour");
 }

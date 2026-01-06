@@ -7,6 +7,24 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/spec/v2
 
 ---
 
+# [Non publié]
+
+## 🐛 Corrections
+
+**Persistance du mode d'affichage et gestion du rétroéclairage TFT**
+- Le mode d'affichage (Animé/Statique/Éteint) est de nouveau restauré depuis la NVS après redémarrage.
+- Le changement de mode d'affichage applique immédiatement l'état écran : rétroéclairage réactivé pour les modes actifs, coupé pour "Éteint".
+
+**Persistance du mode guirlande après l'intro**
+- Le mode sauvegardé est réappliqué après l'animation d'intro au lieu de revenir systématiquement sur "Permanent".
+
+## 🔧 Technique
+- Le handler web `/display_mode` appelle `displayScreenByMode(...)` pour appliquer le changement à la volée (dont l'état du rétroéclairage).
+- `loadGarlandSettings()` synchronise `savedMode` avec la valeur persistée et charge aussi le mode d'affichage depuis la NVS.
+
+## SEMVER
+- Classification : PATCH (en attente de publication)
+
 # [3.0.2] - 2026-01-06
 
 ## 🐛 Corrigé

@@ -22,10 +22,12 @@ void displayScreenByMode(const char* ssid, IPAddress ip, const char* modeName, c
     DisplayMode mode = getDisplayMode();
     switch (mode) {
         case DISPLAY_MODE_ANIMATED:
+            digitalWrite(LCD_BLK, HIGH);
             displayMainScreen(ssid, ip, modeName, animationName, matrixAnimationName);
             break;
         case DISPLAY_MODE_STATIC: {
             // Affichage statique : nom projet, version, SSID, IP uniquement
+            digitalWrite(LCD_BLK, HIGH);
             display.fillScreen(COLOR_BLACK);
             int16_t x1, y1; uint16_t w, h;
             int centerX;
@@ -60,6 +62,7 @@ void displayScreenByMode(const char* ssid, IPAddress ip, const char* modeName, c
             digitalWrite(LCD_BLK, LOW); // coupe le rétroéclairage
             break;
         default:
+            digitalWrite(LCD_BLK, HIGH);
             displayMainScreen(ssid, ip, modeName, animationName, matrixAnimationName);
             break;
     }
