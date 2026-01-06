@@ -1,7 +1,7 @@
 /**
  * @file display.cpp
  * @brief Implémentation du module de gestion de l'écran ST7789
- * @version 1.13.0
+ * @version 2.0.0
  * @date 2026-01-06
  */
 
@@ -55,9 +55,9 @@ void displayScreenByMode(const char* ssid, IPAddress ip, const char* modeName, c
             break;
         }
         case DISPLAY_MODE_OFF:
-            // Éteint : backlight + contenu off
-            digitalWrite(LCD_BLK, LOW); // coupe le rétroéclairage
+            // Éteint : efface d'abord puis coupe le rétroéclairage
             display.fillScreen(COLOR_BLACK);
+            digitalWrite(LCD_BLK, LOW); // coupe le rétroéclairage
             break;
         default:
             displayMainScreen(ssid, ip, modeName, animationName, matrixAnimationName);

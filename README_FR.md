@@ -27,9 +27,23 @@ Vous pouvez choisir la méthode de téléversement (USB ou OTA) à chaque upload
 ---
 # LED-Garland-Anim
 
-**Version : 1.12.1** (2026-01-06)
+**Version : 2.0.0** (2026-01-06)
 
-Contrôleur d'animation de guirlande LED bi-directionnelle et matrice NeoPixel 8x8 pour ESP32 Classic (IdeaSpark/DevKitC) avec écran ST7789, auto-détection PIR/RCWL-0516, interface web modernisée avec boutons radio, layout responsive et mises à jour AJAX sans flash, **support mDNS pour un accès facile via nom unique**, boutons physiques, 11 animations de guirlande, 39 animations festives pour matrice (Noël, Nouvel An, Pâques, Feu de Camp, Radar), contrôle double indépendant, modes intelligents, configuration persistante, animations de démarrage automatiques.
+Contrôleur d'animation de guirlande LED bi-directionnelle et matrice NeoPixel 8x8 pour ESP32 Classic (IdeaSpark/DevKitC) avec écran ST7789, auto-détection PIR/RCWL-0516, **interface web modernisée avec sauvegarde instantanée**, layout responsive, mises à jour AJAX sans flash, **support mDNS pour un accès facile via nom unique**, boutons physiques, 11 animations de guirlande, 39 animations festives pour matrice (Noël, Nouvel An, Pâques, Feu de Camp, Radar), contrôle double indépendant, modes intelligents, configuration persistante, animations de démarrage automatiques.
+
+## ✨ Nouveautés v2.0.0
+
+### 💥 Refonte Complète de l'Interface
+- **Sauvegarde instantanée sur tous les contrôles** - Plus de boutons "Appliquer" ! Les changements prennent effet immédiatement
+- **Curseurs modernes** - Tous les intervalles temporels utilisent des sliders avec affichage en temps réel
+- **Notifications centralisées** - Barre de notification fixe en haut pour toutes les confirmations
+- **Regroupement logique** - Tous les paramètres temporels regroupés dans la carte "Mode de fonctionnement"
+- **Ordre des cartes optimisé** - Mode → Guirlande → Matrice → LCD (flux logique)
+- **Infos système compactes** - Grille 2 colonnes responsive pour Système & Réseau
+
+### 🐛 Corrections de Bugs Critiques
+1. **Mode écran éteint** - L'affichage efface maintenant les pixels avant de couper le rétro-éclairage
+2. **Démarrage auto matrice** - Le mode auto s'active correctement au démarrage avec les paramètres sauvegardés
 
 ---
 

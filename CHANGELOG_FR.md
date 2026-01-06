@@ -1,3 +1,118 @@
+# [2.0.0] - 2026-01-06
+
+## 💥 CHANGEMENTS MAJEURS (BREAKING)
+
+### **Refonte complète de l'interface Web**
+- **Interface moderne et intuitive** : Sauvegarde instantanée sur tous les paramètres (sauf nom d'appareil)
+- **Nouveau pattern d'interaction** : Plus de boutons "Appliquer" inutiles - changements appliqués immédiatement
+- **Curseurs améliorés** : Tous les intervalles temporels utilisent des sliders avec affichage en temps réel
+- **Regroupement logique** : Paramètres temporels regroupés dans la carte "Mode de fonctionnement"
+- **Notifications centralisées** : Barre fixe en haut pour toutes les confirmations
+- **Ordre des cartes optimisé** : Mode → Guirlande → Matrice → LCD (flux logique)
+
+### 🐛 Corrigé (Bugs Critiques)
+
+1. **Mode Écran Éteint**
+   - **Problème** : Mode écran éteint laissait pixels visibles malgré rétro-éclairage coupé
+   - **Cause** : `digitalWrite(LCD_BLK, LOW)` appelé avant `fillScreen(BLACK)`
+   - **Solution** : Inversion de l'ordre - pixels effacés avant coupure rétro-éclairage
+   - **Fichier** : [src/display.cpp](src/display.cpp#L57-L60)
+
+2. **Démarrage Auto Matrice**
+   - **Problème** : Mode auto matrice ne démarrait pas automatiquement au boot
+   - **Cause** : Flag `autoModeActive` jamais initialisé après chargement NVS
+   - **Solution** : Initialisation de `autoModeActive=true` dans `setupMatrix8x8()` quand `currentAnimation==MATRIX_ANIM_AUTO`
+   - **Fichier** : [src/matrix8x8_control.cpp](src/matrix8x8_control.cpp#L1963-L1975)
+
+### ✨ Ajouté (Fonctionnalités)
+
+**Sauvegarde instantanée**
+- Événements `onchange` sur tous les contrôles interactifs
+- Validation côté client pour intervalles (multiples de 5s, 5-300s)
+- Feedback visuel immédiat via barre de notification
+- Pas de latence - expérience fluide et réactive
+
+**Curseurs temporels avec affichage**
+- Intervalle guirlande : curseur + valeur affichée en temps réel
+- Durée mouvement : curseur + valeur affichée en temps réel
+- Intervalle matrice : curseur + valeur affichée en temps réel
+- Luminosité matrice : curseur + valeur affichée en temps réel
+
+**Informations système compactées**
+- Carte Système : Chip ID, Flash, RAM, CPU (grille 2x2 responsive)
+- Carte Réseau : SSID, IP, mDNS (dans même section)
+- Suppression infos redondantes (PSRAM, vitesse Flash, taille Heap)
+- Mise en page responsive avec `grid-template-columns`
+
+### 📝 Modifié (Interface)
+
+**Réorganisation des cartes** (avant → après) :
+1. ~~Animations guirlande~~ → **Mode de fonctionnement** (+ tous params temporels)
+2. ~~Mode de fonctionnement~~ → **Animations guirlande**
+3. **Matrice 8x8** (inchangée)
+4. **Mode affichage LCD** (passage de onclick à onchange)
+5. ~~Sauvegarde/Restauration~~ → **Supprimée** (fonctionnalité conservée, UI simplifiée)
+6. ~~Informations Système + Réseau WiFi~~ → **Système & Réseau** (fusionnées en grille 2 colonnes)
+7. **Nom d'appareil** (conservé - validation requise)
+8. **Actions** (Actualiser, OTA, Redémarrer)
+
+**Modifications JavaScript**
+- `changeAnimation(id)`, `changeMode(id)`, `changeMatrixAnimation(id)` : sauvegarde instantanée
+- `applyAutoInterval(val)`, `applyMotionDuration(val)`, `applyMatrixInterval(val)` : acceptent paramètre direct (plus de `getElementById`)
+- `applyMatrixBrightness(val)` : accepte paramètre direct
+- `changeDisplayMode(id)` : sauvegarde instantanée
+- `updateIntervalDisplay(slider, spanId)` : nouvelle fonction helper pour mettre à jour spans
+- Suppression de toutes les fonctions inutilisées (`showParamMessage`, `showMatrixMessage`, `showMessage`)
+
+**Pattern de code HTML/JS** (transformation complète) :
+```javascript
+// AVANT v2.0.0 (pattern obsolète) :
+<input type='number' id='auto-interval-seconds' min='5' max='300' step='5'>
+<button onclick='applyAutoInterval()'>Appliquer</button>
+function applyAutoInterval() {
+  var val = document.getElementById('auto-interval-seconds').value;
+  fetch('/auto_interval?ms=' + (val * 1000));
+}
+
+// APRÈS v2.0.0 (pattern moderne) :
+<input type='range' id='auto-interval-seconds' min='5' max='300' step='5'
+  onchange='applyAutoInterval(this.value)'
+  oninput='updateIntervalDisplay(this, "auto-interval-value")'>
+<span id='auto-interval-value'>30</span>s
+function applyAutoInterval(val) {
+  fetch('/auto_interval?ms=' + (val * 1000));
+  showNotification('✓ Intervalle : ' + val + 's');
+}
+```
+
+### 🔧 Technique
+
+**Fichiers modifiés** (6 fichiers) :
+- [src/display.cpp](src/display.cpp) - Correction bug écran éteint + version 2.0.0
+- [src/matrix8x8_control.cpp](src/matrix8x8_control.cpp) - Correction bug démarrage auto + version 2.0.0
+- [src/web_pages.cpp](src/web_pages.cpp) - Refonte complète UI (HTML + JavaScript)
+- [platformio.ini](platformio.ini) - Version 2.0.0
+- [include/config.h](include/config.h) - Version 2.0.0
+- [include/display.h](include/display.h) - Version 2.0.0 (?)
+
+**Statistiques compilation** :
+- RAM : 15.8% (51,700 octets / 327,680 octets) - inchangé
+- Flash : 81.3% (1,065,377 octets / 1,310,720 octets) - gain 0.2%
+- Durée : 203.02 secondes (build complet)
+
+### 📚 Documentation
+
+- Versions mises à jour : tous les en-têtes de fichiers source v2.0.0
+- CHANGELOG.md et CHANGELOG_FR.md mis à jour
+- README.md et README_FR.md mis à jour avec nouvelle UI
+- USER_GUIDE.md et USER_GUIDE_FR.md mis à jour avec captures d'écran
+
+### Version
+
+- **Classification SEMVER** : MAJEUR (2.0.0) - Changements breaking UI complète
+
+---
+
 # [1.12.1] – 2026-01-06
 
 ### Modifié (PATCH - Performance / Fluidité)

@@ -28,9 +28,23 @@ pio run -e esp32s3_n16r8 -t upload
 ---
 # LED-Garland-Anim
 
-**Version: 1.12.1** (2026-01-06)
+**Version: 2.0.0** (2026-01-06)
 
-Controller for bi-directional LED garland and 8x8 NeoPixel matrix animation on ESP32 Classic (IdeaSpark/DevKitC) with ST7789 display, auto-detection of PIR/RCWL-0516, modern web interface with radio buttons, responsive 2-column layout, and flash-free AJAX updates, web-based OTA updates, **mDNS support for easy access via unique device name**, physical buttons, 11 garland animations, 39 festive matrix animations (Christmas, New Year, Easter, Campfire, Radar), dual independent control, smart modes, persistent configuration, automatic startup animations.
+Controller for bi-directional LED garland and 8x8 NeoPixel matrix animation on ESP32 Classic (IdeaSpark/DevKitC) with ST7789 display, auto-detection of PIR/RCWL-0516, **modern web interface with instant save**, responsive layout, flash-free AJAX updates, web-based OTA updates, **mDNS support for easy access via unique device name**, physical buttons, 11 garland animations, 39 festive matrix animations (Christmas, New Year, Easter, Campfire, Radar), dual independent control, smart modes, persistent configuration, automatic startup animations.
+
+## ✨ What's New in v2.0.0
+
+### 💥 Complete UI Overhaul
+- **Instant save on all controls** - No more "Apply" buttons! Changes take effect immediately
+- **Modern slider controls** - All time intervals use range sliders with real-time value display
+- **Centralized notifications** - Fixed notification bar at top for all confirmations
+- **Logical grouping** - All temporal parameters grouped in "Mode de fonctionnement" card
+- **Optimized card order** - Mode → Garland → Matrix → LCD (logical flow)
+- **Streamlined system info** - Compact 2-column grid for System & Network
+
+### 🐛 Critical Bug Fixes
+1. **Screen off mode** - Display now properly clears pixels before cutting backlight
+2. **Matrix auto-start** - Auto mode now correctly activates on boot with saved settings
 
 ---
 

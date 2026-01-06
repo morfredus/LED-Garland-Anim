@@ -1,7 +1,7 @@
 /**
  * @file matrix8x8_control.cpp
  * @brief Implementation of 8x8 NeoPixel matrix control with festive animations
- * @version 1.13.0
+ * @version 2.0.0
  * @date 2026-01-06
  */
 
@@ -1960,9 +1960,20 @@ void setupMatrix8x8() {
     // Apply loaded brightness
     matrix.setBrightness(matrixBrightness);
 
+    // Initialize auto mode if needed (based on loaded animation)
+    if (currentAnimation == MATRIX_ANIM_AUTO) {
+        autoModeActive = true;
+        activeAnimation = MATRIX_ANIM_STAR;
+        autoModeChangeTime = millis();
+        LOG_PRINTLN("Auto Mode enabled at startup");
+    } else if (currentAnimation == MATRIX_ANIM_OFF) {
+        matrixEnabled = false;
+    } else {
+        activeAnimation = currentAnimation;
+    }
+
     // Start with selected animation
     animationStartTime = millis();
-    matrixEnabled = true;
 
     LOG_PRINTF("✓ 8x8 Matrix initialized - Starting with: %s (brightness: %d)\n",
                animationNames[currentAnimation], matrixBrightness);
