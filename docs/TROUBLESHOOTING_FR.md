@@ -12,7 +12,7 @@
 - Effacer la flash et reprogrammer le firmware
 - Vérifier les messages d’erreur sur la console série
 - Si le problème persiste, ouvrir un ticket avec les logs
-# Dépannage - LED-Garland-Anim v1.11.3
+# Dépannage - LED-Garland-Anim v5.1.0
 
 Guide rapide pour diagnostiquer les problèmes sur ESP32 IdeaSpark.
 

@@ -12,7 +12,7 @@
 - Erase flash and re-upload firmware
 - Check for error messages on serial console
 - If problem persists, file an issue with logs
-# Troubleshooting - LED-Garland-Anim v1.11.3
+# Troubleshooting - LED-Garland-Anim v5.1.0
 
 Use this guide to debug the ESP32 IdeaSpark build when something does not work as expected.
 
