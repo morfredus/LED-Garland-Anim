@@ -316,13 +316,18 @@ void displayMainScreen(const char* ssid, IPAddress ip, const char* modeName, con
     drawFestiveGarland(headerY + 64);
 
     // ========== LAYOUT EMPILÉ (fullwidth) ==========
+    // Zone 1: En-tête (Inchangé) - 58px
+    // Zone 2: Cadre Infos - Fullwidth avec 5 lignes de données
+    // Zone 3: Zone Animation - Fullwidth réduite
+    
     const int margin = 8;
     const int infoFrameY = headerY + 74;
-    const int infoFrameH = 70;  // hauteur cadre info
-    const int animZoneY = infoFrameY + infoFrameH + 4;  // séparation de 4px
+    const int infoFrameH = 82;  // hauteur cadre info (augmenté pour 5 lignes confortables)
+    const int animZoneY = infoFrameY + infoFrameH + 2;  // séparation minimale
     const int animZoneH = ST7789_HEIGHT - animZoneY - margin;
 
     // ========== CADRE INFO FULLWIDTH ==========
+    // Positions des 5 lignes de données (espacées de 14px chacune)
     display.fillRoundRect(margin, infoFrameY, ST7789_WIDTH - 2*margin, infoFrameH, 12, panelDark);
     display.drawRoundRect(margin, infoFrameY, ST7789_WIDTH - 2*margin, infoFrameH, 12, COLOR_GREEN);
     display.drawRoundRect(margin + 3, infoFrameY + 3, ST7789_WIDTH - 2*margin - 6, infoFrameH - 6, 10, COLOR_ORANGE);
@@ -335,14 +340,14 @@ void displayMainScreen(const char* ssid, IPAddress ip, const char* modeName, con
     const int infoY4 = infoFrameY + 46;
     const int infoY5 = infoFrameY + 60;
 
-    // Ligne 1: Mode
+    // [1] Mode
     display.setTextColor(COLOR_YELLOW);
     display.setCursor(infoX, infoY1);
     display.print("Mode: ");
     display.setTextColor(COLOR_WHITE);
     display.print(modeName);
 
-    // Ligne 2: SSID (avec troncature à 20 chars max)
+    // [2] SSID (avec troncature à 20 chars max)
     String ssidTruncated = truncateText(String(ssid), 20);
     display.setTextColor(COLOR_CYAN);
     display.setCursor(infoX, infoY2);
@@ -350,14 +355,14 @@ void displayMainScreen(const char* ssid, IPAddress ip, const char* modeName, con
     display.setTextColor(COLOR_WHITE);
     display.print(ssidTruncated.c_str());
 
-    // Ligne 3: IP
+    // [3] IP
     display.setTextColor(COLOR_MAGENTA);
     display.setCursor(infoX, infoY3);
     display.print("IP: ");
     display.setTextColor(COLOR_WHITE);
     display.print(ip.toString().c_str());
 
-    // Ligne 4: mDNS (si disponible)
+    // [4] mDNS (si disponible)
     if (mDnsName != nullptr && strlen(mDnsName) > 0) {
         display.setTextColor(COLOR_YELLOW);
         display.setCursor(infoX, infoY4);
@@ -366,7 +371,7 @@ void displayMainScreen(const char* ssid, IPAddress ip, const char* modeName, con
         display.print(mDnsName);
     }
 
-    // Ligne 5: Animations (guirlande + matrice)
+    // [5] Animations (guirlande + matrice)
     display.setTextColor(COLOR_RED);
     display.setCursor(infoX, infoY5);
     display.print("Anim: ");
@@ -379,7 +384,7 @@ void displayMainScreen(const char* ssid, IPAddress ip, const char* modeName, con
     animLabel = truncateText(animLabel, 35);
     display.print(animLabel.c_str());
 
-    // ========== ZONE D'ANIMATION FULLWIDTH ==========
+    // ========== ZONE D'ANIMATION FULLWIDTH (Réduite) ==========
     display.fillRoundRect(margin, animZoneY, ST7789_WIDTH - 2*margin, animZoneH, 12, panelDark);
     display.drawRoundRect(margin, animZoneY, ST7789_WIDTH - 2*margin, animZoneH, 12, COLOR_CYAN);
     display.drawRoundRect(margin + 2, animZoneY + 2, ST7789_WIDTH - 2*margin - 4, animZoneH - 4, 10, COLOR_MAGENTA);
