@@ -5,8 +5,8 @@
 /**
  * @file board_config.h
  * @brief Mapping optimisé pour ESP32 IdeaSpark (Écran 1.14" intégré)
- * @version 1.12.0
- * @date 2026-01-05
+ * @version 1.11.3
+ * @date 2026-01-01
  */
 
 #ifndef BOARD_CONFIG_H
@@ -29,9 +29,9 @@
 /** @{ */
 #define LCD_MOSI 23   ///< SDA (Données SPI)
 #define LCD_SCLK 18   ///< SCL (Horloge SPI)
-#define LCD_CS    5   ///< Chip Select
-#define LCD_DC   27   ///< Data/Command (Aussi relié à la LED bleue)
-#define LCD_RST  33   ///< Reset
+#define LCD_CS   15   ///< Chip Select
+#define LCD_DC    2   ///< Data/Command (Aussi relié à la LED bleue)
+#define LCD_RST   4   ///< Reset
 #define LCD_BLK  32   ///< Backlight (Rétroéclairage - DOIT être à HIGH pour voir l'image)
 /** @} */
 
@@ -47,10 +47,10 @@
 /**
  * @note AIN1 déplacé sur GPIO 25 pour éviter le conflit avec le rétroéclairage LCD (32)
  */
-#define TB6612_PWMA  13   ///< PWM pour intensité
-#define TB6612_AIN1  26   ///< Direction A (Pin 1)
-#define TB6612_AIN2  25   ///< Direction A (Pin 2)
-#define TB6612_STBY  15   ///< Standby (HIGH = actif)
+#define TB6612_PWMA  12   ///< PWM pour intensité
+#define TB6612_AIN1  25   ///< Direction A (Pin 1)
+#define TB6612_AIN2  33   ///< Direction A (Pin 2)
+#define TB6612_STBY  14   ///< Standby (HIGH = actif)
 
 // ============================================================================
 // CAPTEUR DE MOUVEMENT (PIR ou RCWL-0516)
@@ -66,7 +66,7 @@
 // ============================================================================
 // MATRICE NEOPIXEL 8x8 WS2812B-64
 // ============================================================================
-#define MATRIX8X8_PIN        34   ///< Data pin for 8x8 NeoPixel matrix (WS2812B-64)
+#define MATRIX8X8_PIN        27   ///< Data pin for 8x8 NeoPixel matrix (WS2812B-64)
 #define MATRIX8X8_NUMPIXELS  64   ///< Number of pixels in 8x8 matrix
 
 #endif // BOARD_CONFIG_H
