@@ -13,22 +13,11 @@ Le système utilise la NVS (mémoire non-volatile) de l’ESP32 pour sauvegarder
 - Les réglages sont conservés même après redémarrage ou coupure d’alimentation.
 
 **Aucune action requise de l’utilisateur** : la gestion est entièrement automatique.
-# Guide Utilisateur - LED-Garland-Anim v5.0.0
-## 🚦 Détection automatique du capteur de mouvement
-
-À partir de la version 1.11.0, le système détecte automatiquement si un capteur PIR (HC-SR501) ou un capteur radar Doppler (RCWL-0516) est connecté sur le GPIO 35 :
-- **PIR** : LOW au repos, HIGH sur détection
-- **RCWL-0516** : HIGH au repos, LOW sur détection
-
-Le firmware adapte la logique de détection en conséquence. Aucune configuration n’est requise : il suffit de connecter le capteur souhaité sur le GPIO 35.
-
-Voir docs/PIR_SENSOR_SETUP_FR.md et docs/RADAR_SENSOR_SETUP_FR.md pour le câblage et les réglages.
+# Guide Utilisateur - LED-Garland-Anim v5.1.0
 
 Guide utilisateur complet pour le contrôleur d'animation de guirlande LED (ESP32 IdeaSpark + ST7789).
 
----
-
-## Table des Matières
+**Version du document : v5.1.0 (2026-01-06)**
 
 - [Guide Utilisateur - LED-Garland-Anim v5.0.0](#guide-utilisateur---led-garland-anim-v500)
   - [🚦 Détection automatique du capteur de mouvement](#-détection-automatique-du-capteur-de-mouvement)
@@ -99,9 +88,19 @@ Exemple : `192.168.1.100`
 
 
 ## Affichage LCD ST7789
-- Écran couleur 1.14" 135x240px
-- **3 modes d’affichage sélectionnables** :
-  - **Animé (v5.0.0)** : Style festif identique au statique (fond texturé, cadres ruban, scintillements, double guirlande) avec cartouche Mode/Anim guirlande/Anim matrice/SSID/IP et **fenêtre d’animation réduite** « Mini show »
+
+- **Écran couleur 1.14" 135x240px**
+- **3 modes d'affichage sélectionnables** :
+  - **Animé (v5.1.0)** – **Disposition empilée pleine largeur** :
+    - **En-tête** : Bannière festive avec nom du projet et version (inchangé du statique)
+    - **Cartouche d'infos** (pleine largeur, 82px) : 5 lignes de données affichées dans un cadre décoré :
+      1. **Mode** : Mode de fonctionnement actuel (Permanent, Détection, etc.)
+      2. **WiFi** : SSID tronqué à 20 caractères avec « ... » si nécessaire
+      3. **IP** : Adresse IP de l'appareil
+      4. **mDNS** : Nom d'appareil avec suffix `.local` (ex. `garland.local`)
+      5. **Animations** : Noms animation guirlande et matrice actuelles
+    - **Zone d'animation** (pleine largeur, sous cartouche) : Grand viewport avec rafraîchissement temps réel (~10 FPS)
+    - **Lisibilité améliorée** : Disposition empilée évite l'étriquement horizontal; fenêtre animation plus grande pour un meilleur retour visuel
   - **Statique** : Tableau de bord festif affichant nom du projet, version, SSID, IP et mDNS (`*.local`)
   - **Éteint** : Écran et rétroéclairage coupés
 - Sélection à la volée depuis l’interface web (radio)
