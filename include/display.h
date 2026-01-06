@@ -1,12 +1,15 @@
 /**
  * @file display.h
  * @brief Module de gestion de l'écran ST7789 (ESP32 IdeaSpark 1.14" LCD)
- * @version 5.0.0
+ * @version 5.1.0
  * @date 2026-01-06
  *
  * Ce module fournit une interface pour gérer l'affichage sur l'écran
  * ST7789 intégré à l'ESP32 IdeaSpark.
  * Il gère l'initialisation, le boot screen, et l'affichage de l'état.
+ * 
+ * v5.1.0: Réorganisation du layout animé en zones empilées fullwidth,
+ *         ajout mDNS, troncature SSID pour meilleure lisibilité.
  */
 
 #ifndef DISPLAY_H
@@ -36,8 +39,9 @@
  * @param modeName Nom du mode courant de la guirlande
  * @param animationName Nom de l'animation courante de la guirlande
  * @param matrixAnimationName Nom de l'animation courante de la matrice
+ * @param mDnsName Nom mDNS (ex: "esp32.local") pour affichage
  */
-void displayScreenByMode(const char* ssid, IPAddress ip, const char* modeName, const char* animationName, const char* matrixAnimationName = nullptr);
+void displayScreenByMode(const char* ssid, IPAddress ip, const char* modeName, const char* animationName, const char* matrixAnimationName = nullptr, const char* mDnsName = nullptr);
 
 /**
  * @brief Initialise l'écran ST7789
@@ -63,21 +67,21 @@ void setupDisplay();
 void displayBootScreen(const char* projectName, const char* projectVersion, int wifiProgress = -1);
 
 /**
- * @brief Affiche l'écran principal animé avec le style festif
+ * @brief Affiche l'écran principal animé avec le style festif (v5.1.0)
  *
- * Affiche :
+ * Affiche (layout empilé fullwidth) :
  * - En-tête (Nom + Version) dans un bandeau décoré
- * - Mode, animation guirlande, animation matrice (si présente)
- * - SSID + IP dans un panneau textuel
- * - Zone graphique d'animation réduite, encadrée et décorée
+ * - Cadre info fullwidth : Mode, SSID (troncable), IP, mDNS
+ * - Zone d'animation fullwidth en dessous
  *
  * @param ssid Nom du réseau WiFi connecté
  * @param ip Adresse IP locale
  * @param modeName Nom du mode actuel
  * @param animationName Nom de l'animation active
  * @param matrixAnimationName Nom de l'animation matrice active (optionnel)
+ * @param mDnsName Nom mDNS (ex: "esp32") pour affichage réseau
  */
-void displayMainScreen(const char* ssid, IPAddress ip, const char* modeName, const char* animationName, const char* matrixAnimationName = nullptr);
+void displayMainScreen(const char* ssid, IPAddress ip, const char* modeName, const char* animationName, const char* matrixAnimationName = nullptr, const char* mDnsName = nullptr);
 
 /**
  * @brief Met à jour uniquement la zone d'animation sans redessiner tout l'écran

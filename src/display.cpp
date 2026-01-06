@@ -1,7 +1,7 @@
 /**
  * @file display.cpp
  * @brief Implémentation du module de gestion de l'écran ST7789
- * @version 5.0.0
+ * @version 5.1.0
  * @date 2026-01-06
  */
 
@@ -18,12 +18,12 @@
  * @param modeName Nom du mode courant
  * @param animationName Nom de l'animation courante
  */
-void displayScreenByMode(const char* ssid, IPAddress ip, const char* modeName, const char* animationName, const char* matrixAnimationName) {
+void displayScreenByMode(const char* ssid, IPAddress ip, const char* modeName, const char* animationName, const char* matrixAnimationName, const char* mDnsName) {
     DisplayMode mode = getDisplayMode();
     switch (mode) {
         case DISPLAY_MODE_ANIMATED:
             digitalWrite(LCD_BLK, HIGH);
-            displayMainScreen(ssid, ip, modeName, animationName, matrixAnimationName);
+            displayMainScreen(ssid, ip, modeName, animationName, matrixAnimationName, mDnsName);
             break;
         case DISPLAY_MODE_STATIC: {
             digitalWrite(LCD_BLK, HIGH);
@@ -31,7 +31,7 @@ void displayScreenByMode(const char* ssid, IPAddress ip, const char* modeName, c
             const String versionStr = "v" + String(PROJECT_VERSION);
             const String ssidStr = (ssid != nullptr && strlen(ssid) > 0) ? String(ssid) : String("Offline");
             const String ipStr = ip.toString();
-            const String mdnsStr = String(getDeviceName()) + ".local";
+            const String mdnsStr = (mDnsName != nullptr && strlen(mDnsName) > 0) ? String(mDnsName) : (String(getDeviceName()) + ".local");
 
             display.setTextWrap(false);
 
@@ -135,7 +135,7 @@ void displayScreenByMode(const char* ssid, IPAddress ip, const char* modeName, c
             break;
         default:
             digitalWrite(LCD_BLK, HIGH);
-            displayMainScreen(ssid, ip, modeName, animationName, matrixAnimationName);
+            displayMainScreen(ssid, ip, modeName, animationName, matrixAnimationName, mDnsName);
             break;
     }
 }
@@ -245,7 +245,7 @@ void displayBootScreen(const char* projectName, const char* projectVersion, int 
     }
 }
 
-void displayMainScreen(const char* ssid, IPAddress ip, const char* modeName, const char* animationName, const char* matrixAnimationName) {
+void displayMainScreen(const char* ssid, IPAddress ip, const char* modeName, const char* animationName, const char* matrixAnimationName, const char* mDnsName) {
     const uint16_t deepNight = display.color565(5, 12, 24);
     const uint16_t stripe = display.color565(8, 28, 48);
     const uint16_t panelDark = display.color565(10, 22, 42);
@@ -253,7 +253,7 @@ void displayMainScreen(const char* ssid, IPAddress ip, const char* modeName, con
 
     display.setTextWrap(false);
 
-    // Fond texturé façon écran statique
+    // Fond texturé
     display.fillScreen(deepNight);
     for (int y = 0; y < ST7789_HEIGHT; y += 8) {
         display.drawFastHLine(0, y, ST7789_WIDTH, stripe);
@@ -296,7 +296,12 @@ void displayMainScreen(const char* ssid, IPAddress ip, const char* modeName, con
         display.println(text);
     };
 
-    // En-tête festif
+    auto truncateText = [](const String& text, int maxLen) -> String {
+        if (text.length() <= maxLen) return text;
+        return text.substring(0, maxLen - 2) + "..";
+    };
+
+    // ========== EN-TÊTE (inchangé) ==========
     const int headerY = 14;
     display.fillRoundRect(14, headerY, ST7789_WIDTH - 28, 58, 12, panelBright);
     display.drawRoundRect(14, headerY, ST7789_WIDTH - 28, 58, 12, COLOR_YELLOW);
@@ -310,87 +315,99 @@ void displayMainScreen(const char* ssid, IPAddress ip, const char* modeName, con
     drawSparkle(ST7789_WIDTH - 18, ST7789_HEIGHT - 18, COLOR_GREEN);
     drawFestiveGarland(headerY + 64);
 
-    // Cartes info et mini-animation
+    // ========== LAYOUT EMPILÉ (fullwidth) ==========
     const int margin = 8;
-    const int infoX = margin;
-    const int infoY = headerY + 74;
-    const int infoW = 128;
-    const int infoH = 170;
+    const int infoFrameY = headerY + 74;
+    const int infoFrameH = 70;  // hauteur cadre info
+    const int animZoneY = infoFrameY + infoFrameH + 4;  // séparation de 4px
+    const int animZoneH = ST7789_HEIGHT - animZoneY - margin;
 
-    const int animPanelX = infoX + infoW + 8;
-    const int animPanelW = ST7789_WIDTH - animPanelX - margin;
-    const int animPanelY = infoY;
-    const int animPanelH = 128;
-
-    // Panneau info (mode + réseau)
-    display.fillRoundRect(infoX, infoY, infoW, infoH, 12, panelDark);
-    display.drawRoundRect(infoX, infoY, infoW, infoH, 12, COLOR_GREEN);
-    display.drawRoundRect(infoX + 3, infoY + 3, infoW - 6, infoH - 6, 10, COLOR_ORANGE);
+    // ========== CADRE INFO FULLWIDTH ==========
+    display.fillRoundRect(margin, infoFrameY, ST7789_WIDTH - 2*margin, infoFrameH, 12, panelDark);
+    display.drawRoundRect(margin, infoFrameY, ST7789_WIDTH - 2*margin, infoFrameH, 12, COLOR_GREEN);
+    display.drawRoundRect(margin + 3, infoFrameY + 3, ST7789_WIDTH - 2*margin - 6, infoFrameH - 6, 10, COLOR_ORANGE);
 
     display.setTextSize(1);
+    const int infoX = margin + 8;
+    const int infoY1 = infoFrameY + 4;
+    const int infoY2 = infoFrameY + 18;
+    const int infoY3 = infoFrameY + 32;
+    const int infoY4 = infoFrameY + 46;
+    const int infoY5 = infoFrameY + 60;
+
+    // Ligne 1: Mode
     display.setTextColor(COLOR_YELLOW);
-    display.setCursor(infoX + 10, infoY + 10);
-    display.println("Mode");
+    display.setCursor(infoX, infoY1);
+    display.print("Mode: ");
     display.setTextColor(COLOR_WHITE);
-    display.setCursor(infoX + 10, infoY + 22);
-    display.println(modeName);
+    display.print(modeName);
 
-    display.setTextColor(COLOR_ORANGE);
-    display.setCursor(infoX + 10, infoY + 38);
-    display.println("Anim guirlande");
+    // Ligne 2: SSID (avec troncature à 20 chars max)
+    String ssidTruncated = truncateText(String(ssid), 20);
+    display.setTextColor(COLOR_CYAN);
+    display.setCursor(infoX, infoY2);
+    display.print("WiFi: ");
     display.setTextColor(COLOR_WHITE);
-    display.setCursor(infoX + 10, infoY + 50);
-    display.println(animationName);
+    display.print(ssidTruncated.c_str());
 
+    // Ligne 3: IP
+    display.setTextColor(COLOR_MAGENTA);
+    display.setCursor(infoX, infoY3);
+    display.print("IP: ");
+    display.setTextColor(COLOR_WHITE);
+    display.print(ip.toString().c_str());
+
+    // Ligne 4: mDNS (si disponible)
+    if (mDnsName != nullptr && strlen(mDnsName) > 0) {
+        display.setTextColor(COLOR_YELLOW);
+        display.setCursor(infoX, infoY4);
+        display.print("mDNS: ");
+        display.setTextColor(COLOR_WHITE);
+        display.print(mDnsName);
+    }
+
+    // Ligne 5: Animations (guirlande + matrice)
     display.setTextColor(COLOR_RED);
-    display.setCursor(infoX + 10, infoY + 66);
-    display.println("Anim matrice");
+    display.setCursor(infoX, infoY5);
+    display.print("Anim: ");
     display.setTextColor(COLOR_WHITE);
-    display.setCursor(infoX + 10, infoY + 78);
-    display.println(matrixAnimationName != nullptr ? matrixAnimationName : "--");
+    String animLabel = String(animationName);
+    if (matrixAnimationName != nullptr && strlen(matrixAnimationName) > 0) {
+        animLabel += " + " + String(matrixAnimationName);
+    }
+    // Troncature si trop long
+    animLabel = truncateText(animLabel, 35);
+    display.print(animLabel.c_str());
 
-    display.drawFastHLine(infoX + 8, infoY + 94, infoW - 16, COLOR_CYAN);
+    // ========== ZONE D'ANIMATION FULLWIDTH ==========
+    display.fillRoundRect(margin, animZoneY, ST7789_WIDTH - 2*margin, animZoneH, 12, panelDark);
+    display.drawRoundRect(margin, animZoneY, ST7789_WIDTH - 2*margin, animZoneH, 12, COLOR_CYAN);
+    display.drawRoundRect(margin + 2, animZoneY + 2, ST7789_WIDTH - 2*margin - 4, animZoneH - 4, 10, COLOR_MAGENTA);
 
+    // Label
     display.setTextColor(COLOR_YELLOW);
-    display.setCursor(infoX + 10, infoY + 104);
-    display.print("SSID: ");
-    display.setTextColor(COLOR_WHITE);
-    display.println(ssid);
+    display.setCursor(margin + 10, animZoneY + 6);
+    display.println("Animation");
 
-    display.setTextColor(COLOR_GREEN);
-    display.setCursor(infoX + 10, infoY + 120);
-    display.print("IP:   ");
-    display.setTextColor(COLOR_WHITE);
-    display.println(ip.toString().c_str());
+    // Décorations sparkles
+    drawSparkle(margin + 12, animZoneY + 12, COLOR_YELLOW);
+    drawSparkle(ST7789_WIDTH - margin - 12, animZoneY + 12, COLOR_ORANGE);
+    drawSparkle(margin + 12, animZoneY + animZoneH - 12, COLOR_CYAN);
+    drawSparkle(ST7789_WIDTH - margin - 12, animZoneY + animZoneH - 12, COLOR_GREEN);
 
-    // Panneau mini-animation (réduit)
-    display.fillRoundRect(animPanelX, animPanelY, animPanelW, animPanelH, 12, panelDark);
-    display.drawRoundRect(animPanelX, animPanelY, animPanelW, animPanelH, 12, COLOR_CYAN);
-    display.drawRoundRect(animPanelX + 2, animPanelY + 2, animPanelW - 4, animPanelH - 4, 10, COLOR_MAGENTA);
-
-    display.setTextColor(COLOR_YELLOW);
-    display.setCursor(animPanelX + 8, animPanelY + 6);
-    display.println("Mini show");
-
-    // Zone d'animation fortement réduite
-    const int animAreaX = animPanelX + 6;
-    const int animAreaY = animPanelY + 20;
-    const int animAreaW = animPanelW - 12;
-    const int animAreaH = animPanelH - 30; // réduit pour laisser place aux décors
+    // Viewport pour animation
+    const int animAreaX = margin + 6;
+    const int animAreaY = animZoneY + 20;
+    const int animAreaW = ST7789_WIDTH - 2*margin - 12;
+    const int animAreaH = animZoneH - 30;
 
     display.drawRoundRect(animAreaX, animAreaY, animAreaW, animAreaH, 8, COLOR_WHITE);
     display.drawRoundRect(animAreaX + 2, animAreaY + 2, animAreaW - 4, animAreaH - 4, 6, COLOR_CYAN);
 
-    // Décorations autour de la zone
-    drawSparkle(animAreaX + 4, animAreaY + 4, COLOR_YELLOW);
-    drawSparkle(animAreaX + animAreaW - 6, animAreaY + 4, COLOR_ORANGE);
-    drawSparkle(animAreaX + 4, animAreaY + animAreaH - 6, COLOR_CYAN);
-    drawSparkle(animAreaX + animAreaW - 6, animAreaY + animAreaH - 6, COLOR_GREEN);
-
-    // Mémoriser la nouvelle fenêtre d'animation pour les rafraîchissements
+    // Mémoriser viewport
     setAnimationViewport(animAreaX + 2, animAreaY + 2, animAreaW - 4, animAreaH - 4);
 
-    // Affichage visuel de l'animation dans la zone réduite
+    // Affichage animation
     updateAnimationVisual(animationName, matrixAnimationName != nullptr);
 
     display.setTextWrap(true);
@@ -566,11 +583,11 @@ void displayBootScreen(const char* projectName, const char* projectVersion, int 
     // Rien
 }
 
-void displayMainScreen(const char* ssid, IPAddress ip, const char* modeName, const char* animationName, const char* matrixAnimationName) {
+void displayMainScreen(const char* ssid, IPAddress ip, const char* modeName, const char* animationName, const char* matrixAnimationName, const char* mDnsName) {
     // Rien
 }
 
-void updateAnimationVisual(const char* animationName) {
+void updateAnimationVisual(const char* animationName, bool hasMatrix) {
     // Rien
 }
 

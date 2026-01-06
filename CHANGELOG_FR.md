@@ -25,6 +25,43 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/spec/v2
 ## SEMVER
 - Classification : PATCH (en attente de publication)
 
+# [5.1.0] - 2026-01-06
+
+## ✨ Changements
+1. **Layout de l'écran animé réorganisé** : passage des **panneaux côte-à-côte à des zones empilées** (fullwidth) :
+   - **En-tête** : Inchangé (nom du projet + version dans banneau festif)
+   - **Cadre Infos (fullwidth)** : Mode, SSID WiFi (troncable à 20 chars si nécessaire), IP et nom mDNS
+   - **Zone Animation (fullwidth)** : Viewport d'animation plus grand avec meilleur ratio d'aspect
+
+2. **Logique de troncature du SSID** : Le SSID se tronque automatiquement à maximum 20 caractères avec suffixe "..." en cas de débordement, prévenant le dépassement de texte.
+
+3. **Affichage mDNS** :
+   - `displayScreenByMode()` et `displayMainScreen()` acceptent désormais le paramètre optionnel `mDnsName`
+   - L'écran animé affiche le nom mDNS (ex: "garland.local") dans le cadre d'infos
+   - Tous les appels de display mis à jour dans main.cpp, web_interface.cpp, telegram_control.cpp
+
+4. **Lisibilité améliorée** :
+   - Le cadre infos mesure 70px de hauteur avec 5 lignes de données au lieu du crampage du panneau latéral
+   - La zone animation dispose de plus d'espace vertical pour un meilleur retour visuel
+   - Meilleur contraste des couleurs et espacement des éléments
+
+## 🔧 Technique
+- Signature `displayMainScreen()` mise à jour : ajout du paramètre `const char* mDnsName = nullptr`
+- Signature `displayScreenByMode()` mise à jour : ajout du paramètre `const char* mDnsName = nullptr`
+- Fonction helper `truncateText()` ajoutée pour gérer le débordement SSID/libellés animation
+- Tous les appels de display transmettent `String(getDeviceName()) + ".local"` en tant que mDNS
+- Le mode statique inchangé (affiche mDNS depuis `displayScreenByMode`)
+
+## 📚 Documentation
+1. README.md / README_FR.md mis à jour en 5.1.0 avec description du nouveau layout
+2. docs/USER_GUIDE.md / docs/USER_GUIDE_FR.md mis à jour pour les zones fullwidth empilées
+3. Ajout des notes de version : docs/RELEASE_v5.1.0.md et docs/RELEASE_v5.1.0_FR.md
+
+### Classification de version
+
+**SEMVER** : 5.1.0 (MINEUR)
+- **Justification** : Réorganisation du layout et amélioration du l'affichage info réseau (ajout mDNS) qui corrigent le débordement SSID et améliorent l'utilisabilité. Paramètres rétro-compatibles (mDnsName optionnel).
+
 # [5.0.0] - 2026-01-06
 
 ## ✨ Changements

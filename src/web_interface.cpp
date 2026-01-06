@@ -46,7 +46,8 @@ void handleSetAnimation() {
         int animId = server.arg("id").toInt();
         if (animId >= 0 && animId < ANIM_COUNT) {
             setGarlandAnimation((GarlandAnimation)animId);
-            displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName());
+            String mDnsStr = String(getDeviceName()) + ".local";
+            displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName(), mDnsStr.c_str());
             server.send(200, "text/plain", "Animation changée");
         } else {
             server.send(400, "text/plain", "ID animation invalide");
@@ -61,7 +62,8 @@ void handleSetMode() {
         int modeId = server.arg("id").toInt();
         if (modeId >= 0 && modeId < MODE_COUNT) {
             setGarlandMode((GarlandMode)modeId);
-            displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName());
+            String mDnsStr = String(getDeviceName()) + ".local";
+            displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName(), mDnsStr.c_str());
             server.send(200, "text/plain", "Mode changé");
         } else {
             server.send(400, "text/plain", "ID mode invalide");
@@ -348,6 +350,7 @@ void handleSetDisplayMode() {
     }
     setDisplayMode((DisplayMode)mode);
     saveDisplayModeToNVS();
-    displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName());
+    String mDnsStr = String(getDeviceName()) + ".local";
+    displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName(), mDnsStr.c_str());
     server.send(200, "text/plain", "Mode d'affichage mis à jour");
 }

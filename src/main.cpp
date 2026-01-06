@@ -66,7 +66,8 @@ void handleBtn1Click() {
     LOG_PRINTF(">> Bouton 1 : Animation changée -> %s\n", getGarlandAnimationName());
 
     #ifdef HAS_ST7789
-        displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName());
+        String mDnsStr = String(getDeviceName()) + ".local";
+        displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName(), mDnsStr.c_str());
     #endif
 }
 
@@ -76,7 +77,8 @@ void handleBtn2Click() {
     LOG_PRINTF(">> Bouton 2 : Mode changé -> %s\n", getGarlandModeName());
 
     #ifdef HAS_ST7789
-        displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName());
+        String mDnsStr = String(getDeviceName()) + ".local";
+        displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName(), mDnsStr.c_str());
     #endif
 }
 
@@ -115,7 +117,8 @@ void setupWifi() {
         LOG_PRINT("IP: "); LOG_PRINTLN(WiFi.localIP());
 
         // Affichage de l'écran principal avec toutes les infos
-        displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName());
+        String mDnsStr = String(getDeviceName()) + ".local";
+        displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName(), mDnsStr.c_str());
 
         delay(2000); // Pause pour laisser voir l'écran
     } else {

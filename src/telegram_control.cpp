@@ -16,6 +16,7 @@
 #include "config.h"
 #include "secrets.h"
 #include "garland_control.h"
+#include "matrix8x8_control.h"
 #include "display.h"
 
 static WiFiClientSecure telegramClient;
@@ -158,7 +159,8 @@ static void applyAnimationCommand(const String& arg) {
     GarlandAnimation anim;
     if (tryParseAnimation(arg, anim)) {
         setGarlandAnimation(anim);
-        displayMainScreen(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName());
+        String mDnsStr = String(getDeviceName()) + ".local";
+        displayMainScreen(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName(), mDnsStr.c_str());
         sendTelegramMessage(String("Animation -> ") + getGarlandAnimationName());
     } else {
         sendTelegramMessage("Animation inconnue. Exemple: /anim 3 ou /anim auto");
@@ -169,7 +171,8 @@ static void applyModeCommand(const String& arg) {
     GarlandMode mode;
     if (tryParseMode(arg, mode)) {
         setGarlandMode(mode);
-        displayMainScreen(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName());
+        String mDnsStr = String(getDeviceName()) + ".local";
+        displayMainScreen(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName(), mDnsStr.c_str());
         sendTelegramMessage(String("Mode -> ") + getGarlandModeName());
     } else {
         sendTelegramMessage("Mode inconnu. Exemple: /mode 1 ou /mode detect");
@@ -209,14 +212,16 @@ static void processCommand(const String& text) {
 
     if (lower.startsWith("/nextanim")) {
         nextGarlandAnimation();
-        displayMainScreen(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName());
+        String mDnsStr = String(getDeviceName()) + ".local";
+        displayMainScreen(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName(), mDnsStr.c_str());
         sendTelegramMessage(String("Animation -> ") + getGarlandAnimationName());
         return;
     }
 
     if (lower.startsWith("/nextmode")) {
         nextGarlandMode();
-        displayMainScreen(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName());
+        String mDnsStr = String(getDeviceName()) + ".local";
+        displayMainScreen(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName(), mDnsStr.c_str());
         sendTelegramMessage(String("Mode -> ") + getGarlandModeName());
         return;
     }

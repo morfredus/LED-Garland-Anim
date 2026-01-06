@@ -25,6 +25,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## SEMVER
 - Classification: PATCH (pending release)
 
+# [5.1.0] - 2026-01-06
+
+## ✨ Changed
+1. **Animated LCD layout reorganized** from split left/right panels to **full-width stacked zones**:
+   - **Header**: Unchanged (project name + version in festive banner)
+   - **Info Frame (fullwidth)**: Mode, WiFi SSID (truncated to 20 chars if needed), IP, and mDNS name
+   - **Animation Zone (fullwidth)**: Larger animation viewport with improved aspect ratio
+
+2. **SSID Truncation Logic**: SSID automatically truncates to max 20 characters with "..." suffix if overflow detected, preventing text spillage.
+
+3. **mDNS Display**:
+   - `displayScreenByMode()` and `displayMainScreen()` now accept optional `mDnsName` parameter
+   - Animated screen now displays mDNS name (e.g., "garland.local") in the info frame
+   - All display calls updated across main.cpp, web_interface.cpp, telegram_control.cpp
+
+4. **Improved Readability**:
+   - Info frame is now 70px tall with 5 lines of data instead of side-panel cramping
+   - Animation zone has more vertical space for better visual feedback
+   - Better color contrast and spacing between elements
+
+## 🔧 Technical
+- Updated `displayMainScreen()` signature: added `const char* mDnsName = nullptr` parameter
+- Updated `displayScreenByMode()` signature: added `const char* mDnsName = nullptr` parameter
+- Helper function `truncateText()` added to handle SSID/animation label overflow
+- All calls to display functions now pass `String(getDeviceName()) + ".local"` as mDNS
+- Static mode unchanged (still displays mDNS from `displayScreenByMode`)
+
+## 📚 Documentation
+1. README.md / README_FR.md bumped to 5.1.0 with new layout description
+2. docs/USER_GUIDE.md / docs/USER_GUIDE_FR.md updated to describe stacked fullwidth zones
+3. Added release notes: docs/RELEASE_v5.1.0.md and docs/RELEASE_v5.1.0_FR.md
+
+### Version Classification
+
+**SEMVER**: 5.1.0 (MINOR)
+- **Justification**: Layout reorganization and enhanced network info display (mDNS addition) improve usability and fix SSID overflow issues. Backward-compatible parameters (mDnsName optional).
+
 # [5.0.0] - 2026-01-06
 
 ## ✨ Changed

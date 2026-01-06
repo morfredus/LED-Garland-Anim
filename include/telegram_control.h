@@ -10,6 +10,7 @@
 
 #include <Arduino.h>
 #include <WiFi.h>
+#include "matrix8x8_control.h"
 
 /**
  * @brief Initialise le client Telegram (TLS)
