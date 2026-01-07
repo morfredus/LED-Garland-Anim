@@ -11,14 +11,15 @@
  */
 
 #include <Arduino.h>
-#include <U8g2lib.h>
-#include <Wire.h>
 #include "display.h"
 #include "config.h"
 #include "board_config.h"
 #include "garland_control.h"
 
 #ifdef HAS_OLED_U8G2
+
+#include <U8g2lib.h>
+#include <Wire.h>
 
 // Initialisation OLED 0.42" (72x40) via I2C matériel
 // Pour HW_I2C, ne PAS passer SCL/SDA au constructeur, juste rotation et reset
