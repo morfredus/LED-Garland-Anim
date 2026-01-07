@@ -1,4 +1,4 @@
-# 🛒 Hardware Guide - LED-Garland-Anim v5.1.2
+# 🛒 Hardware Guide - LED-Garland-Anim v5.2.0
 
 Complete shopping list and component specifications for building the LED-Garland-Anim project.
 
@@ -6,7 +6,7 @@ Complete shopping list and component specifications for building the LED-Garland
 
 ## 📋 Complete Component List
 
-### Essential Components
+### Essential Components - ESP32 Classic (IdeaSpark/DevKitC)
 
 | Component | Quantity | Estimated Cost | Notes |
 |-----------|----------|----------------|-------|
@@ -22,11 +22,27 @@ Complete shopping list and component specifications for building the LED-Garland
 
 **Total Estimated Cost**: $40-75 USD
 
+### Essential Components - ESP32-C3 HW-675 (NEW in v5.2.0)
+
+| Component | Quantity | Estimated Cost | Notes |
+|-----------|----------|----------------|-------|
+| **ESP32-C3-DevKitM-1 with HW-675 OLED** | 1 | $10-15 | Integrated OLED 0.42" (72×40) |
+| TB6612FNG Module | 1 | $2-5 | Dual H-bridge motor driver |
+| 2-wire LED Garland | 1 | $5-10 | Anti-parallel LEDs (~50 LEDs) |
+| WS2812B 8x8 Matrix | 1 | $8-12 | 64 addressable RGB LEDs |
+| 5V Power Supply | 1 | $8-15 | 2A minimum, 3-5A recommended |
+| Breadboard 830 points | 1 | $3-5 | For prototyping |
+| Jumper Wires (M-M, M-F) | 1 set | $3-5 | 40pcs minimum |
+| USB-C Cable | 1 | $2-5 | For ESP32-C3 |
+
+**Total Estimated Cost**: $40-70 USD
+
 ### Optional Components
 
 | Component | Quantity | Cost | Purpose |
 |-----------|----------|------|---------|
 | RCWL-0516 Radar | 1 | $2-3 | Alternative to PIR (faster, more sensitive) |
+| PIR HC-SR501 | 1 | $2-4 | Motion detection (ESP32-C3 optional) |
 | ST7789 Display 1.14" | 1 | $5-8 | Built-in on IdeaSpark, optional for DevKitC |
 | DC Barrel Jack Adapter | 1 | $2-3 | For cleaner power connection |
 | Capacitor 1000µF 16V | 1-2 | $1-2 | Power supply smoothing |
@@ -40,14 +56,22 @@ Complete shopping list and component specifications for building the LED-Garland
 
 **Recommended Models:**
 
-#### ESP32 IdeaSpark ⭐ (Recommended)
+#### ESP32 IdeaSpark ⭐ (Recommended for Classic)
 - **Features**: Built-in ST7789 1.14" LCD, USB-C, 4MB Flash
 - **Advantages**: No external display needed, modern connector
 - **Where to buy**: 
   - AliExpress: Search "ESP32 IdeaSpark ST7789"
   - Price: ~$12-15
 
-#### ESP32 DevKitC (Alternative)
+#### ESP32-C3-DevKitM-1 with HW-675 OLED ⭐⭐ (NEW in v5.2.0)
+- **Features**: RISC-V architecture, integrated OLED 0.42" (72×40 px), USB-C, 4MB Flash
+- **Advantages**: Compact, low power, built-in OLED display, no external display needed
+- **Where to buy**:
+  - AliExpress: Search "ESP32-C3 HW-675 OLED"
+  - Price: ~$10-15
+- **Display**: SSD1306 OLED 72×40 pixels via I2C (SDA=GPIO5, SCL=GPIO6)
+
+#### ESP32 DevKitC (Alternative Classic)
 - **Features**: Standard 38-pin board, 4MB Flash, micro-USB
 - **Advantages**: Widely available, well-documented
 - **Where to buy**:
@@ -56,10 +80,11 @@ Complete shopping list and component specifications for building the LED-Garland
   - Adafruit: Product ID 3269
 - **Price**: ~$8-12
 
-**Important**: Must be ESP32 "Classic" (Xtensa dual-core), NOT:
-- ❌ ESP32-S2 (single core, different pinout)
-- ❌ ESP32-S3 (different architecture)
-- ❌ ESP32-C3 (RISC-V, incompatible)
+**Important**: 
+- **ESP32 Classic** must be ESP32 "Classic" (Xtensa dual-core), NOT:
+  - ❌ ESP32-S2 (single core, different pinout)
+  - ❌ ESP32-S3 (different architecture)
+- **ESP32-C3** is supported in v5.2.0+ with specific environment `esp32c3_hw675`
 
 ### 2. TB6612FNG Motor Driver Module
 

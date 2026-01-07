@@ -9,6 +9,75 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 # [Unreleased]
 
+# [5.2.0] - 2026-01-07
+
+## 🎯 ESP32-C3 HW-675 Support with OLED Display
+
+This release adds full support for the **ESP32-C3 HW-675** board with integrated **OLED 0.42" (72×40 px)** display, expanding hardware compatibility while maintaining 100% backward compatibility with existing ESP32 Classic builds.
+
+## ✨ Added
+
+### New Hardware Platform
+- **ESP32-C3 HW-675 environment** (`esp32c3_hw675` in platformio.ini)
+  - RISC-V architecture support
+  - U8g2 library integration @ ^2.35.19
+  - USB CDC Serial with proper initialization delays
+  - OLED I2C communication (GPIO5/GPIO6)
+
+### Display Module
+- **`src/display_oled.cpp`**: Complete OLED implementation
+  - U8G2_SSD1306_72X40_ER_F_HW_I2C driver
+  - Simplified display: IP address + current mode only
+  - I2C bus scanner for hardware diagnostics
+  - Optimized for 72×40 pixel resolution
+
+### Hardware Configuration
+- **Board config dispatcher** in `include/board_config.h`
+  - Automatic pin mapping selection based on target board
+  - ESP32-C3 HW-675 pin definitions:
+    - I2C: SDA=GPIO5, SCL=GPIO6
+    - OLED: 0x3C address, 72×40 resolution
+    - Button: GPIO9 (BOOT) for mode cycling + long-press reboot
+    - NeoPixel Matrix: GPIO8 (WS2812B)
+    - Garland control: Standard TB6612FNG mapping
+
+### Features
+- **BOOT button functionality** (ESP32-C3):
+  - Single click: Cycle through 3 modes (Motion Detection, Motion+Matrix Independent, Permanent)
+  - Long press (1s): System reboot
+- **Simplified OLED display**: IP + Mode (optimized for small screen)
+- **Full Web UI support**: 100% feature parity with ESP32 Classic
+- **I2C diagnostics**: Automatic device detection on startup
+
+## 🔧 Modified
+- **`platformio.ini`**: Added `[env:esp32c3_hw675]` environment
+- **`include/config.h`**: Conditional `HAS_ST7789` based on target board
+- **`src/display.cpp`**: Fixed stub conditions to prevent linker conflicts
+- **`src/main.cpp`**: ESP32-C3 specific Serial USB CDC initialization with delays
+
+## 📚 Documentation
+- **Complete pin mapping table** for ESP32-C3 HW-675 (EN/FR)
+- **Hardware guide** updated with ESP32-C3 specifications
+- **Quickstart guide** with `esp32c3_hw675` build instructions
+- **Architecture documentation** for display_oled.cpp module
+
+## ⚙️ Technical Details
+- **Flash usage**: 70.7% (926KB / 1310KB)
+- **RAM usage**: 13.7% (45KB / 327KB)
+- **Build flags**: `TARGET_ESP32C3_HW675`, `HAS_OLED_U8G2`, `ARDUINO_USB_MODE=1`, `ARDUINO_USB_CDC_ON_BOOT=1`
+- **Compatibility**: ESP32 Classic (esp32devkitc) builds unchanged and validated
+
+## 🎓 Validated Hardware
+- ESP32-C3-DevKitM-1 with HW-675 OLED module
+- OLED SSD1306 72×40 via I2C (address 0x3C)
+- U8g2 constructor: `U8G2_SSD1306_72X40_ER_F_HW_I2C(U8G2_R0, U8X8_PIN_NONE)`
+- Working test code documented in RELEASE_v5.2.0.md
+
+### Version Classification
+**SEMVER**: 5.2.0 (MINOR) – New hardware platform support with backward compatibility
+
+---
+
 # [5.1.5] - 2026-01-07
 
 ## 📦 Complete Consolidation with WiFi Template

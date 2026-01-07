@@ -1,8 +1,16 @@
 # LED-Garland-Anim
 
-**Version: 5.1.5** (2026-01-07)
+**Version: 5.2.0** (2026-01-07)
 
-Controller for bi-directional LED garland and 8x8 NeoPixel matrix animation on ESP32 Classic (IdeaSpark/DevKitC) with ST7789 display, auto-detection of PIR/RCWL-0516, **modern web interface with instant save**, responsive layout, flash-free AJAX updates, web-based OTA updates, **mDNS support for easy access via unique device name**, physical buttons, 11 garland animations, 39 festive matrix animations (Christmas, New Year, Easter, Campfire, Radar), dual independent control, smart modes, persistent configuration, automatic startup animations.
+Controller for bi-directional LED garland and 8x8 NeoPixel matrix animation on **ESP32 Classic** (IdeaSpark/DevKitC) with ST7789 display **and ESP32-C3 HW-675** with OLED 0.42" (72×40), auto-detection of PIR/RCWL-0516, **modern web interface with instant save**, responsive layout, flash-free AJAX updates, web-based OTA updates, **mDNS support for easy access via unique device name**, physical buttons, 11 garland animations, 39 festive matrix animations (Christmas, New Year, Easter, Campfire, Radar), dual independent control, smart modes, persistent configuration, automatic startup animations.
+
+## ✨ What's New in v5.2.0
+
+1. **ESP32-C3 HW-675 support (MINOR)** - New hardware platform with OLED 0.42" (72×40 px) display
+2. **OLED display module** - Simplified IP + Mode display optimized for small screen
+3. **BOOT button functionality** - Mode cycling (click) and system reboot (long-press)
+4. **I2C diagnostics** - Automatic device detection on startup
+5. **Multi-board compatibility** - Seamless support for ESP32 Classic and ESP32-C3 architectures
 
 ## ✨ What's New in v5.1.0
 
@@ -71,6 +79,7 @@ Controller for bi-directional LED garland and 8x8 NeoPixel matrix animation on E
 
 ## 1. Required Hardware
 
+### ESP32 Classic (IdeaSpark/DevKitC)
 - **ESP32 Classic board (IdeaSpark/DevKitC)**
 - **TB6612FNG dual H-bridge driver**
 - **2-wire LED garland** (anti-parallel LEDs, ~50 LEDs)
@@ -79,7 +88,17 @@ Controller for bi-directional LED garland and 8x8 NeoPixel matrix animation on E
 - **TFT ST7789 display** (optional, built-in on IdeaSpark)
 - **Suitable power supply** for the garland and matrix (5V recommended for NeoPixels)
 
+### ESP32-C3 HW-675 (NEW in v5.2.0)
+- **ESP32-C3-DevKitM-1 with HW-675 OLED module**
+- **TB6612FNG dual H-bridge driver**
+- **2-wire LED garland** (anti-parallel LEDs, ~50 LEDs)
+- **8x8 NeoPixel Matrix WS2812B-64** (64 addressable RGB LEDs)
+- **OLED 0.42" (72×40 px)** - Integrated on HW-675 board via I2C
+- **Motion sensor**: PIR HC-SR501 or RCWL-0516 (auto-detected) *(optional)*
+- **Suitable power supply** for the garland and matrix (5V recommended for NeoPixels)
+
 ### Main pinout summary (ESP32 Classic)
+```
 TB6612FNG (Garland):
   PWMA  → GPIO 13
   AIN1  → GPIO 26
@@ -96,6 +115,24 @@ LCD_RST  → GPIO 33
 LCD_BLK  → GPIO 32
 BTN1     → GPIO 16
 BTN2     → GPIO 17
+```
+
+### Main pinout summary (ESP32-C3 HW-675)
+```
+TB6612FNG (Garland):
+  PWMA  → GPIO 0
+  AIN1  → GPIO 1
+  AIN2  → GPIO 2
+  STBY  → GPIO 3
+8x8 NeoPixel Matrix:
+  DATA  → GPIO 8
+OLED I2C:
+  SDA   → GPIO 5
+  SCL   → GPIO 6
+  ADDR  → 0x3C
+BUTTON BOOT (Mode) → GPIO 9
+MOTION_SENSOR_PIN  → GPIO 10 (optional)
+```
 
 ---
 
@@ -147,13 +184,21 @@ BTN2     → GPIO 17
    cd LED-Garland-Anim
    ```
 2. Configure `include/secrets.h` (WiFi)
-3. In `platformio.ini`, use only:
-   - `esp32devkitc`: ESP32 Classic (4MB Flash)
+3. In `platformio.ini`, choose your environment:
+   - `esp32devkitc`: ESP32 Classic (4MB Flash, ST7789 LCD)
+   - `esp32c3_hw675`: ESP32-C3 HW-675 (OLED 72×40, I2C GPIO5/6)
 4. Wire the components as shown above
 5. Build and upload
    ```bash
+   # For ESP32 Classic:
    pio run -e esp32devkitc
    pio run -e esp32devkitc -t upload
+   
+   # For ESP32-C3 HW-675:
+   pio run -e esp32c3_hw675
+   pio run -e esp32c3_hw675 -t upload
+   
+   # Monitor serial output:
    pio device monitor
    ```
 

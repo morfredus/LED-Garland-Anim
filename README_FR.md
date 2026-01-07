@@ -27,9 +27,17 @@ Vous pouvez choisir la méthode de téléversement (USB ou OTA) à chaque upload
 ---
 # LED-Garland-Anim
 
-**Version : 5.1.5** (2026-01-07)
+**Version : 5.2.0** (2026-01-07)
 
-Contrôleur d'animation de guirlande LED bi-directionnelle et matrice NeoPixel 8x8 pour ESP32 Classic (IdeaSpark/DevKitC) avec écran ST7789, auto-détection PIR/RCWL-0516, **interface web modernisée avec sauvegarde instantanée**, layout responsive, mises à jour AJAX sans flash, **support mDNS pour un accès facile via nom unique**, boutons physiques, 11 animations de guirlande, 39 animations festives pour matrice (Noël, Nouvel An, Pâques, Feu de Camp, Radar), contrôle double indépendant, modes intelligents, configuration persistante, animations de démarrage automatiques.
+Contrôleur d'animation de guirlande LED bi-directionnelle et matrice NeoPixel 8x8 pour **ESP32 Classic** (IdeaSpark/DevKitC) avec écran ST7789 **et ESP32-C3 HW-675** avec OLED 0.42" (72×40), auto-détection PIR/RCWL-0516, **interface web modernisée avec sauvegarde instantanée**, layout responsive, mises à jour AJAX sans flash, mises à jour OTA via web, **support mDNS pour un accès facile via nom unique**, boutons physiques, 11 animations de guirlande, 39 animations festives pour matrice (Noël, Nouvel An, Pâques, Feu de Camp, Radar), contrôle double indépendant, modes intelligents, configuration persistante, animations de démarrage automatiques.
+
+## ✨ Nouveautés v5.2.0
+
+1. **Support ESP32-C3 HW-675 (MINEUR)** - Nouvelle plateforme matérielle avec écran OLED 0.42" (72×40 px)
+2. **Module d'affichage OLED** - Affichage simplifié IP + Mode optimisé pour petit écran
+3. **Fonctionnalité bouton BOOT** - Changement de mode (clic) et redémarrage système (appui long)
+4. **Diagnostics I2C** - Détection automatique des périphériques au démarrage
+5. **Compatibilité multi-cartes** - Support transparent des architectures ESP32 Classic et ESP32-C3
 
 ## ✨ Nouveautés v5.1.0
 
@@ -98,6 +106,7 @@ Contrôleur d'animation de guirlande LED bi-directionnelle et matrice NeoPixel 8
 
 ## 1. Matériel requis
 
+### ESP32 Classic (IdeaSpark/DevKitC)
 - **Carte ESP32 Classic (IdeaSpark/DevKitC)**
 - **Module TB6612FNG** (double pont H)
 - **Guirlande LED 2 fils** (LEDs en anti-parallèle, ~50 LEDs)
@@ -106,7 +115,17 @@ Contrôleur d'animation de guirlande LED bi-directionnelle et matrice NeoPixel 8
 - **Écran TFT ST7789** (optionnel, intégré sur IdeaSpark)
 - **Alimentation adaptée** pour la guirlande et la matrice (5V recommandé pour NeoPixels)
 
+### ESP32-C3 HW-675 (NOUVEAU en v5.2.0)
+- **ESP32-C3-DevKitM-1 avec module OLED HW-675**
+- **Module TB6612FNG** (double pont H)
+- **Guirlande LED 2 fils** (LEDs en anti-parallèle, ~50 LEDs)
+- **Matrice NeoPixel 8x8 WS2812B-64** (64 LEDs RGB adressables)
+- **Écran OLED 0.42" (72×40 px)** - Intégré sur carte HW-675 via I2C
+- **Capteur de mouvement** : PIR HC-SR501 ou RCWL-0516 (auto-détection) *(optionnel)*
+- **Alimentation adaptée** pour la guirlande et la matrice (5V recommandé pour NeoPixels)
+
 ### Schéma des pins principaux (ESP32 Classic)
+```
 TB6612FNG (Guirlande) :
   PWMA  → GPIO 13
   AIN1  → GPIO 26
@@ -123,6 +142,24 @@ LCD_RST  → GPIO 33
 LCD_BLK  → GPIO 32
 BTN1     → GPIO 16
 BTN2     → GPIO 17
+```
+
+### Schéma des pins principaux (ESP32-C3 HW-675)
+```
+TB6612FNG (Guirlande) :
+  PWMA  → GPIO 0
+  AIN1  → GPIO 1
+  AIN2  → GPIO 2
+  STBY  → GPIO 3
+Matrice NeoPixel 8x8 :
+  DATA  → GPIO 8
+OLED I2C :
+  SDA   → GPIO 5
+  SCL   → GPIO 6
+  ADDR  → 0x3C
+BOUTON BOOT (Mode) → GPIO 9
+MOTION_SENSOR_PIN  → GPIO 10 (optionnel)
+```
 
 ---
 
@@ -174,13 +211,21 @@ BTN2     → GPIO 17
   cd LED-Garland-Anim
   ```
 2. Configurer `include/secrets.h` (WiFi)
-3. Dans `platformio.ini`, utiliser uniquement :
-  - `esp32devkitc`: ESP32 Classic (4MB Flash)
+3. Dans `platformio.ini`, choisir votre environnement :
+  - `esp32devkitc`: ESP32 Classic (4MB Flash, écran ST7789 LCD)
+  - `esp32c3_hw675`: ESP32-C3 HW-675 (OLED 72×40, I2C GPIO5/6)
 4. Câbler les composants selon le schéma ci-dessus
 5. Compiler et téléverser
   ```bash
+  # Pour ESP32 Classic :
   pio run -e esp32devkitc
   pio run -e esp32devkitc -t upload
+  
+  # Pour ESP32-C3 HW-675 :
+  pio run -e esp32c3_hw675
+  pio run -e esp32c3_hw675 -t upload
+  
+  # Moniteur série :
   pio device monitor
   ```
 

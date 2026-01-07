@@ -9,6 +9,75 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/spec/v2
 
 # [Non publié]
 
+# [5.2.0] - 2026-01-07
+
+## 🎯 Support ESP32-C3 HW-675 avec écran OLED
+
+Cette version ajoute le support complet de la carte **ESP32-C3 HW-675** avec écran **OLED 0.42" (72×40 px)** intégré, élargissant la compatibilité matérielle tout en maintenant une compatibilité ascendante à 100% avec les builds ESP32 Classic existants.
+
+## ✨ Ajouts
+
+### Nouvelle plateforme matérielle
+- **Environnement ESP32-C3 HW-675** (`esp32c3_hw675` dans platformio.ini)
+  - Support architecture RISC-V
+  - Intégration bibliothèque U8g2 @ ^2.35.19
+  - Serial USB CDC avec délais d'initialisation appropriés
+  - Communication I2C OLED (GPIO5/GPIO6)
+
+### Module d'affichage
+- **`src/display_oled.cpp`**: Implémentation OLED complète
+  - Driver U8G2_SSD1306_72X40_ER_F_HW_I2C
+  - Affichage simplifié: adresse IP + mode actuel uniquement
+  - Scanner bus I2C pour diagnostic matériel
+  - Optimisé pour résolution 72×40 pixels
+
+### Configuration matérielle
+- **Dispatcher config carte** dans `include/board_config.h`
+  - Sélection automatique mapping pins selon carte cible
+  - Définitions pins ESP32-C3 HW-675:
+    - I2C: SDA=GPIO5, SCL=GPIO6
+    - OLED: adresse 0x3C, résolution 72×40
+    - Bouton: GPIO9 (BOOT) pour changement mode + appui long reboot
+    - Matrice NeoPixel: GPIO8 (WS2812B)
+    - Contrôle guirlande: Mapping TB6612FNG standard
+
+### Fonctionnalités
+- **Fonctionnalité bouton BOOT** (ESP32-C3):
+  - Clic simple: Cycle entre 3 modes (Détection Mouvement, Mouvement+Matrice Indépendante, Permanent)
+  - Appui long (1s): Redémarrage système
+- **Affichage OLED simplifié**: IP + Mode (optimisé pour petit écran)
+- **Support interface Web complet**: Parité fonctionnelle à 100% avec ESP32 Classic
+- **Diagnostics I2C**: Détection automatique périphériques au démarrage
+
+## 🔧 Modifications
+- **`platformio.ini`**: Ajout environnement `[env:esp32c3_hw675]`
+- **`include/config.h`**: `HAS_ST7789` conditionnel selon carte cible
+- **`src/display.cpp`**: Correction conditions stub pour prévenir conflits linkeur
+- **`src/main.cpp`**: Initialisation Serial USB CDC spécifique ESP32-C3 avec délais
+
+## 📚 Documentation
+- **Tableau mapping pins complet** pour ESP32-C3 HW-675 (EN/FR)
+- **Guide matériel** mis à jour avec spécifications ESP32-C3
+- **Guide quickstart** avec instructions build `esp32c3_hw675`
+- **Documentation architecture** pour module display_oled.cpp
+
+## ⚙️ Détails techniques
+- **Usage Flash**: 70.7% (926KB / 1310KB)
+- **Usage RAM**: 13.7% (45KB / 327KB)
+- **Build flags**: `TARGET_ESP32C3_HW675`, `HAS_OLED_U8G2`, `ARDUINO_USB_MODE=1`, `ARDUINO_USB_CDC_ON_BOOT=1`
+- **Compatibilité**: Builds ESP32 Classic (esp32devkitc) inchangés et validés
+
+## 🎓 Matériel validé
+- ESP32-C3-DevKitM-1 avec module OLED HW-675
+- OLED SSD1306 72×40 via I2C (adresse 0x3C)
+- Constructeur U8g2: `U8G2_SSD1306_72X40_ER_F_HW_I2C(U8G2_R0, U8X8_PIN_NONE)`
+- Code de test validé documenté dans RELEASE_v5.2.0_FR.md
+
+### Classification version
+**SEMVER**: 5.2.0 (MINOR) – Nouveau support plateforme matérielle avec compatibilité ascendante
+
+---
+
 # [5.1.5] - 2026-01-07
 
 ## 📦 Consolidation complète avec template WiFi

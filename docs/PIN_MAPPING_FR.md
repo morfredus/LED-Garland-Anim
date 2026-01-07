@@ -1,17 +1,16 @@
-# Guide de Connexion des Pins - LED-Garland-Anim v5.1.5
+# Guide de Connexion des Pins - LED-Garland-Anim v5.2.0
 
-> 📌 **Guide débutant** : Ce document explique comment connecter physiquement les composants à votre carte ESP32 IdeaSpark pour le projet LED-Garland-Anim.
+> 📌 **Guide débutant** : Ce document explique comment connecter physiquement les composants à votre carte ESP32 pour le projet LED-Garland-Anim.
 
 ## 🎯 Table des matières
-- [Carte ESP32 IdeaSpark](#carte-esp32-ideaspark)
+- [Carte ESP32 IdeaSpark (Classic)](#carte-esp32-ideaspark-classic)
+- [Carte ESP32-C3 HW-675 (NOUVEAU en v5.2.0)](#carte-esp32-c3-hw-675-nouveau-en-v520)
 - [Schémas de connexion détaillés](#schémas-de-connexion-détaillés)
-- [Module TB6612FNG](#module-tb6612fng-contrôleur-de-guirlande)
-- [Matrice NeoPixel 8x8](#matrice-neopixel-8x8)
 - [Conseils pour débutants](#conseils-pour-débutants)
 
 ---
 
-## Carte ESP32 IdeaSpark
+## Carte ESP32 IdeaSpark (Classic)
 
 ### 📋 Tableau récapitulatif des pins
 
@@ -35,6 +34,45 @@
 | **TB6612_STBY**   | STBY       | GPIO 14  | Standby                    | Activation module (HIGH)    |
 | **MATRIX8X8**     | DIN        | GPIO 27  | WS2812B Data               | Pin dédié pour la matrice  |
 | **MOTION_SENSOR_PIN** | OUT        | GPIO 35  | Capteur de mouvement (PIR ou RCWL-0516, auto-détecté) | Voir docs pour détails |
+
+---
+
+## Carte ESP32-C3 HW-675 (NOUVEAU en v5.2.0)
+
+### 📋 Tableau de Mapping Complet des Pins
+
+| Pin    | GPIO   | Fonctions Analogiques     | Fonctions Numériques     | Usage (HW-675)               |
+|--------|--------|---------------------------|--------------------------|------------------------------|
+| GND    | --     | Masse                     | --                       | Masse Commune                |
+| 3V3    | --     | Sortie 3.3V (Régulateur)  | --                       | Alimentation Capteurs        |
+| 5V     | --     | Entrée/Sortie (VBUS)      | --                       | Alimentation USB             |
+| G9     | GPIO 9 | Boot Strapping Pin        | Entrée Digitale          | **BOUTON BOOT** (Pull-up)    |
+| G10    | GPIO 10| --                        | FSPICS0 (SPI)            | **CAPTEUR_MOUVEMENT** (Optionnel) |
+| G4     | GPIO 4 | ADC1_CH4 / JTAG           | PWM / USB_JTAG           | LIBRE                        |
+| G3     | GPIO 3 | ADC1_CH3                  | PWM                      | **TB6612_STBY**              |
+| G2     | GPIO 2 | ADC1_CH2                  | PWM / FSPIQ (SPI)        | **TB6612_AIN2**              |
+| G1     | GPIO 1 | ADC1_CH1                  | PWM / FSPID (SPI)        | **TB6612_AIN1**              |
+| G0     | GPIO 0 | ADC1_CH0                  | PWM / FSPI_CLK           | **TB6612_PWMA**              |
+| G5     | GPIO 5 | ADC2_CH0                  | **I2C SDA**              | **ÉCRAN OLED (SDA)**         |
+| G6     | GPIO 6 | --                        | **I2C SCL**              | **ÉCRAN OLED (SCL)**         |
+| G7     | GPIO 7 | --                        | FSPID (SPI)              | LIBRE                        |
+| G8     | GPIO 8 | Strapping Pin (High)      | PWM                      | **MATRICE WS2812B (DATA)**   |
+| G21    | GPIO 21| --                        | UART TX                  | LIBRE (Debug Serial)         |
+| G20    | GPIO 20| --                        | UART RX                  | LIBRE (Debug Serial)         |
+
+### 🔌 ESP32-C3 HW-675 Attribution des Composants
+
+| Composant              | Pin GPIO | Description                          | Notes                    |
+|------------------------|----------|--------------------------------------|--------------------------|
+| **BUTTON_BOOT**        | GPIO 9   | Bouton intégré sur la carte          | Changement mode (clic), Reboot (appui long) |
+| **OLED SSD1306 (SDA)** | GPIO 5   | Données I2C                          | Écran 72×40 px           |
+| **OLED SSD1306 (SCL)** | GPIO 6   | Horloge I2C                          | Adresse: 0x3C            |
+| **TB6612_PWMA**        | GPIO 0   | PWM Sens A                           | Contrôle intensité       |
+| **TB6612_AIN1**        | GPIO 1   | Direction bit 1                      | Direction courant        |
+| **TB6612_AIN2**        | GPIO 2   | Direction bit 2                      | Direction courant        |
+| **TB6612_STBY**        | GPIO 3   | Standby                              | Activation module (HIGH) |
+| **MATRIX8X8**          | GPIO 8   | WS2812B Data                         | Matrice NeoPixel         |
+| **MOTION_SENSOR_PIN**  | GPIO 10  | Capteur de mouvement (optionnel)     | PIR ou RCWL-0516         |
 
 ### 🎨 Schéma de connexion LCD ST7789
 
