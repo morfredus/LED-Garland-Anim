@@ -3,6 +3,11 @@
  * @brief Implémentation de l'affichage OLED (U8g2 SSD1306 72x40) pour ESP32-C3 HW-675
  * @version 5.2.0
  * @date 2026-01-07
+ * 
+ * GESTION DES MODES D'AFFICHAGE:
+ * 1. DISPLAY_MODE_ANIMATED (0) - Affichage actif avec IP + Mode
+ * 2. DISPLAY_MODE_STATIC (1)   - Affichage actif avec IP + Mode (identique pour OLED)
+ * 3. DISPLAY_MODE_OFF (2)      - Écran complètement éteint (setPowerSave(1))
  */
 
 #include <Arduino.h>
@@ -124,9 +129,33 @@ void displayMainScreen(const char* ssid, IPAddress ip, const char* modeName, con
 }
 
 void displayScreenByMode(const char* ssid, IPAddress ip, const char* modeName, const char* animationName, const char* matrixAnimationName, const char* mDnsName) {
-    LOG_PRINTLN("[OLED] displayScreenByMode called");
-    // Simplification: toujours afficher l'écran principal pour OLED
-    displayMainScreen(ssid, ip, modeName, animationName, matrixAnimationName, mDnsName);
+    DisplayMode mode = getDisplayMode();
+    LOG_PRINTF("[OLED] displayScreenByMode called - mode=%d\n", (int)mode);
+    
+    switch (mode) {
+        case DISPLAY_MODE_ANIMATED:
+        case DISPLAY_MODE_STATIC:
+            // Pour OLED 72x40, les modes animé et statique sont identiques (pas assez d'espace pour animations)
+            LOG_PRINTLN("[OLED] Mode ANIMATED/STATIC - Activating display");
+            u8g2.setPowerSave(0);  // Rallumer l'OLED si éteint
+            displayMainScreen(ssid, ip, modeName, animationName, matrixAnimationName, mDnsName);
+            break;
+            
+        case DISPLAY_MODE_OFF:
+            // Éteindre complètement l'OLED
+            LOG_PRINTLN("[OLED] Mode OFF - Turning off display");
+            u8g2.clearBuffer();    // Effacer le buffer d'abord
+            u8g2.sendBuffer();     // Envoyer le buffer vide
+            u8g2.setPowerSave(1);  // Mettre en veille (éteint l'écran)
+            break;
+            
+        default:
+            LOG_PRINTLN("[OLED] Unknown display mode - defaulting to ON");
+            u8g2.setPowerSave(0);
+            displayMainScreen(ssid, ip, modeName, animationName, matrixAnimationName, mDnsName);
+            break;
+    }
+    
     LOG_PRINTLN("[OLED] displayScreenByMode done");
 }
 
