@@ -1,4 +1,4 @@
-# OTA Update Process - LED-Garland-Anim v5.1.4
+# OTA Update Process - LED-Garland-Anim v5.1.5
 
 This guide explains how to update the LED-Garland-Anim firmware over WiFi using two different methods.
 

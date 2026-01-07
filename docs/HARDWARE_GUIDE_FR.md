@@ -261,4 +261,4 @@ R : Non, les guirlandes 3 fils sont pré-programmées. Vous avez besoin de guirl
 
 ---
 
-**Version du document : v5.1.4 (2026-01-07)**
+**Version du document : v5.1.5 (2026-01-07)**

@@ -7,7 +7,7 @@ La configuration (mode, animation, intervalles) est stockée dans la NVS de l’
 - Si la NVS est vide ou corrompue, les valeurs par défaut sont utilisées puis sauvegardées.
 
 Ceci garantit la restauration automatique des réglages utilisateur après redémarrage ou coupure d’alimentation.
-# 📚 Architecture - LED-Garland-Anim v5.1.4
+# 📚 Architecture - LED-Garland-Anim v5.1.5
 
 ## 🎯 Vue d'ensemble
 

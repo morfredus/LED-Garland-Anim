@@ -9,6 +9,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 # [Unreleased]
 
+# [5.1.5] - 2026-01-07
+
+## 📦 Complete Consolidation with WiFi Template
+
+This release adds the missing `secrets_example.h` template file for user-friendly WiFi configuration, consolidating firmware improvements (v5.1.2) and documentation updates (v5.1.3, v5.1.4) into a single, comprehensive v5.1.5 package.
+
+## ✅ Added
+- **`include/secrets_example.h`**: Template configuration file for WiFi network setup
+  - Example structure for SSID and password entries
+  - Guidance for adding multiple networks
+  - Prevents accidental modification of git-ignored `secrets.h`
+  - Clear usage instructions for users
+
+## ✨ From v5.1.4 & v5.1.3 (Included in v5.1.5)
+- **New beginner guides**: QUICKSTART.md/FR, HARDWARE_GUIDE.md/FR
+- **Release notes**: RELEASE_v5.1.4.md/FR  
+- **Telegram module removal**: Deleted src/telegram_control.*, include/telegram_control.h
+- **Documentation cleanup**: 7 obsolete release notes deleted
+- **Version synchronization**: All docs updated to v5.1.4 (now v5.1.5)
+
+## 🔧 Technical
+- No runtime behavior changes; fully backward compatible
+- Build: 71.3% Flash, 15.5% RAM ✅
+- All firmware files at v5.1.5
+- All documentation (28+ files) at v5.1.5
+
+### Version Classification
+**SEMVER**: 5.1.5 (PATCH) – Consolidated release: v5.1.2 firmware + v5.1.3 docs + v5.1.5 config template
+
+---
+
 # [5.1.4] - 2026-01-07
 
 ## 📦 Complete & Consolidated Release

@@ -394,4 +394,4 @@ A: No, USB provides only 500mA-2A. The matrix alone can draw 3.8A at full bright
 
 ---
 
-**Document version: v5.1.4 (2026-01-07)**
+**Document version: v5.1.5 (2026-01-07)**
