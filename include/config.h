@@ -1,8 +1,8 @@
 /**
  * @file config.h
  * @brief Configuration globale du projet
- * @version 5.1.0
- * @date 2026-01-06
+ * @version 5.1.1
+ * @date 2026-01-07
  */
 
 #ifndef CONFIG_H

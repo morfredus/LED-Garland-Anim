@@ -3,21 +3,24 @@
 Le système utilise la NVS (mémoire non-volatile) de l’ESP32 pour sauvegarder et restaurer automatiquement les paramètres utilisateur :
 
 - **Mode** (permanent ou détection de mouvement)
-- **Animation en cours**
-- **Intervalle du mode auto**
-- **Durée d’animation sur détection**
+- **Animation en cours** (guirlande et matrice)
+- **Intervalle du mode auto** (guirlande)
+- **Intervalle du mode auto** (matrice, indépendant depuis v5.1.1)
+- **Durée d'animation sur détection**
+- **Luminosité matrice**
 
-**Fonctionnement :**
+**Fonctionnement :**
 - Au démarrage, la dernière configuration sauvegardée est chargée si elle existe, sinon les valeurs par défaut sont utilisées.
-- Toute modification via l’interface web ou les boutons est sauvegardée immédiatement.
-- Les réglages sont conservés même après redémarrage ou coupure d’alimentation.
+- Toute modification via l'interface web ou les boutons est sauvegardée immédiatement.
+- Les réglages sont conservés même après redémarrage ou coupure d'alimentation.
 
-**Aucune action requise de l’utilisateur** : la gestion est entièrement automatique.
-# Guide Utilisateur - LED-Garland-Anim v5.1.0
+**Aucune action requise de l'utilisateur** : la gestion est entièrement automatique.
+
+# Guide Utilisateur - LED-Garland-Anim v5.1.1
 
 Guide utilisateur complet pour le contrôleur d'animation de guirlande LED (ESP32 IdeaSpark + ST7789).
 
-**Version du document : v5.1.0 (2026-01-06)**
+**Version du document : v5.1.1 (2026-01-07)**
 
 - [Guide Utilisateur - LED-Garland-Anim v5.0.0](#guide-utilisateur---led-garland-anim-v500)
   - [🚦 Détection automatique du capteur de mouvement](#-détection-automatique-du-capteur-de-mouvement)
@@ -121,6 +124,16 @@ Exemple : `192.168.1.100`
 ## Animations
 - Éteint, Fade Alterné, Clignotement Alterné, Pulsation, Respiration, Strobe, Battement Cœur, Vague, Scintillement, Météore, Auto (enchaînement)
 
+### ⚠️ Important : Les modes AUTO guirlande et matrice sont indépendants (v5.1.1)
+Depuis la version 5.1.1, la **guirlande** et la **matrice** possèdent des **intervalles de mode AUTO séparés** :
+
+- **Mode AUTO guirlande** : Utilise le paramètre « Intervalle du mode auto » de l'interface web
+- **Mode AUTO matrice** : Utilise le paramètre « Intervalle d'animation matrice » de l'interface web
+- Les deux peuvent fonctionner simultanément avec des durées de cycle d'animation différentes
+- Chaque intervalle est sauvegardé indépendamment et restauré au redémarrage
+
+**Exemple :** La guirlande change d'animation toutes les 20 secondes tandis que la matrice change toutes les 45 secondes.
+
 ---
 
 ## Utilisation Quotidienne
@@ -134,4 +147,4 @@ Voir [TROUBLESHOOTING_FR.md](TROUBLESHOOTING_FR.md) pour l'aide.
 
 ---
 
-**Version du document : v5.0.0 (2026-01-06)**
+**Version du document : v5.1.1 (2026-01-07)**

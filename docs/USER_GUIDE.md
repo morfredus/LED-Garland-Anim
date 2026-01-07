@@ -1,8 +1,8 @@
-# User Guide - LED-Garland-Anim v5.1.0
+# User Guide - LED-Garland-Anim v5.1.1
 
 Complete user guide for the LED-Garland-Anim LED garland and 8x8 matrix animation controller (ESP32 IdeaSpark + ST7789).
 
-**Document version: v5.1.0 (2026-01-06)**
+**Document version: v5.1.1 (2026-01-07)**
 
 ---
 
@@ -169,6 +169,16 @@ The system offers 3 operating modes:
 - Default interval: 30 seconds per animation
 - Configurable: 5-300 seconds via web interface
 - Works in all operating modes
+
+### ⚠️ Important: Garland & Matrix Auto Modes Are Independent (v5.1.1)
+As of v5.1.1, the **garland** and **matrix** have **separate Auto mode intervals**:
+
+- **Garland Auto Mode**: Uses "Auto Mode Interval" setting in web interface
+- **Matrix Auto Mode**: Uses "Matrix Animation Interval" setting in web interface
+- Both can run simultaneously with different animation cycle durations
+- Each interval is saved independently and restored on restart
+
+**Example:** Garland cycles every 20 seconds while matrix cycles every 45 seconds.
 
 ---
 

@@ -9,21 +9,37 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/spec/v2
 
 # [Non publié]
 
+# [5.1.1] - 2026-01-07
+
 ## 🐛 Corrections
 
-**Persistance du mode d'affichage et gestion du rétroéclairage TFT**
-- Le mode d'affichage (Animé/Statique/Éteint) est de nouveau restauré depuis la NVS après redémarrage.
-- Le changement de mode d'affichage applique immédiatement l'état écran : rétroéclairage réactivé pour les modes actifs, coupé pour "Éteint".
+1. **L'intervalle d'animation matrice est désormais indépendant de la guirlande**
+   - **Bug critique** : Le mode AUTO matrice utilisait `getAutoAnimationIntervalMs()` (intervalle guirlande) au lieu de `getMatrix8x8AnimationIntervalMs()`.
+   - Correction à la ligne 2019 de `src/matrix8x8_control.cpp` pour utiliser l'intervalle spécifique matrice.
+   - Suppression du commentaire trompeur indiquant un partage d'intervalle entre guirlande et matrice.
 
-**Persistance du mode guirlande après l'intro**
-- Le mode sauvegardé est réappliqué après l'animation d'intro au lieu de revenir systématiquement sur "Permanent".
+2. **Persistance de l'intervalle matrice vérifiée**
+   - Confirmé que `loadMatrix8x8Settings()` restaure correctement l'intervalle sauvegardé depuis la NVS.
+   - Confirmé que `saveMatrix8x8Settings()` stocke l'intervalle dans la NVS lors de modifications via l'interface web.
+   - L'intervalle matrice survit désormais aux redémarrages de l'appareil de manière indépendante.
 
 ## 🔧 Technique
-- Le handler web `/display_mode` appelle `displayScreenByMode(...)` pour appliquer le changement à la volée (dont l'état du rétroéclairage).
-- `loadGarlandSettings()` synchronise `savedMode` avec la valeur persistée et charge aussi le mode d'affichage depuis la NVS.
+- Mise à jour de la documentation des variables dans `matrix8x8_control.cpp` ligne 23 pour clarifier l'indépendance : `// Matrix animation interval (independent from garland)`
+- Pas de changement cassant ; l'API web reste inchangée.
+- Les setters/getters matrice étaient déjà en place et fonctionnels ; seule la logique d'intervalle a été corrigée.
 
-## SEMVER
-- Classification : PATCH (en attente de publication)
+## 📚 Documentation
+- Mise à jour de tous les en-têtes de fichiers à la version 5.1.1 et date 2026-01-07 :
+  - `include/config.h`
+  - `include/matrix8x8_control.h`
+  - `src/matrix8x8_control.cpp`
+  - `src/main.cpp`
+  - `include/garland_control.h`
+
+### Classification de la version
+
+**SEMVER** : 5.1.1 (PATCH)
+- **Justification** : Correction critique du bug d'indépendance de l'intervalle matrice. Pas de changement d'API ; pas de nouvelles fonctionnalités. Rétro-compatible.
 
 # [5.1.0] - 2026-01-06
 

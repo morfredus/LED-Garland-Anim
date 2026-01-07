@@ -1,8 +1,8 @@
 /**
  * @file matrix8x8_control.cpp
  * @brief Implementation of 8x8 NeoPixel matrix control with festive animations
- * @version 5.1.0
- * @date 2026-01-06
+ * @version 5.1.1
+ * @date 2026-01-07
  */
 
 #include "matrix8x8_control.h"
@@ -18,9 +18,8 @@ static Matrix8x8Animation currentAnimation = MATRIX_ANIM_STAR;  // Selected anim
 static Matrix8x8Animation activeAnimation = MATRIX_ANIM_STAR;   // Currently executing animation
 static unsigned long animationStartTime = 0;
 static unsigned long autoModeChangeTime = 0;  // Track last auto mode change
-// NOTE: Auto mode interval is shared with garland - uses getAutoAnimationIntervalMs()
 static uint8_t matrixBrightness = 128;  // Default brightness (50%)
-static unsigned long matrixAnimationIntervalMs = DEFAULT_MATRIX_ANIM_INTERVAL;  // Intervalle animations matrice (indépendant de guirlande)
+static unsigned long matrixAnimationIntervalMs = DEFAULT_MATRIX_ANIM_INTERVAL;  // Matrix animation interval (independent from garland)
 static bool matrixEnabled = true;
 static bool autoModeActive = false;  // Flag to track if auto mode is active
 
@@ -2013,10 +2012,10 @@ void updateMatrix8x8() {
     }
 
     // Auto mode: cycle through animations (excluding OFF and AUTO)
-    // Uses the same interval as garland auto mode (configurable via web UI)
+    // Uses matrix-specific interval (independent from garland auto mode)
     if (autoModeActive) {
         unsigned long elapsed = millis() - autoModeChangeTime;
-        unsigned long interval = getAutoAnimationIntervalMs();  // Shared with garland
+        unsigned long interval = getMatrix8x8AnimationIntervalMs();  // Matrix-specific interval
         if (elapsed > interval) {
             // Move to next animation
             uint8_t nextAnim = (uint8_t)activeAnimation + 1;

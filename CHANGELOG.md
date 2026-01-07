@@ -9,21 +9,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 # [Unreleased]
 
+# [5.1.1] - 2026-01-07
+
 ## 🐛 Fixed
 
-**Display mode persistence and TFT power handling**
-- Restored display mode load from NVS so "Animated/Static/Off" survives reboots.
-- Applying a display mode now immediately updates the TFT, restoring backlight for active modes and cutting it for "Off".
+1. **Matrix animation interval now independent from garland**
+   - **Critical bug**: Matrix AUTO mode was using `getAutoAnimationIntervalMs()` (garland interval) instead of `getMatrix8x8AnimationIntervalMs()`.
+   - Corrected line 2019 in `src/matrix8x8_control.cpp` to use matrix-specific interval.
+   - Removed misleading comment indicating interval sharing between garland and matrix.
 
-**Mode persistence through intro**
-- Saved garland mode is now restored after the intro animation instead of reverting to Permanent.
+2. **Matrix interval persistence verified**
+   - Confirmed that `loadMatrix8x8Settings()` properly restores saved interval from NVS.
+   - Confirmed that `saveMatrix8x8Settings()` stores interval in NVS when changed via web UI.
+   - Matrix interval now survives device reboots independently.
 
 ## 🔧 Technical
-- Web handler `/display_mode` triggers `displayScreenByMode(...)` to apply the change instantly (including backlight state).
-- `loadGarlandSettings()` now syncs `savedMode` with persisted mode and loads display mode from NVS.
+- Updated variable documentation in `matrix8x8_control.cpp` line 23 to clarify independence: `// Matrix animation interval (independent from garland)`
+- No breaking changes; web API remains unchanged.
+- Matrix setters/getters already in place and functional; only interval logic was corrected.
 
-## SEMVER
-- Classification: PATCH (pending release)
+## 📚 Documentation
+- Updated all file headers to version 5.1.1 and date 2026-01-07:
+  - `include/config.h`
+  - `include/matrix8x8_control.h`
+  - `src/matrix8x8_control.cpp`
+  - `src/main.cpp`
+  - `include/garland_control.h`
+
+### Version Classification
+
+**SEMVER**: 5.1.1 (PATCH)
+- **Justification**: Critical bug fix for matrix animation interval independence. No API changes; no new features. Backward-compatible.
 
 # [5.1.0] - 2026-01-06
 

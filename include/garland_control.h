@@ -1,8 +1,8 @@
 /**
  * @file garland_control.h
  * @brief Contrôle des animations de guirlande LED bi-directionnelle
- * @version 5.1.0
- * @date 2026-01-06
+ * @version 5.1.1
+ * @date 2026-01-07
  *
  * Module de gestion des animations pour guirlande LED à 2 fils avec LEDs en anti-parallèle.
  * Utilise le module TB6612FNG pour contrôler la direction du courant et l'intensité lumineuse.
