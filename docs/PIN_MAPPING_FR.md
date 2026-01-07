@@ -1,4 +1,4 @@
-# Guide de Connexion des Pins - LED-Garland-Anim v5.1.2
+# Guide de Connexion des Pins - LED-Garland-Anim v5.1.4
 
 > 📌 **Guide débutant** : Ce document explique comment connecter physiquement les composants à votre carte ESP32 IdeaSpark pour le projet LED-Garland-Anim.
 

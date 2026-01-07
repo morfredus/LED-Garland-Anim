@@ -9,72 +9,56 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 # [Unreleased]
 
-# [5.1.3] - 2026-01-07
+# [5.1.4] - 2026-01-07
 
-## 📚 Documentation
+## 📦 Complete & Consolidated Release
 
-### Removed
-- **Deleted 7 obsolete release note files**:
-  - `docs/FIXES_v1.12.0.md` (120 lines)
-  - `docs/RELEASE_v1.10.0.md` (204 lines)
-  - `docs/RELEASE_v1.11.3.md`
-  - `docs/RELEASE_v1.12.0.md`
-  - `docs/RELEASE_v1.12.1.md`
-  - `docs/RELEASE_v3.0.1.md`
-  - `docs/RELEASE_v3.0.2.md` (51 lines)
-  - **Reason**: These versions are obsolete and no longer relevant to current users.
-
-### Changed
-- **Version synchronization across all documentation** (v5.1.0/v5.1.1 → v5.1.2):
-  - `README.md` / `README_FR.md`: Updated version header to 5.1.2
-  - `docs/USER_GUIDE.md`: v5.1.1 → v5.1.2
-  - `docs/ARCHITECTURE.md` / `ARCHITECTURE_FR.md`: v5.1.0 → v5.1.2
-  - `docs/PIN_MAPPING.md` / `PIN_MAPPING_FR.md`: v5.1.0 → v5.1.2
-  - `docs/TROUBLESHOOTING.md` / `TROUBLESHOOTING_FR.md`: v1.11.3 → v5.1.2
-  - `docs/PIR_SENSOR_SETUP.md` / `PIR_SENSOR_SETUP_FR.md`: v1.13.0 → v5.1.2
-  - All date stamps updated to 2026-01-07
-
-- **README.md restructured**:
-  - Moved "Choosing USB or OTA Upload" section from document start to proper location (after Installation section)
-  - Improved document flow and logical organization
-
-### Added
-- **Release notes for current version**:
-  - `docs/RELEASE_v5.1.2.md`: English release notes
-  - `docs/RELEASE_v5.1.2_FR.md`: French release notes
-
-- **New beginner-friendly documentation** (bilingual EN/FR):
-  - `docs/QUICKSTART.md` / `QUICKSTART_FR.md`: 5-minute quick start guide for complete beginners
-  - `docs/HARDWARE_GUIDE.md` / `HARDWARE_GUIDE_FR.md`: Complete component shopping list with suppliers and prices
-  - Both guides include step-by-step instructions, troubleshooting, and links to related documentation
-
-### Technical
-- No code changes in this release
-- Documentation-only update to improve user experience and project maintenance
-- All documentation now consistently references version 5.1.2
-
-### Version Classification
-
-**SEMVER**: 5.1.3 (PATCH)
-- **Justification**: Documentation cleanup, version synchronization, and obsolete file removal. No code changes, no functional changes, no breaking changes.
-
-# [5.1.2] - 2026-01-07
+This release combines firmware cleanup (Telegram removal) and comprehensive documentation improvements into a single, unified v5.1.4 package.
 
 ## 🔥 Removed
 - Deleted unused Telegram module files: `src/telegram_control.cpp`, `include/telegram_control.h`.
-- Removed Telegram references from README project structure and acknowledgements; stripped optional Telegram section from README_FR.
+- Deleted 7 obsolete release note files:
+  - `docs/FIXES_v1.12.0.md`
+  - `docs/RELEASE_v1.10.0.md` through `v1.12.1.md` (4 files)
+  - `docs/RELEASE_v3.0.1.md` and `v3.0.2.md`
+- Removed all Telegram references from documentation
+
+## ✨ Added
+- **New beginner-friendly guides** (bilingual EN/FR):
+  - `docs/QUICKSTART.md` / `QUICKSTART_FR.md`: 5-minute quick start guide
+  - `docs/HARDWARE_GUIDE.md` / `HARDWARE_GUIDE_FR.md`: Complete component shopping list with suppliers
+- **Release notes for v5.1.4**:
+  - `docs/RELEASE_v5.1.4.md` (English)
+  - `docs/RELEASE_v5.1.4_FR.md` (French)
+
+## 🔄 Changed
+- **Version synchronization** across all documentation to v5.1.4:
+  - README.md / README_FR.md
+  - USER_GUIDE.md / USER_GUIDE_FR.md
+  - ARCHITECTURE.md / ARCHITECTURE_FR.md
+  - PIN_MAPPING.md / PIN_MAPPING_FR.md
+  - TROUBLESHOOTING.md / TROUBLESHOOTING_FR.md
+  - OTA_UPDATE.md / OTA_UPDATE_FR.md
+  - PIR_SENSOR_SETUP.md / PIR_SENSOR_SETUP_FR.md
+  - RADAR_SENSOR_SETUP.md / RADAR_SENSOR_SETUP_FR.md
+- **README.md restructured**: "Choosing USB or OTA Upload" section moved to proper location
+- **Firmware version**: 5.1.2 → 5.1.4 in platformio.ini, config.h, main.cpp
 
 ## 🔧 Technical
-- Bumped project version to 5.1.2 in `platformio.ini` build flags and file headers.
-- No runtime behavior change; Telegram was already unused/unreferenced in the main application.
+- No runtime behavior changes
+- All existing functionality preserved
+- Fully backward compatible
+- Cleaner codebase (Telegram module removed)
 
-## 📚 Documentation
-- Documentation no longer mentions Telegram configuration or commands to avoid confusion.
+### Build Status
+- **Flash**: 71.3% (935,105 bytes / 1,310,720 bytes)
+- **RAM**: 15.5% (50,648 bytes / 327,680 bytes)
+- **Compilation**: ✅ SUCCESS (no errors/warnings)
 
 ### Version Classification
 
-**SEMVER**: 5.1.2 (PATCH)
-- **Justification**: Removal of dead/unused Telegram code and doc clean-up; no functional change to shipped features.
+**SEMVER**: 5.1.4 (PATCH)
+- **Justification**: Consolidated release combining firmware cleanup (Telegram removal, v5.1.2) and documentation improvements (version sync + obsolete file removal, v5.1.3). No functional changes; fully backward compatible.
 
 # [5.1.1] - 2026-01-07
 

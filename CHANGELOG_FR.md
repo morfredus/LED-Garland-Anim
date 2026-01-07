@@ -9,72 +9,56 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/spec/v2
 
 # [Non publié]
 
-# [5.1.3] - 2026-01-07
+# [5.1.4] - 2026-01-07
 
-## 📚 Documentation
+## 📦 Release Complète et Consolidée
 
-### Suppressions
-- **Suppression de 7 fichiers de notes de release obsolètes** :
-  - `docs/FIXES_v1.12.0.md` (120 lignes)
-  - `docs/RELEASE_v1.10.0.md` (204 lignes)
-  - `docs/RELEASE_v1.11.3.md`
-  - `docs/RELEASE_v1.12.0.md`
-  - `docs/RELEASE_v1.12.1.md`
-  - `docs/RELEASE_v3.0.1.md`
-  - `docs/RELEASE_v3.0.2.md` (51 lignes)
-  - **Raison** : Ces versions sont obsolètes et ne sont plus pertinentes pour les utilisateurs actuels.
-
-### Modifications
-- **Synchronisation des versions dans toute la documentation** (v5.1.0/v5.1.1 → v5.1.2) :
-  - `README.md` / `README_FR.md` : En-tête de version mis à jour à 5.1.2
-  - `docs/USER_GUIDE.md` : v5.1.1 → v5.1.2
-  - `docs/ARCHITECTURE.md` / `ARCHITECTURE_FR.md` : v5.1.0 → v5.1.2
-  - `docs/PIN_MAPPING.md` / `PIN_MAPPING_FR.md` : v5.1.0 → v5.1.2
-  - `docs/TROUBLESHOOTING.md` / `TROUBLESHOOTING_FR.md` : v1.11.3 → v5.1.2
-  - `docs/PIR_SENSOR_SETUP.md` / `PIR_SENSOR_SETUP_FR.md` : v1.13.0 → v5.1.2
-  - Toutes les dates mises à jour au 2026-01-07
-
-- **README.md restructuré** :
-  - Section "Choisir le téléversement USB ou OTA" déplacée du début du document vers l'emplacement approprié (après la section Installation)
-  - Amélioration du flux du document et de l'organisation logique
-
-### Ajouts
-- **Notes de release pour la version actuelle** :
-  - `docs/RELEASE_v5.1.2.md` : Notes de release anglaises
-  - `docs/RELEASE_v5.1.2_FR.md` : Notes de release françaises
-
-- **Nouvelle documentation pour débutants** (bilingue EN/FR) :
-  - `docs/QUICKSTART.md` / `QUICKSTART_FR.md` : Guide de démarrage rapide 5 minutes pour débutants complets
-  - `docs/HARDWARE_GUIDE.md` / `HARDWARE_GUIDE_FR.md` : Liste d'achat complète des composants avec fournisseurs et prix
-  - Les deux guides incluent instructions pas-à-pas, dépannage et liens vers documentation associée
-
-### Technique
-- Aucune modification de code dans cette release
-- Mise à jour documentation uniquement pour améliorer l'expérience utilisateur et la maintenance du projet
-- Toute la documentation référence maintenant la version 5.1.2 de manière cohérente
-
-### Classification de version
-
-**SEMVER** : 5.1.3 (PATCH)
-- **Justification** : Nettoyage de documentation, synchronisation des versions et suppression de fichiers obsolètes. Aucune modification de code, aucun changement fonctionnel, aucun changement cassant.
-
-# [5.1.2] - 2026-01-07
+Cette release combine le nettoyage du firmware (suppression Telegram) et les améliorations documentaires complètes dans un seul package unifié v5.1.4.
 
 ## 🔥 Suppressions
 - Suppression des fichiers Telegram inutilisés : `src/telegram_control.cpp`, `include/telegram_control.h`.
-- Suppression des références Telegram dans la documentation (structure du projet, remerciements) et retrait de la section "Bot Telegram" dans README_FR.
+- Suppression de 7 fichiers de notes de release obsolètes :
+  - `docs/FIXES_v1.12.0.md`
+  - `docs/RELEASE_v1.10.0.md` à `v1.12.1.md` (4 fichiers)
+  - `docs/RELEASE_v3.0.1.md` et `v3.0.2.md`
+- Suppression de toutes les références Telegram de la documentation
+
+## ✨ Ajouts
+- **Nouveaux guides pour débutants** (bilingue EN/FR) :
+  - `docs/QUICKSTART.md` / `QUICKSTART_FR.md` : Guide de démarrage 5 minutes
+  - `docs/HARDWARE_GUIDE.md` / `HARDWARE_GUIDE_FR.md` : Liste d'achat complète des composants
+- **Notes de release pour v5.1.4** :
+  - `docs/RELEASE_v5.1.4.md` (Anglais)
+  - `docs/RELEASE_v5.1.4_FR.md` (Français)
+
+## 🔄 Modifications
+- **Synchronisation des versions** dans toute la documentation à v5.1.4 :
+  - README.md / README_FR.md
+  - USER_GUIDE.md / USER_GUIDE_FR.md
+  - ARCHITECTURE.md / ARCHITECTURE_FR.md
+  - PIN_MAPPING.md / PIN_MAPPING_FR.md
+  - TROUBLESHOOTING.md / TROUBLESHOOTING_FR.md
+  - OTA_UPDATE.md / OTA_UPDATE_FR.md
+  - PIR_SENSOR_SETUP.md / PIR_SENSOR_SETUP_FR.md
+  - RADAR_SENSOR_SETUP.md / RADAR_SENSOR_SETUP_FR.md
+- **Restructuration README.md** : Section "Choisir le téléversement USB ou OTA" déplacée au bon endroit
+- **Version firmware** : 5.1.2 → 5.1.4 dans platformio.ini, config.h, main.cpp
 
 ## 🔧 Technique
-- Version projet passée en 5.1.2 dans `platformio.ini` et en-têtes de fichiers.
-- Aucun changement fonctionnel : Telegram n'était plus référencé dans l'application principale.
+- Aucun changement de comportement à l'exécution
+- Toute fonctionnalité existante préservée
+- Entièrement compatible rétro
+- Codebase plus propre (module Telegram supprimé)
 
-## 📚 Documentation
-- Les mentions de configuration/commandes Telegram ont été retirées pour éviter toute confusion.
+### État de compilation
+- **Flash** : 71,3 % (935 105 octets / 1 310 720 octets)
+- **RAM** : 15,5 % (50 648 octets / 327 680 octets)
+- **Compilation** : ✅ SUCCÈS (aucune erreur/avertissement)
 
 ### Classification de version
 
-**SEMVER** : 5.1.2 (PATCH)
-- **Justification** : Nettoyage de code mort et de documentation obsolète, sans impact fonctionnel.
+**SEMVER** : 5.1.4 (PATCH)
+- **Justification** : Release consolidée combinant nettoyage du firmware (suppression Telegram, v5.1.2) et améliorations documentation (sync versions + suppression fichiers obsolètes, v5.1.3). Aucun changement fonctionnel ; entièrement compatible rétro.
 
 # [5.1.1] - 2026-01-07
 

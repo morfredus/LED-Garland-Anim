@@ -1,8 +1,8 @@
-# User Guide - LED-Garland-Anim v5.1.2
+# User Guide - LED-Garland-Anim v5.1.4
 
 Complete user guide for the LED-Garland-Anim LED garland and 8x8 matrix animation controller (ESP32 IdeaSpark + ST7789).
 
-**Document version: v5.1.2 (2026-01-07)**
+**Document version: v5.1.4 (2026-01-07)**
 
 ---
 

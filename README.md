@@ -1,6 +1,6 @@
 # LED-Garland-Anim
 
-**Version: 5.1.2** (2026-01-07)
+**Version: 5.1.4** (2026-01-07)
 
 Controller for bi-directional LED garland and 8x8 NeoPixel matrix animation on ESP32 Classic (IdeaSpark/DevKitC) with ST7789 display, auto-detection of PIR/RCWL-0516, **modern web interface with instant save**, responsive layout, flash-free AJAX updates, web-based OTA updates, **mDNS support for easy access via unique device name**, physical buttons, 11 garland animations, 39 festive matrix animations (Christmas, New Year, Easter, Campfire, Radar), dual independent control, smart modes, persistent configuration, automatic startup animations.
 

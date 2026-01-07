@@ -267,4 +267,4 @@ Maintenant que tout fonctionne :
 
 **🎊 Félicitations !** Vous avez configuré LED-Garland-Anim avec succès !
 
-**Version du document : v5.1.2 (2026-01-07)**
+**Version du document : v5.1.4 (2026-01-07)**

@@ -1,4 +1,4 @@
-# Détection de mouvement par radar Doppler (RCWL-0516) - LED-Garland-Anim v5.1.2
+# Détection de mouvement par radar Doppler (RCWL-0516) - LED-Garland-Anim v5.1.4
 
 ## Présentation
 Le module RCWL-0516 est un capteur radar Doppler micro-ondes permettant de détecter rapidement et précisément les mouvements, même à travers certains matériaux non métalliques. Il constitue une alternative plus réactive et moins sensible à la température que le capteur PIR.

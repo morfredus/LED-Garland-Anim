@@ -12,7 +12,7 @@
 - Erase flash and re-upload firmware
 - Check for error messages on serial console
 - If problem persists, file an issue with logs
-# Troubleshooting - LED-Garland-Anim v5.1.2
+# Troubleshooting - LED-Garland-Anim v5.1.4
 
 Use this guide to debug the ESP32 IdeaSpark build when something does not work as expected.
 
@@ -53,4 +53,4 @@ If motion always true, move the sensor away from heaters/sunlight (PIR) or sourc
 
 ---
 
-**Document version: v5.1.2 (2026-01-07)**
+**Document version: v5.1.4 (2026-01-07)**
