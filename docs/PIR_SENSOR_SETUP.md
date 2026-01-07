@@ -51,4 +51,4 @@ The PIR sensor (HC-SR501) is used to detect motion and trigger the LED garland. 
 - If output is unstable: check power supply and common ground
 
 ---
-**Document version: v1.13.0 (2026-01-06)**
+**Document version: v5.1.2 (2026-01-07)**

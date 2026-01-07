@@ -120,15 +120,6 @@ String mDnsStr = String(getDeviceName()) + ".local";
 displayScreenByMode(..., mDnsStr.c_str());
 ```
 
-#### telegram_control.cpp:
-```cpp
-// Mis à jour dans applyAnimationCommand(), applyModeCommand(), etc.
-String mDnsStr = String(getDeviceName()) + ".local";
-displayMainScreen(..., mDnsStr.c_str());
-```
-
----
-
 ## 🔧 Détails techniques
 
 ### Modifications du code:
@@ -143,7 +134,7 @@ displayMainScreen(..., mDnsStr.c_str());
    - Signatures de fonction mises à jour avec le paramètre `mDnsName`
    - Docstrings mises à jour pour refléter le nouveau layout
 
-3. **src/main.cpp, src/web_interface.cpp, src/telegram_control.cpp**:
+3. **src/main.cpp, src/web_interface.cpp**:
    - Tous les appels display construisent et passent la chaîne mDNS
    - Pattern cohérent : `String(getDeviceName()) + ".local"`
 
@@ -229,7 +220,7 @@ feat(display): reorganize animated LCD to fullwidth stacked zones (v5.1.0)
 - Convertir panneaux côte-à-côte vers cadre infos fullwidth + zone animation
 - Ajouter troncature SSID (max 20 chars) pour prévenir débordement
 - Ajouter paramètre mDnsName à displayScreenByMode() et displayMainScreen()
-- Mettre à jour tous les appels display pour passer mDNS (main.cpp, web_interface.cpp, telegram_control.cpp)
+- Mettre à jour tous les appels display pour passer mDNS (main.cpp, web_interface.cpp)
 - Améliorer lisibilité avec meilleur espacement et contraste couleurs
 - Relevar version 5.0.0 → 5.1.0 dans platformio.ini, display.h, display.cpp
 - Mettre à jour changelog et notes de version EN/FR

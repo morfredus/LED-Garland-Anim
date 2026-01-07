@@ -1,34 +1,6 @@
-## Choosing USB or OTA Upload
-
-You can choose the upload method (USB or OTA) at each upload without editing platformio.ini:
-
-- **USB upload (serial):**
-   - Make sure `upload_protocol` is not set in platformio.ini (or is commented out)
-   - Use:
-      ```bash
-      pio run -e esp32devkitc -t upload
-      ```
-   - PlatformIO will auto-detect the serial port (e.g. COM8)
-
-- **OTA upload (WiFi):**
-
-   - Use:
-      ```bash
-      pio run -e esp32devkitc -t upload --upload-port 192.168.x.x
-      ```
-   - Replace `192.168.x.x` with your ESP32's IP address
-   - PlatformIO will automatically use OTA for this upload
-   - ⚠️ **Note:** PlatformIO will show a warning:
-     > We have just detected `upload_port` as IP address or host name of ESP device. `upload_protocol` is switched to `espota`.
-     This is normal and does not require any change in your configuration.
-
-**Tip:** Do not set `upload_protocol = espota` globally. Use the `--upload-port` option for OTA uploads only when needed.
-pio run -e esp32s3_n16r8 -t upload
-
----
 # LED-Garland-Anim
 
-**Version: 5.1.0** (2026-01-06)
+**Version: 5.1.2** (2026-01-07)
 
 Controller for bi-directional LED garland and 8x8 NeoPixel matrix animation on ESP32 Classic (IdeaSpark/DevKitC) with ST7789 display, auto-detection of PIR/RCWL-0516, **modern web interface with instant save**, responsive layout, flash-free AJAX updates, web-based OTA updates, **mDNS support for easy access via unique device name**, physical buttons, 11 garland animations, 39 festive matrix animations (Christmas, New Year, Easter, Campfire, Radar), dual independent control, smart modes, persistent configuration, automatic startup animations.
 
@@ -185,6 +157,31 @@ BTN2     → GPIO 17
    pio device monitor
    ```
 
+### 4.1. Choosing USB or OTA Upload
+
+You can choose the upload method (USB or OTA) at each upload without editing platformio.ini:
+
+- **USB upload (serial):**
+   - Make sure `upload_protocol` is not set in platformio.ini (or is commented out)
+   - Use:
+      ```bash
+      pio run -e esp32devkitc -t upload
+      ```
+   - PlatformIO will auto-detect the serial port (e.g. COM8)
+
+- **OTA upload (WiFi):**
+   - Use:
+      ```bash
+      pio run -e esp32devkitc -t upload --upload-port 192.168.x.x
+      ```
+   - Replace `192.168.x.x` with your ESP32's IP address
+   - PlatformIO will automatically use OTA for this upload
+   - ⚠️ **Note:** PlatformIO will show a warning:
+     > We have just detected `upload_port` as IP address or host name of ESP device. `upload_protocol` is switched to `espota`.
+     This is normal and does not require any change in your configuration.
+
+**Tip:** Do not set `upload_protocol = espota` globally. Use the `--upload-port` option for OTA uploads only when needed.
+
 ---
 
 ## 5. Web Interface and Network Access
@@ -328,7 +325,7 @@ In `include/garland_control.h`:
 
 ## 10. Versions
 
-**Current Version: v5.1.0** (2026-01-06)
+**Current Version: v5.1.2** (2026-01-07)
 See [CHANGELOG.md](./CHANGELOG.md)
 
 ---
@@ -371,9 +368,6 @@ ESP32 project for bi-directional LED garlands with advanced animations and smart
 - Adafruit (GFX, NeoPixel, ST7789 libraries)
 - ESP32 community
 - TB6612FNG module
-  - `/mode <id|name>` (e.g. `/mode 1`, `/mode detect`)
-  - `/nextanim`, `/nextmode`
-  - `/liste` (lists all modes and animations with IDs)
 
 ### OLED Display
 - Shows current animation name
@@ -398,7 +392,7 @@ Anim-Guirlande/
 ├── include/
 │   ├── board_config.h        # ESP32/S3 pin mapping
 │   ├── config.h              # General configuration
-│   ├── secrets.h             # WiFi networks + Telegram credentials
+│   ├── secrets.h             # WiFi networks credentials
 │   ├── display.h             # OLED/TFT display management
 │   ├── garland_control.h     # Garland control and animations
 │   ├── web_interface.h       # HTTP handlers
