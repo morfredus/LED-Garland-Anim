@@ -137,7 +137,21 @@ void setupWifi() {
 // --- SETUP ---
 void setup() {
     Serial.begin(SERIAL_BAUD_RATE);
-    delay(1000); // Wait for Serial USB
+    
+    #ifdef TARGET_ESP32C3_HW675
+        // ESP32-C3 USB CDC nécessite un délai plus long et attente explicite
+        delay(2000);
+        while (!Serial && millis() < 3000) {
+            delay(10);
+        }
+        Serial.println();
+        Serial.println("==========================================");
+        Serial.println("ESP32-C3 HW-675 - LED Garland Controller");
+        Serial.println("==========================================");
+        Serial.flush();
+    #else
+        delay(1000); // Wait for Serial USB
+    #endif
 
     // Initialiser NVS pour la persistence
     esp_err_t err = nvs_flash_init();
@@ -153,7 +167,13 @@ void setup() {
     btn1.attachClick(handleBtn1Click);
     btn2.attachClick(handleBtn2Click);
 
-    // Initialisation de l'écran ST7789 - AVANT WiFi pour afficher la progression
+    // Sur HW-675 (ESP32-C3), utiliser le bouton BOOT (GPIO9) pour changer de mode en simple clic
+    // et conserver l'appui long pour reboot.
+    #ifdef TARGET_ESP32C3_HW675
+        btnBoot.attachClick(handleBtn2Click);
+    #endif
+
+    // Initialisation de l'affichage (ST7789 ou OLED selon la cible) AVANT WiFi pour afficher la progression
     setupDisplay();
     displayBootScreen(PROJECT_NAME, PROJECT_VERSION, -1);
 

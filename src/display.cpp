@@ -575,13 +575,13 @@ void updateAnimationVisual(const char* animationName, bool hasMatrix) {
     }
 }
 
-#else
+#elif !defined(HAS_OLED_U8G2)
 
 // =============================================================================
-// STUBS VIDES SI ST7789 N'EST PAS ACTIVÉ
+// STUBS VIDES SI AUCUN AFFICHAGE N'EST ACTIVÉ (ni ST7789, ni OLED U8G2)
 // =============================================================================
 void setupDisplay() {
-    LOG_PRINTLN("⚠ Écran ST7789 désactivé (HAS_ST7789 non défini)");
+    LOG_PRINTLN("⚠ Aucun affichage activé (ni ST7789, ni OLED)");
 }
 
 void displayBootScreen(const char* projectName, const char* projectVersion, int wifiProgress) {

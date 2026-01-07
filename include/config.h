@@ -36,11 +36,18 @@
     #define LOG_PRINTF(...)
 #endif
 
-// --- Configuration ST7789 (Écran LCD intégré IdeaSpark) ---
-#define HAS_ST7789
-#define ST7789_WIDTH     240   // Largeur de l'écran 1.14" (135x240)
-#define ST7789_HEIGHT    320   // Hauteur de l'écran 1.14"
-#define ST7789_ROTATION  0     // Rotation de l'écran (0, 1, 2, 3)
+// --- Configuration Affichages ---
+// ST7789 actif par défaut sauf pour la cible HW-675 (ESP32-C3 + OLED)
+#if !defined(TARGET_ESP32C3_HW675)
+    #define HAS_ST7789
+#endif
+
+// Dimensions ST7789 (IdeaSpark 1.14")
+#ifdef HAS_ST7789
+    #define ST7789_WIDTH     240   // Largeur de l'écran 1.14" (135x240)
+    #define ST7789_HEIGHT    320   // Hauteur de l'écran 1.14"
+    #define ST7789_ROTATION  0     // Rotation de l'écran (0, 1, 2, 3)
+#endif
 
 // Couleurs de base pour ST7789 (RGB565)
 #define COLOR_BLACK      0x0000
