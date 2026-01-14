@@ -34,20 +34,20 @@
 #define OLED_ADDR    0x3C
 
 // TB6612FNG (si module externe utilisé) — pins libres par défaut
-#define TB6612_PWMA  1
+#define TB6612_PWMA  7
 #define TB6612_AIN1  2
-#define TB6612_AIN2  4
+#define TB6612_AIN2  20
 #define TB6612_STBY  10
 
 // Capteur de mouvement (pin libre par défaut)
-#define MOTION_SENSOR_PIN   3
+#define MOTION_SENSOR_PIN   0
 
 // Boutons utilisateur (non câblés, conserver le flux)
 #define BUTTON_1     10
 #define BUTTON_2     7
 
 // Matrice NeoPixel 8x8 / Chaîne WS2812B
-#define MATRIX8X8_PIN        8    ///< Data WS2812B selon pinout HW-675
+#define MATRIX8X8_PIN        3    ///< Data WS2812B selon pinout HW-675
 #define MATRIX8X8_NUMPIXELS  64
 
 #else
