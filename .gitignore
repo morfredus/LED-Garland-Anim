@@ -3,6 +3,7 @@
 # -----------------------------------------------------------------------------
 # Fichier de configuration WiFi (sensible - NE PAS VERSIONNER)
 include/secrets.h
+.copilot
 
 # -----------------------------------------------------------------------------
 # 2. FICHIERS GENERES PAR COMPILATION ET OUTILS
