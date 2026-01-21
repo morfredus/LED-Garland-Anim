@@ -16,7 +16,15 @@ Le système utilise la NVS (mémoire non-volatile) de l’ESP32 pour sauvegarder
 
 **Aucune action requise de l'utilisateur** : la gestion est entièrement automatique.
 
-# Guide Utilisateur - LED-Garland-Anim v5.1.1
+
+# Guide Utilisateur - LED-Garland-Anim v5.2.1
+
+*Ce document est valide à partir de la version 5.2.1.*
+
+## Plateformes supportées
+- ESP32 Classic (IdeaSpark/DevKitC)
+- ESP32-C3 HW-675 (OLED)
+- ESP32-S3 Mini (esp32s3_mini)
 
 Guide utilisateur complet pour le contrôleur d'animation de guirlande LED (ESP32 IdeaSpark + ST7789).
 

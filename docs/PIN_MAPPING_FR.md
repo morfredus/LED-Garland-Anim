@@ -1,4 +1,12 @@
-# Guide de Connexion des Pins - LED-Garland-Anim v5.2.0
+
+# Guide de Connexion des Pins - LED-Garland-Anim v5.2.1
+
+*Ce document est valide à partir de la version 5.2.1.*
+
+## Plateformes supportées
+- ESP32 Classic (IdeaSpark/DevKitC)
+- ESP32-C3 HW-675 (OLED)
+- ESP32-S3 Mini (esp32s3_mini)
 
 > 📌 **Guide débutant** : Ce document explique comment connecter physiquement les composants à votre carte ESP32 pour le projet LED-Garland-Anim.
 

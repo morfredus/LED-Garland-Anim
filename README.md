@@ -1,8 +1,10 @@
+
 # LED-Garland-Anim
 
-**Version: 5.2.0** (2026-01-07)
+**Version: 5.2.1** (2026-01-22)  
+*This documentation is valid from version 5.2.1.*
 
-Controller for bi-directional LED garland and 8x8 NeoPixel matrix animation on **ESP32 Classic** (IdeaSpark/DevKitC) with ST7789 display **and ESP32-C3 HW-675** with OLED 0.42" (72×40), auto-detection of PIR/RCWL-0516, **modern web interface with instant save**, responsive layout, flash-free AJAX updates, web-based OTA updates, **mDNS support for easy access via unique device name**, physical buttons, 11 garland animations, 39 festive matrix animations (Christmas, New Year, Easter, Campfire, Radar), dual independent control, smart modes, persistent configuration, automatic startup animations.
+Controller for bi-directional LED garland and 8x8 NeoPixel matrix animation on **ESP32 Classic** (IdeaSpark/DevKitC) with ST7789 display, **ESP32-C3 HW-675** with OLED 0.42" (72×40), and **ESP32-S3 Mini** (esp32s3_mini), auto-detection of PIR/RCWL-0516, **modern web interface with instant save**, responsive layout, flash-free AJAX updates, web-based OTA updates, **mDNS support for easy access via unique device name**, physical buttons, 11 garland animations, 39 festive matrix animations (Christmas, New Year, Easter, Campfire, Radar), dual independent control, smart modes, persistent configuration, automatic startup animations.
 
 ## ✨ What's New in v5.2.0
 
@@ -79,22 +81,19 @@ Controller for bi-directional LED garland and 8x8 NeoPixel matrix animation on *
 
 ## 1. Required Hardware
 
-### ESP32 Classic (IdeaSpark/DevKitC)
-- **ESP32 Classic board (IdeaSpark/DevKitC)**
+
+### Supported Hardware Platforms
+
+- **ESP32 Classic (IdeaSpark/DevKitC)**
+- **ESP32-C3 HW-675** (with OLED 0.42" 72×40)
+- **ESP32-S3 Mini** (esp32s3_mini)
+
+#### Required Components (all platforms)
 - **TB6612FNG dual H-bridge driver**
 - **2-wire LED garland** (anti-parallel LEDs, ~50 LEDs)
 - **8x8 NeoPixel Matrix WS2812B-64** (64 addressable RGB LEDs)
 - **Motion sensor**: PIR HC-SR501 or RCWL-0516 (auto-detected)
-- **TFT ST7789 display** (optional, built-in on IdeaSpark)
-- **Suitable power supply** for the garland and matrix (5V recommended for NeoPixels)
-
-### ESP32-C3 HW-675 (NEW in v5.2.0)
-- **ESP32-C3-DevKitM-1 with HW-675 OLED module**
-- **TB6612FNG dual H-bridge driver**
-- **2-wire LED garland** (anti-parallel LEDs, ~50 LEDs)
-- **8x8 NeoPixel Matrix WS2812B-64** (64 addressable RGB LEDs)
-- **OLED 0.42" (72×40 px)** - Integrated on HW-675 board via I2C
-- **Motion sensor**: PIR HC-SR501 or RCWL-0516 (auto-detected) *(optional)*
+- **Display**: ST7789 (Classic), OLED (HW-675), or user-supplied for S3 Mini
 - **Suitable power supply** for the garland and matrix (5V recommended for NeoPixels)
 
 ### Main pinout summary (ESP32 Classic)

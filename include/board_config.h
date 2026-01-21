@@ -14,41 +14,71 @@
 
 #include <Arduino.h>
 
-#ifdef TARGET_ESP32C3_HW675
+#ifdef TARGET_ESP32S3_MINI
 // ============================================================================
-// Configuration matérielle pour ESP32-C3 HW-675 + OLED 0.42" (72x40)
+// Configuration matérielle — ESP32‑S3 Mini Zero
+// Pins accessibles uniquement (gauche + droite)
 // ============================================================================
-#define BOARD_NAME "ESP32-C3 HW-675 OLED"
 
-// Boutons et LED système
-#define BUTTON_BOOT    9    ///< Bouton BOOT (GPIO 9) — utilisé: long press reboot, click changement mode
-// LED intégrée non garantie sur HW-675 (ne pas définir LED_BUILTIN)
+#define BOARD_NAME "ESP32-S3 Mini Zero Garland"
 
-// Bus I2C pour OLED interne
-#define I2C_SDA  5         ///< OLED SDA
-#define I2C_SCL  6         ///< OLED SCL
+// ============================================================================
+// Configuration matérielle — ESP32‑S3 Mini Zero
+// Pins accessibles uniquement (gauche + droite)
+// ============================================================================
 
-// OLED SSD1306 72x40 (pour U8g2)
-#define OLED_WIDTH   72
-#define OLED_HEIGHT  40
-#define OLED_ADDR    0x3C
+// ---------------------------------------------------------------------------
+// Bouton et LED système
+// ---------------------------------------------------------------------------
+#define BUTTON_BOOT    0     ///< Bouton BOOT intégré (GPIO 0)
+#ifndef LED_BUILTIN
+#define LED_BUILTIN 8
+#endif
 
-// TB6612FNG (si module externe utilisé) — pins libres par défaut
-#define TB6612_PWMA  7
-#define TB6612_AIN1  2
-#define TB6612_AIN2  20
-#define TB6612_STBY  10
+// ---------------------------------------------------------------------------
+// Écran LCD (ST7789) — NON PRIORITAIRE
+// Pins secondaires (USB/JTAG + pins non critiques)
+// ---------------------------------------------------------------------------
+#define LCD_MOSI      1      ///< MOSI (GPIO1 — USB/JTAG, OK si LCD secondaire)
+#define LCD_SCLK      2      ///< SCLK (GPIO2 — USB/JTAG)
+#define LCD_CS        3      ///< Chip Select (GPIO3 — USB/JTAG)
+#define LCD_DC        9      ///< Data/Command (GPIO9 — accessible)
+#define LCD_RST       -1     ///< Reset logiciel (pas de pin dédiée)
+#define LCD_BLK       6      ///< Backlight (GPIO6 — PWM possible)
 
-// Capteur de mouvement (pin libre par défaut)
-#define MOTION_SENSOR_PIN   0
+// ---------------------------------------------------------------------------
+// Bus I2C (périphériques externes)
+// Pins accessibles et propres
+// ---------------------------------------------------------------------------
+#define I2C_SDA       4      ///< SDA
+#define I2C_SCL       5      ///< SCL
 
-// Boutons utilisateur (non câblés, conserver le flux)
-#define BUTTON_1     10
-#define BUTTON_2     7
+// ---------------------------------------------------------------------------
+// Module TB6612FNG (Pilotage Guirlande)
+// Pins alignés côté droit (10–13)
+// ---------------------------------------------------------------------------
+#define TB6612_PWMA   10     ///< PWM pour intensité
+#define TB6612_AIN1   11     ///< Direction A (Pin 1)
+#define TB6612_AIN2   12     ///< Direction A (Pin 2)
+#define TB6612_STBY   13     ///< Standby (HIGH = actif)
 
-// Matrice NeoPixel 8x8 / Chaîne WS2812B
-#define MATRIX8X8_PIN        3    ///< Data WS2812B selon pinout HW-675
+// ---------------------------------------------------------------------------
+// Capteur de mouvement (PIR / RCWL-0516)
+// ---------------------------------------------------------------------------
+#define MOTION_SENSOR_PIN  7   ///< Entrée capteur (GPIO7)
+
+// ---------------------------------------------------------------------------
+// Boutons utilisateur externes
+// ---------------------------------------------------------------------------
+#define BUTTON_1      8      ///< Bouton 1 (GPIO8)
+#define BUTTON_2      9      ///< Bouton 2 (GPIO9)
+
+// ---------------------------------------------------------------------------
+// Matrice NeoPixel 8x8 WS2812B-64
+// ---------------------------------------------------------------------------
+#define MATRIX8X8_PIN        7    ///< Data pin NeoPixel (GPIO7)
 #define MATRIX8X8_NUMPIXELS  64
+
 
 #else
 // ============================================================================

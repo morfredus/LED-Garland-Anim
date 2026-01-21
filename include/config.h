@@ -38,7 +38,7 @@
 
 // --- Configuration Affichages ---
 // ST7789 actif par défaut sauf pour la cible HW-675 (ESP32-C3 + OLED)
-#if !defined(TARGET_ESP32C3_HW675)
+#if !defined(TARGET_ESP32S3_MINI)
     #define HAS_ST7789
 #endif
 
