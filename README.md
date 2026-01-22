@@ -1,10 +1,10 @@
 
 # LED-Garland-Anim
 
-**Version: 5.2.1** (2026-01-22)  
-*This documentation is valid from version 5.2.1.*
+**Version: 5.3.1** (2026-01-22)  
+*This documentation is valid from version 5.3.1.*
 
-Controller for bi-directional LED garland and 8x8 NeoPixel matrix animation on **ESP32 Classic** (IdeaSpark/DevKitC) with ST7789 display, **ESP32-C3 HW-675** with OLED 0.42" (72×40), and **ESP32-S3 Mini** (esp32s3_mini), auto-detection of PIR/RCWL-0516, **modern web interface with instant save**, responsive layout, flash-free AJAX updates, web-based OTA updates, **mDNS support for easy access via unique device name**, physical buttons, 11 garland animations, 39 festive matrix animations (Christmas, New Year, Easter, Campfire, Radar), dual independent control, smart modes, persistent configuration, automatic startup animations.
+Controller for bi-directional LED garland and 8x8 NeoPixel matrix animation on **ESP32 Classic** (IdeaSpark/DevKitC) with ST7789 display, **ESP32-C3 HW-675** with OLED 0.42" (72×40), **ESP32-S3 Mini** (esp32s3_mini), and **ESP32 Wroom (DevKit V1)**, auto-detection of PIR/RCWL-0516, **modern web interface with instant save**, responsive layout, flash-free AJAX updates, web-based OTA updates, **mDNS support for easy access via unique device name**, physical buttons (3 buttons: garland animation, matrix animation, mode), 11 garland animations, 39 festive matrix animations (Christmas, New Year, Easter, Campfire, Radar), dual independent control, smart modes, persistent configuration, automatic startup animations.
 
 ## ✨ What's New in v5.2.0
 
@@ -82,11 +82,13 @@ Controller for bi-directional LED garland and 8x8 NeoPixel matrix animation on *
 ## 1. Required Hardware
 
 
+
 ### Supported Hardware Platforms
 
 - **ESP32 Classic (IdeaSpark/DevKitC)**
 - **ESP32-C3 HW-675** (with OLED 0.42" 72×40)
 - **ESP32-S3 Mini** (esp32s3_mini)
+- **ESP32 Wroom (DevKit V1)** (NEW in v5.3.1)
 
 #### Required Components (all platforms)
 - **TB6612FNG dual H-bridge driver**
@@ -96,15 +98,16 @@ Controller for bi-directional LED garland and 8x8 NeoPixel matrix animation on *
 - **Display**: ST7789 (Classic), OLED (HW-675), or user-supplied for S3 Mini
 - **Suitable power supply** for the garland and matrix (5V recommended for NeoPixels)
 
+
 ### Main pinout summary (ESP32 Classic)
 ```
 TB6612FNG (Garland):
-  PWMA  → GPIO 13
-  AIN1  → GPIO 26
-  AIN2  → GPIO 25
-  STBY  → GPIO 15
+   PWMA  → GPIO 13
+   AIN1  → GPIO 26
+   AIN2  → GPIO 25
+   STBY  → GPIO 15
 8x8 NeoPixel Matrix:
-  DATA  → GPIO 34
+   DATA  → GPIO 34
 MOTION_SENSOR_PIN (PIR/RCWL-0516) → GPIO 35
 LCD_MOSI → GPIO 23
 LCD_SCLK → GPIO 18
@@ -112,25 +115,43 @@ LCD_CS   → GPIO 5
 LCD_DC   → GPIO 27
 LCD_RST  → GPIO 33
 LCD_BLK  → GPIO 32
-BTN1     → GPIO 16
-BTN2     → GPIO 17
+BTN1     → GPIO 16 (Garland animation)
+BTN2     → GPIO 17 (Matrix animation)
+BTN3     → GPIO 18 (Mode)
 ```
 
 ### Main pinout summary (ESP32-C3 HW-675)
 ```
 TB6612FNG (Garland):
-  PWMA  → GPIO 0
-  AIN1  → GPIO 1
-  AIN2  → GPIO 2
-  STBY  → GPIO 3
+   PWMA  → GPIO 0
+   AIN1  → GPIO 1
+   AIN2  → GPIO 2
+   STBY  → GPIO 3
 8x8 NeoPixel Matrix:
-  DATA  → GPIO 8
+   DATA  → GPIO 8
 OLED I2C:
-  SDA   → GPIO 5
-  SCL   → GPIO 6
-  ADDR  → 0x3C
+   SDA   → GPIO 5
+   SCL   → GPIO 6
+   ADDR  → 0x3C
 BUTTON BOOT (Mode) → GPIO 9
 MOTION_SENSOR_PIN  → GPIO 10 (optional)
+```
+
+### Main pinout summary (ESP32 Wroom)
+```
+TB6612FNG (Garland):
+   PWMA  → GPIO 12
+   AIN1  → GPIO 25
+   AIN2  → GPIO 33
+   STBY  → GPIO 14
+8x8 NeoPixel Matrix:
+   DATA  → GPIO 27
+MOTION_SENSOR_PIN (PIR/RCWL-0516) → GPIO 35
+I2C SDA → GPIO 21
+I2C SCL → GPIO 22
+BTN1     → GPIO 16 (Garland animation)
+BTN2     → GPIO 17 (Matrix animation)
+BTN3     → GPIO 18 (Mode)
 ```
 
 ---
@@ -268,6 +289,7 @@ You can change the mDNS device name directly from the web interface:
 
 **Configuration saved automatically** in non-volatile memory (NVS).
 
+
 ### 5.3. Web Interface Features
 
 - **Web Interface**
@@ -279,6 +301,7 @@ You can change the mDNS device name directly from the web interface:
    - All settings (animation, mode, display mode, durations, device name) are persistent and restored at boot
    - SSID, IP, and mDNS name always visible
    - Save/Restore/Erase configuration actions
+   - **OLED display**: IP address is now shown in smaller font, and the current mode is displayed at the bottom of the screen (v5.3.1)
 
 ---
 

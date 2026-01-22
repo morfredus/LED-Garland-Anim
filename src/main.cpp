@@ -30,8 +30,9 @@
 WiFiMulti wifiMulti;
 WebServer server(80);
 OneButton btnBoot(BUTTON_BOOT, true);    // Bouton 0 : Reboot en appui long
-OneButton btn1(BUTTON_1, true);          // Bouton 1 : Changement animation
-OneButton btn2(BUTTON_2, true);          // Bouton 2 : Changement mode
+OneButton btn1(BUTTON_1, true);          // Bouton 1 : Changement animation guirlande
+OneButton btn2(BUTTON_2, true);          // Bouton 2 : Changement animation matrice
+OneButton btn3(BUTTON_3, true);          // Bouton 3 : Changement de mode
 
 // Affichage OLED
 #include "display_oled.h"
@@ -56,20 +57,26 @@ void handleBootLongPress() {
     ESP.restart();
 }
 
-// Bouton 1 : Changement d'animation
+// Bouton 1 : Changement d'animation guirlande
 void handleBtn1Click() {
     nextGarlandAnimation();
-    LOG_PRINTF(">> Bouton 1 : Animation changée -> %s\n", getGarlandAnimationName());
-
+    LOG_PRINTF(">> Bouton 1 : Animation guirlande changée -> %s\n", getGarlandAnimationName());
     String mDnsStr = String(getDeviceName()) + ".local";
     displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName(), mDnsStr.c_str());
 }
 
-// Bouton 2 : Changement de mode
+// Bouton 2 : Changement d'animation matrice
 void handleBtn2Click() {
-    nextGarlandMode();
-    LOG_PRINTF(">> Bouton 2 : Mode changé -> %s\n", getGarlandModeName());
+    nextMatrix8x8Animation();
+    LOG_PRINTF(">> Bouton 2 : Animation matrice changée -> %s\n", getMatrix8x8AnimationName());
+    String mDnsStr = String(getDeviceName()) + ".local";
+    displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName(), mDnsStr.c_str());
+}
 
+// Bouton 3 : Changement de mode
+void handleBtn3Click() {
+    nextGarlandMode();
+    LOG_PRINTF(">> Bouton 3 : Mode changé -> %s\n", getGarlandModeName());
     String mDnsStr = String(getDeviceName()) + ".local";
     displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName(), mDnsStr.c_str());
 }
@@ -151,6 +158,7 @@ void setup() {
 
     btn1.attachClick(handleBtn1Click);
     btn2.attachClick(handleBtn2Click);
+    btn3.attachClick(handleBtn3Click);
 
     // Sur HW-675 (ESP32-C3), utiliser le bouton BOOT (GPIO9) pour changer de mode en simple clic
     // et conserver l'appui long pour reboot.
@@ -212,6 +220,7 @@ void loop() {
     btnBoot.tick();
     btn1.tick();
     btn2.tick();
+    btn3.tick();
 
     // 2. Mise à jour de l'animation de guirlande
     updateGarland();

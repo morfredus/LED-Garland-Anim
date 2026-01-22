@@ -1,3 +1,12 @@
+# Pin Connection Guide - LED-Garland-Anim v5.3.1
+
+*This document is valid from version 5.3.1.*
+
+## Supported Platforms
+- ESP32 Classic (IdeaSpark/DevKitC)
+- ESP32 Wroom (NEW)
+- ESP32-C3 HW-675 (OLED)
+- ESP32-S3 Mini (esp32s3_mini)
 
 
 # Pin Connection Guide - LED-Garland-Anim v5.3.0
@@ -20,18 +29,14 @@
 ---
 
 ## OLED SSD1306 128x64 Display (JMD0.96D-1)
-
-| Signal | ESP32 Pin | OLED Pin |
 |--------|-----------|----------|
 | SDA    | 4         | SDA      |
 | SCL    | 5         | SCL      |
-
 The OLED SSD1306 128x64 display connects via I2C. Default pins are:
 - **SDA**: GPIO 4
 - **SCL**: GPIO 5
 
 Power the display with 3.3V or 5V depending on your module. Default I2C address is usually `0x3C`.
-
 ---
 
 ## Other Peripherals
@@ -58,7 +63,6 @@ ESP32 Board         OLED SSD1306 128x64
 
 ```
 ESP32 Board         WS2812B 8x8 Matrix
-┌─────────┐        ┌──────────┐
 │ GPIO 27 ├───────►│ DIN      │
 │   5V    ├───────►│ VCC      │ (External power supply recommended)
 │   GND   ├───────►│ GND      │

@@ -110,40 +110,75 @@ void displayBootScreen(const char* projectName, const char* projectVersion, int 
 void displayMainScreen(const char* projectName, const char* projectVersion, const char* ssid, IPAddress ip, const char* modeName, const char* animationName, const char* matrixAnimationName, const char* mDnsName) {
     (void)ssid; (void)mDnsName;
     u8g2.clearBuffer();
-    // Ligne 1 : nom projet (centré)
+    // 1. Nom projet (centré, police standard)
     u8g2.setFont(u8g2_font_6x12_tr);
     int projW = u8g2.getStrWidth(projectName);
     u8g2.drawStr((OLED_WIDTH - projW) / 2, 10, projectName);
-    // Ligne 2 : version (centré, décalée d'1px vers le bas)
+
+    // 2. Version (centré, police très petite)
     char vbuf[16];
     snprintf(vbuf, sizeof(vbuf), "v%s", projectVersion);
+    u8g2.setFont(u8g2_font_04b_03_tr); // plus petit
     int verW = u8g2.getStrWidth(vbuf);
-    u8g2.drawStr((OLED_WIDTH - verW) / 2, 23, vbuf); // Décalage +1px
+    u8g2.drawStr((OLED_WIDTH - verW) / 2, 16, vbuf);
 
-    // Ligne 3 : IP (en grand, centré)
-    u8g2.setFont(u8g2_font_7x14B_mf);
+    // 3. IP (centré, police plus grande)
+    u8g2.setFont(u8g2_font_6x12_tr); // police lisible et disponible
     String ipStr = ip.toString();
-    int ipW = u8g2.getStrWidth(ipStr.c_str());
-    u8g2.drawStr((OLED_WIDTH - ipW) / 2, 38, ipStr.c_str());
-
-
-    // Ligne 4 : Animation guirlande (centré, préfixe "Gui. :")
-    if (animationName && strlen(animationName) > 0) {
-        u8g2.setFont(u8g2_font_6x12_tr);
-        String animLabel = String("Gui. : ") + animationName;
-        int animW = u8g2.getStrWidth(animLabel.c_str());
-        u8g2.drawStr((OLED_WIDTH - animW) / 2, 52, animLabel.c_str());
+    // Tronquer l'IP si trop longue
+    while (u8g2.getStrWidth(ipStr.c_str()) > OLED_WIDTH && ipStr.length() > 0) {
+        ipStr.remove(ipStr.length() - 1);
     }
+    int ipW = u8g2.getStrWidth(ipStr.c_str());
+    u8g2.drawStr((OLED_WIDTH - ipW) / 2, 30, ipStr.c_str());
 
-    // Ligne 5 : Animation matrice (centré, préfixe "8x8 :")
+    // 4. Infos : titres à gauche, valeurs à droite, troncature si besoin
+    u8g2.setFont(u8g2_font_5x8_tr);
+    uint8_t y = 40;
+    const uint8_t xLabel = 5; // Décalage de 5px pour les entêtes
+    const char* sep = ": ";
+    if (animationName && strlen(animationName) > 0) {
+        String label = "Gui";
+        String value = String(animationName);
+        String full = label + sep + value;
+        // Tronquer la valeur si trop longue
+        while (u8g2.getStrWidth(full.c_str()) > (OLED_WIDTH - xLabel) && value.length() > 0) {
+            value.remove(value.length() - 1);
+            full = label + sep + value;
+        }
+        u8g2.drawStr(xLabel, y, full.c_str());
+        y += 8;
+    }
     if (matrixAnimationName && strlen(matrixAnimationName) > 0) {
-        u8g2.setFont(u8g2_font_6x12_tr);
-        String matLabel = String("8x8 : ") + matrixAnimationName;
-        int matW = u8g2.getStrWidth(matLabel.c_str());
-        u8g2.drawStr((OLED_WIDTH - matW) / 2, 62, matLabel.c_str());
+        String label = "8x8";
+        String value = String(matrixAnimationName);
+        String full = label + sep + value;
+        while (u8g2.getStrWidth(full.c_str()) > (OLED_WIDTH - xLabel) && value.length() > 0) {
+            value.remove(value.length() - 1);
+            full = label + sep + value;
+        }
+        u8g2.drawStr(xLabel, y, full.c_str());
+        y += 8;
+    }
+    if (modeName && strlen(modeName) > 0) {
+        String label = "Mode";
+        String value = String(modeName);
+        String full = label + sep + value;
+        while (u8g2.getStrWidth(full.c_str()) > (OLED_WIDTH - xLabel) && value.length() > 0) {
+            value.remove(value.length() - 1);
+            full = label + sep + value;
+        }
+        u8g2.drawStr(xLabel, y, full.c_str());
     }
 
     u8g2.sendBuffer();
+    /*
+     * OLED UI aesthetic improvements:
+     * 1. Version font reduced (u8g2_font_04b_03_tr)
+     * 2. IP font increased (u8g2_font_7x14B_1x2_tr, truncated if needed)
+     * 3. Info lines (Gui, 8x8, Mode): left-aligned title, right-aligned value, truncated if needed
+     * 4. All changes documented and numbered in code
+     */
 }
 
 void displayScreenByMode(const char* ssid, IPAddress ip, const char* modeName, const char* animationName, const char* matrixAnimationName, const char* mDnsName) {

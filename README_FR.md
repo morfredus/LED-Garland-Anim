@@ -27,9 +27,10 @@ Vous pouvez choisir la méthode de téléversement (USB ou OTA) à chaque upload
 ---
 # LED-Garland-Anim
 
-**Version : 5.2.0** (2026-01-07)
+**Version : 5.3.1** (2026-01-07)
 
 Contrôleur d'animation de guirlande LED bi-directionnelle et matrice NeoPixel 8x8 pour **ESP32 Classic** (IdeaSpark/DevKitC) avec écran ST7789 **et ESP32-C3 HW-675** avec OLED 0.42" (72×40), auto-détection PIR/RCWL-0516, **interface web modernisée avec sauvegarde instantanée**, layout responsive, mises à jour AJAX sans flash, mises à jour OTA via web, **support mDNS pour un accès facile via nom unique**, boutons physiques, 11 animations de guirlande, 39 animations festives pour matrice (Noël, Nouvel An, Pâques, Feu de Camp, Radar), contrôle double indépendant, modes intelligents, configuration persistante, animations de démarrage automatiques.
+Contrôleur d'animation de guirlande LED bi-directionnelle et matrice NeoPixel 8x8 pour **ESP32 Classic** (IdeaSpark/DevKitC), **ESP32 Wroom**, **ESP32-C3 HW-675** (OLED 0.42" 72×40), **ESP32-S3 Mini**, auto-détection PIR/RCWL-0516, **interface web modernisée avec sauvegarde instantanée**, layout responsive, mises à jour AJAX sans flash, mises à jour OTA via web, **support mDNS pour un accès facile via nom unique**, boutons physiques (3 boutons), 11 animations de guirlande, 39 animations festives pour matrice (Noël, Nouvel An, Pâques, Feu de Camp, Radar), contrôle double indépendant, modes intelligents, configuration persistante, animations de démarrage automatiques.
 
 ## ✨ Nouveautés v5.2.0
 
@@ -107,8 +108,12 @@ Contrôleur d'animation de guirlande LED bi-directionnelle et matrice NeoPixel 8
 
 ## Plateformes matérielles supportées
 
+## Plateformes matérielles supportées
+
 - **ESP32 Classic (IdeaSpark/DevKitC)**
+- **ESP32 Wroom** (NOUVEAU)
 - **ESP32-C3 HW-675** (avec OLED 0.42" 72×40)
+- **ESP32-S3 Mini** (esp32s3_mini)
 - **ESP32-S3 Mini** (esp32s3_mini)
 
 #### Composants requis (toutes plateformes)
@@ -124,11 +129,41 @@ Contrôleur d'animation de guirlande LED bi-directionnelle et matrice NeoPixel 8
 ## 1. Matériel requis
 
 ### ESP32 Classic (IdeaSpark/DevKitC)
+### ESP32 Classic (IdeaSpark/DevKitC)
 - **Carte ESP32 Classic (IdeaSpark/DevKitC)**
 - **Module TB6612FNG** (double pont H)
 - **Guirlande LED 2 fils** (LEDs en anti-parallèle, ~50 LEDs)
 - **Matrice NeoPixel 8x8 WS2812B-64** (64 LEDs RGB adressables)
 - **Capteur de mouvement** : PIR HC-SR501 ou RCWL-0516 (auto-détection)
+- **Écran TFT ST7789** (optionnel, intégré sur IdeaSpark)
+- **Alimentation adaptée** pour la guirlande et la matrice (5V recommandé pour NeoPixels)
+
+### ESP32 Wroom (NOUVEAU en v5.3.1)
+- **Carte ESP32 Wroom**
+- **Module TB6612FNG** (double pont H)
+- **Guirlande LED 2 fils** (LEDs en anti-parallèle, ~50 LEDs)
+- **Matrice NeoPixel 8x8 WS2812B-64** (64 LEDs RGB adressables)
+- **Capteur de mouvement** : PIR HC-SR501 ou RCWL-0516 (auto-détection)
+- **Écran TFT ST7789** (optionnel)
+- **Alimentation adaptée** pour la guirlande et la matrice (5V recommandé pour NeoPixels)
+
+### ESP32-C3 HW-675
+- **ESP32-C3-DevKitM-1 avec module OLED HW-675**
+- **Module TB6612FNG** (double pont H)
+- **Guirlande LED 2 fils** (LEDs en anti-parallèle, ~50 LEDs)
+- **Matrice NeoPixel 8x8 WS2812B-64** (64 LEDs RGB adressables)
+- **Écran OLED 0.42" (72×40 px)** - Intégré sur carte HW-675 via I2C
+- **Capteur de mouvement** : PIR HC-SR501 ou RCWL-0516 (auto-détection) *(optionnel)*
+- **Alimentation adaptée** pour la guirlande et la matrice (5V recommandé pour NeoPixels)
+
+### ESP32-S3 Mini
+- **Carte ESP32-S3 Mini**
+- **Module TB6612FNG** (double pont H)
+- **Guirlande LED 2 fils** (LEDs en anti-parallèle, ~50 LEDs)
+- **Matrice NeoPixel 8x8 WS2812B-64** (64 LEDs RGB adressables)
+- **Écran utilisateur**
+- **Capteur de mouvement** : PIR HC-SR501 ou RCWL-0516 (auto-détection)
+- **Alimentation adaptée** pour la guirlande et la matrice (5V recommandé pour NeoPixels)
 - **Écran TFT ST7789** (optionnel, intégré sur IdeaSpark)
 - **Alimentation adaptée** pour la guirlande et la matrice (5V recommandé pour NeoPixels)
 
@@ -142,6 +177,12 @@ Contrôleur d'animation de guirlande LED bi-directionnelle et matrice NeoPixel 8
 - **Alimentation adaptée** pour la guirlande et la matrice (5V recommandé pour NeoPixels)
 
 ### Schéma des pins principaux (ESP32 Classic)
+```
+TB6612FNG (Guirlande) :
+
+### Schéma des pins principaux
+
+#### ESP32 Classic (IdeaSpark/DevKitC)
 ```
 TB6612FNG (Guirlande) :
   PWMA  → GPIO 13
@@ -159,9 +200,31 @@ LCD_RST  → GPIO 33
 LCD_BLK  → GPIO 32
 BTN1     → GPIO 16
 BTN2     → GPIO 17
+BTN3     → GPIO 4
 ```
 
-### Schéma des pins principaux (ESP32-C3 HW-675)
+#### ESP32 Wroom
+```
+TB6612FNG (Guirlande) :
+  PWMA  → GPIO 13
+  AIN1  → GPIO 26
+  AIN2  → GPIO 25
+  STBY  → GPIO 15
+Matrice NeoPixel 8x8 :
+  DATA  → GPIO 34
+MOTION_SENSOR_PIN (PIR/RCWL-0516) → GPIO 35
+LCD_MOSI → GPIO 23
+LCD_SCLK → GPIO 18
+LCD_CS   → GPIO 5
+LCD_DC   → GPIO 27
+LCD_RST  → GPIO 33
+LCD_BLK  → GPIO 32
+BTN1     → GPIO 16
+BTN2     → GPIO 17
+BTN3     → GPIO 4
+```
+
+#### ESP32-C3 HW-675
 ```
 TB6612FNG (Guirlande) :
   PWMA  → GPIO 0
@@ -176,6 +239,27 @@ OLED I2C :
   ADDR  → 0x3C
 BOUTON BOOT (Mode) → GPIO 9
 MOTION_SENSOR_PIN  → GPIO 10 (optionnel)
+```
+
+#### ESP32-S3 Mini
+```
+TB6612FNG (Guirlande) :
+  PWMA  → GPIO 13
+  AIN1  → GPIO 26
+  AIN2  → GPIO 25
+  STBY  → GPIO 15
+Matrice NeoPixel 8x8 :
+  DATA  → GPIO 34
+MOTION_SENSOR_PIN (PIR/RCWL-0516) → GPIO 35
+LCD_MOSI → GPIO 23
+LCD_SCLK → GPIO 18
+LCD_CS   → GPIO 5
+LCD_DC   → GPIO 27
+LCD_RST  → GPIO 33
+LCD_BLK  → GPIO 32
+BTN1     → GPIO 16
+BTN2     → GPIO 17
+BTN3     → GPIO 4
 ```
 
 ---
@@ -313,8 +397,11 @@ Vous pouvez changer le nom mDNS directement depuis l'interface web :
 
 ### Contrôles physiques
 - **Bouton 1** : Animation suivante / mode auto
-- **Bouton 2** : Changement de mode
-- **Bouton BOOT** : Redémarrage (appui long)
+- **Bouton 2** : Animation matrice suivante
+- **Bouton 3** : Changement de mode
+- **Bouton BOOT** (si présent) : Redémarrage (appui long)
+
+**Note OLED** : Sur les écrans OLED, l’adresse IP est affichée en plus petit et la ligne du bas indique le mode actif (ex : « Mode : Auto »).
 
 
 ## 7. Mises à jour OTA (Over-the-Air)
@@ -406,7 +493,7 @@ Dans `include/garland_control.h` :
 
 ## 11. Versions
 
-**Version Actuelle : v5.1.0** (2026-01-06)
+**Version Actuelle : v5.3.1** (2026-01-07)
 Voir [CHANGELOG_FR.md](./CHANGELOG_FR.md)
 
 ---

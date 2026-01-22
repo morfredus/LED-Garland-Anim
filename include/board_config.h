@@ -61,8 +61,9 @@
 // ---------------------------------------------------------------------------
 // Boutons utilisateur externes
 // ---------------------------------------------------------------------------
-#define BUTTON_1      8      ///< Bouton 1 (GPIO8)
-#define BUTTON_2      9      ///< Bouton 2 (GPIO9)
+#define BUTTON_1      8      ///< Bouton 1 (GPIO8) : Changement animation guirlande
+#define BUTTON_2      9      ///< Bouton 2 (GPIO9) : Changement animation matrice
+#define BUTTON_3     10      ///< Bouton 3 (GPIO10) : Changement de mode
 
 // ---------------------------------------------------------------------------
 // Matrice NeoPixel 8x8 WS2812B-64
@@ -70,6 +71,41 @@
 #define MATRIX8X8_PIN        7    ///< Data pin NeoPixel (GPIO7)
 #define MATRIX8X8_NUMPIXELS  64
 
+
+// --- ESP32 Wroom DevKit V1 ---
+#elif defined(TARGET_ESP32_WROOM)
+// ============================================================================
+// Configuration matérielle pour ESP32 Wroom DevKit V1
+// ============================================================================
+#define BOARD_NAME "ESP32 Wroom DevKit V1"
+
+// Bouton et LED système
+#define BUTTON_BOOT    0   ///< Bouton BOOT intégré (GPIO 0)
+#define LED_BUILTIN    2   ///< LED intégrée (GPIO 2)
+
+// Bus I2C (périphériques externes)
+#define I2C_SDA  21
+#define I2C_SCL  22
+
+// Module TB6612FNG (Pilotage Guirlande)
+#define TB6612_PWMA  12   ///< PWM pour intensité
+#define TB6612_AIN1  25   ///< Direction A (Pin 1)
+#define TB6612_AIN2  33   ///< Direction A (Pin 2)
+#define TB6612_STBY  14   ///< Standby (HIGH = actif)
+
+// Capteur de mouvement (PIR ou RCWL-0516)
+#define MOTION_SENSOR_PIN   35   ///< Entrée capteur de mouvement (PIR ou RCWL-0516)
+
+// Boutons utilisateur externes
+#define BUTTON_1     16   ///< Bouton 1 : Changement animation guirlande
+#define BUTTON_2     17   ///< Bouton 2 : Changement animation matrice
+#define BUTTON_3     18   ///< Bouton 3 : Changement de mode
+
+// Matrice NeoPixel 8x8 WS2812B-64
+#define MATRIX8X8_PIN        27   ///< Data pin for 8x8 NeoPixel matrix (WS2812B-64)
+#define MATRIX8X8_NUMPIXELS  64   ///< Number of pixels in 8x8 matrix
+
+// --- Fin ESP32 Wroom ---
 
 #else
 // ============================================================================
@@ -97,8 +133,9 @@
 #define MOTION_SENSOR_PIN   35   ///< Entrée capteur de mouvement (PIR ou RCWL-0516)
 
 // Boutons utilisateur externes
-#define BUTTON_1     16   ///< Bouton 1 (ex: Changement animation)
-#define BUTTON_2     17   ///< Bouton 2 (ex: Changement mode)
+#define BUTTON_1     16   ///< Bouton 1 : Changement animation guirlande
+#define BUTTON_2     17   ///< Bouton 2 : Changement animation matrice
+#define BUTTON_3     18   ///< Bouton 3 : Changement de mode
 
 // Matrice NeoPixel 8x8 WS2812B-64
 #define MATRIX8X8_PIN        27   ///< Data pin for 8x8 NeoPixel matrix (WS2812B-64)
