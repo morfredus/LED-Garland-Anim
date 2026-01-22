@@ -60,7 +60,7 @@ void handleBootLongPress() {
 // Bouton 1 : Changement d'animation guirlande
 void handleBtn1Click() {
     nextGarlandAnimation();
-    LOG_PRINTF(">> Bouton 1 : Animation guirlande changée -> %s\n", getGarlandAnimationName());
+    LOG_PRINTF("[CHANGE] - Garland - %s (button)\n", getGarlandAnimationName());
     String mDnsStr = String(getDeviceName()) + ".local";
     displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName(), mDnsStr.c_str());
 }
@@ -68,7 +68,7 @@ void handleBtn1Click() {
 // Bouton 2 : Changement d'animation matrice
 void handleBtn2Click() {
     nextMatrix8x8Animation();
-    LOG_PRINTF(">> Bouton 2 : Animation matrice changée -> %s\n", getMatrix8x8AnimationName());
+    LOG_PRINTF("[CHANGE] - Matrix - %s (button)\n", getMatrix8x8AnimationName());
     String mDnsStr = String(getDeviceName()) + ".local";
     displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName(), mDnsStr.c_str());
 }
@@ -76,7 +76,7 @@ void handleBtn2Click() {
 // Bouton 3 : Changement de mode
 void handleBtn3Click() {
     nextGarlandMode();
-    LOG_PRINTF(">> Bouton 3 : Mode changé -> %s\n", getGarlandModeName());
+    LOG_PRINTF("[CHANGE] - Mode - %s (button)\n", getGarlandModeName());
     String mDnsStr = String(getDeviceName()) + ".local";
     displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName(), mDnsStr.c_str());
 }

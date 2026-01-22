@@ -1901,7 +1901,7 @@ void loadMatrix8x8Settings() {
     uint8_t anim = (uint8_t)MATRIX_ANIM_STAR;
     if (nvs_get_u8(handle, "animation", &anim) == ESP_OK) {
         currentAnimation = (Matrix8x8Animation)anim;
-        LOG_PRINTF("Matrix animation restored: %s\n", animationNames[currentAnimation]);
+        LOG_PRINTF("[RESTORE] - Matrix - %s\n", animationNames[currentAnimation]);
     }
 
     // Load brightness
@@ -2028,7 +2028,7 @@ void updateMatrix8x8() {
             activeAnimation = (Matrix8x8Animation)nextAnim;
             animationStartTime = millis();
             autoModeChangeTime = millis();
-            LOG_PRINTF("Auto Mode: Switched to %s (interval: %lu ms)\n", animationNames[activeAnimation], interval);
+            LOG_PRINTF("[AUTO] - Matrix - %s (%lu ms)\n", animationNames[activeAnimation], interval);
         }
     }
 
@@ -2179,7 +2179,7 @@ void setMatrix8x8Animation(Matrix8x8Animation animation) {
         activeAnimation = MATRIX_ANIM_STAR;  // Start with first real animation
         autoModeChangeTime = millis();
         matrixEnabled = true;
-        LOG_PRINTF("Auto Mode activated: Starting with %s\n", animationNames[activeAnimation]);
+        LOG_PRINTF("[AUTO] - Matrix - %s (auto mode started)\n", animationNames[activeAnimation]);
     } else {
         // Specific animation selected
         autoModeActive = false;
@@ -2190,7 +2190,7 @@ void setMatrix8x8Animation(Matrix8x8Animation animation) {
         matrix.show();
     }
 
-    LOG_PRINTF("Matrix animation changed: %s\n", animationNames[animation]);
+    LOG_PRINTF("[CHANGE] - Matrix - %s\n", animationNames[animation]);
     saveMatrix8x8Settings();
 }
 

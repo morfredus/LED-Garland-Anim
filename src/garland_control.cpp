@@ -233,7 +233,7 @@ void loadGarlandSettings() {
         savedAnimation = (GarlandAnimation)anim;
         currentAnimation = savedAnimation;
         activeAnimation = currentAnimation;
-        LOG_PRINTF("Animation restaurée: %s\n", animationNames[currentAnimation]);
+        LOG_PRINTF("[RESTORE] - Garland - %s\n", animationNames[currentAnimation]);
     }
     
     // Charger l'intervalle AUTO
@@ -587,10 +587,9 @@ void setupGarland() {
     // Forcer le mode permanent pendant l'intro pour que l'animation démarre immédiatement
     currentMode = MODE_PERMANENT;
 
-    LOG_PRINTF("✓ Guirlande initialisée - Animation d'intro lancée (%s) pour %lu ms\n",
-               animationNames[activeAnimation], INTRO_ANIMATION_DURATION);
-    LOG_PRINTF("  Animation cible après intro: %s\n", animationNames[savedAnimation]);
-    LOG_PRINTF("  Mode cible après intro: %s\n", modeNames[savedMode]);
+    LOG_PRINTF("[INTRO] - Garland - %s (%lu ms)\n", animationNames[activeAnimation], INTRO_ANIMATION_DURATION);
+    LOG_PRINTF("[INTRO] - Garland - Next: %s\n", animationNames[savedAnimation]);
+    LOG_PRINTF("[INTRO] - Mode - Next: %s\n", modeNames[savedMode]);
 }
 
 void updateGarland() {
@@ -627,8 +626,7 @@ void updateGarland() {
                 motionDetectedTime = 0 - motionTriggerDurationMs - 1000;
             }
 
-            LOG_PRINTF("✓ Animation d'intro terminée - Bascule vers %s / %s\n",
-                       animationNames[currentAnimation], modeNames[currentMode]);
+            LOG_PRINTF("[INTRO-END] - Garland - %s | Mode: %s\n", animationNames[currentAnimation], modeNames[currentMode]);
         }
     }
 
@@ -747,12 +745,12 @@ void setGarlandAnimation(GarlandAnimation animation) {
         autoModeActive = true;
         activeAnimation = ANIM_FADE_ALTERNATE;  // Première animation
         animationStartTime = millis();
-        LOG_PRINTF("Mode Auto activé: Animation %s\n", animationNames[ANIM_FADE_ALTERNATE]);
+        LOG_PRINTF("[AUTO] - Garland - %s (auto mode started)\n", animationNames[ANIM_FADE_ALTERNATE]);
     } else {
         autoModeActive = false;  // Désactiver le mode AUTO
         activeAnimation = animation;  // Animation active = animation sélectionnée
         animationStartTime = millis();
-        LOG_PRINTF("Animation changée: %s\n", animationNames[animation]);
+        LOG_PRINTF("[CHANGE] - Garland - %s\n", animationNames[animation]);
     }
     // Sauvegarder automatiquement
     saveGarlandSettings();

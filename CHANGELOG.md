@@ -1803,3 +1803,12 @@ This release represents a complete platform unification focusing exclusively on 
 - 🔧 **Miscellaneous Bugs** :
   - Fixed various minor bugs and issues reported by early users
   - Improved stability and performance of the garland system
+# [5.3.3] - 2026-01-23
+
+## 🇬🇧 Codebase fully English-only (except *_FR.md)
+
+- All user-facing and log messages in the codebase are now in English only (except *_FR.md documentation files).
+- All web server responses, logs, and comments in the code are now English for full internationalization and maintainability.
+- This change enforces a strict English-only policy for all code and runtime messages.
+
+---

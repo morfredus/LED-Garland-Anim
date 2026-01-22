@@ -32,12 +32,12 @@ void handleRoot() {
         cpuFreq
     );
     server.send(200, "text/html", html);
-    LOG_PRINTLN("Page web servie");
+    LOG_PRINTLN("Web page served");
 }
 
 void handleReboot() {
-    server.send(200, "text/plain", "Redémarrage en cours...");
-    LOG_PRINTLN("Redémarrage demandé via web");
+    server.send(200, "text/plain", "Rebooting in progress...");
+    LOG_PRINTLN("Reboot requested via web");
     delay(1000);
     ESP.restart();
 
@@ -50,12 +50,12 @@ void handleSetAnimation() {
             setGarlandAnimation((GarlandAnimation)animId);
             String mDnsStr = String(getDeviceName()) + ".local";
             displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName(), mDnsStr.c_str());
-            server.send(200, "text/plain", "Animation changée");
+            server.send(200, "text/plain", "Animation changed");
         } else {
-            server.send(400, "text/plain", "ID animation invalide");
+            server.send(400, "text/plain", "Invalid animation ID");
         }
     } else {
-        server.send(400, "text/plain", "Paramètre manquant");
+        server.send(400, "text/plain", "Missing parameter");
     }
 }
 
@@ -66,12 +66,12 @@ void handleSetMode() {
             setGarlandMode((GarlandMode)modeId);
             String mDnsStr = String(getDeviceName()) + ".local";
             displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName(), mDnsStr.c_str());
-            server.send(200, "text/plain", "Mode changé");
+            server.send(200, "text/plain", "Mode changed");
         } else {
-            server.send(400, "text/plain", "ID mode invalide");
+            server.send(400, "text/plain", "Invalid mode ID");
         }
     } else {
-        server.send(400, "text/plain", "Paramètre manquant");
+        server.send(400, "text/plain", "Missing parameter");
     }
 }
 
@@ -102,7 +102,7 @@ void handleSetAutoInterval() {
         setAutoAnimationIntervalMs(val);
         server.send(200, "text/plain", "Auto interval updated");
     } else {
-        server.send(400, "text/plain", "Paramètre manquant");
+        server.send(400, "text/plain", "Missing parameter");
     }
 }
 
@@ -112,7 +112,7 @@ void handleSetMotionDuration() {
         setMotionTriggerDurationMs(val);
         server.send(200, "text/plain", "Motion duration updated");
     } else {
-        server.send(400, "text/plain", "Paramètre manquant");
+        server.send(400, "text/plain", "Missing parameter");
     }
 }
 
@@ -122,26 +122,26 @@ void handleSetMatrixInterval() {
         setMatrix8x8AnimationIntervalMs(val);
         server.send(200, "text/plain", "Matrix animation interval updated");
     } else {
-        server.send(400, "text/plain", "Paramètre manquant");
+        server.send(400, "text/plain", "Missing parameter");
     }
 }
 
 void handleSaveSettings() {
     saveGarlandSettings();
     saveMatrix8x8Settings();
-    server.send(200, "text/plain", "Paramètres sauvegardés (guirlande + matrice)");
+    server.send(200, "text/plain", "Settings saved (garland + matrix)");
 }
 
 void handleLoadSettings() {
     loadGarlandSettings();
     loadMatrix8x8Settings();
-    server.send(200, "text/plain", "Paramètres rechargés (guirlande + matrice)");
+    server.send(200, "text/plain", "Settings reloaded (garland + matrix)");
 }
 
 void handleEraseSettings() {
     nvs_flash_erase();
     nvs_flash_init();
-    server.send(200, "text/plain", "Sauvegarde effacée");
+    server.send(200, "text/plain", "Settings erased");
 }
 
 void handleSetMatrix8x8Animation() {
@@ -151,7 +151,7 @@ void handleSetMatrix8x8Animation() {
         LOG_PRINTF("[WEB] Animation ID requested: %d\n", animId);
         if (animId >= 0 && animId < MATRIX_ANIM_COUNT) {
             setMatrix8x8Animation((Matrix8x8Animation)animId);
-            // Mise à jour de l'affichage OLED
+            // OLED display update
             String mDnsStr = String(getDeviceName()) + ".local";
             displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName(), mDnsStr.c_str());
             server.send(200, "text/plain", "Matrix animation changed");
@@ -194,7 +194,7 @@ void handleOTAUpload() {
     HTTPUpload& upload = server.upload();
     if (upload.status == UPLOAD_FILE_START) {
         LOG_PRINTF("[OTA] Update Start: %s\n", upload.filename.c_str());
-        // Affichage OLED : message de début de mise à jour (optionnel)
+        // OLED display: update start message (optional)
         if (!Update.begin(UPDATE_SIZE_UNKNOWN)) {
             LOG_PRINTLN("[OTA] Error: Not enough space");
             Update.printError(Serial);
@@ -210,18 +210,18 @@ void handleOTAUpload() {
             if (total > 0) {
                 int percent = (progress * 100) / total;
                 LOG_PRINTF("[OTA] Progress: %d%%\n", percent);
-                // Affichage OLED : barre de progression OTA (optionnel)
+                // OLED display: OTA progress bar (optional)
             }
         }
     }
     else if (upload.status == UPLOAD_FILE_END) {
         if (Update.end(true)) {
             LOG_PRINTF("[OTA] Update Success: %u bytes\n", upload.totalSize);
-            // Affichage OLED : succès OTA (optionnel)
+            // OLED display: OTA success (optional)
         } else {
             LOG_PRINTLN("[OTA] Update Failed");
             Update.printError(Serial);
-            // Affichage OLED : échec OTA (optionnel)
+            // OLED display: OTA failure (optional)
         }
     }
 }
@@ -241,7 +241,7 @@ void handleOTAUploadComplete() {
 }
 
 void handleNotFound() {
-    server.send(404, "text/plain", "Page non trouvée");
+    server.send(404, "text/plain", "Page not found");
 }
 
 void handleGetDeviceName() {
@@ -253,7 +253,7 @@ void handleGetDeviceName() {
 
 void handleSetDeviceName() {
     if (!server.hasArg("name")) {
-        server.send(400, "text/plain", "Paramètre 'name' manquant");
+        server.send(400, "text/plain", "Missing 'name' parameter");
         return;
     }
     
@@ -264,14 +264,14 @@ void handleSetDeviceName() {
         MDNS.end();
         if (MDNS.begin(getDeviceName())) {
             MDNS.addService("http", "tcp", 80);
-            server.send(200, "text/plain", "Nom d'appareil mis à jour. Accessible via http://" + String(getDeviceName()) + ".local");
-            LOG_PRINTF("✓ mDNS redémarré avec le nouveau nom: %s.local\n", getDeviceName());
+            server.send(200, "text/plain", "Device name updated. Accessible at http://" + String(getDeviceName()) + ".local");
+            LOG_PRINTF("✓ mDNS restarted with new name: %s.local\n", getDeviceName());
         } else {
-            server.send(200, "text/plain", "Nom sauvegardé mais erreur mDNS. Redémarrage requis.");
-            LOG_PRINTLN("✗ Erreur lors du redémarrage mDNS");
+            server.send(200, "text/plain", "Name saved but mDNS error. Reboot required.");
+            LOG_PRINTLN("✗ Error during mDNS restart");
         }
     } else {
-        server.send(400, "text/plain", "Nom invalide. Utilisez uniquement des lettres, chiffres, tirets et underscores (max 32 caractères)");
+        server.send(400, "text/plain", "Invalid name. Use only letters, numbers, dashes and underscores (max 32 characters)");
     }
 }
 
@@ -301,25 +301,25 @@ void setupWebServer() {
     server.on("/update", HTTP_GET, handleOTAPage);
     server.on("/update", HTTP_POST, handleOTAUploadComplete, handleOTAUpload);
 
-    server.onNotFound([]() { server.send(404, "text/plain", "Page non trouvée"); });
+    server.onNotFound([]() { server.send(404, "text/plain", "Page not found"); });
     server.begin();
-    LOG_PRINTLN("Serveur web démarré sur http://" + WiFi.localIP().toString());
-    LOG_PRINTF("Accessible via mDNS : http://%s.local\n", getDeviceName());
+    LOG_PRINTLN("Web server started at http://" + WiFi.localIP().toString());
+    LOG_PRINTF("Accessible via mDNS: http://%s.local\n", getDeviceName());
 }
 
 void handleSetDisplayMode() {
     if (!server.hasArg("id")) {
-        server.send(400, "text/plain", "Paramètre 'id' manquant");
+        server.send(400, "text/plain", "Missing 'id' parameter");
         return;
     }
     int mode = server.arg("id").toInt();
     if (mode < 0 || mode >= DISPLAY_MODE_COUNT) {
-        server.send(400, "text/plain", "Valeur de mode invalide");
+        server.send(400, "text/plain", "Invalid mode value");
         return;
     }
     setDisplayMode((DisplayMode)mode);
     saveDisplayModeToNVS();
     String mDnsStr = String(getDeviceName()) + ".local";
     displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName(), mDnsStr.c_str());
-    server.send(200, "text/plain", "Mode d'affichage mis à jour");
+    server.send(200, "text/plain", "Display mode updated");
 }

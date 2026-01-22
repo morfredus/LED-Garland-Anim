@@ -1,8 +1,8 @@
 
 # LED-Garland-Anim
 
-**Version: 5.3.1** (2026-01-22)  
-*This documentation is valid from version 5.3.1.*
+**Version: 5.3.3** (2026-01-23)  
+*This documentation is valid from version 5.3.3.*
 
 
 Controller for bi-directional LED garland and 8x8 NeoPixel matrix animation on **ESP32 Classic** (IdeaSpark/DevKitC), **ESP32 Wroom (DevKit V1)**, **ESP32-C3 HW-675**, **ESP32-S3 Mini** — all platforms support **OLED SSD1306 (I2C)** display if connected (default SDA/SCL). PIR/RCWL-0516 auto-detection, **modern web interface with instant save**, responsive layout, flash-free AJAX updates, web-based OTA updates, **mDNS support for easy access via unique device name**, physical buttons (3 buttons), 11 garland animations, 39 festive matrix animations (Christmas, New Year, Easter, Campfire, Radar), dual independent control, smart modes, persistent configuration, automatic startup animations.
@@ -306,7 +306,7 @@ You can change the mDNS device name directly from the web interface:
    - All settings (animation, mode, display mode, durations, device name) are persistent and restored at boot
    - SSID, IP, and mDNS name always visible
    - Save/Restore/Erase configuration actions
-   - **OLED display**: IP address is now shown in smaller font, and the current mode is displayed at the bottom of the screen (v5.3.1)
+   - **OLED display**: IP address is now shown in smaller font, and the current mode is displayed at the bottom of the screen (v5.3.3)
 
 ---
 
@@ -646,3 +646,6 @@ Ce projet est libre d'utilisation pour projets personnels et éducatifs.
 ---
 
 **Projet Anim-Guirlande v0.1.0** - Animations de guirlande LED avec ESP32 🎄✨
+## 🌍 Internationalization & Language Policy
+
+As of version 5.3.3, all user-facing and log messages in the codebase are in English only (except *_FR.md documentation files). This ensures full internationalization and easier maintenance for all users and contributors. See the [CHANGELOG](CHANGELOG.md) for details.
