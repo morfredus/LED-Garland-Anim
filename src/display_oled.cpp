@@ -135,28 +135,40 @@ void displayMainScreen(const char* projectName, const char* projectVersion, cons
     // 4. Infos : titres à gauche, valeurs à droite, troncature si besoin
     u8g2.setFont(u8g2_font_5x8_tr);
     uint8_t y = 40;
+    const uint8_t xLabel = 5; // Décalage de 5px pour les entêtes
+    const char* sep = ": ";
     if (animationName && strlen(animationName) > 0) {
-        String anim = animationName;
-        while (u8g2.getStrWidth(anim.c_str()) > (OLED_WIDTH - 28) && anim.length() > 0) anim.remove(anim.length() - 1);
-        u8g2.drawStr(0, y, "Gui");
-        int animW = u8g2.getStrWidth(anim.c_str());
-        u8g2.drawStr(OLED_WIDTH - animW, y, anim.c_str());
+        String label = "Gui";
+        String value = String(animationName);
+        String full = label + sep + value;
+        // Tronquer la valeur si trop longue
+        while (u8g2.getStrWidth(full.c_str()) > (OLED_WIDTH - xLabel) && value.length() > 0) {
+            value.remove(value.length() - 1);
+            full = label + sep + value;
+        }
+        u8g2.drawStr(xLabel, y, full.c_str());
         y += 8;
     }
     if (matrixAnimationName && strlen(matrixAnimationName) > 0) {
-        String mat = matrixAnimationName;
-        while (u8g2.getStrWidth(mat.c_str()) > (OLED_WIDTH - 28) && mat.length() > 0) mat.remove(mat.length() - 1);
-        u8g2.drawStr(0, y, "8x8");
-        int matW = u8g2.getStrWidth(mat.c_str());
-        u8g2.drawStr(OLED_WIDTH - matW, y, mat.c_str());
+        String label = "8x8";
+        String value = String(matrixAnimationName);
+        String full = label + sep + value;
+        while (u8g2.getStrWidth(full.c_str()) > (OLED_WIDTH - xLabel) && value.length() > 0) {
+            value.remove(value.length() - 1);
+            full = label + sep + value;
+        }
+        u8g2.drawStr(xLabel, y, full.c_str());
         y += 8;
     }
     if (modeName && strlen(modeName) > 0) {
-        String mode = modeName;
-        while (u8g2.getStrWidth(mode.c_str()) > (OLED_WIDTH - 28) && mode.length() > 0) mode.remove(mode.length() - 1);
-        u8g2.drawStr(0, y, "Mode");
-        int modeW = u8g2.getStrWidth(mode.c_str());
-        u8g2.drawStr(OLED_WIDTH - modeW, y, mode.c_str());
+        String label = "Mode";
+        String value = String(modeName);
+        String full = label + sep + value;
+        while (u8g2.getStrWidth(full.c_str()) > (OLED_WIDTH - xLabel) && value.length() > 0) {
+            value.remove(value.length() - 1);
+            full = label + sep + value;
+        }
+        u8g2.drawStr(xLabel, y, full.c_str());
     }
 
     u8g2.sendBuffer();
