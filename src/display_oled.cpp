@@ -123,7 +123,7 @@ void displayMainScreen(const char* projectName, const char* projectVersion, cons
     u8g2.drawStr((OLED_WIDTH - verW) / 2, 16, vbuf);
 
     // 3. IP (centré, police plus grande)
-    u8g2.setFont(u8g2_font_7x14B_1x2_tr); // police large et lisible
+    u8g2.setFont(u8g2_font_6x12_tr); // police lisible et disponible
     String ipStr = ip.toString();
     // Tronquer l'IP si trop longue
     while (u8g2.getStrWidth(ipStr.c_str()) > OLED_WIDTH && ipStr.length() > 0) {
