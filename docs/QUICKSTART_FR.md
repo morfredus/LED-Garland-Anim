@@ -1,4 +1,12 @@
-# 🚀 Guide Rapide - LED-Garland-Anim v5.1.2
+
+# 🚀 Guide Rapide - LED-Garland-Anim v5.2.1
+
+*Ce document est valide à partir de la version 5.2.1.*
+
+## Plateformes supportées
+- ESP32 Classic (IdeaSpark/DevKitC)
+- ESP32-C3 HW-675 (OLED)
+- ESP32-S3 Mini (esp32s3_mini)
 
 **Objectif** : Faire fonctionner votre guirlande LED en 5 minutes !
 

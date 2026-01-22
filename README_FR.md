@@ -104,6 +104,23 @@ Contrôleur d'animation de guirlande LED bi-directionnelle et matrice NeoPixel 8
 
 ---
 
+
+## Plateformes matérielles supportées
+
+- **ESP32 Classic (IdeaSpark/DevKitC)**
+- **ESP32-C3 HW-675** (avec OLED 0.42" 72×40)
+- **ESP32-S3 Mini** (esp32s3_mini)
+
+#### Composants requis (toutes plateformes)
+- **Module TB6612FNG** (double pont H)
+- **Guirlande LED 2 fils** (LEDs en anti-parallèle, ~50 LEDs)
+- **Matrice NeoPixel 8x8 WS2812B-64** (64 LEDs RGB adressables)
+- **Capteur de mouvement** : PIR HC-SR501 ou RCWL-0516 (auto-détection)
+- **Écran** : ST7789 (Classic), OLED (HW-675), ou écran utilisateur pour S3 Mini
+- **Alimentation adaptée** pour la guirlande et la matrice (5V recommandé pour NeoPixels)
+
+*Ce document est valide à partir de la version 5.2.1.*
+
 ## 1. Matériel requis
 
 ### ESP32 Classic (IdeaSpark/DevKitC)

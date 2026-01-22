@@ -22,7 +22,7 @@
 #include "board_config.h"
 #include "secrets.h"
 #include "web_interface.h"
-#include "display.h"
+
 #include "garland_control.h"
 #include "matrix8x8_control.h"
 
@@ -33,6 +33,8 @@ OneButton btnBoot(BUTTON_BOOT, true);    // Bouton 0 : Reboot en appui long
 OneButton btn1(BUTTON_1, true);          // Bouton 1 : Changement animation
 OneButton btn2(BUTTON_2, true);          // Bouton 2 : Changement mode
 
+// Affichage OLED
+#include "display_oled.h"
 // --- VARIABLES GLOBALES ---
 unsigned long previousMillis = 0;
 const long interval = 1000;      // Vitesse du clignotement Heartbeat
@@ -48,13 +50,7 @@ const long displayUpdateInterval = 200;  // Mise à jour animation ST7789 toutes
 void handleBootLongPress() {
     LOG_PRINTLN(">> APPUI LONG BOOT détecté ! Redémarrage...");
 
-    #ifdef HAS_ST7789
-        display.fillScreen(COLOR_BLACK);
-        display.setTextSize(3);
-        display.setTextColor(COLOR_RED);
-        display.setCursor(20, 100);
-        display.println("REBOOT...");
-    #endif
+    // Affichage OLED : reboot (optionnel)
 
     delay(1000); // Pause pour afficher le message
     ESP.restart();
@@ -65,10 +61,8 @@ void handleBtn1Click() {
     nextGarlandAnimation();
     LOG_PRINTF(">> Bouton 1 : Animation changée -> %s\n", getGarlandAnimationName());
 
-    #ifdef HAS_ST7789
-        String mDnsStr = String(getDeviceName()) + ".local";
-        displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName(), mDnsStr.c_str());
-    #endif
+    String mDnsStr = String(getDeviceName()) + ".local";
+    displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName(), mDnsStr.c_str());
 }
 
 // Bouton 2 : Changement de mode
@@ -76,10 +70,8 @@ void handleBtn2Click() {
     nextGarlandMode();
     LOG_PRINTF(">> Bouton 2 : Mode changé -> %s\n", getGarlandModeName());
 
-    #ifdef HAS_ST7789
-        String mDnsStr = String(getDeviceName()) + ".local";
-        displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName(), mDnsStr.c_str());
-    #endif
+    String mDnsStr = String(getDeviceName()) + ".local";
+    displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName(), mDnsStr.c_str());
 }
 
 // --- FONCTIONS WIFI ---
@@ -123,14 +115,7 @@ void setupWifi() {
         delay(2000); // Pause pour laisser voir l'écran
     } else {
         LOG_PRINTLN(" Echec !");
-        // Afficher message d'échec sur l'écran
-        #ifdef HAS_ST7789
-            display.fillScreen(COLOR_BLACK);
-            display.setTextSize(2);
-            display.setTextColor(COLOR_RED);
-            display.setCursor(20, 100);
-            display.println("WiFi Failed!");
-        #endif
+        // Afficher message d'échec sur l'écran (optionnel, à personnaliser pour OLED)
     }
 }
 
@@ -173,7 +158,7 @@ void setup() {
         btnBoot.attachClick(handleBtn2Click);
     #endif
 
-    // Initialisation de l'affichage (ST7789 ou OLED selon la cible) AVANT WiFi pour afficher la progression
+    // Initialisation de l'affichage OLED AVANT WiFi pour afficher la progression
     setupDisplay();
     displayBootScreen(PROJECT_NAME, PROJECT_VERSION, -1);
 
@@ -257,14 +242,12 @@ void loop() {
         #endif
     }
 
-    // 7. Rafraîchissement de l'animation ST7789 (uniquement si mode animé)
-    #ifdef HAS_ST7789
-        if (currentMillis - lastDisplayUpdate >= displayUpdateInterval) {
-            lastDisplayUpdate = currentMillis;
-            if (WiFi.status() == WL_CONNECTED && getDisplayMode() == DISPLAY_MODE_ANIMATED) {
-                const bool hasMatrix = getMatrix8x8AnimationName() != nullptr;
-                updateAnimationVisual(getGarlandAnimationName(), hasMatrix);
-            }
+    // 7. Rafraîchissement de l'animation OLED (uniquement si mode animé)
+    if (currentMillis - lastDisplayUpdate >= displayUpdateInterval) {
+        lastDisplayUpdate = currentMillis;
+        if (WiFi.status() == WL_CONNECTED && getDisplayMode() == DISPLAY_MODE_ANIMATED) {
+            const bool hasMatrix = getMatrix8x8AnimationName() != nullptr;
+            updateAnimationVisual(getGarlandAnimationName(), hasMatrix);
         }
-    #endif
+    }
 }

@@ -1,13 +1,8 @@
 ## Sauvegarde et restauration de la configuration (NVS)
+# Guide Utilisateur - LED-Garland-Anim v5.3.0
 
-Le système utilise la NVS (mémoire non-volatile) de l’ESP32 pour sauvegarder et restaurer automatiquement les paramètres utilisateur :
+Ce guide explique comment utiliser et configurer le projet LED-Garland-Anim. Il est valable à partir de la version 5.3.0.
 
-- **Mode** (permanent ou détection de mouvement)
-- **Animation en cours** (guirlande et matrice)
-- **Intervalle du mode auto** (guirlande)
-- **Intervalle du mode auto** (matrice, indépendant depuis v5.1.1)
-- **Durée d'animation sur détection**
-- **Luminosité matrice**
 
 **Fonctionnement :**
 - Au démarrage, la dernière configuration sauvegardée est chargée si elle existe, sinon les valeurs par défaut sont utilisées.
@@ -16,7 +11,10 @@ Le système utilise la NVS (mémoire non-volatile) de l’ESP32 pour sauvegarder
 
 **Aucune action requise de l'utilisateur** : la gestion est entièrement automatique.
 
-# Guide Utilisateur - LED-Garland-Anim v5.1.1
+
+# Guide Utilisateur - LED-Garland-Anim v5.2.1
+- ESP32-C3 HW-675 (OLED)
+- ESP32-S3 Mini (esp32s3_mini)
 
 Guide utilisateur complet pour le contrôleur d'animation de guirlande LED (ESP32 IdeaSpark + ST7789).
 
@@ -32,10 +30,6 @@ Guide utilisateur complet pour le contrôleur d'animation de guirlande LED (ESP3
   - [Contrôles Physiques](#contrôles-physiques)
     - [Emplacements des Boutons](#emplacements-des-boutons)
   - [Interface Web](#interface-web)
-  - [Affichage LCD ST7789](#affichage-lcd-st7789)
-  - [Modes de Fonctionnement](#modes-de-fonctionnement)
-  - [Animations](#animations)
-  - [Utilisation Quotidienne](#utilisation-quotidienne)
   - [Dépannage](#dépannage)
 
 ## Mises à jour OTA

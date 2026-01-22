@@ -1,4 +1,12 @@
-# 🛒 Hardware Guide - LED-Garland-Anim v5.2.0
+
+# 🛒 Hardware Guide - LED-Garland-Anim v5.2.1
+
+*This document is valid from version 5.2.1.*
+
+## Supported Platforms
+- ESP32 Classic (IdeaSpark/DevKitC)
+- ESP32-C3 HW-675 (OLED)
+- ESP32-S3 Mini (esp32s3_mini)
 
 Complete shopping list and component specifications for building the LED-Garland-Anim project.
 

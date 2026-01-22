@@ -14,41 +14,62 @@
 
 #include <Arduino.h>
 
-#ifdef TARGET_ESP32C3_HW675
+#ifdef TARGET_ESP32S3_MINI
 // ============================================================================
-// Configuration matérielle pour ESP32-C3 HW-675 + OLED 0.42" (72x40)
+// Configuration matérielle — ESP32‑S3 Mini Zero
+// Pins accessibles uniquement (gauche + droite)
 // ============================================================================
-#define BOARD_NAME "ESP32-C3 HW-675 OLED"
 
-// Boutons et LED système
-#define BUTTON_BOOT    9    ///< Bouton BOOT (GPIO 9) — utilisé: long press reboot, click changement mode
-// LED intégrée non garantie sur HW-675 (ne pas définir LED_BUILTIN)
+#define BOARD_NAME "ESP32-S3 Mini Zero Garland"
 
-// Bus I2C pour OLED interne
-#define I2C_SDA  5         ///< OLED SDA
-#define I2C_SCL  6         ///< OLED SCL
+// ============================================================================
+// Configuration matérielle — ESP32‑S3 Mini Zero
+// Pins accessibles uniquement (gauche + droite)
+// ============================================================================
 
-// OLED SSD1306 72x40 (pour U8g2)
-#define OLED_WIDTH   72
-#define OLED_HEIGHT  40
-#define OLED_ADDR    0x3C
+// ---------------------------------------------------------------------------
+// Bouton et LED système
+// ---------------------------------------------------------------------------
+#define BUTTON_BOOT    0     ///< Bouton BOOT intégré (GPIO 0)
+#ifndef LED_BUILTIN
+#define LED_BUILTIN 8
+#endif
 
-// TB6612FNG (si module externe utilisé) — pins libres par défaut
-#define TB6612_PWMA  7
-#define TB6612_AIN1  2
-#define TB6612_AIN2  20
-#define TB6612_STBY  10
 
-// Capteur de mouvement (pin libre par défaut)
-#define MOTION_SENSOR_PIN   0
 
-// Boutons utilisateur (non câblés, conserver le flux)
-#define BUTTON_1     10
-#define BUTTON_2     7
+// ---------------------------------------------------------------------------
+// Bus I2C (périphériques externes)
+// Pins accessibles et propres
+// ---------------------------------------------------------------------------
+#define I2C_SDA       4      ///< SDA
+#define I2C_SCL       5      ///< SCL
 
-// Matrice NeoPixel 8x8 / Chaîne WS2812B
-#define MATRIX8X8_PIN        3    ///< Data WS2812B selon pinout HW-675
+// ---------------------------------------------------------------------------
+// Module TB6612FNG (Pilotage Guirlande)
+// Pins alignés côté droit (10–13)
+// ---------------------------------------------------------------------------
+#define TB6612_PWMA   10     ///< PWM pour intensité
+#define TB6612_AIN1   11     ///< Direction A (Pin 1)
+#define TB6612_AIN2   12     ///< Direction A (Pin 2)
+#define TB6612_STBY   13     ///< Standby (HIGH = actif)
+
+// ---------------------------------------------------------------------------
+// Capteur de mouvement (PIR / RCWL-0516)
+// ---------------------------------------------------------------------------
+#define MOTION_SENSOR_PIN  7   ///< Entrée capteur (GPIO7)
+
+// ---------------------------------------------------------------------------
+// Boutons utilisateur externes
+// ---------------------------------------------------------------------------
+#define BUTTON_1      8      ///< Bouton 1 (GPIO8)
+#define BUTTON_2      9      ///< Bouton 2 (GPIO9)
+
+// ---------------------------------------------------------------------------
+// Matrice NeoPixel 8x8 WS2812B-64
+// ---------------------------------------------------------------------------
+#define MATRIX8X8_PIN        7    ///< Data pin NeoPixel (GPIO7)
 #define MATRIX8X8_NUMPIXELS  64
+
 
 #else
 // ============================================================================
@@ -60,13 +81,7 @@
 #define BUTTON_BOOT    0   ///< Bouton BOOT intégré (GPIO 0)
 #define LED_BUILTIN    2   ///< LED bleue intégrée (Attention: Partagée avec LCD_DC)
 
-// Écran LCD intégré (ST7789)
-#define LCD_MOSI 23   ///< SDA (Données SPI)
-#define LCD_SCLK 18   ///< SCL (Horloge SPI)
-#define LCD_CS   15   ///< Chip Select
-#define LCD_DC    2   ///< Data/Command (Aussi relié à la LED bleue)
-#define LCD_RST   4   ///< Reset
-#define LCD_BLK  32   ///< Backlight (Rétroéclairage - DOIT être à HIGH pour voir l'image)
+
 
 // Bus I2C (périphériques externes)
 #define I2C_SDA  21
@@ -89,6 +104,6 @@
 #define MATRIX8X8_PIN        27   ///< Data pin for 8x8 NeoPixel matrix (WS2812B-64)
 #define MATRIX8X8_NUMPIXELS  64   ///< Number of pixels in 8x8 matrix
 
-#endif // TARGET_ESP32C3_HW675
+#endif // TARGET_ESP32S3_MINI
 
 #endif // BOARD_CONFIG_H

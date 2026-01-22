@@ -14,7 +14,7 @@
 #include "web_pages.h"
 #include "garland_control.h"
 #include "matrix8x8_control.h"
-#include "display.h"
+
 
 // Déclaration du serveur web (défini dans main.cpp)
 extern WebServer server;

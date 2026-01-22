@@ -3,10 +3,12 @@
 #include <Update.h>
 #include <ESPmDNS.h>
 #include "matrix8x8_control.h"
-#include "display.h"
+
 #include "web_pages.h"
 #include "garland_control.h"
 #include "config.h"
+
+#include "display_oled.h"
 #include "web_interface.h"
 
 extern WebServer server;
@@ -149,6 +151,9 @@ void handleSetMatrix8x8Animation() {
         LOG_PRINTF("[WEB] Animation ID requested: %d\n", animId);
         if (animId >= 0 && animId < MATRIX_ANIM_COUNT) {
             setMatrix8x8Animation((Matrix8x8Animation)animId);
+            // Mise à jour de l'affichage OLED
+            String mDnsStr = String(getDeviceName()) + ".local";
+            displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName(), mDnsStr.c_str());
             server.send(200, "text/plain", "Matrix animation changed");
             LOG_PRINTLN("[WEB] Response sent: 200 OK");
         } else {
@@ -189,15 +194,7 @@ void handleOTAUpload() {
     HTTPUpload& upload = server.upload();
     if (upload.status == UPLOAD_FILE_START) {
         LOG_PRINTF("[OTA] Update Start: %s\n", upload.filename.c_str());
-        #ifdef HAS_ST7789
-            display.fillScreen(COLOR_BLACK);
-            display.setTextSize(2);
-            display.setTextColor(COLOR_CYAN);
-            display.setCursor(10, 60);
-            display.println("MISE A JOUR");
-            display.setCursor(10, 90);
-            display.println("OTA...");
-        #endif
+        // Affichage OLED : message de début de mise à jour (optionnel)
         if (!Update.begin(UPDATE_SIZE_UNKNOWN)) {
             LOG_PRINTLN("[OTA] Error: Not enough space");
             Update.printError(Serial);
@@ -213,46 +210,18 @@ void handleOTAUpload() {
             if (total > 0) {
                 int percent = (progress * 100) / total;
                 LOG_PRINTF("[OTA] Progress: %d%%\n", percent);
-                #ifdef HAS_ST7789
-                    int barWidth = 115;
-                    int barX = 10;
-                    int barY = 120;
-                    int barHeight = 20;
-                    int fillWidth = (barWidth * percent) / 100;
-                    display.fillRect(barX, barY, barWidth, barHeight, COLOR_BLACK);
-                    display.drawRect(barX, barY, barWidth, barHeight, COLOR_WHITE);
-                    display.fillRect(barX + 2, barY + 2, fillWidth - 4, barHeight - 4, COLOR_GREEN);
-                    display.fillRect(10, 150, 115, 30, COLOR_BLACK);
-                    display.setCursor(40, 155);
-                    display.setTextSize(3);
-                    display.setTextColor(COLOR_YELLOW);
-                    display.printf("%d%%", percent);
-                #endif
+                // Affichage OLED : barre de progression OTA (optionnel)
             }
         }
     }
     else if (upload.status == UPLOAD_FILE_END) {
         if (Update.end(true)) {
             LOG_PRINTF("[OTA] Update Success: %u bytes\n", upload.totalSize);
-            #ifdef HAS_ST7789
-                display.fillScreen(COLOR_BLACK);
-                display.setTextSize(2);
-                display.setTextColor(COLOR_GREEN);
-                display.setCursor(10, 100);
-                display.println("REUSSI!");
-                display.setCursor(10, 130);
-                display.println("Redemarrage");
-            #endif
+            // Affichage OLED : succès OTA (optionnel)
         } else {
             LOG_PRINTLN("[OTA] Update Failed");
             Update.printError(Serial);
-            #ifdef HAS_ST7789
-                display.fillScreen(COLOR_BLACK);
-                display.setTextSize(2);
-                display.setTextColor(COLOR_RED);
-                display.setCursor(10, 100);
-                display.println("ECHEC!");
-            #endif
+            // Affichage OLED : échec OTA (optionnel)
         }
     }
 }
