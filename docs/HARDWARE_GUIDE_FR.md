@@ -35,7 +35,6 @@ Liste d'achat complète et spécifications des composants pour construire le pro
 | Composant | Quantité | Coût | Utilité |
 |-----------|----------|------|---------|
 | Radar RCWL-0516 | 1 | 2-3€ | Alternative au PIR (plus rapide, plus sensible) |
-| Écran ST7789 1.14" | 1 | 5-8€ | Intégré sur IdeaSpark, optionnel pour DevKitC |
 | Adaptateur jack DC | 1 | 2-3€ | Pour connexion alimentation plus propre |
 | Condensateur 1000µF 16V | 1-2 | 1-2€ | Lissage de l'alimentation |
 | Résistance 470Ω | 1 | 0.10€ | Protection ligne de données NeoPixels |
@@ -49,10 +48,10 @@ Liste d'achat complète et spécifications des composants pour construire le pro
 **Modèles Recommandés :**
 
 #### ESP32 IdeaSpark ⭐ (Recommandé)
-- **Caractéristiques** : LCD ST7789 1.14" intégré, USB-C, 4MB Flash
-- **Avantages** : Pas besoin d'écran externe, connecteur moderne
+- **Caractéristiques** : USB-C, 4MB Flash
+- **Avantages** : Connecteur moderne
 - **Où acheter** :
-  - AliExpress : Rechercher "ESP32 IdeaSpark ST7789"
+  - AliExpress : Rechercher "ESP32 IdeaSpark"
   - Prix : ~12-15€
 
 #### ESP32 DevKitC (Alternative)
@@ -107,7 +106,19 @@ Liste d'achat complète et spécifications des composants pour construire le pro
 
 **Prix** : 5-10€
 
-### 4. Matrice NeoPixel WS2812B 8x8
+
+### 4bis. Affichage supporté : OLED SSD1306 128x64 (I2C)
+
+- Universel, supporté sur toutes les plateformes (SDA=GPIO4, SCL=GPIO5 par défaut)
+- Affichage monochrome, 128x64px
+- Démarrage : nom du projet, version, progression WiFi
+- Principal : nom du projet, version, SSID, IP, mDNS, mode, animations
+- Zone d'animation : visualisation temps réel, messages système
+- Sélection du mode d'affichage (Animé, Statique, Éteint) depuis l'interface web
+- Persistance automatique (NVS, restauré au boot)
+- Effet immédiat, sans reboot
+- 11 visualisations animées (une par animation, mode animé)
+- Mises à jour temps réel à 10 FPS (mode animé)
 
 **Spécifications :**
 - Type : WS2812B (puce de contrôle intégrée)

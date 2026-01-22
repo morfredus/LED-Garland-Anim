@@ -1,14 +1,21 @@
-
 # 🚀 Guide Rapide - LED-Garland-Anim v5.2.1
 
 *Ce document est valide à partir de la version 5.2.1.*
 
+
 ## Plateformes supportées
 - ESP32 Classic (IdeaSpark/DevKitC)
-- ESP32-C3 HW-675 (OLED)
+- ESP32 Wroom
+- ESP32-C3 HW-675
 - ESP32-S3 Mini (esp32s3_mini)
 
+> 📌 **Affichage OLED SSD1306 (I2C) disponible sur toutes les plateformes si connecté sur SDA/SCL**
+
+Ce guide s'adresse aux débutants pour ESP32 Classic (IdeaSpark/DevKitC), ESP32-C3 HW-675, ESP32-S3 Mini.
+
+
 **Objectif** : Faire fonctionner votre guirlande LED en 5 minutes !
+**Affichage OLED SSD1306 (I2C) supporté sur toutes les plateformes si branché (SDA=GPIO4, SCL=GPIO5 par défaut).**
 
 Ce guide s'adresse aux débutants sans expérience ESP32. Suivez ces étapes dans l'ordre.
 
@@ -34,14 +41,16 @@ Ce guide s'adresse aux débutants sans expérience ESP32. Suivez ces étapes dan
    - macOS : Ouvrir Terminal, taper `git --version` (installe automatiquement si besoin)
    - Linux : `sudo apt install git` (Ubuntu/Debian)
 
+
 ### 2. Liste du matériel requis
 
-✅ Carte ESP32 IdeaSpark ou DevKitC  
+✅ Carte ESP32 (IdeaSpark, DevKitC, Wroom, HW-675, S3 Mini)  
 ✅ Câble USB (micro-USB ou USB-C selon la carte)  
 ✅ Module pilote moteur TB6612FNG  
 ✅ Guirlande LED 2 fils (LEDs anti-parallèles)  
 ✅ Matrice NeoPixel 8x8 WS2812B  
 ✅ Capteur PIR (HC-SR501) ou radar RCWL-0516  
+✅ Écran OLED SSD1306 (I2C) (optionnel mais supporté sur toutes plateformes, SDA=GPIO4, SCL=GPIO5 par défaut)  
 ✅ Alimentation externe 5V (2A minimum)  
 ✅ Breadboard et câbles de connexion  
 

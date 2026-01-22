@@ -12,12 +12,17 @@
 - Effacer la flash et reprogrammer le firmware
 - Vérifier les messages d’erreur sur la console série
 - Si le problème persiste, ouvrir un ticket avec les logs
-# Dépannage - LED-Garland-Anim v5.1.5
 
-Guide rapide pour diagnostiquer les problèmes sur ESP32 IdeaSpark.
+# Dépannage - LED-Garland-Anim v5.3.x
+
+Guide rapide pour diagnostiquer les problèmes sur toutes les plateformes supportées :
+- **ESP32 Classic (IdeaSpark/DevKitC)**
+- **ESP32 Wroom (DevKit V1)**
+- **ESP32-C3 HW-675 (OLED 0.42" 72×40)**
+- **ESP32-S3 Mini (esp32s3_mini)**
 
 ## Check-list Express
-- Flasher le bon environnement (`esp32devkitc`).
+- Flasher le bon environnement PlatformIO selon la carte utilisée (`esp32devkitc`, `esp32wroom`, `esp32c3_hw675`, `esp32s3_mini`).
 - Vérifier les identifiants WiFi dans `include/secrets.h`.
 - Respecter les pins de `include/board_config.h` (voir PIN_MAPPING_FR.md).
 - Masse commune entre ESP32, TB6612FNG et alimentation externe.
