@@ -1,10 +1,12 @@
 
-# Guide de Connexion des Pins - LED-Garland-Anim v5.2.1
 
-*Ce document est valide à partir de la version 5.2.1.*
+# Guide de Connexion des Pins - LED-Garland-Anim v5.3.1
+
+*Ce document est valide à partir de la version 5.3.1.*
 
 ## Plateformes supportées
 - ESP32 Classic (IdeaSpark/DevKitC)
+- ESP32 Wroom (NOUVEAU)
 - ESP32-C3 HW-675 (OLED)
 - ESP32-S3 Mini (esp32s3_mini)
 
@@ -13,23 +15,47 @@
 ## 🎯 Table des matières
 
 
-# Mapping des broches (v5.3.0)
+
+# Mapping des broches (v5.3.1)
+
 
 ## Affichage OLED SSD1306 128x64 (JMD0.96D-1)
 
 | Signal | Broche ESP32 | Broche écran OLED |
 |--------|--------------|-------------------|
-| SDA    | 4            | SDA               |
-| SCL    | 5            | SCL               |
+| SDA    | 4/5/5        | SDA               |
+| SCL    | 5/6/6        | SCL               |
 
 L'écran OLED SSD1306 128x64 se connecte via I2C. Les broches par défaut sont :
-- **SDA** : GPIO 4
-- **SCL** : GPIO 5
+- **SDA** : GPIO 4 (Classic/Wroom/S3 Mini), GPIO 5 (C3 HW-675)
+- **SCL** : GPIO 5 (Classic/Wroom/S3 Mini), GPIO 6 (C3 HW-675)
 
-Assurez-vous d'alimenter l'écran en 3.3V ou 5V selon le module. L'adresse I2C par défaut est généralement `0x3C`.
+Alimentez l'écran en 3.3V ou 5V selon le module. Adresse I2C par défaut : `0x3C`.
 
 ## Autres périphériques
-...existing code...
+
+### Tableau de mapping complet (toutes plateformes)
+
+| Fonction                | ESP32 Classic/Wroom/S3 Mini | ESP32-C3 HW-675      |
+|-------------------------|-----------------------------|----------------------|
+| **BTN1**                | GPIO 16                     | -                    |
+| **BTN2**                | GPIO 17                     | -                    |
+| **BTN3**                | GPIO 4                      | -                    |
+| **BOOT (Mode/Reset)**   | -                           | GPIO 9               |
+| **TB6612_PWMA**         | GPIO 13                     | GPIO 0               |
+| **TB6612_AIN1**         | GPIO 26                     | GPIO 1               |
+| **TB6612_AIN2**         | GPIO 25                     | GPIO 2               |
+| **TB6612_STBY**         | GPIO 15                     | GPIO 3               |
+| **MATRIX8X8 (DATA)**    | GPIO 34                     | GPIO 8               |
+| **MOTION_SENSOR_PIN**   | GPIO 35                     | GPIO 10 (optionnel)  |
+| **LCD_MOSI**            | GPIO 23                     | -                    |
+| **LCD_SCLK**            | GPIO 18                     | -                    |
+| **LCD_CS**              | GPIO 5                      | -                    |
+| **LCD_DC**              | GPIO 27                     | -                    |
+| **LCD_RST**             | GPIO 33                     | -                    |
+| **LCD_BLK**             | GPIO 32                     | -                    |
+| **OLED SDA**            | GPIO 4                      | GPIO 5               |
+| **OLED SCL**            | GPIO 5                      | GPIO 6               |
 | **LCD ST7789**    | BLK        | GPIO 32  | Backlight                  | LCD_BLK (DOIT être HIGH)    |
 | **TB6612_PWMA**   | PWMA       | GPIO 12  | PWM Sens A                 | Contrôle intensité lumineuse|
 | **TB6612_AIN1**   | AIN1       | GPIO 25  | Direction bit 1            | Contrôle direction courant  |
@@ -42,40 +68,25 @@ Assurez-vous d'alimenter l'écran en 3.3V ou 5V selon le module. L'adresse I2C p
 
 ## Carte ESP32-C3 HW-675 (NOUVEAU en v5.2.0)
 
-### 📋 Tableau de Mapping Complet des Pins
 
-| Pin    | GPIO   | Fonctions Analogiques     | Fonctions Numériques     | Usage (HW-675)               |
-|--------|--------|---------------------------|--------------------------|------------------------------|
-| GND    | --     | Masse                     | --                       | Masse Commune                |
-| 3V3    | --     | Sortie 3.3V (Régulateur)  | --                       | Alimentation Capteurs        |
-| 5V     | --     | Entrée/Sortie (VBUS)      | --                       | Alimentation USB             |
-| G9     | GPIO 9 | Boot Strapping Pin        | Entrée Digitale          | **BOUTON BOOT** (Pull-up)    |
-| G10    | GPIO 10| --                        | FSPICS0 (SPI)            | **CAPTEUR_MOUVEMENT** (Optionnel) |
-| G4     | GPIO 4 | ADC1_CH4 / JTAG           | PWM / USB_JTAG           | LIBRE                        |
-| G3     | GPIO 3 | ADC1_CH3                  | PWM                      | **TB6612_STBY**              |
-| G2     | GPIO 2 | ADC1_CH2                  | PWM / FSPIQ (SPI)        | **TB6612_AIN2**              |
-| G1     | GPIO 1 | ADC1_CH1                  | PWM / FSPID (SPI)        | **TB6612_AIN1**              |
-| G0     | GPIO 0 | ADC1_CH0                  | PWM / FSPI_CLK           | **TB6612_PWMA**              |
-| G5     | GPIO 5 | ADC2_CH0                  | **I2C SDA**              | **ÉCRAN OLED (SDA)**         |
-| G6     | GPIO 6 | --                        | **I2C SCL**              | **ÉCRAN OLED (SCL)**         |
-| G7     | GPIO 7 | --                        | FSPID (SPI)              | LIBRE                        |
-| G8     | GPIO 8 | Strapping Pin (High)      | PWM                      | **MATRICE WS2812B (DATA)**   |
-| G21    | GPIO 21| --                        | UART TX                  | LIBRE (Debug Serial)         |
-| G20    | GPIO 20| --                        | UART RX                  | LIBRE (Debug Serial)         |
+---
 
-### 🔌 ESP32-C3 HW-675 Attribution des Composants
+## Schémas de connexion détaillés
 
-| Composant              | Pin GPIO | Description                          | Notes                    |
-|------------------------|----------|--------------------------------------|--------------------------|
-| **BUTTON_BOOT**        | GPIO 9   | Bouton intégré sur la carte          | Changement mode (clic), Reboot (appui long) |
-| **OLED SSD1306 (SDA)** | GPIO 5   | Données I2C                          | Écran 72×40 px           |
-| **OLED SSD1306 (SCL)** | GPIO 6   | Horloge I2C                          | Adresse: 0x3C            |
-| **TB6612_PWMA**        | GPIO 0   | PWM Sens A                           | Contrôle intensité       |
-| **TB6612_AIN1**        | GPIO 1   | Direction bit 1                      | Direction courant        |
-| **TB6612_AIN2**        | GPIO 2   | Direction bit 2                      | Direction courant        |
-| **TB6612_STBY**        | GPIO 3   | Standby                              | Activation module (HIGH) |
-| **MATRIX8X8**          | GPIO 8   | WS2812B Data                         | Matrice NeoPixel         |
-| **MOTION_SENSOR_PIN**  | GPIO 10  | Capteur de mouvement (optionnel)     | PIR ou RCWL-0516         |
+### Boutons physiques (Classic/Wroom/S3 Mini)
+| Bouton   | GPIO  | Fonction                       |
+|----------|-------|-------------------------------|
+| BTN1     | 16    | Animation suivante / auto      |
+| BTN2     | 17    | Animation matrice suivante     |
+| BTN3     | 4     | Changement de mode             |
+
+### Bouton BOOT (C3 HW-675)
+| Bouton   | GPIO  | Fonction                       |
+|----------|-------|-------------------------------|
+| BOOT     | 9     | Changement mode (clic), reboot (long) |
+
+### Note OLED
+Sur OLED, l’IP est affichée en petit, la ligne du bas indique le mode actif.
 
 ### 🎨 Schéma de connexion LCD ST7789
 
