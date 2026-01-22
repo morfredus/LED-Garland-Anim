@@ -120,19 +120,18 @@ void displayMainScreen(const char* projectName, const char* projectVersion, cons
     int verW = u8g2.getStrWidth(vbuf);
     u8g2.drawStr((OLED_WIDTH - verW) / 2, 23, vbuf); // Décalage +1px
 
-    // Ligne 3 : IP (en grand, centré)
-    u8g2.setFont(u8g2_font_7x14B_mf);
+    // Ligne 3 : IP (centré, petite taille)
+    u8g2.setFont(u8g2_font_5x8_tr);
     String ipStr = ip.toString();
     int ipW = u8g2.getStrWidth(ipStr.c_str());
-    u8g2.drawStr((OLED_WIDTH - ipW) / 2, 38, ipStr.c_str());
-
+    u8g2.drawStr((OLED_WIDTH - ipW) / 2, 32, ipStr.c_str());
 
     // Ligne 4 : Animation guirlande (centré, préfixe "Gui. :")
     if (animationName && strlen(animationName) > 0) {
         u8g2.setFont(u8g2_font_6x12_tr);
         String animLabel = String("Gui. : ") + animationName;
         int animW = u8g2.getStrWidth(animLabel.c_str());
-        u8g2.drawStr((OLED_WIDTH - animW) / 2, 52, animLabel.c_str());
+        u8g2.drawStr((OLED_WIDTH - animW) / 2, 44, animLabel.c_str());
     }
 
     // Ligne 5 : Animation matrice (centré, préfixe "8x8 :")
@@ -140,7 +139,15 @@ void displayMainScreen(const char* projectName, const char* projectVersion, cons
         u8g2.setFont(u8g2_font_6x12_tr);
         String matLabel = String("8x8 : ") + matrixAnimationName;
         int matW = u8g2.getStrWidth(matLabel.c_str());
-        u8g2.drawStr((OLED_WIDTH - matW) / 2, 62, matLabel.c_str());
+        u8g2.drawStr((OLED_WIDTH - matW) / 2, 54, matLabel.c_str());
+    }
+
+    // Ligne 6 : Mode actif (bas de l'écran)
+    if (modeName && strlen(modeName) > 0) {
+        u8g2.setFont(u8g2_font_5x8_tr);
+        String modeLabel = String("Mode : ") + modeName;
+        int modeW = u8g2.getStrWidth(modeLabel.c_str());
+        u8g2.drawStr((OLED_WIDTH - modeW) / 2, OLED_HEIGHT - 1, modeLabel.c_str());
     }
 
     u8g2.sendBuffer();
