@@ -11,9 +11,18 @@ This ensures user settings are always restored after a reboot or power loss.
 
 ## 🎯 Overview
 
-LED-Garland-Anim v1.13.0 is now unified for the ESP32 IdeaSpark board with integrated ST7789 LCD (1.14").
+
+LED-Garland-Anim v5.3.x supports multiple official hardware platforms:
+
+- **ESP32 Classic (IdeaSpark/DevKitC)**
+- **ESP32 Wroom (DevKit V1)**
+- **ESP32-C3 HW-675 (OLED 0.42" 72×40)**
+- **ESP32-S3 Mini (esp32s3_mini)**
+
+All features are available on each board, with automatic adaptation of the display (OLED or headless depending on platform).
+
 - **Web Interface**: Remote control and configuration
-- **Local Display**: ST7789 LCD (no OLED/TFT/ILI9341)
+- **Local Display**: OLED (HW-675), or headless (other platforms)
 - **Physical Control**: Buttons for animation/mode changes
 - **Smart Modes**: Automatic management based on sensors
 - **TB6612FNG Module**: Bi-directional garland control
@@ -55,13 +64,14 @@ const char* getGarlandModeName();              // Current mode name
 
 ## Hardware Mapping
 
-See [PIN_MAPPING.md](PIN_MAPPING.md) for full details. Only ESP32 IdeaSpark + ST7789 is supported.
+See [PIN_MAPPING.md](PIN_MAPPING.md) for full details. All the above platforms are officially supported.
+
 
 ## Display System
 
-- ST7789 LCD (135x240px)
+- OLED SSD1306 (72x40px)
 - Modern boot screen: project name, version, WiFi progress
-- Main UI: centered headers, compact info, large animation zone
+- Main UI: centered headers, compact info, animation zone
 - 11 animated visualizations (one per animation)
 - Real-time updates at 10 FPS
 

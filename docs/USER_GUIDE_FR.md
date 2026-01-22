@@ -12,17 +12,21 @@ Ce guide explique comment utiliser et configurer le projet LED-Garland-Anim. Il 
 **Aucune action requise de l'utilisateur** : la gestion est entièrement automatique.
 
 
-# Guide Utilisateur - LED-Garland-Anim v5.2.1
-- ESP32-C3 HW-675 (OLED)
+# Guide Utilisateur - LED-Garland-Anim v5.3.2
+
+- ESP32 Classic (IdeaSpark/DevKitC)
+- ESP32 Wroom
+- ESP32-C3 HW-675
 - ESP32-S3 Mini (esp32s3_mini)
 
-Guide utilisateur complet pour le contrôleur d'animation de guirlande LED (ESP32 IdeaSpark + ST7789).
+> 📌 **Affichage OLED SSD1306 (I2C) supporté sur toutes les plateformes si connecté (SDA=GPIO4, SCL=GPIO5 par défaut)**
 
-**Version du document : v5.1.1 (2026-01-07)**
+Guide utilisateur complet pour le contrôleur d'animation de guirlande LED (ESP32 Classic IdeaSpark/DevKitC, ESP32 Wroom, ESP32-C3 HW-675, ESP32-S3 Mini) — toutes plateformes compatibles OLED SSD1306 (I2C).
 
-- [Guide Utilisateur - LED-Garland-Anim v5.0.0](#guide-utilisateur---led-garland-anim-v500)
-  - [🚦 Détection automatique du capteur de mouvement](#-détection-automatique-du-capteur-de-mouvement)
-  - [Table des Matières](#table-des-matières)
+**Version du document : v5.3.2 (2026-01-22)**
+
+- [Guide Utilisateur - LED-Garland-Anim v5.3.0](#guide-utilisateur---led-garland-anim-v530)
+- [Guide Utilisateur - LED-Garland-Anim v5.3.2](#guide-utilisateur---led-garland-anim-v532)
   - [Mises à jour OTA](#mises-à-jour-ota)
   - [Premier Démarrage](#premier-démarrage)
     - [À Quoi S'attendre](#à-quoi-sattendre)
@@ -30,6 +34,12 @@ Guide utilisateur complet pour le contrôleur d'animation de guirlande LED (ESP3
   - [Contrôles Physiques](#contrôles-physiques)
     - [Emplacements des Boutons](#emplacements-des-boutons)
   - [Interface Web](#interface-web)
+  - [Affichage LCD ST7789](#affichage-lcd-st7789)
+  - [Modes de Fonctionnement](#modes-de-fonctionnement)
+  - [Animations](#animations)
+  - [Animation Horloge (à partir de v5.3.2)](#animation-horloge-à-partir-de-v532)
+    - [⚠️ Important : Les modes AUTO guirlande et matrice sont indépendants (v5.1.1)](#️-important--les-modes-auto-guirlande-et-matrice-sont-indépendants-v511)
+  - [Utilisation Quotidienne](#utilisation-quotidienne)
   - [Dépannage](#dépannage)
 
 ## Mises à jour OTA
@@ -50,14 +60,14 @@ Depuis la version 1.11.0, le firmware prend en charge les mises à jour OTA (Ove
 ## Premier Démarrage
 
 ### À Quoi S'attendre
-1. **LCD ST7789** affiche "Connexion WiFi..."
+1. **OLED SSD1306 (I2C)** affiche "Connexion WiFi..."
 2. **LED_BUILTIN** clignote en bleu pendant la connexion WiFi
 3. Après connexion, **adresse IP** affichée pendant 3 secondes
 4. **Guirlande** joue une animation d'intro de 10 secondes (Fade Alterné), puis bascule vers l'animation/mode sauvegardé
 5. **LED_BUILTIN** devient verte quand prête
 
 ### Notez Votre Adresse IP
-Notez l'adresse IP affichée sur l'écran LCD ou consultez la liste DHCP de votre routeur. Vous en aurez besoin pour accéder à l'interface web.
+Notez l'adresse IP affichée sur l'écran OLED ou consultez la liste DHCP de votre routeur. Vous en aurez besoin pour accéder à l'interface web.
 
 Exemple : `192.168.1.100`
 
@@ -74,7 +84,7 @@ Exemple : `192.168.1.100`
 
 
 ## Interface Web
-- Accès via l'adresse IP affichée sur le LCD
+- Accès via l'adresse IP affichée sur l'OLED
 - Tableau de bord : infos système, mémoire, WiFi
 - Contrôle guirlande : sélection animation/mode
 - **Sélection du mode d’affichage écran** (Animé, Statique, Éteint)
@@ -84,28 +94,19 @@ Exemple : `192.168.1.100`
 ---
 
 
-## Affichage LCD ST7789
 
-- **Écran couleur 1.14" 135x240px**
-- **3 modes d'affichage sélectionnables** :
-  - **Animé (v5.1.0)** – **Disposition empilée pleine largeur** :
-    - **En-tête** : Bannière festive avec nom du projet et version (inchangé du statique)
-    - **Cartouche d'infos** (pleine largeur, 82px) : 5 lignes de données affichées dans un cadre décoré :
-      1. **Mode** : Mode de fonctionnement actuel (Permanent, Détection, etc.)
-      2. **WiFi** : SSID tronqué à 20 caractères avec « ... » si nécessaire
-      3. **IP** : Adresse IP de l'appareil
-      4. **mDNS** : Nom d'appareil avec suffix `.local` (ex. `garland.local`)
-      5. **Animations** : Noms animation guirlande et matrice actuelles
-    - **Zone d'animation** (pleine largeur, sous cartouche) : Grand viewport avec rafraîchissement temps réel (~10 FPS)
-    - **Lisibilité améliorée** : Disposition empilée évite l'étriquement horizontal; fenêtre animation plus grande pour un meilleur retour visuel
-  - **Statique** : Tableau de bord festif affichant nom du projet, version, SSID, IP et mDNS (`*.local`)
-  - **Éteint** : Écran et rétroéclairage coupés
-- Sélection à la volée depuis l’interface web (radio)
-- Valeur par défaut configurable dans `config.h`
-- Persistance automatique (NVS, restauré au boot)
-- Effet immédiat, sans reboot
-- 11 visualisations animées (une par animation, mode animé)
-- Mises à jour temps réel à 10 FPS (mode animé)
+## Affichage OLED SSD1306 (I2C)
+
+- **Écran monochrome 128x64px** (SSD1306, I2C)
+- **Affichage universel** : supporté sur toutes les plateformes si connecté (SDA=GPIO4, SCL=GPIO5 par défaut)
+- **Écran de démarrage** : nom du projet, version, progression WiFi
+- **Écran principal** : nom du projet, version, SSID, IP, mDNS, mode, animations
+- **Zone d'animation** : visualisation temps réel, messages système
+- **Sélection du mode d'affichage** (Animé, Statique, Éteint) depuis l'interface web
+- **Persistance automatique** (NVS, restauré au boot)
+- **Effet immédiat, sans reboot**
+- **11 visualisations animées** (une par animation, mode animé)
+- **Mises à jour temps réel à 10 FPS (mode animé)**
 
 ---
 
@@ -117,6 +118,18 @@ Exemple : `192.168.1.100`
 
 ## Animations
 - Éteint, Fade Alterné, Clignotement Alterné, Pulsation, Respiration, Strobe, Battement Cœur, Vague, Scintillement, Météore, Auto (enchaînement)
+
+## Animation Horloge (à partir de v5.3.2)
+
+Une animation horloge analogique est disponible sur la matrice 8x8. Elle affiche une trotteuse rouge réaliste :
+- **Mouvement fluide** : la trotteuse avance de façon continue, sans à-coups, pour un rendu naturel.
+- **Effet d’inertie** : la trotteuse présente un léger rebond à chaque seconde, imitant le comportement d’une horloge mécanique haut de gamme.
+- **Longueur ajustée** : l’aiguille atteint le bord du cadran pour une meilleure lisibilité.
+- **Synchronisation** : la trotteuse effectue un tour complet en 60 secondes, calée sur le temps système.
+
+Cette animation est accessible dans la liste des animations matrice via l’interface web ou les boutons physiques.
+
+---
 
 ### ⚠️ Important : Les modes AUTO guirlande et matrice sont indépendants (v5.1.1)
 Depuis la version 5.1.1, la **guirlande** et la **matrice** possèdent des **intervalles de mode AUTO séparés** :
@@ -141,4 +154,4 @@ Voir [TROUBLESHOOTING_FR.md](TROUBLESHOOTING_FR.md) pour l'aide.
 
 ---
 
-**Version du document : v5.1.1 (2026-01-07)**
+**Version du document : v5.3.2 (2026-01-22)**

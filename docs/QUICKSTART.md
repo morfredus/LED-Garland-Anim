@@ -3,12 +3,18 @@
 
 *This document is valid from version 5.2.1.*
 
+
 ## Supported Platforms
 - ESP32 Classic (IdeaSpark/DevKitC)
-- ESP32-C3 HW-675 (OLED)
+- ESP32 Wroom
+- ESP32-C3 HW-675
 - ESP32-S3 Mini (esp32s3_mini)
 
+> 📌 **OLED SSD1306 (I2C) display is supported on all platforms if connected to SDA/SCL**
+
+
 **Goal**: Get your LED garland animating in 5 minutes!
+**OLED SSD1306 (I2C) display is supported on all platforms if connected (SDA=GPIO4, SCL=GPIO5 by default).**
 
 This guide assumes you have zero ESP32 experience. Follow these steps in order.
 
@@ -34,14 +40,16 @@ This guide assumes you have zero ESP32 experience. Follow these steps in order.
    - macOS: Open Terminal, type `git --version` (will prompt to install if needed)
    - Linux: `sudo apt install git` (Ubuntu/Debian)
 
+
 ### 2. Required Hardware Checklist
 
-✅ ESP32 IdeaSpark or DevKitC board  
+✅ ESP32 board (IdeaSpark, DevKitC, Wroom, HW-675, S3 Mini)  
 ✅ USB cable (micro-USB or USB-C, depending on board)  
 ✅ TB6612FNG motor driver module  
 ✅ 2-wire LED garland (anti-parallel LEDs)  
 ✅ 8x8 WS2812B NeoPixel matrix  
 ✅ PIR sensor (HC-SR501) or RCWL-0516 radar  
+✅ OLED SSD1306 (I2C) display (optional but supported on all platforms, SDA=GPIO4, SCL=GPIO5 by default)  
 ✅ External 5V power supply (2A minimum)  
 ✅ Breadboard and jumper wires  
 

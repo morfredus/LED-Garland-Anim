@@ -1,17 +1,19 @@
-
-
 # User Guide - LED-Garland-Anim v5.3.0
 
 *This document is valid from version 5.3.0.*
 
+
 ## Supported Platforms
 - ESP32 Classic (IdeaSpark/DevKitC)
-- ESP32-C3 HW-675 (OLED)
+- ESP32 Wroom
+- ESP32-C3 HW-675
 - ESP32-S3 Mini (esp32s3_mini)
 
-Complete user guide for the LED-Garland-Anim LED garland and 8x8 matrix animation controller (ESP32, OLED SSD1306 128x64 only).
+> 📌 **OLED SSD1306 (I2C) display supported on all platforms if connected (SDA=GPIO4, SCL=GPIO5 by default)**
 
-**Document version: v5.3.0 (2026-01-22)**
+Complete user guide for the LED-Garland-Anim LED garland and 8x8 matrix animation controller (ESP32 Classic IdeaSpark/DevKitC, ESP32 Wroom, ESP32-C3 HW-675, ESP32-S3 Mini) — all platforms compatible with OLED SSD1306 (I2C).
+
+**Document version: v5.3.2 (2026-01-22)**
 
 ---
 
@@ -71,7 +73,7 @@ Example: `192.168.1.100`
 - **Visual Feedback**: Selected items highlighted in green, inline confirmation messages
 
 ### Access
-- Open browser and navigate to the IP address shown on OLED
+- Open browser and navigate to the IP address shown on the OLED display
 - Example: `http://192.168.1.100`
 
 ### Dashboard Sections
@@ -99,18 +101,19 @@ Example: `192.168.1.100`
 
 ---
 
-## OLED Display
 
-### Specifications
-- **Type**: SSD1306 128x64 (JMD0.96D-1)
-- **Interface**: I2C (SDA=4, SCL=5, address 0x3C)
-- **Resolution**: 128×64 pixels, monochrome
+## OLED SSD1306 (I2C) Display
 
-### Display Information
-- **Boot Screen**: Project name, version, WiFi connection progress
-- **Status Screen**: Shows Program name, Version, SSID, IP address, and mDNS (`*.local`)
-- **Info Frame**: Mode, WiFi SSID, IP, mDNS, current garland and matrix animation names
-- **Animation Zone**: Real-time animation status and system messages
+- **128x64px monochrome display** (SSD1306, I2C)
+- **Universal display**: supported on all platforms if connected (SDA=GPIO4, SCL=GPIO5 by default)
+- **Startup screen**: project name, version, WiFi progress
+- **Main screen**: project name, version, SSID, IP, mDNS, mode, animations
+- **Animation area**: real-time visualization, system messages
+- **Display mode selection** (Animated, Static, Off) from the web interface
+- **Automatic persistence** (NVS, restored at boot)
+- **Immediate effect, no reboot**
+- **11 animated visualizations** (one per animation, animated mode)
+- **Real-time updates at 10 FPS (animated mode)**
 
 ---
 
@@ -141,6 +144,18 @@ The system offers 3 operating modes:
 - **Web Interface**: Current mode shown with radio button selection
 - **OLED Display**: Mode displayed in status bar
 - **LED_BUILTIN**: Green when ready, blue during WiFi connection
+
+---
+
+## Clock Animation (since v5.3.2)
+
+A realistic analog clock animation is available on the 8x8 matrix. It features a true-to-life red second hand:
+- **Smooth movement**: the second hand advances continuously, not in steps, for a natural look.
+- **Inertia effect**: the hand exhibits a subtle bounce at each second, mimicking a high-end mechanical clock.
+- **Full length**: the hand reaches the edge of the dial for maximum readability.
+- **Synchronization**: the hand completes a full rotation in 60 seconds, synced to system time.
+
+This animation can be selected from the matrix animation list via the web interface or physical buttons.
 
 ---
 
@@ -281,4 +296,4 @@ For detailed troubleshooting, see [TROUBLESHOOTING.md](TROUBLESHOOTING.md)
 ---
 
 **End of User Guide**
-**Version: v5.3.0 (2026-01-22)**
+**Version: v5.3.2 (2026-01-22)**

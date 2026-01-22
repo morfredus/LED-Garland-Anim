@@ -1214,8 +1214,11 @@ static void animateConfetti() {
  */
 static void animateClock() {
     unsigned long elapsed = millis() - animationStartTime;
-    // One full rotation every 60 seconds
-    float angle = (elapsed % 60000) / 60000.0 * TWO_PI - PI/2;  // Start at 12 o'clock
+    // Une rotation complète toutes les 60 secondes, avec effet d'inertie (rebond léger)
+    float base = (elapsed % 60000) / 60000.0 * TWO_PI;
+    // Ajout d'un effet d'inertie (rebond) sur la trotteuse
+    float inertia = 0.07 * sin(base * 60.0); // 60 "rebonds" par tour
+    float angle = base + inertia - PI/2;  // Départ à midi
 
     clearMatrix();
 
@@ -1265,13 +1268,12 @@ static void animateClock() {
     setPixel(3, 4, matrix.Color(150, 150, 200));
     setPixel(4, 4, matrix.Color(150, 150, 200));
 
-    // Draw second hand (red, smooth)
-    for (float r = 0.8; r <= 2.5; r += 0.5) {
-        int8_t hx = 3.5 + cos(angle) * r;
-        int8_t hy = 3.5 + sin(angle) * r;
-
+    // Trotteuse rouge, fine, jusqu'au bord du cadran
+    for (float r = 1.0; r <= 3.2; r += 0.2) {
+        int8_t hx = round(3.5 + cos(angle) * r);
+        int8_t hy = round(3.5 + sin(angle) * r);
         if (hx >= 0 && hx < 8 && hy >= 0 && hy < 8) {
-            setPixel(hx, hy, matrix.Color(255, 50, 50));  // Bright red hand
+            setPixel(hx, hy, matrix.Color(255, 50, 50));  // Rouge vif
         }
     }
 

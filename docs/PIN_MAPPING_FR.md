@@ -4,11 +4,14 @@
 
 *Ce document est valide à partir de la version 5.3.1.*
 
+
 ## Plateformes supportées
 - ESP32 Classic (IdeaSpark/DevKitC)
-- ESP32 Wroom (NOUVEAU)
-- ESP32-C3 HW-675 (OLED)
+- ESP32 Wroom
+- ESP32-C3 HW-675
 - ESP32-S3 Mini (esp32s3_mini)
+
+> 📌 **Affichage OLED SSD1306 (I2C) disponible sur toutes les plateformes si connecté sur SDA/SCL**
 
 > 📌 **Guide débutant** : Ce document explique comment connecter physiquement les composants à votre carte ESP32 pour le projet LED-Garland-Anim.
 
@@ -19,17 +22,12 @@
 # Mapping des broches (v5.3.1)
 
 
-## Affichage OLED SSD1306 128x64 (JMD0.96D-1)
 
-| Signal | Broche ESP32 | Broche écran OLED |
-|--------|--------------|-------------------|
-| SDA    | 4/5/5        | SDA               |
-| SCL    | 5/6/6        | SCL               |
+## Affichage OLED SSD1306 (I2C)
 
-L'écran OLED SSD1306 128x64 se connecte via I2C. Les broches par défaut sont :
-- **SDA** : GPIO 4 (Classic/Wroom/S3 Mini), GPIO 5 (C3 HW-675)
-- **SCL** : GPIO 5 (Classic/Wroom/S3 Mini), GPIO 6 (C3 HW-675)
-
+L'écran OLED SSD1306 (I2C) est supporté sur toutes les plateformes. Branchement recommandé :
+- **SDA** : GPIO 4 (par défaut)
+- **SCL** : GPIO 5 (par défaut)
 Alimentez l'écran en 3.3V ou 5V selon le module. Adresse I2C par défaut : `0x3C`.
 
 ## Autres périphériques
@@ -48,15 +46,8 @@ Alimentez l'écran en 3.3V ou 5V selon le module. Adresse I2C par défaut : `0x
 | **TB6612_STBY**         | GPIO 15                     | GPIO 3               |
 | **MATRIX8X8 (DATA)**    | GPIO 34                     | GPIO 8               |
 | **MOTION_SENSOR_PIN**   | GPIO 35                     | GPIO 10 (optionnel)  |
-| **LCD_MOSI**            | GPIO 23                     | -                    |
-| **LCD_SCLK**            | GPIO 18                     | -                    |
-| **LCD_CS**              | GPIO 5                      | -                    |
-| **LCD_DC**              | GPIO 27                     | -                    |
-| **LCD_RST**             | GPIO 33                     | -                    |
-| **LCD_BLK**             | GPIO 32                     | -                    |
-| **OLED SDA**            | GPIO 4                      | GPIO 5               |
-| **OLED SCL**            | GPIO 5                      | GPIO 6               |
-| **LCD ST7789**    | BLK        | GPIO 32  | Backlight                  | LCD_BLK (DOIT être HIGH)    |
+| **OLED SDA**            | GPIO 4                      | SDA                  |
+| **OLED SCL**            | GPIO 5                      | SCL                  |
 | **TB6612_PWMA**   | PWMA       | GPIO 12  | PWM Sens A                 | Contrôle intensité lumineuse|
 | **TB6612_AIN1**   | AIN1       | GPIO 25  | Direction bit 1            | Contrôle direction courant  |
 | **TB6612_AIN2**   | AIN2       | GPIO 33  | Direction bit 2            | Contrôle direction courant  |
@@ -85,24 +76,9 @@ Alimentez l'écran en 3.3V ou 5V selon le module. Adresse I2C par défaut : `0x
 |----------|-------|-------------------------------|
 | BOOT     | 9     | Changement mode (clic), reboot (long) |
 
+
 ### Note OLED
 Sur OLED, l’IP est affichée en petit, la ligne du bas indique le mode actif.
-
-### 🎨 Schéma de connexion LCD ST7789
-
-```
-ESP32 IdeaSpark      LCD ST7789
-┌─────────┐        ┌──────────┐
-│ GPIO 23 ├───────►│ MOSI     │
-│ GPIO 18 ├───────►│ SCLK     │
-│ GPIO 15 ├───────►│ CS       │
-│ GPIO 2  ├───────►│ DC       │ ⚠️ Partagé avec LED_BUILTIN
-│ GPIO 4  ├───────►│ RST      │
-│ GPIO 32 ├───────►│ BLK      │ ⚠️ DOIT être à HIGH pour voir l'image
-│   3V3   ├───────►│ VCC      │
-│   GND   ├───────►│ GND      │
-└─────────┘        └──────────┘
-```
 
 ### 🎄 Schéma de connexion TB6612FNG + Guirlande
 

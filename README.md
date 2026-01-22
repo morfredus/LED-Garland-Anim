@@ -4,12 +4,13 @@
 **Version: 5.3.1** (2026-01-22)  
 *This documentation is valid from version 5.3.1.*
 
-Controller for bi-directional LED garland and 8x8 NeoPixel matrix animation on **ESP32 Classic** (IdeaSpark/DevKitC) with ST7789 display, **ESP32-C3 HW-675** with OLED 0.42" (72×40), **ESP32-S3 Mini** (esp32s3_mini), and **ESP32 Wroom (DevKit V1)**, auto-detection of PIR/RCWL-0516, **modern web interface with instant save**, responsive layout, flash-free AJAX updates, web-based OTA updates, **mDNS support for easy access via unique device name**, physical buttons (3 buttons: garland animation, matrix animation, mode), 11 garland animations, 39 festive matrix animations (Christmas, New Year, Easter, Campfire, Radar), dual independent control, smart modes, persistent configuration, automatic startup animations.
+
+Controller for bi-directional LED garland and 8x8 NeoPixel matrix animation on **ESP32 Classic** (IdeaSpark/DevKitC), **ESP32 Wroom (DevKit V1)**, **ESP32-C3 HW-675**, **ESP32-S3 Mini** — all platforms support **OLED SSD1306 (I2C)** display if connected (default SDA/SCL). PIR/RCWL-0516 auto-detection, **modern web interface with instant save**, responsive layout, flash-free AJAX updates, web-based OTA updates, **mDNS support for easy access via unique device name**, physical buttons (3 buttons), 11 garland animations, 39 festive matrix animations (Christmas, New Year, Easter, Campfire, Radar), dual independent control, smart modes, persistent configuration, automatic startup animations.
 
 ## ✨ What's New in v5.2.0
 
 1. **ESP32-C3 HW-675 support (MINOR)** - New hardware platform with OLED 0.42" (72×40 px) display
-2. **OLED display module** - Simplified IP + Mode display optimized for small screen
+2. **Universal OLED display** - IP + Mode display on OLED SSD1306 (I2C), available on all platforms if connected
 3. **BOOT button functionality** - Mode cycling (click) and system reboot (long-press)
 4. **I2C diagnostics** - Automatic device detection on startup
 5. **Multi-board compatibility** - Seamless support for ESP32 Classic and ESP32-C3 architectures
@@ -83,19 +84,23 @@ Controller for bi-directional LED garland and 8x8 NeoPixel matrix animation on *
 
 
 
+
 ### Supported Hardware Platforms
 
 - **ESP32 Classic (IdeaSpark/DevKitC)**
-- **ESP32-C3 HW-675** (with OLED 0.42" 72×40)
+- **ESP32 Wroom (DevKit V1)**
+- **ESP32-C3 HW-675**
 - **ESP32-S3 Mini** (esp32s3_mini)
-- **ESP32 Wroom (DevKit V1)** (NEW in v5.3.1)
+
+> 📌 **OLED SSD1306 (I2C) display is supported on all platforms if connected to SDA/SCL**
+
 
 #### Required Components (all platforms)
 - **TB6612FNG dual H-bridge driver**
 - **2-wire LED garland** (anti-parallel LEDs, ~50 LEDs)
 - **8x8 NeoPixel Matrix WS2812B-64** (64 addressable RGB LEDs)
 - **Motion sensor**: PIR HC-SR501 or RCWL-0516 (auto-detected)
-- **Display**: ST7789 (Classic), OLED (HW-675), or user-supplied for S3 Mini
+- **OLED SSD1306 (I2C) display** (optional but supported on all platforms, SDA=GPIO4, SCL=GPIO5 by default)
 - **Suitable power supply** for the garland and matrix (5V recommended for NeoPixels)
 
 

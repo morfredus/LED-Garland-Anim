@@ -29,13 +29,13 @@ Vous pouvez choisir la méthode de téléversement (USB ou OTA) à chaque upload
 
 **Version : 5.3.1** (2026-01-07)
 
-Contrôleur d'animation de guirlande LED bi-directionnelle et matrice NeoPixel 8x8 pour **ESP32 Classic** (IdeaSpark/DevKitC) avec écran ST7789 **et ESP32-C3 HW-675** avec OLED 0.42" (72×40), auto-détection PIR/RCWL-0516, **interface web modernisée avec sauvegarde instantanée**, layout responsive, mises à jour AJAX sans flash, mises à jour OTA via web, **support mDNS pour un accès facile via nom unique**, boutons physiques, 11 animations de guirlande, 39 animations festives pour matrice (Noël, Nouvel An, Pâques, Feu de Camp, Radar), contrôle double indépendant, modes intelligents, configuration persistante, animations de démarrage automatiques.
-Contrôleur d'animation de guirlande LED bi-directionnelle et matrice NeoPixel 8x8 pour **ESP32 Classic** (IdeaSpark/DevKitC), **ESP32 Wroom**, **ESP32-C3 HW-675** (OLED 0.42" 72×40), **ESP32-S3 Mini**, auto-détection PIR/RCWL-0516, **interface web modernisée avec sauvegarde instantanée**, layout responsive, mises à jour AJAX sans flash, mises à jour OTA via web, **support mDNS pour un accès facile via nom unique**, boutons physiques (3 boutons), 11 animations de guirlande, 39 animations festives pour matrice (Noël, Nouvel An, Pâques, Feu de Camp, Radar), contrôle double indépendant, modes intelligents, configuration persistante, animations de démarrage automatiques.
+
+Contrôleur d'animation de guirlande LED bi-directionnelle et matrice NeoPixel 8x8 pour **ESP32 Classic** (IdeaSpark/DevKitC), **ESP32 Wroom**, **ESP32-C3 HW-675**, **ESP32-S3 Mini** — toutes plateformes compatibles avec l'affichage **OLED SSD1306 (I2C)** si connecté (SDA/SCL par défaut). Auto-détection PIR/RCWL-0516, **interface web modernisée avec sauvegarde instantanée**, layout responsive, mises à jour AJAX sans flash, mises à jour OTA via web, **support mDNS pour un accès facile via nom unique**, boutons physiques (3 boutons), 11 animations de guirlande, 39 animations festives pour matrice (Noël, Nouvel An, Pâques, Feu de Camp, Radar), contrôle double indépendant, modes intelligents, configuration persistante, animations de démarrage automatiques.
 
 ## ✨ Nouveautés v5.2.0
 
 1. **Support ESP32-C3 HW-675 (MINEUR)** - Nouvelle plateforme matérielle avec écran OLED 0.42" (72×40 px)
-2. **Module d'affichage OLED** - Affichage simplifié IP + Mode optimisé pour petit écran
+2. **Affichage OLED universel** - Affichage IP + Mode sur OLED SSD1306 (I2C), disponible sur toutes les plateformes si branché
 3. **Fonctionnalité bouton BOOT** - Changement de mode (clic) et redémarrage système (appui long)
 4. **Diagnostics I2C** - Détection automatique des périphériques au démarrage
 5. **Compatibilité multi-cartes** - Support transparent des architectures ESP32 Classic et ESP32-C3
@@ -106,18 +106,19 @@ Contrôleur d'animation de guirlande LED bi-directionnelle et matrice NeoPixel 8
 ---
 
 
-## Plateformes matérielles supportées
 
 ## Plateformes matérielles supportées
 
 - **ESP32 Classic (IdeaSpark/DevKitC)**
-- **ESP32 Wroom** (NOUVEAU)
-- **ESP32-C3 HW-675** (avec OLED 0.42" 72×40)
+- **ESP32 Wroom**
+- **ESP32-C3 HW-675**
 - **ESP32-S3 Mini** (esp32s3_mini)
-- **ESP32-S3 Mini** (esp32s3_mini)
+
+> 📌 **Affichage OLED SSD1306 (I2C) disponible sur toutes les plateformes si connecté sur SDA/SCL**
 
 #### Composants requis (toutes plateformes)
 - **Module TB6612FNG** (double pont H)
+- **Écran OLED SSD1306 (I2C)** (optionnel mais supporté sur toutes plateformes, SDA=GPIO4, SCL=GPIO5 par défaut)
 - **Guirlande LED 2 fils** (LEDs en anti-parallèle, ~50 LEDs)
 - **Matrice NeoPixel 8x8 WS2812B-64** (64 LEDs RGB adressables)
 - **Capteur de mouvement** : PIR HC-SR501 ou RCWL-0516 (auto-détection)

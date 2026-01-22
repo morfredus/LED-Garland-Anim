@@ -7,7 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-# [Unreleased]
+
+
+# [5.3.2] - 2026-01-22
+
+## 🛠️ Multi-board documentation harmonization and OLED-only display
+
+- All guides and architecture files now explicitly list all supported platforms:
+  - ESP32 Classic (IdeaSpark/DevKitC)
+  - ESP32 Wroom (DevKit V1)
+  - ESP32-C3 HW-675 (OLED 0.42" 72×40)
+  - ESP32-S3 Mini (esp32s3_mini)
+- Removed all references to TFT/ILI9341/LCD/ST7789 support: **only OLED SSD1306 (I2C) display is now supported and documented**
+- Full harmonization of introductions, checklists, compatibility tables, and user guides (FR/EN)
+
+---
 
 # 🖥️ OLED UI Improvement (5.3.0)
 

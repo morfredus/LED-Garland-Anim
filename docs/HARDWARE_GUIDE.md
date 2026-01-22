@@ -51,7 +51,6 @@ Complete shopping list and component specifications for building the LED-Garland
 |-----------|----------|------|---------|
 | RCWL-0516 Radar | 1 | $2-3 | Alternative to PIR (faster, more sensitive) |
 | PIR HC-SR501 | 1 | $2-4 | Motion detection (ESP32-C3 optional) |
-| ST7789 Display 1.14" | 1 | $5-8 | Built-in on IdeaSpark, optional for DevKitC |
 | DC Barrel Jack Adapter | 1 | $2-3 | For cleaner power connection |
 | Capacitor 1000µF 16V | 1-2 | $1-2 | Power supply smoothing |
 | Resistor 470Ω | 1 | $0.10 | Data line protection for NeoPixels |
@@ -65,10 +64,10 @@ Complete shopping list and component specifications for building the LED-Garland
 **Recommended Models:**
 
 #### ESP32 IdeaSpark ⭐ (Recommended for Classic)
-- **Features**: Built-in ST7789 1.14" LCD, USB-C, 4MB Flash
-- **Advantages**: No external display needed, modern connector
+- **Features**: USB-C, 4MB Flash
+- **Advantages**: Modern connector
 - **Where to buy**: 
-  - AliExpress: Search "ESP32 IdeaSpark ST7789"
+  - AliExpress: Search "ESP32 IdeaSpark"
   - Price: ~$12-15
 
 #### ESP32-C3-DevKitM-1 with HW-675 OLED ⭐⭐ (NEW in v5.2.0)
@@ -142,7 +141,19 @@ Complete shopping list and component specifications for building the LED-Garland
 
 **Test before buying**: Connect to 9V battery; reverse polarity should change which LEDs light up.
 
-### 4. WS2812B 8x8 NeoPixel Matrix
+
+### 4bis. Supported Display: OLED SSD1306 128x64 (I2C)
+
+- Universal, supported on all platforms if connected (SDA=GPIO4, SCL=GPIO5 by default)
+- Monochrome display, 128x64px
+- Startup: project name, version, WiFi progress
+- Main: project name, version, SSID, IP, mDNS, mode, animations
+- Animation area: real-time visualization, system messages
+- Display mode selection (Animated, Static, Off) from the web interface
+- Automatic persistence (NVS, restored at boot)
+- Immediate effect, no reboot
+- 11 animated visualizations (one per animation, animated mode)
+- Real-time updates at 10 FPS (animated mode)
 
 **Specifications:**
 - Type: WS2812B (integrated control chip)
@@ -381,7 +392,6 @@ Before starting your build, verify you have:
 - [ ] Wire strippers
 
 ### Optional (Enhances project)
-- [ ] ST7789 display (if using DevKitC)
 - [ ] RCWL-0516 radar sensor (alternative to PIR)
 - [ ] Enclosure/project box
 - [ ] Heatsinks for TB6612FNG
