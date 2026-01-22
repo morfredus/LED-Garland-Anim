@@ -110,47 +110,63 @@ void displayBootScreen(const char* projectName, const char* projectVersion, int 
 void displayMainScreen(const char* projectName, const char* projectVersion, const char* ssid, IPAddress ip, const char* modeName, const char* animationName, const char* matrixAnimationName, const char* mDnsName) {
     (void)ssid; (void)mDnsName;
     u8g2.clearBuffer();
-    // Ligne 1 : nom projet (centré)
+    // 1. Nom projet (centré, police standard)
     u8g2.setFont(u8g2_font_6x12_tr);
     int projW = u8g2.getStrWidth(projectName);
     u8g2.drawStr((OLED_WIDTH - projW) / 2, 10, projectName);
-    // Ligne 2 : version (centré, décalée d'1px vers le bas)
+
+    // 2. Version (centré, police très petite)
     char vbuf[16];
     snprintf(vbuf, sizeof(vbuf), "v%s", projectVersion);
+    u8g2.setFont(u8g2_font_04b_03_tr); // plus petit
     int verW = u8g2.getStrWidth(vbuf);
-    u8g2.drawStr((OLED_WIDTH - verW) / 2, 23, vbuf); // Décalage +1px
+    u8g2.drawStr((OLED_WIDTH - verW) / 2, 16, vbuf);
 
-    // Ligne 3 : IP (centré, petite taille)
-    u8g2.setFont(u8g2_font_5x8_tr);
+    // 3. IP (centré, police plus grande)
+    u8g2.setFont(u8g2_font_7x14B_1x2_tr); // police large et lisible
     String ipStr = ip.toString();
+    // Tronquer l'IP si trop longue
+    while (u8g2.getStrWidth(ipStr.c_str()) > OLED_WIDTH && ipStr.length() > 0) {
+        ipStr.remove(ipStr.length() - 1);
+    }
     int ipW = u8g2.getStrWidth(ipStr.c_str());
-    u8g2.drawStr((OLED_WIDTH - ipW) / 2, 32, ipStr.c_str());
+    u8g2.drawStr((OLED_WIDTH - ipW) / 2, 30, ipStr.c_str());
 
-    // Ligne 4 : Animation guirlande (centré, préfixe "Gui. :")
+    // 4. Infos : titres à gauche, valeurs à droite, troncature si besoin
+    u8g2.setFont(u8g2_font_5x8_tr);
+    uint8_t y = 40;
     if (animationName && strlen(animationName) > 0) {
-        u8g2.setFont(u8g2_font_6x12_tr);
-        String animLabel = String("Gui. : ") + animationName;
-        int animW = u8g2.getStrWidth(animLabel.c_str());
-        u8g2.drawStr((OLED_WIDTH - animW) / 2, 44, animLabel.c_str());
+        String anim = animationName;
+        while (u8g2.getStrWidth(anim.c_str()) > (OLED_WIDTH - 28) && anim.length() > 0) anim.remove(anim.length() - 1);
+        u8g2.drawStr(0, y, "Gui");
+        int animW = u8g2.getStrWidth(anim.c_str());
+        u8g2.drawStr(OLED_WIDTH - animW, y, anim.c_str());
+        y += 8;
     }
-
-    // Ligne 5 : Animation matrice (centré, préfixe "8x8 :")
     if (matrixAnimationName && strlen(matrixAnimationName) > 0) {
-        u8g2.setFont(u8g2_font_6x12_tr);
-        String matLabel = String("8x8 : ") + matrixAnimationName;
-        int matW = u8g2.getStrWidth(matLabel.c_str());
-        u8g2.drawStr((OLED_WIDTH - matW) / 2, 54, matLabel.c_str());
+        String mat = matrixAnimationName;
+        while (u8g2.getStrWidth(mat.c_str()) > (OLED_WIDTH - 28) && mat.length() > 0) mat.remove(mat.length() - 1);
+        u8g2.drawStr(0, y, "8x8");
+        int matW = u8g2.getStrWidth(mat.c_str());
+        u8g2.drawStr(OLED_WIDTH - matW, y, mat.c_str());
+        y += 8;
     }
-
-    // Ligne 6 : Mode actif (bas de l'écran)
     if (modeName && strlen(modeName) > 0) {
-        u8g2.setFont(u8g2_font_5x8_tr);
-        String modeLabel = String("Mode : ") + modeName;
-        int modeW = u8g2.getStrWidth(modeLabel.c_str());
-        u8g2.drawStr((OLED_WIDTH - modeW) / 2, OLED_HEIGHT - 1, modeLabel.c_str());
+        String mode = modeName;
+        while (u8g2.getStrWidth(mode.c_str()) > (OLED_WIDTH - 28) && mode.length() > 0) mode.remove(mode.length() - 1);
+        u8g2.drawStr(0, y, "Mode");
+        int modeW = u8g2.getStrWidth(mode.c_str());
+        u8g2.drawStr(OLED_WIDTH - modeW, y, mode.c_str());
     }
 
     u8g2.sendBuffer();
+    /*
+     * OLED UI aesthetic improvements:
+     * 1. Version font reduced (u8g2_font_04b_03_tr)
+     * 2. IP font increased (u8g2_font_7x14B_1x2_tr, truncated if needed)
+     * 3. Info lines (Gui, 8x8, Mode): left-aligned title, right-aligned value, truncated if needed
+     * 4. All changes documented and numbered in code
+     */
 }
 
 void displayScreenByMode(const char* ssid, IPAddress ip, const char* modeName, const char* animationName, const char* matrixAnimationName, const char* mDnsName) {
