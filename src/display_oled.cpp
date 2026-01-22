@@ -11,19 +11,17 @@
  */
 
 #include <Arduino.h>
-#include "display.h"
 #include "config.h"
 #include "board_config.h"
 #include "garland_control.h"
+#include "display_oled.h"
 
-#ifdef HAS_OLED_U8G2
 
 #include <U8g2lib.h>
 #include <Wire.h>
 
-// Initialisation OLED 0.42" (72x40) via I2C matériel
-// Pour HW_I2C, ne PAS passer SCL/SDA au constructeur, juste rotation et reset
-static U8G2_SSD1306_72X40_ER_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE);
+// Initialisation OLED JMD0.96D-1 (SSD1306 128x64) via I2C matériel
+static U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE);
 
 static void i2cScan() {
     LOG_PRINTLN("[I2C] Scanning bus...");
@@ -86,78 +84,78 @@ void setupDisplay() {
 
 void displayBootScreen(const char* projectName, const char* projectVersion, int wifiProgress) {
     u8g2.clearBuffer();
-    u8g2.drawFrame(0, 0, OLED_WIDTH, OLED_HEIGHT);
-    drawHeader(projectName, projectVersion);
+    // Ligne 1 : nom projet (gauche), version (droite, décalée d'1px vers le bas)
+    u8g2.setFont(u8g2_font_6x12_tr);
+        int projW = u8g2.getStrWidth(projectName);
+        u8g2.drawStr((OLED_WIDTH - projW) / 2, 12, projectName);
+        // Ligne 2 : version (centré, décalée d'1px vers le bas)
+        char vbuf[16];
+        snprintf(vbuf, sizeof(vbuf), "v%s", projectVersion);
+        int verW = u8g2.getStrWidth(vbuf);
+        u8g2.drawStr((OLED_WIDTH - verW) / 2, 23, vbuf); // 12+11=23, comme l'écran principal
 
-    // Barre de progression WiFi optionnelle
+    // Barre de progression WiFi (centrée)
     if (wifiProgress >= 0 && wifiProgress <= 100) {
-        const uint8_t barY = OLED_HEIGHT - 8;
-        const uint8_t barW = OLED_WIDTH - 8;
-        u8g2.drawFrame(4, barY, barW, 4);
+        const uint8_t barW = OLED_WIDTH - 32;
+        const uint8_t barH = 10;
+        const uint8_t barX = 16;
+        const uint8_t barY = OLED_HEIGHT/2 - barH/2 + 8;
+        u8g2.drawFrame(barX, barY, barW, barH);
         uint8_t fill = (uint8_t)((barW - 2) * wifiProgress / 100);
-        if (fill > 0) u8g2.drawBox(5, barY + 1, fill, 2);
+        if (fill > 0) u8g2.drawBox(barX + 1, barY + 1, fill, barH - 2);
     }
     u8g2.sendBuffer();
 }
 
-void displayMainScreen(const char* ssid, IPAddress ip, const char* modeName, const char* animationName, const char* matrixAnimationName, const char* mDnsName) {
-    (void)ssid; (void)animationName; (void)matrixAnimationName; (void)mDnsName;
-    LOG_PRINTLN("[OLED] displayMainScreen start");
-    
+void displayMainScreen(const char* projectName, const char* projectVersion, const char* ssid, IPAddress ip, const char* modeName, const char* animationName, const char* matrixAnimationName, const char* mDnsName) {
+    (void)ssid; (void)mDnsName;
     u8g2.clearBuffer();
-    yield();
-    
-    // Affichage simplifié: juste IP et Mode sur 72x40
-    u8g2.setFont(u8g2_font_5x7_tr);
-    
-    // IP en haut
+    // Ligne 1 : nom projet (centré)
+    u8g2.setFont(u8g2_font_6x12_tr);
+    int projW = u8g2.getStrWidth(projectName);
+    u8g2.drawStr((OLED_WIDTH - projW) / 2, 10, projectName);
+    // Ligne 2 : version (centré, décalée d'1px vers le bas)
+    char vbuf[16];
+    snprintf(vbuf, sizeof(vbuf), "v%s", projectVersion);
+    int verW = u8g2.getStrWidth(vbuf);
+    u8g2.drawStr((OLED_WIDTH - verW) / 2, 23, vbuf); // Décalage +1px
+
+    // Ligne 3 : IP (en grand, centré)
+    u8g2.setFont(u8g2_font_7x14B_mf);
     String ipStr = ip.toString();
-    u8g2.drawStr(2, 10, "IP:");
-    u8g2.drawStr(2, 20, ipStr.c_str());
-    yield();
-    
-    // Mode en bas
-    String modeStr = (modeName != nullptr) ? String(modeName) : String("OK");
-    // Tronquer le mode si trop long
-    while (u8g2.getStrWidth(modeStr.c_str()) > (OLED_WIDTH - 4) && modeStr.length() > 0) {
-        modeStr.remove(modeStr.length() - 1);
+    int ipW = u8g2.getStrWidth(ipStr.c_str());
+    u8g2.drawStr((OLED_WIDTH - ipW) / 2, 38, ipStr.c_str());
+
+
+    // Ligne 4 : Animation guirlande (centré, préfixe "Gui. :")
+    if (animationName && strlen(animationName) > 0) {
+        u8g2.setFont(u8g2_font_6x12_tr);
+        String animLabel = String("Gui. : ") + animationName;
+        int animW = u8g2.getStrWidth(animLabel.c_str());
+        u8g2.drawStr((OLED_WIDTH - animW) / 2, 52, animLabel.c_str());
     }
-    u8g2.drawStr(2, 35, modeStr.c_str());
-    yield();
+
+    // Ligne 5 : Animation matrice (centré, préfixe "8x8 :")
+    if (matrixAnimationName && strlen(matrixAnimationName) > 0) {
+        u8g2.setFont(u8g2_font_6x12_tr);
+        String matLabel = String("8x8 : ") + matrixAnimationName;
+        int matW = u8g2.getStrWidth(matLabel.c_str());
+        u8g2.drawStr((OLED_WIDTH - matW) / 2, 62, matLabel.c_str());
+    }
 
     u8g2.sendBuffer();
-    LOG_PRINTLN("[OLED] displayMainScreen done");
 }
 
 void displayScreenByMode(const char* ssid, IPAddress ip, const char* modeName, const char* animationName, const char* matrixAnimationName, const char* mDnsName) {
     DisplayMode mode = getDisplayMode();
-    LOG_PRINTF("[OLED] displayScreenByMode called - mode=%d\n", (int)mode);
-    
-    switch (mode) {
-        case DISPLAY_MODE_ANIMATED:
-        case DISPLAY_MODE_STATIC:
-            // Pour OLED 72x40, les modes animé et statique sont identiques (pas assez d'espace pour animations)
-            LOG_PRINTLN("[OLED] Mode ANIMATED/STATIC - Activating display");
-            u8g2.setPowerSave(0);  // Rallumer l'OLED si éteint
-            displayMainScreen(ssid, ip, modeName, animationName, matrixAnimationName, mDnsName);
-            break;
-            
-        case DISPLAY_MODE_OFF:
-            // Éteindre complètement l'OLED
-            LOG_PRINTLN("[OLED] Mode OFF - Turning off display");
-            u8g2.clearBuffer();    // Effacer le buffer d'abord
-            u8g2.sendBuffer();     // Envoyer le buffer vide
-            u8g2.setPowerSave(1);  // Mettre en veille (éteint l'écran)
-            break;
-            
-        default:
-            LOG_PRINTLN("[OLED] Unknown display mode - defaulting to ON");
-            u8g2.setPowerSave(0);
-            displayMainScreen(ssid, ip, modeName, animationName, matrixAnimationName, mDnsName);
-            break;
+    if (mode == DISPLAY_MODE_OFF) {
+        u8g2.clearBuffer();
+        u8g2.sendBuffer();
+        u8g2.setPowerSave(1);
+        return;
     }
-    
-    LOG_PRINTLN("[OLED] displayScreenByMode done");
+    u8g2.setPowerSave(0);
+    displayMainScreen(PROJECT_NAME, PROJECT_VERSION, ssid, ip, modeName, animationName, matrixAnimationName, mDnsName);
 }
 
 void updateAnimationVisual(const char* animationName, bool hasMatrix) {
@@ -165,4 +163,4 @@ void updateAnimationVisual(const char* animationName, bool hasMatrix) {
     // Pour OLED 72x40, pas d'animation lourde: rien à faire.
 }
 
-#endif // HAS_OLED_U8G2
+

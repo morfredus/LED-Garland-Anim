@@ -9,6 +9,20 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/spec/v2
 
 # [Non publié]
 
+## 🖥️ Amélioration UI OLED (5.3.0)
+
+1. **Nom du projet et version affichés sur deux lignes centrées sur l'écran OLED**
+  - Le nom du projet et la version ne se chevauchent plus : chaque information occupe une ligne distincte, toutes deux centrées verticalement et horizontalement.
+  - Cette modification améliore la lisibilité et l'esthétique de l'écran d'accueil OLED, en évitant tout recouvrement visuel.
+  - Voir `src/display_oled.cpp` pour la logique d'affichage mise à jour.
+
+2. **Décalage de la version d'un pixel vers le bas sur l'OLED**
+  - La version affichée sur l'écran principal et l'écran de boot OLED est maintenant décalée d'1 pixel vers le bas pour éviter le chevauchement avec la bande de couleur supérieure.
+  - Améliore la lisibilité et l'esthétique sur tous les écrans OLED.
+  - Voir `src/display_oled.cpp` pour la modification.
+
+_Voir aussi l'entrée correspondante en anglais dans CHANGELOG.md._
+
 # [5.2.0] - 2026-01-07
 
 ## 🎯 Support ESP32-C3 HW-675 avec écran OLED
@@ -1259,29 +1273,13 @@ static uint16_t xy(uint8_t x, uint8_t y) {
 
 Toutes les modifications notables de ce projet seront documentées dans ce fichier.
 
-Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
-et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
-
-
-## [1.1.0] - 2025-12-30
-
 ### ♻️ Nettoyage & Documentation
-- Suppression de toutes les références à la LDR/photorésistance dans le code et la documentation (projet désormais PIR uniquement)
+
 - Mise à jour complète de toute la documentation utilisateur et technique (FR + EN) : matériel, câblage, utilisation, cohérence
 - Numéros de version mis à jour partout (SEMVER)
 - Cohérence totale entre code, docs et mapping matériel
 
----
-
-## [1.0.0] - 2025-12-30
-
-### 🎯 Refonte Majeure : Plateforme ESP32 IdeaSpark avec LCD 1.14"
-
-Cette version représente une unification complète de la plateforme, se concentrant exclusivement sur la carte ESP32 IdeaSpark avec écran LCD ST7789 intégré.
-
-### ✨ Ajouté
 - **Module d'Affichage ST7789** - Réécriture complète du système d'affichage pour LCD TFT 1.14" (135x240px)
-  - Écran de démarrage moderne avec nom du projet, version et barre de progression WiFi
   - Interface principale optimisée avec en-têtes centrés, infos mode/animation compactes et grande zone d'animation
   - 11 visualisations animées distinctes (une par animation) avec rendu fluide basé sur des frames
   - Rectangles arrondis, couleurs vibrantes (dégradés jaune/bleu) et effets visuels modernes

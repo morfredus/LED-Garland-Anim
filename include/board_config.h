@@ -35,16 +35,7 @@
 #define LED_BUILTIN 8
 #endif
 
-// ---------------------------------------------------------------------------
-// Écran LCD (ST7789) — NON PRIORITAIRE
-// Pins secondaires (USB/JTAG + pins non critiques)
-// ---------------------------------------------------------------------------
-#define LCD_MOSI      1      ///< MOSI (GPIO1 — USB/JTAG, OK si LCD secondaire)
-#define LCD_SCLK      2      ///< SCLK (GPIO2 — USB/JTAG)
-#define LCD_CS        3      ///< Chip Select (GPIO3 — USB/JTAG)
-#define LCD_DC        9      ///< Data/Command (GPIO9 — accessible)
-#define LCD_RST       -1     ///< Reset logiciel (pas de pin dédiée)
-#define LCD_BLK       6      ///< Backlight (GPIO6 — PWM possible)
+
 
 // ---------------------------------------------------------------------------
 // Bus I2C (périphériques externes)
@@ -90,13 +81,7 @@
 #define BUTTON_BOOT    0   ///< Bouton BOOT intégré (GPIO 0)
 #define LED_BUILTIN    2   ///< LED bleue intégrée (Attention: Partagée avec LCD_DC)
 
-// Écran LCD intégré (ST7789)
-#define LCD_MOSI 23   ///< SDA (Données SPI)
-#define LCD_SCLK 18   ///< SCL (Horloge SPI)
-#define LCD_CS   15   ///< Chip Select
-#define LCD_DC    2   ///< Data/Command (Aussi relié à la LED bleue)
-#define LCD_RST   4   ///< Reset
-#define LCD_BLK  32   ///< Backlight (Rétroéclairage - DOIT être à HIGH pour voir l'image)
+
 
 // Bus I2C (périphériques externes)
 #define I2C_SDA  21
@@ -119,6 +104,6 @@
 #define MATRIX8X8_PIN        27   ///< Data pin for 8x8 NeoPixel matrix (WS2812B-64)
 #define MATRIX8X8_NUMPIXELS  64   ///< Number of pixels in 8x8 matrix
 
-#endif // TARGET_ESP32C3_HW675
+#endif // TARGET_ESP32S3_MINI
 
 #endif // BOARD_CONFIG_H

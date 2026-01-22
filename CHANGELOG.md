@@ -9,6 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 # [Unreleased]
 
+# 🖥️ OLED UI Improvement (5.3.0)
+
+1. **Project name and version now displayed on two centered lines on the OLED screen**
+  - The project name and version no longer overlap: each is on its own line, both centered vertically and horizontally.
+  - This improves readability and aesthetics on the OLED welcome screen, avoiding any visual overlap.
+  - See `src/display_oled.cpp` for the updated display logic.
+
+2. **Version shifted 1 pixel lower on OLED**
+  - The version displayed on both the main and boot OLED screens is now shifted 1 pixel lower to avoid overlap with the top color band.
+  - Improves readability and appearance on all OLED screens.
+  - See `src/display_oled.cpp` for the change.
 # [5.2.0] - 2026-01-07
 
 ## 🎯 ESP32-C3 HW-675 Support with OLED Display
@@ -194,24 +205,30 @@ This release combines firmware cleanup (Telegram removal) and comprehensive docu
 
 # [5.1.0] - 2026-01-06
 
-## ✨ Changed
-1. **Animated LCD layout reorganized** from split left/right panels to **full-width stacked zones**:
-   - **Header**: Unchanged (project name + version in festive banner)
-   - **Info Frame (fullwidth)**: Mode, WiFi SSID (truncated to 20 chars if needed), IP, and mDNS name
-   - **Animation Zone (fullwidth)**: Larger animation viewport with improved aspect ratio
 
-2. **SSID Truncation Logic**: SSID automatically truncates to max 20 characters with "..." suffix if overflow detected, preventing text spillage.
+# Changelog
 
-3. **mDNS Display**:
-   - `displayScreenByMode()` and `displayMainScreen()` now accept optional `mDnsName` parameter
-   - Animated screen now displays mDNS name (e.g., "garland.local") in the info frame
-  - All display calls updated across main.cpp and web_interface.cpp
+## v5.3.0 (2026-01-22)
 
-4. **Improved Readability**:
-   - Info frame is now 70px tall with 5 lines of data instead of side-panel cramping
-   - Animation zone has more vertical space for better visual feedback
-   - Better color contrast and spacing between elements
 
+### Main changes
+
+1. Final removal of all LCD/TFT/ST7789 support: project now supports only OLED SSD1306 128x64 (JMD0.96D-1)
+2. All user and technical documentation rewritten (FR/EN) for OLED-only usage
+3. Pin mapping updated for OLED (I2C_SDA=4, I2C_SCL=5)
+4. Detailed explanations for OLED usage and wiring in the guides
+5. Code, dependencies, and examples cleaned up
+6. Version bumped to 5.3.0
+7. Project name and version are now displayed on two centered lines on the main OLED screen (improved readability)
+
+### Release notes
+
+- All LCD/TFT references removed from code and documentation
+- User guides, technical guides, quickstart, and pin mapping updated
+- OLED display is now mandatory and fully documented
+
+## v5.2.1 (2025-12-10)
+...existing code...
 ## 🔧 Technical
 - Updated `displayMainScreen()` signature: added `const char* mDnsName = nullptr` parameter
 - Updated `displayScreenByMode()` signature: added `const char* mDnsName = nullptr` parameter

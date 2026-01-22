@@ -61,7 +61,7 @@ String generateDashboardPage(uint32_t chipId, uint32_t flashSize, uint32_t flash
     html += "<div class='card card-full'>";
     html += "<div class='card-title'>⚙️ Mode de fonctionnement</div>";
     
-    // Zone supérieure : Mode (gauche) + LCD (droite) côte à côte
+    // Zone supérieure : Mode (gauche) + Affichage (droite) côte à côte
     html += "<div style='display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-bottom:20px;'>"; 
     
     // ZONE A : Sélection du mode (moitié gauche)
@@ -77,9 +77,9 @@ String generateDashboardPage(uint32_t chipId, uint32_t flashSize, uint32_t flash
     }
     html += "</div></div>";
     
-    // ZONE B : Mode d'affichage LCD (moitié droite)
+    // ZONE B : Mode d'affichage OLED (moitié droite)
     html += "<div>";
-    html += "<div style='font-weight:bold;margin-bottom:10px;color:#1b5e20;font-size:14px;'>📺 Affichage LCD</div>";
+    html += "<div style='font-weight:bold;margin-bottom:10px;color:#1b5e20;font-size:14px;'>🖥️ Affichage OLED</div>";
     html += "<div style='display:flex;flex-direction:column;gap:8px;'>";
     for (int i = 0; i < DISPLAY_MODE_COUNT; i++) {
         bool isSelected = (i == (int)getDisplayMode());

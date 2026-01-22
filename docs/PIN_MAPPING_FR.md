@@ -11,30 +11,25 @@
 > 📌 **Guide débutant** : Ce document explique comment connecter physiquement les composants à votre carte ESP32 pour le projet LED-Garland-Anim.
 
 ## 🎯 Table des matières
-- [Carte ESP32 IdeaSpark (Classic)](#carte-esp32-ideaspark-classic)
-- [Carte ESP32-C3 HW-675 (NOUVEAU en v5.2.0)](#carte-esp32-c3-hw-675-nouveau-en-v520)
-- [Schémas de connexion détaillés](#schémas-de-connexion-détaillés)
-- [Conseils pour débutants](#conseils-pour-débutants)
 
----
 
-## Carte ESP32 IdeaSpark (Classic)
+# Mapping des broches (v5.3.0)
 
-### 📋 Tableau récapitulatif des pins
+## Affichage OLED SSD1306 128x64 (JMD0.96D-1)
 
-| Composant         | Signal      | Pin GPIO | Description                | Notes                       |
-|-------------------|------------|----------|----------------------------|-----------------------------|
-| **BUTTON_BOOT**   | Bouton     | GPIO 0   | Bouton intégré sur la carte| Déjà présent                |
-| **BUTTON_1**      | Bouton     | GPIO 16  | Bouton externe             | Changement animation        |
-| **BUTTON_2**      | Bouton     | GPIO 17  | Bouton externe             | Changement mode             |
-| **LED_BUILTIN**   | LED        | GPIO 2   | LED bleue intégrée         | ⚠️ Partagée avec LCD_DC     |
-| **I2C_SDA**       | SDA        | GPIO 21  | Données I2C                | Pour extension future       |
-| **I2C_SCL**       | SCL        | GPIO 22  | Horloge I2C                | Pour extension future       |
-| **LCD ST7789**    | MOSI       | GPIO 23  | Données SPI                | LCD_MOSI                    |
-| **LCD ST7789**    | SCLK       | GPIO 18  | Horloge SPI                | LCD_SCLK                    |
-| **LCD ST7789**    | CS         | GPIO 15  | Chip Select                | LCD_CS                      |
-| **LCD ST7789**    | DC         | GPIO 2   | Data/Command               | LCD_DC (⚠️ Partagé avec LED_BUILTIN) |
-| **LCD ST7789**    | RST        | GPIO 4   | Reset                      | LCD_RST                     |
+| Signal | Broche ESP32 | Broche écran OLED |
+|--------|--------------|-------------------|
+| SDA    | 4            | SDA               |
+| SCL    | 5            | SCL               |
+
+L'écran OLED SSD1306 128x64 se connecte via I2C. Les broches par défaut sont :
+- **SDA** : GPIO 4
+- **SCL** : GPIO 5
+
+Assurez-vous d'alimenter l'écran en 3.3V ou 5V selon le module. L'adresse I2C par défaut est généralement `0x3C`.
+
+## Autres périphériques
+...existing code...
 | **LCD ST7789**    | BLK        | GPIO 32  | Backlight                  | LCD_BLK (DOIT être HIGH)    |
 | **TB6612_PWMA**   | PWMA       | GPIO 12  | PWM Sens A                 | Contrôle intensité lumineuse|
 | **TB6612_AIN1**   | AIN1       | GPIO 25  | Direction bit 1            | Contrôle direction courant  |

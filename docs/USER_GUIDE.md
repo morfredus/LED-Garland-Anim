@@ -1,16 +1,17 @@
 
-# User Guide - LED-Garland-Anim v5.2.1
 
-*This document is valid from version 5.2.1.*
+# User Guide - LED-Garland-Anim v5.3.0
+
+*This document is valid from version 5.3.0.*
 
 ## Supported Platforms
 - ESP32 Classic (IdeaSpark/DevKitC)
 - ESP32-C3 HW-675 (OLED)
 - ESP32-S3 Mini (esp32s3_mini)
 
-Complete user guide for the LED-Garland-Anim LED garland and 8x8 matrix animation controller (ESP32 IdeaSpark + ST7789).
+Complete user guide for the LED-Garland-Anim LED garland and 8x8 matrix animation controller (ESP32, OLED SSD1306 128x64 only).
 
-**Document version: v5.1.5 (2026-01-07)**
+**Document version: v5.3.0 (2026-01-22)**
 
 ---
 
@@ -19,22 +20,21 @@ Complete user guide for the LED-Garland-Anim LED garland and 8x8 matrix animatio
 1. [First Startup](#first-startup)
 2. [Physical Controls](#physical-controls)
 3. [Web Interface](#web-interface)
-4. [ST7789 LCD Display](#st7789-lcd-display)
+4. [OLED Display](#oled-display)
 5. [Operating Modes](#operating-modes)
 6. [Garland Animations](#garland-animations)
 7. [Matrix Animations](#matrix-animations)
 8. [Motion Sensor Auto-Detection](#motion-sensor-auto-detection)
 9. [Configuration Persistence](#configuration-persistence)
-10. [Daily Usage](#daily-usage)
-11. [OTA Updates](#ota-updates)
-12. [Troubleshooting](#troubleshooting)
+10. [OTA Updates](#ota-updates)
+11. [Troubleshooting](#troubleshooting)
 
 ---
 
 ## First Startup
 
 ### What to Expect
-1. **ST7789 LCD** displays "Connecting to WiFi..."
+1. **OLED SSD1306** displays "Connecting to WiFi..."
 2. **LED_BUILTIN** blinks blue during WiFi connection
 3. After connection, **IP address** displayed for 3 seconds
 4. **Garland** plays a 10-second intro animation (Fade Alternate), then switches to saved animation/mode
@@ -42,7 +42,7 @@ Complete user guide for the LED-Garland-Anim LED garland and 8x8 matrix animatio
 6. **LED_BUILTIN** turns green when ready
 
 ### Note Your IP Address
-Write down the IP address shown on the LCD screen or check your router's DHCP list. You'll need it to access the web interface.
+Write down the IP address shown on the OLED screen or check your router's DHCP list. You'll need it to access the web interface.
 
 Example: `192.168.1.100`
 
@@ -64,15 +64,14 @@ Example: `192.168.1.100`
 
 ## Web Interface
 
-### Modern UI Features (v1.11.3+)
+### Features
 - **Radio Button Grids**: All selections use intuitive radio buttons (no dropdowns)
 - **Responsive Layout**: 2 columns on desktop, 1 column on mobile (<600px)
 - **Instant Updates**: No "Apply" buttons - changes apply immediately
-- **Flash-Free Experience**: No page reloads when changing animations/modes (v1.11.3)
 - **Visual Feedback**: Selected items highlighted in green, inline confirmation messages
 
 ### Access
-- Open browser and navigate to the IP address shown on LCD
+- Open browser and navigate to the IP address shown on OLED
 - Example: `http://192.168.1.100`
 
 ### Dashboard Sections
@@ -100,27 +99,18 @@ Example: `192.168.1.100`
 
 ---
 
-## ST7789 LCD Display
+## OLED Display
 
 ### Specifications
-- **Size**: 1.14" diagonal
-- **Resolution**: 135×240 pixels
-- **Colors**: Full RGB (65K colors)
+- **Type**: SSD1306 128x64 (JMD0.96D-1)
+- **Interface**: I2C (SDA=4, SCL=5, address 0x3C)
+- **Resolution**: 128×64 pixels, monochrome
 
 ### Display Information
 - **Boot Screen**: Project name, version, WiFi connection progress
-- **Static Screen**: Festive dashboard with ribbon frame showing Program name, Version, SSID, IP address, and mDNS (`*.local`)
-- **Animated Screen (v5.1.0)** – **Stacked Full-Width Layout**:
-  - **Header**: Festive banner with project name and version (unchanged from Static)
-  - **Info Frame** (full width, 82px): 5 lines of data displayed in a decorated frame:
-    1. **Mode**: Current operating mode (Permanent, Motion Trigger, etc.)
-    2. **WiFi**: SSID truncated to 20 characters with "..." if needed
-    3. **IP**: Device IP address
-    4. **mDNS**: Device name with `.local` suffix (e.g., `garland.local`)
-    5. **Animations**: Current garland and matrix animation names
-  - **Animation Zone** (full width, below info frame): Large viewport displaying real-time animation refresh (~10 FPS)
-  - **Improved Readability**: Stacked layout prevents horizontal cramping; larger animation window for better visual feedback
-- **11 Animated Visualizations**: One for each garland animation
+- **Status Screen**: Shows Program name, Version, SSID, IP address, and mDNS (`*.local`)
+- **Info Frame**: Mode, WiFi SSID, IP, mDNS, current garland and matrix animation names
+- **Animation Zone**: Real-time animation status and system messages
 
 ---
 
@@ -149,7 +139,7 @@ The system offers 3 operating modes:
 
 ### Mode Indicators
 - **Web Interface**: Current mode shown with radio button selection
-- **LCD Display**: Mode displayed in status bar
+- **OLED Display**: Mode displayed in status bar
 - **LED_BUILTIN**: Green when ready, blue during WiFi connection
 
 ---
@@ -178,8 +168,8 @@ The system offers 3 operating modes:
 - Configurable: 5-300 seconds via web interface
 - Works in all operating modes
 
-### ⚠️ Important: Garland & Matrix Auto Modes Are Independent (v5.1.1)
-As of v5.1.1, the **garland** and **matrix** have **separate Auto mode intervals**:
+### Garland & Matrix Auto Modes Are Independent
+The **garland** and **matrix** have **separate Auto mode intervals**:
 
 - **Garland Auto Mode**: Uses "Auto Mode Interval" setting in web interface
 - **Matrix Auto Mode**: Uses "Matrix Animation Interval" setting in web interface
@@ -194,64 +184,7 @@ As of v5.1.1, the **garland** and **matrix** have **separate Auto mode intervals
 
 **Total: 39 animations** (8x8 NeoPixel WS2812B-64 matrix)
 
-### Categories
-
-#### Original Animations (11)
-- **Off**: Matrix disabled
-- **Star**: Twinkling star effect
-- **Meteor**: Meteor shower
-- **Shooting Star**: Single shooting star across screen
-- **Santa**: Santa Claus silhouette
-- **Tree**: Christmas tree with lights
-- **Bell**: Ringing bell animation
-- **Snow**: Falling snowflakes
-- **Gift**: Wrapped gift box
-- **Candle**: Flickering candle flame (redesigned in v1.11.3)
-- **Snowflake**: Rotating snowflake pattern
-
-#### Christmas Animations (10)
-- **Candy Cane**: Rotating red/white striped candy cane
-- **Wreath**: Christmas wreath with bow
-- **Stocking**: Hanging Christmas stocking (redesigned in v1.11.3)
-- **Reindeer**: Reindeer silhouette with blinking nose
-- **Gingerbread**: Gingerbread man with smile
-- **Hot Cocoa**: Steaming mug of hot chocolate
-- **Fireplace**: Flickering fireplace flames
-- **Icicles**: Hanging icicles with dripping water
-- **Northern Lights**: Aurora borealis effect
-- **Presents**: Stack of wrapped presents
-
-#### New Year Animations (7)
-- **Fireworks**: Colorful firework bursts
-- **Champagne**: Rising bubbles in champagne glass
-- **Countdown**: 3-2-1 countdown display (redesigned in v1.11.3)
-- **Confetti**: Falling colorful confetti
-- **Clock**: Analog clock face with moving hands (fixed in v1.11.3)
-- **Party Popper**: Exploding party popper
-- **Disco Ball**: Rotating disco ball with reflections
-
-#### Easter Animations (4)
-- **Easter Egg**: Decorated Easter egg with patterns
-- **Bunny**: Hopping bunny animation
-- **Chick**: Hatching baby chick
-- **Flowers**: Blooming spring flowers
-
-#### Modern/Abstract Animations (7)
-- **Rainbow Wave**: Flowing rainbow wave pattern
-- **Sparkle Rain**: Falling sparkles (fixed in v1.11.3)
-- **Plasma**: Colorful plasma effect
-- **Matrix Rain**: Digital Matrix-style falling characters (fixed in v1.11.3)
-- **Spiral**: Rotating spiral pattern
-- **Heart**: Pulsing heart shape
-- **Stars Field**: Twinkling starfield
-- **Campfire**: Realistic fire simulation (NEW in v1.11.3)
-- **Radar**: Military green radar sweep (NEW in v1.11.3)
-
-### Matrix Brightness Control
-- **Range**: 0-255
-- **Default**: 128 (50%)
-- **Adjustment**: Web interface slider with live preview
-- **Persistence**: Brightness setting saved to NVS
+See the web interface for the full list and live preview.
 
 ---
 
@@ -259,22 +192,10 @@ As of v5.1.1, the **garland** and **matrix** have **separate Auto mode intervals
 
 ### Supported Sensors (GPIO 35)
 
-#### PIR Sensor (HC-SR501)
-- **Idle State**: LOW
-- **Motion Detected**: HIGH
-- **Range**: 3-7 meters (adjustable)
-- **Delay**: 0.3-200 seconds (adjustable)
-- **Angle**: ~110 degrees
+- **PIR Sensor (HC-SR501)**: Idle LOW, motion HIGH
+- **Doppler Radar (RCWL-0516)**: Idle HIGH, motion LOW (inverted logic)
 
-#### Doppler Radar (RCWL-0516)
-- **Idle State**: HIGH
-- **Motion Detected**: LOW (inverted logic)
-- **Range**: 5-7 meters
-- **Delay**: ~2 seconds
-- **Angle**: 360 degrees (omnidirectional)
-- **Advantage**: Works through walls/glass
-
-### Auto-Detection Feature (v1.11.3+)
+### Auto-Detection Feature
 The firmware automatically detects which sensor type is connected:
 1. Reads initial state on startup
 2. Determines sensor type (PIR or Radar)
@@ -288,8 +209,7 @@ Connect sensor to GPIO 35 (see [docs/PIR_SENSOR_SETUP.md](PIR_SENSOR_SETUP.md) a
 
 ## Configuration Persistence
 
-### NVS (Non-Volatile Storage)
-The system automatically saves all settings to ESP32's NVS:
+All settings are saved to ESP32's NVS (Non-Volatile Storage):
 
 **Garland Settings:**
 - Current animation
@@ -306,24 +226,6 @@ The system automatically saves all settings to ESP32's NVS:
 - **On Change**: Automatically saves when changed via web interface
 - **Persistence**: Survives reboots and power cycles
 - **No User Action**: Fully automatic
-
-### Manual Control (Web Interface)
-
----
-2. Select "Permanent" mode
-3. Choose desired animations (garland + matrix)
-4. Both devices stay on all day
-
-#### Evening: Switch to Motion Detection
-1. Select "Detection (tout)" or "Detection (guirlande)" mode
-2. Set motion duration (e.g., 60 seconds)
-3. Devices activate automatically when you enter room
-4. Energy saved when room is empty
-
-#### Changing Animations
-- **Web Interface**: Click desired animation radio button → instant change
-- **Physical Buttons**: Press BUTTON_1 to cycle through garland animations
-- **Auto Mode**: Set "Auto" animation for automatic cycling
 
 ---
 
@@ -360,7 +262,7 @@ For detailed troubleshooting, see [TROUBLESHOOTING.md](TROUBLESHOOTING.md)
 - Check serial monitor for connection logs
 
 **Matrix Not Working**
-- Verify GPIO 32 connection
+- Verify matrix data pin connection
 - Check 5V power supply (adequate current for 64 LEDs)
 - Test different animations to isolate issue
 
@@ -371,7 +273,7 @@ For detailed troubleshooting, see [TROUBLESHOOTING.md](TROUBLESHOOTING.md)
 - Test in different location (avoid heat sources)
 
 **Web Interface Not Loading**
-- Verify device IP address on LCD
+- Verify device IP address on OLED
 - Check if device and computer are on same network
 - Try different browser
 - Disable VPN/proxy
@@ -379,4 +281,4 @@ For detailed troubleshooting, see [TROUBLESHOOTING.md](TROUBLESHOOTING.md)
 ---
 
 **End of User Guide**
-**Version: v5.0.0 (2026-01-06)**
+**Version: v5.3.0 (2026-01-22)**

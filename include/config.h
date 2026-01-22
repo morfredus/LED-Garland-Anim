@@ -36,30 +36,12 @@
     #define LOG_PRINTF(...)
 #endif
 
-// --- Configuration Affichages ---
-// ST7789 actif par défaut sauf pour la cible HW-675 (ESP32-C3 + OLED)
-#if !defined(TARGET_ESP32S3_MINI)
-    #define HAS_ST7789
-#endif
+// --- Configuration Affichage OLED uniquement ---
+#define HAS_OLED_U8G2
 
-// Dimensions ST7789 (IdeaSpark 1.14")
-#ifdef HAS_ST7789
-    #define ST7789_WIDTH     240   // Largeur de l'écran 1.14" (135x240)
-    #define ST7789_HEIGHT    320   // Hauteur de l'écran 1.14"
-    #define ST7789_ROTATION  0     // Rotation de l'écran (0, 1, 2, 3)
-#endif
-
-// Couleurs de base pour ST7789 (RGB565)
-#define COLOR_BLACK      0x0000
-#define COLOR_WHITE      0xFFFF
-#define COLOR_RED        0xF800
-#define COLOR_GREEN      0x07E0
-#define COLOR_BLUE       0x001F
-#define COLOR_YELLOW     0xFFE0
-#define COLOR_CYAN       0x07FF
-#define COLOR_MAGENTA    0xF81F
-#define COLOR_PURPLE     0x8010
-#define COLOR_ORANGE     0xFD20
+// Dimensions OLED JMD0.96D-1 (128x64)
+#define OLED_WIDTH  128
+#define OLED_HEIGHT 64
 
 #define DEFAULT_DISPLAY_MODE DISPLAY_MODE_ANIMATED // Mode d'affichage par défaut (animé/statique/éteint)
 
@@ -67,12 +49,12 @@
 #define DISPLAY_MODE_ENUM
 /**
  * @enum DisplayMode
- * @brief Modes d'affichage de l'écran LCD
+ * @brief Modes d'affichage de l'écran OLED
  */
 enum DisplayMode {
-    DISPLAY_MODE_ANIMATED = 0,   // Animations actuelles
-    DISPLAY_MODE_STATIC,         // Affichage fixe (nom, version, SSID, IP)
-    DISPLAY_MODE_OFF,            // Écran complètement éteint (backlight + contenu)
+    DISPLAY_MODE_ANIMATED = 0,   // Affichage animé (IP + Mode)
+    DISPLAY_MODE_STATIC,         // Affichage statique (identique OLED)
+    DISPLAY_MODE_OFF,            // Écran complètement éteint
     DISPLAY_MODE_COUNT
 };
 #endif
