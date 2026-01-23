@@ -1,6 +1,13 @@
-# [5.4.0] - 2026-01-23
+# [5.5.0] - 2026-01-23
 
 ## ✨ Mise à jour majeure OLED & internationalisation
+
+## 🎯 Refonte de l'animation radar
+
+- L'animation radar affiche désormais un unique rayon vert tournant avec une traînée, comme un vrai radar.
+- Les points rouges (blips) apparaissent uniquement lors du passage du rayon, jamais proches les uns des autres, et disparaissent en fondu.
+- Maximum 2 à 4 blips par tour pour un effet réaliste.
+- Plus de blips aléatoires ou groupés : tous sont déclenchés par le balayage du rayon.
 
 - Support complet OLED 128x64 et 128x32 (auto ou sélection config)
 - Toute la logique d’affichage s’adapte au 128x32 : condensé, lisible, clair

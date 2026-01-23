@@ -1794,89 +1794,88 @@ static void animateCampfire() {
 static void animateRadar() {
     static unsigned long lastUpdate = 0;
     static float angle = 0;
-    static uint8_t blips[8][2];  // Store blip positions [x, y]
-    static uint8_t blipAge[8];   // Age of each blip
-    static unsigned long lastBlipAdd = 0;
+    static struct { uint8_t x, y; float a; uint8_t age; } blips[8];
+    static uint8_t blipsThisTurn = 0;
+    static int lastSweepSector = -1;
     unsigned long currentMillis = millis();
 
-    // Update radar sweep
     if (currentMillis - lastUpdate >= 50) {
         lastUpdate = currentMillis;
-        angle += 0.2;
-        if (angle >= TWO_PI) angle = 0;
+        angle += 0.18;
+        if (angle >= TWO_PI) angle -= TWO_PI;
+
+        // Détecter le passage à un nouveau tour
+        int sweepSector = (int)(angle * 8 / TWO_PI); // 8 secteurs
+        if (sweepSector == 0 && lastSweepSector != 0) {
+            blipsThisTurn = 0; // nouveau tour
+        }
+        lastSweepSector = sweepSector;
 
         clearMatrix();
 
-        // Draw radar grid (faint green circles)
-        for (uint8_t r = 1; r <= 3; r++) {
-            for (float a = 0; a < TWO_PI; a += PI / 16) {
-                int8_t x = 3.5 + cos(a) * r;
-                int8_t y = 3.5 + sin(a) * r;
-                if (x >= 0 && x < 8 && y >= 0 && y < 8) {
-                    setPixel(x, y, matrix.Color(0, 20, 0));
-                }
-            }
-        }
-
-        // Draw center point
-        setPixel(3, 3, matrix.Color(0, 100, 0));
-        setPixel(4, 3, matrix.Color(0, 100, 0));
-        setPixel(3, 4, matrix.Color(0, 100, 0));
-        setPixel(4, 4, matrix.Color(0, 100, 0));
-
-        // Draw radar sweep line (bright green)
+        // Rayon
         for (float r = 0; r < 4; r += 0.3) {
             int8_t x = 3.5 + cos(angle) * r;
             int8_t y = 3.5 + sin(angle) * r;
-            if (x >= 0 && x < 8 && y >= 0 && y < 8) {
-                uint8_t brightness = 255 - (r * 40);
-                setPixel(x, y, matrix.Color(0, brightness, 0));
+            if (x >= 0 && x < 8 && y >= 0 && y < 8)
+                setPixel(x, y, matrix.Color(0, 255 - (r * 40), 0));
+        }
+        // Traînée
+        for (float t = 0.15; t < 1.2; t += 0.15) {
+            float trailA = angle - t;
+            if (trailA < 0) trailA += TWO_PI;
+            for (float r = 1; r < 4; r += 0.5) {
+                int8_t x = 3.5 + cos(trailA) * r;
+                int8_t y = 3.5 + sin(trailA) * r;
+                if (x >= 0 && x < 8 && y >= 0 && y < 8)
+                    setPixel(x, y, matrix.Color(0, 80 - t * 60, 0));
             }
         }
 
-        // Draw fading trail behind sweep
-        for (float trailAngle = angle - 0.5; trailAngle > angle - PI; trailAngle -= 0.15) {
-            float dist = angle - trailAngle;
-            uint8_t brightness = 100 - (dist * 60);
-            if (brightness > 100) brightness = 0;
-
-            for (float r = 1; r < 4; r += 0.5) {
-                int8_t x = 3.5 + cos(trailAngle) * r;
-                int8_t y = 3.5 + sin(trailAngle) * r;
-                if (x >= 0 && x < 8 && y >= 0 && y < 8) {
-                    uint32_t existing = getPixel(x, y);
-                    if ((existing & 0xFF00) >> 8 < brightness) {
-                        setPixel(x, y, matrix.Color(0, brightness, 0));
+        // Générer un blip rouge si le rayon passe près d'une case, max 2-4 par tour, jamais proches
+        uint8_t activeBlips = 0;
+        for (uint8_t i = 0; i < 8; i++) if (blips[i].age > 0) activeBlips++;
+        if (blipsThisTurn < 2 + random(0, 3) && activeBlips < 8) {
+            if (random(0, 100) < 7) { // probabilité faible
+                // Cherche une case sur le cercle extérieur proche du rayon
+                float a = angle + random(-6, 7) * 0.03; // tolérance réduite
+                if (a < 0) a += TWO_PI;
+                if (a > TWO_PI) a -= TWO_PI;
+                int8_t x = 3.5 + cos(a) * 3.5;
+                int8_t y = 3.5 + sin(a) * 3.5;
+                // Vérifier qu'aucun blip existant n'est trop proche
+                bool tropProche = false;
+                for (uint8_t j = 0; j < 8; j++) {
+                    if (blips[j].age > 0) {
+                        int dx = (int)x - (int)blips[j].x;
+                        int dy = (int)y - (int)blips[j].y;
+                        if (dx*dx + dy*dy < 5) { // distance euclidienne < ~2
+                            tropProche = true;
+                            break;
+                        }
+                    }
+                }
+                if (!tropProche && x >= 0 && x < 8 && y >= 0 && y < 8) {
+                    for (uint8_t i = 0; i < 8; i++) {
+                        if (blips[i].age == 0) {
+                            blips[i].x = x;
+                            blips[i].y = y;
+                            blips[i].a = a;
+                            blips[i].age = 255;
+                            blipsThisTurn++;
+                            break;
+                        }
                     }
                 }
             }
         }
 
-        // Add new blip occasionally
-        if (currentMillis - lastBlipAdd > 2000 && random(0, 100) < 30) {
-            for (uint8_t i = 0; i < 8; i++) {
-                if (blipAge[i] == 0) {
-                    blips[i][0] = random(0, 8);
-                    blips[i][1] = random(0, 8);
-                    blipAge[i] = 255;
-                    lastBlipAdd = currentMillis;
-                    break;
-                }
-            }
-        }
-
-        // Draw and age blips
+        // Affiche et fait fader les blips rouges
         for (uint8_t i = 0; i < 8; i++) {
-            if (blipAge[i] > 0) {
-                // Draw blip as bright dot
-                setPixel(blips[i][0], blips[i][1], matrix.Color(0, blipAge[i], 0));
-
-                // Age the blip (fade out)
-                if (blipAge[i] > 8) {
-                    blipAge[i] -= 8;
-                } else {
-                    blipAge[i] = 0;
-                }
+            if (blips[i].age > 0) {
+                setPixel(blips[i].x, blips[i].y, matrix.Color(blips[i].age, 0, 0));
+                if (blips[i].age > 12) blips[i].age -= 12;
+                else blips[i].age = 0;
             }
         }
 
