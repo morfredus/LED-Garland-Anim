@@ -1,3 +1,14 @@
+# [5.4.0] - 2026-01-23
+
+## ✨ Mise à jour majeure OLED & internationalisation
+
+- Support complet OLED 128x64 et 128x32 (auto ou sélection config)
+- Toute la logique d’affichage s’adapte au 128x32 : condensé, lisible, clair
+- Raccourcissement automatique des noms de modes/animations sur petit écran
+- Tous les noms d’animations et modes sont désormais en anglais (internationalisation)
+- Documentation et code harmonisés (EN/FR)
+- Version et date mises à jour partout
+
 # [5.3.4] - 2026-01-23
 
 ## ✨ Refonte de la gestion des boutons physiques

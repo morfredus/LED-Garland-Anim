@@ -1,8 +1,8 @@
 /**
  * @file config.h
  * @brief Configuration globale du projet
- * @version 5.2.0
- * @date 2026-01-07
+ * @version 5.4.0
+ * @date 2026-01-23
  */
 
 #ifndef CONFIG_H
@@ -39,9 +39,19 @@
 // --- Configuration Affichage OLED uniquement ---
 #define HAS_OLED_U8G2
 
-// Dimensions OLED JMD0.96D-1 (128x64)
+// --- Configuration écran OLED ---
+// Choisir la taille de l'écran : 64 (par défaut) ou 32
+
 #define OLED_WIDTH  128
+// Pour forcer le 128x32, décommenter la ligne suivante :
+#define OLED_HEIGHT 32
+
+#ifndef OLED_HEIGHT
 #define OLED_HEIGHT 64
+#endif
+
+// Pour forcer le 128x32, décommenter la ligne suivante :
+#define OLED_HEIGHT 32
 
 #define DEFAULT_DISPLAY_MODE DISPLAY_MODE_ANIMATED // Mode d'affichage par défaut (animé/statique/éteint)
 

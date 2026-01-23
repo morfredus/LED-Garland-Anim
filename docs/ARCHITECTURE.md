@@ -7,12 +7,12 @@ The configuration (mode, animation, intervals) is stored in ESP32's NVS using th
 - If NVS is empty or corrupted, defaults are used and saved.
 
 This ensures user settings are always restored after a reboot or power loss.
-# 📚 Architecture - LED-Garland-Anim v5.1.5
+# 📚 Architecture - LED-Garland-Anim v5.4.0
 
 ## 🎯 Overview
 
 
-LED-Garland-Anim v5.3.x supports multiple official hardware platforms:
+LED-Garland-Anim v5.4.x supports multiple official hardware platforms:
 
 - **ESP32 Classic (IdeaSpark/DevKitC)**
 - **ESP32 Wroom (DevKit V1)**

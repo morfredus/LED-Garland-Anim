@@ -1,8 +1,8 @@
 /**
  * @file garland_control.cpp
  * @brief Implémentation du contrôle des animations de guirlande
- * @version 5.1.0
- * @date 2026-01-06
+ * @version 5.4.0
+ * @date 2026-01-23
  */
 
 #include "garland_control.h"
@@ -183,16 +183,16 @@ MotionSensorType getMotionSensorType() {
 // =============================================================================
 
 static const char* animationNames[] = {
-    "Eteint",
-    "Fade Alterne",
-    "Clignotement",
-    "Pulsation",
-    "Respiration",
+    "Off",
+    "Fade Alt",
+    "Blink",
+    "Pulse",
+    "Breath",
     "Strobe",
-    "Battement Coeur",
-    "Vague",
-    "Scintillement",
-    "Meteore",
+    "Heartbeat",
+    "Wave",
+    "Sparkle",
+    "Meteor",
     "Auto"
 };
 
