@@ -2248,3 +2248,7 @@ void setMatrix8x8AnimationIntervalMs(unsigned long ms) {
 bool isMatrix8x8Active() {
     return (currentAnimation != MATRIX_ANIM_OFF) && matrixEnabled;
 }
+
+Matrix8x8Animation getActiveMatrix8x8Animation() {
+    return activeAnimation;
+}

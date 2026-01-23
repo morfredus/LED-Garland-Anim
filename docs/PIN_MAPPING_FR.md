@@ -1,8 +1,8 @@
 
 
-# Guide de Connexion des Pins - LED-Garland-Anim v5.3.1
+# Guide de Connexion des Pins - LED-Garland-Anim v5.6.0
 
-*Ce document est valide à partir de la version 5.3.1.*
+*Ce document est valide à partir de la version 5.6.0.*
 
 
 ## Plateformes supportées

@@ -1,7 +1,7 @@
 /**
  * @file config.h
  * @brief Configuration globale du projet
- * @version 5.5.0
+ * @version 5.5.1
  * @date 2026-01-23
  */
 
@@ -45,7 +45,7 @@
 #define OLED_WIDTH  128
 // Pour forcer le 128x32, décommenter la ligne suivante :
 //#define OLED_HEIGHT 32
-
+// Correction : suppression de la double définition de OLED_HEIGHT
 #ifndef OLED_HEIGHT
 #define OLED_HEIGHT 64
 #endif

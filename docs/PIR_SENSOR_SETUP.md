@@ -13,7 +13,7 @@ For the LED-Garland-Anim project, the optimal PIR sensor settings are:
 
 These settings ensure reliable detection and the best user experience for the LED garland animation.
 
-# PIR Sensor Setup & Adjustment (HC-SR501)
+# PIR Sensor Setup & Adjustment (HC-SR501) - LED-Garland-Anim v5.6.0
 
 ## Overview
 The PIR sensor (HC-SR501) is used to detect motion and trigger the LED garland. Proper installation and adjustment are essential for reliable operation.

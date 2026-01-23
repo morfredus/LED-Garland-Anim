@@ -1,4 +1,13 @@
-# [5.5.0] - 2026-01-23
+# [5.6.0] - 2026-01-23
+
+### Changed
+- Auto mode display now always shows the current animation name (not "Auto") for both garland and matrix.
+- Linkage errors fixed: public getters for active animation, robust linkage between modules.
+- Documentation and version updated everywhere.
+# [5.5.1] - 2026-01-23
+
+### Fixed
+- Fixed: double definition of OLED_HEIGHT in config.h (now only defined if not already set)
 
 ## ✨ Major OLED & Internationalization Update
 

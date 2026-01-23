@@ -1,7 +1,7 @@
 /**
  * @file garland_control.cpp
  * @brief Implémentation du contrôle des animations de guirlande
- * @version 5.5.0
+ * @version 5.5.1
  * @date 2026-01-23
  */
 
@@ -769,6 +769,10 @@ const char* getGarlandAnimationNameById(int id) {
         return animationNames[id];
     }
     return "?";
+}
+
+GarlandAnimation getActiveAnimation() {
+    return activeAnimation;
 }
 
 // ============================================================================

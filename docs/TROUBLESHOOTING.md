@@ -13,7 +13,7 @@
 - Check for error messages on serial console
 - If problem persists, file an issue with logs
 
-# Troubleshooting - LED-Garland-Anim v5.3.x
+# Troubleshooting - LED-Garland-Anim v5.6.0
 
 Use this guide to debug any supported platform:
 - **ESP32 Classic (IdeaSpark/DevKitC)**

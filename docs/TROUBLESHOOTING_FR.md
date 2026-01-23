@@ -13,7 +13,7 @@
 - Vérifier les messages d’erreur sur la console série
 - Si le problème persiste, ouvrir un ticket avec les logs
 
-# Dépannage - LED-Garland-Anim v5.3.x
+# Dépannage - LED-Garland-Anim v5.6.0
 
 Guide rapide pour diagnostiquer les problèmes sur toutes les plateformes supportées :
 - **ESP32 Classic (IdeaSpark/DevKitC)**

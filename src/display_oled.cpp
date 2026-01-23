@@ -1,7 +1,7 @@
 /**
  * @file display_oled.cpp
  * @brief Implémentation de l'affichage OLED (U8g2 SSD1306 72x40) pour ESP32-C3 HW-675
- * @version 5.5.0
+ * @version 5.5.1
  * @date 2026-01-23
  * 
  * GESTION DES MODES D'AFFICHAGE:

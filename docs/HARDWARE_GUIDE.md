@@ -1,7 +1,7 @@
 
-# 🛒 Hardware Guide - LED-Garland-Anim v5.2.1
+# 🛒 Hardware Guide - LED-Garland-Anim v5.6.0
 
-*This document is valid from version 5.2.1.*
+*This document is valid from version 5.6.0.*
 
 ## Supported Platforms
 - ESP32 Classic (IdeaSpark/DevKitC)

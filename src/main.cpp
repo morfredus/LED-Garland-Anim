@@ -1,4 +1,3 @@
-
 /**
  * @file main.cpp
  * @brief Point d'entrée principal du projet LED-Garland-Anim
@@ -43,6 +42,10 @@ bool ledState = false;
 unsigned long lastDisplayUpdate = 0;
 const long displayUpdateInterval = 200;  // Mise à jour animation ST7789 toutes les 200ms (allège la charge SPI)
 
+// Ajout des prototypes en haut du fichier
+GarlandAnimation getActiveAnimation();
+Matrix8x8Animation getActiveMatrix8x8Animation();
+
 // --- CALLBACKS BOUTONS ---
 
 // Bouton Boot : Appui Long = Redémarrage
@@ -61,25 +64,53 @@ void handleBtn1Click() {
     nextGarlandAnimation();
     LOG_PRINTF("[CHANGE] - Garland - %s (button)\n", getGarlandAnimationName());
     String mDnsStr = String(getDeviceName()) + ".local";
-    displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName(), mDnsStr.c_str());
+    // Affichage : toujours horloge si mode auto
+    char animDisplay[48];
+    if (getGarlandAnimation() == ANIM_AUTO) {
+        snprintf(animDisplay, sizeof(animDisplay), "Aut: %s", getGarlandAnimationName());
+    } else {
+        snprintf(animDisplay, sizeof(animDisplay), "%s", getGarlandAnimationName());
+    }
+    displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), animDisplay, getMatrix8x8AnimationName(), mDnsStr.c_str());
 }
 // 2 clics : animation matrice
 void handleBtn1DoubleClick() {
     nextMatrix8x8Animation();
     LOG_PRINTF("[CHANGE] - Matrix - %s (button)\n", getMatrix8x8AnimationName());
     String mDnsStr = String(getDeviceName()) + ".local";
-    displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName(), mDnsStr.c_str());
+    // Idem, pour la matrice
+    char matrixAnimDisplay[48];
+    if (getMatrix8x8Animation() == MATRIX_ANIM_AUTO) {
+        snprintf(matrixAnimDisplay, sizeof(matrixAnimDisplay), "Aut: %s", getMatrix8x8AnimationName());
+    } else {
+        snprintf(matrixAnimDisplay, sizeof(matrixAnimDisplay), "%s", getMatrix8x8AnimationName());
+    }
+    displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), matrixAnimDisplay, mDnsStr.c_str());
 }
 // Appui long : changement de mode
 void handleBtn1LongPress() {
     nextGarlandMode();
     LOG_PRINTF("[CHANGE] - Mode - %s (button)\n", getGarlandModeName());
     String mDnsStr = String(getDeviceName()) + ".local";
-    displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName(), mDnsStr.c_str());
+    // Affichage : toujours horloge si mode auto
+    char animDisplay[48];
+    if (getGarlandAnimation() == ANIM_AUTO) {
+        snprintf(animDisplay, sizeof(animDisplay), "Aut: %s", getGarlandAnimationName());
+    } else {
+        snprintf(animDisplay, sizeof(animDisplay), "%s", getGarlandAnimationName());
+    }
+    char matrixAnimDisplay[48];
+    if (getMatrix8x8Animation() == MATRIX_ANIM_AUTO) {
+        snprintf(matrixAnimDisplay, sizeof(matrixAnimDisplay), "Aut: %s", getMatrix8x8AnimationName());
+    } else {
+        snprintf(matrixAnimDisplay, sizeof(matrixAnimDisplay), "%s", getMatrix8x8AnimationName());
+    }
+    displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), animDisplay, matrixAnimDisplay, mDnsStr.c_str());
 }
 
 // --- FONCTIONS WIFI ---
 void setupWifi() {
+    String mDnsStr;
     LOG_PRINTLN("--- Démarrage WiFiMulti ---");
     int numNetworks = WIFI_NETWORKS_COUNT;
 
@@ -113,8 +144,22 @@ void setupWifi() {
         LOG_PRINT("IP: "); LOG_PRINTLN(WiFi.localIP());
 
         // Affichage de l'écran principal avec toutes les infos
+        mDnsStr = String(getDeviceName()) + ".local";
+        // Affichage : toujours "Aut: nom" si mode auto
+        char animDisplay[48];
+        if (getGarlandAnimation() == ANIM_AUTO) {
+            snprintf(animDisplay, sizeof(animDisplay), "Aut: %s", getGarlandAnimationNameById((int)getActiveAnimation()));
+        } else {
+            snprintf(animDisplay, sizeof(animDisplay), "%s", getGarlandAnimationName());
+        }
+        char matrixAnimDisplay[48];
+        if (getMatrix8x8Animation() == MATRIX_ANIM_AUTO) {
+            snprintf(matrixAnimDisplay, sizeof(matrixAnimDisplay), "Aut: %s", getMatrix8x8AnimationNameById((int)getActiveMatrix8x8Animation()));
+        } else {
+            snprintf(matrixAnimDisplay, sizeof(matrixAnimDisplay), "%s", getMatrix8x8AnimationName());
+        }
         String mDnsStr = String(getDeviceName()) + ".local";
-        displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName(), mDnsStr.c_str());
+        displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), animDisplay, matrixAnimDisplay, mDnsStr.c_str());
 
         delay(2000); // Pause pour laisser voir l'écran
     } else {
@@ -250,8 +295,20 @@ void loop() {
     if (currentMillis - lastDisplayUpdate >= displayUpdateInterval) {
         lastDisplayUpdate = currentMillis;
         if (WiFi.status() == WL_CONNECTED && getDisplayMode() == DISPLAY_MODE_ANIMATED) {
-            const bool hasMatrix = getMatrix8x8AnimationName() != nullptr;
-            updateAnimationVisual(getGarlandAnimationName(), hasMatrix);
+            char animDisplay[48];
+            if (getGarlandAnimation() == ANIM_AUTO) {
+                snprintf(animDisplay, sizeof(animDisplay), "Aut: %s", getGarlandAnimationNameById((int)getActiveAnimation()));
+            } else {
+                snprintf(animDisplay, sizeof(animDisplay), "%s", getGarlandAnimationName());
+            }
+            char matrixAnimDisplay[48];
+            if (getMatrix8x8Animation() == MATRIX_ANIM_AUTO) {
+                snprintf(matrixAnimDisplay, sizeof(matrixAnimDisplay), "Aut: %s", getMatrix8x8AnimationNameById((int)getActiveMatrix8x8Animation()));
+            } else {
+                snprintf(matrixAnimDisplay, sizeof(matrixAnimDisplay), "%s", getMatrix8x8AnimationName());
+            }
+            String mDnsStr = String(getDeviceName()) + ".local";
+            displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), animDisplay, matrixAnimDisplay, mDnsStr.c_str());
         }
     }
 }

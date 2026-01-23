@@ -12,9 +12,8 @@ Ce guide explique comment utiliser et configurer le projet LED-Garland-Anim. Il 
 **Aucune action requise de l'utilisateur** : la gestion est entièrement automatique.
 
 
-# Guide Utilisateur - LED-Garland-Anim v5.3.2
-
-- ESP32 Classic (IdeaSpark/DevKitC)
+# Guide Utilisateur - LED-Garland-Anim v5.6.0
+**Version du document : v5.6.0 (2026-01-23)**
 - ESP32 Wroom
 - ESP32-C3 HW-675
 - ESP32-S3 Mini (esp32s3_mini)

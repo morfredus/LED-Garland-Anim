@@ -1,4 +1,13 @@
-# [5.5.0] - 2026-01-23
+# [5.6.0] - 2026-01-23
+
+### Modifié
+- L’affichage du mode auto montre toujours le nom réel de l’animation (plus "Auto") pour guirlande et matrice.
+- Correction des erreurs de linkage : getters publics pour l’animation active, robustesse inter-modules.
+- Documentation et version mises à jour partout.
+# [5.5.1] - 2026-01-23
+
+### Correction
+- Correction : double définition de OLED_HEIGHT dans config.h (désormais défini uniquement si absent)
 
 ## ✨ Mise à jour majeure OLED & internationalisation
 

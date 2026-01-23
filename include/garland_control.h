@@ -196,9 +196,6 @@ MotionSensorType getMotionSensorType();
 bool isMotionDetected();
 
 /**
-
-
-/**
  * @brief Indique si une animation est actuellement active (non OFF et guirlande activée)
  * @return true si animation active, false sinon
  */
@@ -243,5 +240,7 @@ void saveDeviceNameToNVS();
  * @return true si le nom est valide, false sinon
  */
 bool isValidDeviceName(const char* name);
+
+GarlandAnimation getActiveAnimation();
 
 #endif // GARLAND_CONTROL_H

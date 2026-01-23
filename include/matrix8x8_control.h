@@ -172,4 +172,10 @@ void saveMatrix8x8Settings();
  */
 bool isMatrix8x8Active();
 
+/**
+ * @brief Get the active matrix animation
+ * @return Current active animation ID
+ */
+Matrix8x8Animation getActiveMatrix8x8Animation();
+
 #endif // MATRIX8X8_CONTROL_H

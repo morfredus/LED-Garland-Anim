@@ -13,7 +13,7 @@ Pour la guirlande LED animée (LED-Garland-Anim), le réglage optimal du capteur
 
 Ces réglages assurent une détection fiable et une expérience utilisateur optimale pour l’animation de la guirlande LED.
 
-# Réglage et branchement du capteur PIR (HC-SR501)
+# Réglage et branchement du capteur PIR (HC-SR501) - LED-Garland-Anim v5.6.0
 
 ## Vue d'ensemble
 Le capteur PIR (HC-SR501) permet de détecter les mouvements pour déclencher la guirlande LED. Une installation et un réglage précis sont essentiels pour un fonctionnement fiable.
