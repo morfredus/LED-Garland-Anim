@@ -30,9 +30,7 @@
 WiFiMulti wifiMulti;
 WebServer server(80);
 OneButton btnBoot(BUTTON_BOOT, true);    // Bouton 0 : Reboot en appui long
-OneButton btn1(BUTTON_1, true);          // Bouton 1 : Changement animation guirlande
-OneButton btn2(BUTTON_2, true);          // Bouton 2 : Changement animation matrice
-OneButton btn3(BUTTON_3, true);          // Bouton 3 : Changement de mode
+OneButton btn1(BUTTON_1, true);          // Bouton 1 : Multi-fonction (voir logique plus bas)
 
 // Affichage OLED
 #include "display_oled.h"
@@ -57,24 +55,23 @@ void handleBootLongPress() {
     ESP.restart();
 }
 
-// Bouton 1 : Changement d'animation guirlande
+// --- NOUVELLE LOGIQUE BOUTON 1 ---
+// 1 clic : animation guirlande
 void handleBtn1Click() {
     nextGarlandAnimation();
     LOG_PRINTF("[CHANGE] - Garland - %s (button)\n", getGarlandAnimationName());
     String mDnsStr = String(getDeviceName()) + ".local";
     displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName(), mDnsStr.c_str());
 }
-
-// Bouton 2 : Changement d'animation matrice
-void handleBtn2Click() {
+// 2 clics : animation matrice
+void handleBtn1DoubleClick() {
     nextMatrix8x8Animation();
     LOG_PRINTF("[CHANGE] - Matrix - %s (button)\n", getMatrix8x8AnimationName());
     String mDnsStr = String(getDeviceName()) + ".local";
     displayScreenByMode(WiFi.SSID().c_str(), WiFi.localIP(), getGarlandModeName(), getGarlandAnimationName(), getMatrix8x8AnimationName(), mDnsStr.c_str());
 }
-
-// Bouton 3 : Changement de mode
-void handleBtn3Click() {
+// Appui long : changement de mode
+void handleBtn1LongPress() {
     nextGarlandMode();
     LOG_PRINTF("[CHANGE] - Mode - %s (button)\n", getGarlandModeName());
     String mDnsStr = String(getDeviceName()) + ".local";
@@ -156,9 +153,9 @@ void setup() {
     btnBoot.attachLongPressStart(handleBootLongPress);
     btnBoot.setPressMs(1000); // Durée pour considérer un appui long (ms)
 
-    btn1.attachClick(handleBtn1Click);
-    btn2.attachClick(handleBtn2Click);
-    btn3.attachClick(handleBtn3Click);
+    btn1.attachClick(handleBtn1Click);           // 1 clic : guirlande
+    btn1.attachDoubleClick(handleBtn1DoubleClick); // 2 clics : matrice
+    btn1.attachLongPressStart(handleBtn1LongPress); // long : mode
 
     // Sur HW-675 (ESP32-C3), utiliser le bouton BOOT (GPIO9) pour changer de mode en simple clic
     // et conserver l'appui long pour reboot.
@@ -219,8 +216,6 @@ void loop() {
     // 1. Surveillance Boutons (CRITIQUE : doit être appelé tout le temps)
     btnBoot.tick();
     btn1.tick();
-    btn2.tick();
-    btn3.tick();
 
     // 2. Mise à jour de l'animation de guirlande
     updateGarland();

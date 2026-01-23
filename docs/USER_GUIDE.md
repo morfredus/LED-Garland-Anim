@@ -1,6 +1,6 @@
 # User Guide - LED-Garland-Anim v5.3.0
 
-*This document is valid from version 5.3.0.*
+*This document is valid from version 5.3.4.*
 
 
 ## Supported Platforms
@@ -13,7 +13,7 @@
 
 Complete user guide for the LED-Garland-Anim LED garland and 8x8 matrix animation controller (ESP32 Classic IdeaSpark/DevKitC, ESP32 Wroom, ESP32-C3 HW-675, ESP32-S3 Mini) — all platforms compatible with OLED SSD1306 (I2C).
 
-**Document version: v5.3.2 (2026-01-22)**
+**Document version: v5.3.4 (2026-01-23)**
 
 ---
 
@@ -52,15 +52,16 @@ Example: `192.168.1.100`
 
 ## Physical Controls
 
-### Button Locations
+### Button Locations (since v5.3.4)
 - **BUTTON_BOOT**: GPIO 0 (on board)
-- **BUTTON_1**: GPIO 16 (animation change)
-- **BUTTON_2**: GPIO 17 (mode change)
+- **USER BUTTON**: GPIO 16 (front panel or external)
 
-### Button Functions
-- **BUTTON_1 (GPIO 16)**: Cycle through garland animations
-- **BUTTON_2 (GPIO 17)**: Cycle through operating modes
-- **BUTTON_BOOT (GPIO 0)**: Reserved for boot/programming
+### Button Functions (since v5.3.4)
+- **USER BUTTON (GPIO 16):**
+	- 1 click: next garland animation
+	- 2 clicks: next matrix animation
+	- long press: change global mode
+- **BUTTON_BOOT (GPIO 0):** Long press = reboot (unchanged)
 
 ---
 

@@ -1,3 +1,15 @@
+# [5.3.4] - 2026-01-23
+
+## ✨ Refonte de la gestion des boutons physiques
+
+- Remplacement du système à 3 boutons par un seul bouton utilisateur (en plus du BOOT) :
+  - 1 clic : animation suivante guirlande
+  - 2 clics : animation suivante matrice
+  - appui long : changement de mode global
+- Bouton BOOT (GPIO 0) : appui long = redémarrage (inchangé)
+- Toute la documentation (FR/EN) a été mise à jour pour refléter cette nouvelle logique
+- Version minimale requise pour ce fonctionnement : 5.3.4
+
 # Journal des modifications - LED Garland Animation Controller
 
 Toutes les modifications notables de ce projet seront documentées dans ce fichier.
