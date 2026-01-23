@@ -27,10 +27,10 @@ Vous pouvez choisir la méthode de téléversement (USB ou OTA) à chaque upload
 ---
 # LED-Garland-Anim
 
-**Version : 5.3.1** (2026-01-07)
+**Version : 5.3.4** (2026-01-23)
 
 
-Contrôleur d'animation de guirlande LED bi-directionnelle et matrice NeoPixel 8x8 pour **ESP32 Classic** (IdeaSpark/DevKitC), **ESP32 Wroom**, **ESP32-C3 HW-675**, **ESP32-S3 Mini** — toutes plateformes compatibles avec l'affichage **OLED SSD1306 (I2C)** si connecté (SDA/SCL par défaut). Auto-détection PIR/RCWL-0516, **interface web modernisée avec sauvegarde instantanée**, layout responsive, mises à jour AJAX sans flash, mises à jour OTA via web, **support mDNS pour un accès facile via nom unique**, boutons physiques (3 boutons), 11 animations de guirlande, 39 animations festives pour matrice (Noël, Nouvel An, Pâques, Feu de Camp, Radar), contrôle double indépendant, modes intelligents, configuration persistante, animations de démarrage automatiques.
+Contrôleur d'animation de guirlande LED bi-directionnelle et matrice NeoPixel 8x8 pour **ESP32 Classic** (IdeaSpark/DevKitC), **ESP32 Wroom**, **ESP32-C3 HW-675**, **ESP32-S3 Mini** — toutes plateformes compatibles avec l'affichage **OLED SSD1306 (I2C)** si connecté (SDA/SCL par défaut). Auto-détection PIR/RCWL-0516, **interface web modernisée avec sauvegarde instantanée**, layout responsive, mises à jour AJAX sans flash, mises à jour OTA via web, **support mDNS pour un accès facile via nom unique**, commandes physiques : BOOT + 1 bouton utilisateur (voir ci-dessous), 11 animations de guirlande, 39 animations festives pour matrice (Noël, Nouvel An, Pâques, Feu de Camp, Radar), contrôle double indépendant, modes intelligents, configuration persistante, animations de démarrage automatiques.
 
 ## ✨ Nouveautés v5.2.0
 
@@ -199,9 +199,8 @@ LCD_CS   → GPIO 5
 LCD_DC   → GPIO 27
 LCD_RST  → GPIO 33
 LCD_BLK  → GPIO 32
-BTN1     → GPIO 16
-BTN2     → GPIO 17
-BTN3     → GPIO 4
+BTN1     → GPIO 16 (Bouton utilisateur)
+BOOT     → GPIO 0  (Boot/Reset)
 ```
 
 #### ESP32 Wroom

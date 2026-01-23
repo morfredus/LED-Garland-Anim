@@ -1,7 +1,7 @@
 ## Sauvegarde et restauration de la configuration (NVS)
-# Guide Utilisateur - LED-Garland-Anim v5.3.0
+# Guide Utilisateur - LED-Garland-Anim v5.3.4
 
-Ce guide explique comment utiliser et configurer le projet LED-Garland-Anim. Il est valable à partir de la version 5.3.0.
+Ce guide explique comment utiliser et configurer le projet LED-Garland-Anim. Il est valable à partir de la version 5.3.4.
 
 
 **Fonctionnement :**
@@ -23,7 +23,7 @@ Ce guide explique comment utiliser et configurer le projet LED-Garland-Anim. Il 
 
 Guide utilisateur complet pour le contrôleur d'animation de guirlande LED (ESP32 Classic IdeaSpark/DevKitC, ESP32 Wroom, ESP32-C3 HW-675, ESP32-S3 Mini) — toutes plateformes compatibles OLED SSD1306 (I2C).
 
-**Version du document : v5.3.2 (2026-01-22)**
+**Version du document : v5.3.4 (2026-01-23)**
 
 - [Guide Utilisateur - LED-Garland-Anim v5.3.0](#guide-utilisateur---led-garland-anim-v530)
 - [Guide Utilisateur - LED-Garland-Anim v5.3.2](#guide-utilisateur---led-garland-anim-v532)
@@ -75,10 +75,17 @@ Exemple : `192.168.1.100`
 
 ## Contrôles Physiques
 
-### Emplacements des Boutons
-- **BUTTON_BOOT** : GPIO 0 (sur la carte)
-- **BUTTON_1** : GPIO 16 (changement animation)
-- **BUTTON_2** : GPIO 17 (changement mode)
+
+### Emplacements des Boutons (depuis v5.3.4)
+- **BOUTON BOOT** : GPIO 0 (sur la carte)
+- **BOUTON UTILISATEUR** : GPIO 16 (panneau avant ou externe)
+
+### Fonctions des Boutons (depuis v5.3.4)
+- **BOUTON UTILISATEUR (GPIO 16) :**
+  - 1 clic : animation suivante guirlande
+  - 2 clics : animation suivante matrice
+  - appui long : changement de mode global
+- **BOUTON BOOT (GPIO 0) :** Appui long = redémarrage (inchangé)
 
 ---
 

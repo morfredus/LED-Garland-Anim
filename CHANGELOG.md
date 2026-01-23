@@ -1,3 +1,15 @@
+# [5.3.4] - 2026-01-23
+
+## ✨ Physical button logic overhaul
+
+- Replaced 3-button system with a single user button (plus BOOT):
+  - 1 click: next garland animation
+  - 2 clicks: next matrix animation
+  - long press: change global mode
+- BOOT button (GPIO 0) long press: reboot (unchanged)
+- All documentation (FR/EN) updated to reflect this new logic
+- Minimum required version for this logic: 5.3.4
+
 # Changelog - LED Garland Animation Controller
 
 All notable changes to this project will be documented in this file.
