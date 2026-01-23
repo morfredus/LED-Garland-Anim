@@ -44,14 +44,11 @@
 
 #define OLED_WIDTH  128
 // Pour forcer le 128x32, décommenter la ligne suivante :
-#define OLED_HEIGHT 32
+//#define OLED_HEIGHT 32
 
 #ifndef OLED_HEIGHT
 #define OLED_HEIGHT 64
 #endif
-
-// Pour forcer le 128x32, décommenter la ligne suivante :
-#define OLED_HEIGHT 32
 
 #define DEFAULT_DISPLAY_MODE DISPLAY_MODE_ANIMATED // Mode d'affichage par défaut (animé/statique/éteint)
 
