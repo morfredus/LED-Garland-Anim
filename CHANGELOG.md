@@ -1,6 +1,13 @@
-# [5.4.0] - 2026-01-23
+# [5.5.0] - 2026-01-23
 
 ## ✨ Major OLED & Internationalization Update
+
+## 🎯 Radar Animation Overhaul
+
+- Radar animation now features a single sweeping green ray with a fading trail, just like a real radar.
+- Red blips appear only when the ray passes, never close to each other, and fade out smoothly.
+- Maximum 2 to 4 blips per sweep for realism.
+- No more random or clustered blips: all are triggered by the sweep.
 
 - Full support for both 128x64 and 128x32 OLED displays (auto or config selectable)
 - All display logic adapts for 128x32: condensed, readable, and clear

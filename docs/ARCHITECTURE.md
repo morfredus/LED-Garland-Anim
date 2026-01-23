@@ -7,7 +7,7 @@ The configuration (mode, animation, intervals) is stored in ESP32's NVS using th
 - If NVS is empty or corrupted, defaults are used and saved.
 
 This ensures user settings are always restored after a reboot or power loss.
-# 📚 Architecture - LED-Garland-Anim v5.4.0
+# 📚 Architecture - LED-Garland-Anim v5.5.0
 
 ## 🎯 Overview
 
@@ -74,6 +74,13 @@ See [PIN_MAPPING.md](PIN_MAPPING.md) for full details. All the above platforms a
 - Main UI: centered headers, compact info, animation zone
 - 11 animated visualizations (one per animation)
 - Real-time updates at 10 FPS
+
+### Matrix Animation: Radar (since v5.5.0)
+
+- The radar animation now features a single sweeping green ray with a fading trail.
+- Red blips appear only when the ray passes, never close to each other, and fade out smoothly.
+- Maximum 2 to 4 blips per sweep for realism.
+- No more random or clustered blips: all are triggered by the sweep.
 
 ## Sensors & Buttons
 

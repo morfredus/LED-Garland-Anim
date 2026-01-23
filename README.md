@@ -1,8 +1,8 @@
 
 # LED-Garland-Anim
 
-**Version: 5.4.0** (2026-01-23)  
-*This documentation is valid from version 5.4.0.*
+**Version: 5.5.0** (2026-01-23)  
+*This documentation is valid from version 5.5.0.*
 
 
 Controller for bi-directional LED garland and 8x8 NeoPixel matrix animation on **ESP32 Classic** (IdeaSpark/DevKitC), **ESP32 Wroom (DevKit V1)**, **ESP32-C3 HW-675**, **ESP32-S3 Mini** — all platforms support **OLED SSD1306 (I2C)** display if connected (default SDA/SCL). PIR/RCWL-0516 auto-detection, **modern web interface with instant save**, responsive layout, flash-free AJAX updates, web-based OTA updates, **mDNS support for easy access via unique device name**, physical controls: BOOT + 1 user button (see below), 11 garland animations, 39 festive matrix animations (Christmas, New Year, Easter, Campfire, Radar), dual independent control, smart modes, persistent configuration, automatic startup animations.
@@ -185,6 +185,7 @@ BTN3     → GPIO 18 (Mode)
    - **New Year (7)**: Fireworks, Champagne, Countdown, Confetti, Clock, Party Popper, Disco Ball
    - **Easter (4)**: Easter Egg, Bunny, Chick, Flowers
    - **Modern/Abstract (6)**: Rainbow Wave, Sparkle Rain, Plasma, Matrix Rain, Spiral, Heart, Stars Field
+   - **Radar (1)**: Realistic radar sweep with green ray, fading trail, and red blips triggered by the sweep (max 2-4 per turn, never close together, fade out smoothly)
 - **Matrix Brightness Control**: Independent brightness adjustment (0-255) for the matrix
 - **Startup Animation**: Sparkling star animation on matrix at boot
 - **3 Smart Operating Modes**: Permanent (both always on), Motion Trigger (both follow motion), Motion Independent (garland follows motion, matrix always on)
@@ -402,7 +403,7 @@ In `include/garland_control.h`:
 
 ## 10. Versions
 
-**Current Version: v5.4.0** (2026-01-23)
+**Current Version: v5.5.0** (2026-01-23)
 See [CHANGELOG.md](./CHANGELOG.md)
 
 ---
