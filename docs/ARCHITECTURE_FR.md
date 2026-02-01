@@ -7,17 +7,18 @@ La configuration (mode, animation, intervalles) est stockée dans la NVS de l’
 - Si la NVS est vide ou corrompue, les valeurs par défaut sont utilisées puis sauvegardées.
 
 Ceci garantit la restauration automatique des réglages utilisateur après redémarrage ou coupure d’alimentation.
-# 📚 Architecture - LED-Garland-Anim v5.6.0
+# 📚 Architecture - LED-Garland-Anim v5.6.1
 
 ## 🎯 Vue d'ensemble
 
 
-LED-Garland-Anim v5.3.x prend en charge plusieurs plateformes matérielles officielles :
+LED-Garland-Anim v5.6.x prend en charge plusieurs plateformes matérielles officielles :
 
 - **ESP32 Classic (IdeaSpark/DevKitC)**
 - **ESP32 Wroom (DevKit V1)**
 - **ESP32-C3 HW-675 (OLED 0.42" 72×40)**
 - **ESP32-S3 Mini (esp32s3_mini)**
+- **ESP32-S3 Super Mini (esp32s3_supermini)**
 
 Toutes les fonctionnalités sont disponibles sur chaque carte, avec adaptation automatique de l'affichage (OLED ou sans écran selon la plateforme).
 

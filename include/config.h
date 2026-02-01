@@ -49,7 +49,13 @@
 #ifndef OLED_HEIGHT
 #define OLED_HEIGHT 64
 #endif
-
+// --- Rotation OLED ---
+// Valeurs possibles : U8G2_R0, U8G2_R1, U8G2_R2, U8G2_R3
+// U8G2_R0 = 0°   (orientation normale)
+// U8G2_R1 = 90°  (rotation horaire)
+// U8G2_R2 = 180° (rotation à l'envers)
+// U8G2_R3 = 270° (rotation antihoraire)
+#define OLED_ROTATION U8G2_R2
 #define DEFAULT_DISPLAY_MODE DISPLAY_MODE_ANIMATED // Mode d'affichage par défaut (animé/statique/éteint)
 
 #ifndef DISPLAY_MODE_ENUM

@@ -1,6 +1,6 @@
-# Pin Connection Guide - LED-Garland-Anim v5.6.0
+# Pin Connection Guide - LED-Garland-Anim v5.6.1
 
-*This document is valid from version 5.6.0.*
+*This document is valid from version 5.6.1.*
 
 
 ## Supported Platforms
@@ -8,8 +8,10 @@
 - ESP32 Wroom
 - ESP32-C3 HW-675
 - ESP32-S3 Mini (esp32s3_mini)
+- ESP32-S3 Super Mini (esp32s3_supermini)
 
 > 📌 **OLED SSD1306 (I2C) display is supported on all platforms if connected to SDA/SCL**
+> 📌 **OLED Rotation**: Configurable via `OLED_ROTATION` in config.h (U8G2_R0, U8G2_R1, U8G2_R2, U8G2_R3)
 
 
 # Pin Connection Guide - LED-Garland-Anim v5.3.0

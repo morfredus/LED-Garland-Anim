@@ -1,3 +1,12 @@
+# [5.6.1] - 2026-02-01
+
+### Ajouté
+1. Nouvel environnement PlatformIO `esp32s3_supermini` pour ESP32S3 Super Mini avec configuration board TARGET_ESP32S3_MINI
+2. Configuration de la rotation OLED via la macro `OLED_ROTATION` dans config.h (supporte U8G2_R0, U8G2_R1, U8G2_R2, U8G2_R3)
+
+### Modifié
+3. Réorganisation des includes dans display_oled.cpp pour s'assurer que U8G2lib.h est inclus avant config.h pour la résolution correcte des constantes
+
 # [5.6.0] - 2026-01-23
 
 ### Modifié

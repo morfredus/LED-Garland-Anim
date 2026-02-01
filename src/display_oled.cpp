@@ -11,18 +11,19 @@
  */
 
 #include <Arduino.h>
+#include <U8g2lib.h>
+#include <Wire.h>
 #include "config.h"
 #include "board_config.h"
 #include "garland_control.h"
 #include "display_oled.h"
-#include <U8g2lib.h>
-#include <Wire.h>
 
 // Gestion multi-taille OLED (128x64 ou 128x32)
+// La rotation est définie dans config.h (OLED_ROTATION)
 #if OLED_HEIGHT == 64
-static U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE);
+static U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(OLED_ROTATION, /* reset=*/ U8X8_PIN_NONE);
 #elif OLED_HEIGHT == 32
-static U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE);
+static U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C u8g2(OLED_ROTATION, /* reset=*/ U8X8_PIN_NONE);
 #else
 #error "OLED_HEIGHT doit être 64 ou 32"
 #endif

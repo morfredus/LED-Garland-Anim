@@ -1,8 +1,8 @@
 
 
-# Guide de Connexion des Pins - LED-Garland-Anim v5.6.0
+# Guide de Connexion des Pins - LED-Garland-Anim v5.6.1
 
-*Ce document est valide à partir de la version 5.6.0.*
+*Ce document est valide à partir de la version 5.6.1.*
 
 
 ## Plateformes supportées
@@ -10,8 +10,10 @@
 - ESP32 Wroom
 - ESP32-C3 HW-675
 - ESP32-S3 Mini (esp32s3_mini)
+- ESP32-S3 Super Mini (esp32s3_supermini)
 
 > 📌 **Affichage OLED SSD1306 (I2C) disponible sur toutes les plateformes si connecté sur SDA/SCL**
+> 📌 **Rotation OLED** : Configurable via `OLED_ROTATION` dans config.h (U8G2_R0, U8G2_R1, U8G2_R2, U8G2_R3)
 
 > 📌 **Guide débutant** : Ce document explique comment connecter physiquement les composants à votre carte ESP32 pour le projet LED-Garland-Anim.
 
