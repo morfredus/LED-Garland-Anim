@@ -13,7 +13,7 @@
 - Vérifier les messages d’erreur sur la console série
 - Si le problème persiste, ouvrir un ticket avec les logs
 
-# Dépannage - LED-Garland-Anim v5.6.0
+# Dépannage - LED-Garland-Anim v5.6.2
 
 Guide rapide pour diagnostiquer les problèmes sur toutes les plateformes supportées :
 - **ESP32 Classic (IdeaSpark/DevKitC)**
@@ -58,4 +58,4 @@ Si détection permanente, éloigner le capteur des sources de chaleur/soleil (PI
 
 ---
 
-**Version du document : v5.1.5 (2026-01-07)**
+**Version du document : v5.6.2 (2026-02-01)**

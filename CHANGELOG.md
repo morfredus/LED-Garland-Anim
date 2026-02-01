@@ -1,3 +1,8 @@
+# [5.6.2] - 2026-02-01
+
+### Changed
+1. Documentation version headers and current-version references synchronized to v5.6.2 across README and guides
+
 # [5.6.1] - 2026-02-01
 
 ### Added

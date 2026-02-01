@@ -1,7 +1,7 @@
 ## Sauvegarde et restauration de la configuration (NVS)
-# Guide Utilisateur - LED-Garland-Anim v5.3.4
+# Guide Utilisateur - LED-Garland-Anim v5.6.2
 
-Ce guide explique comment utiliser et configurer le projet LED-Garland-Anim. Il est valable à partir de la version 5.3.4.
+Ce guide explique comment utiliser et configurer le projet LED-Garland-Anim. Il est valable à partir de la version 5.6.2.
 
 
 **Fonctionnement :**
@@ -12,8 +12,8 @@ Ce guide explique comment utiliser et configurer le projet LED-Garland-Anim. Il 
 **Aucune action requise de l'utilisateur** : la gestion est entièrement automatique.
 
 
-# Guide Utilisateur - LED-Garland-Anim v5.6.0
-**Version du document : v5.6.0 (2026-01-23)**
+# Guide Utilisateur - LED-Garland-Anim v5.6.2
+**Version du document : v5.6.2 (2026-02-01)**
 - ESP32 Wroom
 - ESP32-C3 HW-675
 - ESP32-S3 Mini (esp32s3_mini)
@@ -22,7 +22,7 @@ Ce guide explique comment utiliser et configurer le projet LED-Garland-Anim. Il 
 
 Guide utilisateur complet pour le contrôleur d'animation de guirlande LED (ESP32 Classic IdeaSpark/DevKitC, ESP32 Wroom, ESP32-C3 HW-675, ESP32-S3 Mini) — toutes plateformes compatibles OLED SSD1306 (I2C).
 
-**Version du document : v5.3.4 (2026-01-23)**
+**Version du document : v5.6.2 (2026-02-01)**
 
 - [Guide Utilisateur - LED-Garland-Anim v5.3.0](#guide-utilisateur---led-garland-anim-v530)
 - [Guide Utilisateur - LED-Garland-Anim v5.3.2](#guide-utilisateur---led-garland-anim-v532)

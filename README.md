@@ -1,8 +1,8 @@
 
 # LED-Garland-Anim
 
-**Version: 5.6.0** (2026-01-23)  
-*This documentation is valid from version 5.6.0.*
+**Version: 5.6.2** (2026-02-01)  
+*This documentation is valid from version 5.6.2.*
 
 
 Controller for bi-directional LED garland and 8x8 NeoPixel matrix animation on **ESP32 Classic** (IdeaSpark/DevKitC), **ESP32 Wroom (DevKit V1)**, **ESP32-C3 HW-675**, **ESP32-S3 Mini** — all platforms support **OLED SSD1306 (I2C)** display if connected (default SDA/SCL). PIR/RCWL-0516 auto-detection, **modern web interface with instant save**, responsive layout, flash-free AJAX updates, web-based OTA updates, **mDNS support for easy access via unique device name**, physical controls: BOOT + 1 user button (see below), 11 garland animations, 39 festive matrix animations (Christmas, New Year, Easter, Campfire, Radar), dual independent control, smart modes, persistent configuration, automatic startup animations.
@@ -403,7 +403,7 @@ In `include/garland_control.h`:
 
 ## 10. Versions
 
-**Current Version: v5.5.1** (2026-01-23)
+**Current Version: v5.6.2** (2026-02-01)
 See [CHANGELOG.md](./CHANGELOG.md)
 
 ---
@@ -591,7 +591,7 @@ static GarlandMode currentMode = MODE_PERMANENT;         // Or MODE_MOTION_TRIGG
 
 ## 📝 Versions
 
-**Current Version: v1.11.3** (2025-12-31)
+**Current Version: v5.6.2** (2026-02-01)
 
 See [CHANGELOG.md](./CHANGELOG.md) for complete history.
 
@@ -651,7 +651,7 @@ Ce projet est libre d'utilisation pour projets personnels et éducatifs.
 
 ---
 
-**Projet Anim-Guirlande v0.1.0** - Animations de guirlande LED avec ESP32 🎄✨
+**Projet Anim-Guirlande v5.6.2** - Animations de guirlande LED avec ESP32 🎄✨
 ## 🌍 Internationalization & Language Policy
 
 As of version 5.3.3, all user-facing and log messages in the codebase are in English only (except *_FR.md documentation files). This ensures full internationalization and easier maintenance for all users and contributors. See the [CHANGELOG](CHANGELOG.md) for details.

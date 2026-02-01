@@ -13,7 +13,7 @@
 - Check for error messages on serial console
 - If problem persists, file an issue with logs
 
-# Troubleshooting - LED-Garland-Anim v5.6.0
+# Troubleshooting - LED-Garland-Anim v5.6.2
 
 Use this guide to debug any supported platform:
 - **ESP32 Classic (IdeaSpark/DevKitC)**
@@ -58,4 +58,4 @@ If motion always true, move the sensor away from heaters/sunlight (PIR) or sourc
 
 ---
 
-**Document version: v5.1.5 (2026-01-07)**
+**Document version: v5.6.2 (2026-02-01)**

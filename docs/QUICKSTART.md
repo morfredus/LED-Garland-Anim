@@ -1,7 +1,7 @@
 
-# 🚀 Quick Start Guide - LED-Garland-Anim v5.6.0
+# 🚀 Quick Start Guide - LED-Garland-Anim v5.6.2
 
-*This document is valid from version 5.6.0.*
+*This document is valid from version 5.6.2.*
 
 
 ## Supported Platforms

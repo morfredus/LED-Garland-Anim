@@ -1,6 +1,6 @@
-# User Guide - LED-Garland-Anim v5.3.0
+# User Guide - LED-Garland-Anim v5.6.2
 
-*This document is valid from version 5.3.4.*
+*This document is valid from version 5.6.2.*
 
 
 ## Supported Platforms
@@ -13,7 +13,7 @@
 
 Complete user guide for the LED-Garland-Anim LED garland and 8x8 matrix animation controller (ESP32 Classic IdeaSpark/DevKitC, ESP32 Wroom, ESP32-C3 HW-675, ESP32-S3 Mini) — all platforms compatible with OLED SSD1306 (I2C).
 
-**Document version: v5.3.4 (2026-01-23)**
+**Document version: v5.6.2 (2026-02-01)**
 
 ---
 

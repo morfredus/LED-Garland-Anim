@@ -1,3 +1,8 @@
+# [5.6.2] - 2026-02-01
+
+### Modifié
+1. En-têtes de version de la documentation et références de version courante synchronisés vers v5.6.2 (README et guides)
+
 # [5.6.1] - 2026-02-01
 
 ### Ajouté
