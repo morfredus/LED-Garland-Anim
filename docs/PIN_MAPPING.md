@@ -1,77 +1,29 @@
-# Pin Connection Guide - LED-Garland-Anim v5.6.1
+# Pin Connection Guide - LED-Garland-Anim v5.6.3
 
-*This document is valid from version 5.6.1.*
-
+*This document is valid from version 5.6.3.*
 
 ## Supported Platforms
 - ESP32 Classic (IdeaSpark/DevKitC)
-- ESP32 Wroom
-- ESP32-C3 HW-675
+- ESP32 Wroom (DevKit V1)
 - ESP32-S3 Mini (esp32s3_mini)
 - ESP32-S3 Super Mini (esp32s3_supermini)
 
-> 📌 **OLED SSD1306 (I2C) display is supported on all platforms if connected to SDA/SCL**
+> 📌 **OLED SSD1306 (I2C)** is supported on all platforms if connected.
 > 📌 **OLED Rotation**: Configurable via `OLED_ROTATION` in config.h (U8G2_R0, U8G2_R1, U8G2_R2, U8G2_R3)
 
+---
 
-# Pin Connection Guide - LED-Garland-Anim v5.3.0
+## Key Pin Mapping (per board)
 
-*This document is valid from version 5.3.0.*
-
-## Supported Platforms
-- ESP32 Classic (IdeaSpark/DevKitC)
-- ESP32-C3 HW-675 (OLED)
-- ESP32-S3 Mini (esp32s3_mini)
-
-> 📌 **Beginner's Guide**: This document explains how to physically connect components to your ESP32 board for the LED-Garland-Anim project.
-
-## 🎯 Table of Contents
-- [OLED SSD1306 128x64 Display](#oled-ssd1306-128x64-display)
-- [Other Peripherals](#other-peripherals)
-- [Detailed Connection Schematics](#detailed-connection-schematics)
-- [Beginner Tips](#beginner-tips)
+| Board | I2C SDA / SCL | TB6612 PWMA / AIN1 / AIN2 / STBY | Matrix DATA | Motion Sensor | User Button (BUTTON_1) | BOOT |
+|---|---|---|---|---|---|---|
+| ESP32 Classic | GPIO21 / GPIO22 | GPIO12 / GPIO25 / GPIO33 / GPIO14 | GPIO27 | GPIO35 | GPIO16 | GPIO0 |
+| ESP32 Wroom | GPIO21 / GPIO22 | GPIO12 / GPIO25 / GPIO33 / GPIO14 | GPIO27 | GPIO35 | GPIO16 | GPIO0 |
+| ESP32-S3 Mini / Super Mini | GPIO4 / GPIO5 | GPIO10 / GPIO11 / GPIO12 / GPIO13 | GPIO7 | GPIO7 | GPIO8 | GPIO0 |
 
 ---
 
-## OLED SSD1306 Display (I2C)
-
-The OLED SSD1306 (I2C) display is supported on all platforms. Recommended wiring:
-- **SDA**: GPIO 4 (default)
-- **SCL**: GPIO 5 (default)
-Power the display with 3.3V or 5V depending on your module. Default I2C address is usually `0x3C`.
----
-
-## Other Peripherals
-
-Refer to the user guide for the full mapping of buttons, matrix, garland, and motion sensor.
-
----
-
-## Detailed Connection Schematics
-
-
-### OLED SSD1306 I2C Wiring
-
-```
-ESP32 Board         OLED SSD1306 (I2C)
-┌─────────┐        ┌───────────────┐
-│ GPIO 4  ├───────►│ SDA           │
-│ GPIO 5  ├───────►│ SCL           │
-│   3V3   ├───────►│ VCC           │
-│   GND   ├───────►│ GND           │
-└─────────┘        └───────────────┘
-```
-
-### NeoPixel 8x8 Matrix Connection Schematic
-
-```
-ESP32 Board         WS2812B 8x8 Matrix
-│ GPIO 27 ├───────►│ DIN      │
-│   5V    ├───────►│ VCC      │ (External power supply recommended)
-│   GND   ├───────►│ GND      │
-└─────────┘        └──────────┘
-```
-
----
-
-**Document version: v1.14.0 (2026-01-22)**
+## Notes
+- The firmware uses a **single user button** (BUTTON_1). Other button inputs are not used by current firmware logic.
+- On ESP32-S3 Mini / Super Mini, the motion sensor and matrix share GPIO7 as defined in board_config.h.
+- See board_config.h for the authoritative mapping.

@@ -1,3 +1,8 @@
+# [5.6.3] - 2026-02-01
+
+### Changed
+1. User documentation aligned with current supported boards and OLED-only display (removed legacy LCD/TFT references and outdated GPIO mappings)
+
 # [5.6.2] - 2026-02-01
 
 ### Changed

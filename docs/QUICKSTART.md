@@ -1,16 +1,16 @@
 
-# 🚀 Quick Start Guide - LED-Garland-Anim v5.6.2
+# 🚀 Quick Start Guide - LED-Garland-Anim v5.6.3
 
-*This document is valid from version 5.6.2.*
+*This document is valid from version 5.6.3.*
 
 
 ## Supported Platforms
 - ESP32 Classic (IdeaSpark/DevKitC)
 - ESP32 Wroom
-- ESP32-C3 HW-675
 - ESP32-S3 Mini (esp32s3_mini)
+- ESP32-S3 Super Mini (esp32s3_supermini)
 
-> 📌 **OLED SSD1306 (I2C) display is supported on all platforms if connected to SDA/SCL**
+> 📌 **OLED SSD1306 (I2C) display is supported on all platforms if connected (see per-board pins in PIN_MAPPING).**
 
 
 **Goal**: Get your LED garland animating in 5 minutes!
@@ -43,7 +43,7 @@ This guide assumes you have zero ESP32 experience. Follow these steps in order.
 
 ### 2. Required Hardware Checklist
 
-✅ ESP32 board (IdeaSpark, DevKitC, Wroom, HW-675, S3 Mini)  
+✅ ESP32 board (IdeaSpark, DevKitC, Wroom, S3 Mini, S3 Super Mini)  
 ✅ USB cable (micro-USB or USB-C, depending on board)  
 ✅ TB6612FNG motor driver module  
 ✅ 2-wire LED garland (anti-parallel LEDs)  
@@ -177,7 +177,7 @@ http://garland.local
 
 ### Method 2: Using IP Address
 
-Use the IP address shown on the LCD or in serial monitor:
+Use the IP address shown on the OLED display or in serial monitor:
 ```
 http://192.168.x.x
 ```
@@ -227,7 +227,7 @@ You should now have:
 - ✅ Web interface accessible at `http://garland.local`
 - ✅ Motion detection triggering animations
 - ✅ Physical buttons working
-- ✅ LCD showing IP and status (if equipped)
+- ✅ OLED showing IP and status (if connected)
 
 ---
 

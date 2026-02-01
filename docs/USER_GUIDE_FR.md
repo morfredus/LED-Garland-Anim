@@ -1,7 +1,7 @@
 ## Sauvegarde et restauration de la configuration (NVS)
-# Guide Utilisateur - LED-Garland-Anim v5.6.2
+# Guide Utilisateur - LED-Garland-Anim v5.6.3
 
-Ce guide explique comment utiliser et configurer le projet LED-Garland-Anim. Il est valable à partir de la version 5.6.2.
+Ce guide explique comment utiliser et configurer le projet LED-Garland-Anim. Il est valable à partir de la version 5.6.3.
 
 
 **Fonctionnement :**
@@ -12,17 +12,17 @@ Ce guide explique comment utiliser et configurer le projet LED-Garland-Anim. Il 
 **Aucune action requise de l'utilisateur** : la gestion est entièrement automatique.
 
 
-# Guide Utilisateur - LED-Garland-Anim v5.6.2
-**Version du document : v5.6.2 (2026-02-01)**
+# Guide Utilisateur - LED-Garland-Anim v5.6.3
+**Version du document : v5.6.3 (2026-02-01)**
 - ESP32 Wroom
-- ESP32-C3 HW-675
 - ESP32-S3 Mini (esp32s3_mini)
+- ESP32-S3 Super Mini (esp32s3_supermini)
 
-> 📌 **Affichage OLED SSD1306 (I2C) supporté sur toutes les plateformes si connecté (SDA=GPIO4, SCL=GPIO5 par défaut)**
+> 📌 **Affichage OLED SSD1306 (I2C) supporté sur toutes les plateformes si connecté (voir broches par carte dans PIN_MAPPING)**
 
-Guide utilisateur complet pour le contrôleur d'animation de guirlande LED (ESP32 Classic IdeaSpark/DevKitC, ESP32 Wroom, ESP32-C3 HW-675, ESP32-S3 Mini) — toutes plateformes compatibles OLED SSD1306 (I2C).
+Guide utilisateur complet pour le contrôleur d'animation de guirlande LED (ESP32 Classic IdeaSpark/DevKitC, ESP32 Wroom, ESP32-S3 Mini, ESP32-S3 Super Mini) — toutes plateformes compatibles OLED SSD1306 (I2C).
 
-**Version du document : v5.6.2 (2026-02-01)**
+**Version du document : v5.6.3 (2026-02-01)**
 
 - [Guide Utilisateur - LED-Garland-Anim v5.3.0](#guide-utilisateur---led-garland-anim-v530)
 - [Guide Utilisateur - LED-Garland-Anim v5.3.2](#guide-utilisateur---led-garland-anim-v532)
@@ -33,7 +33,7 @@ Guide utilisateur complet pour le contrôleur d'animation de guirlande LED (ESP3
   - [Contrôles Physiques](#contrôles-physiques)
     - [Emplacements des Boutons](#emplacements-des-boutons)
   - [Interface Web](#interface-web)
-  - [Affichage LCD ST7789](#affichage-lcd-st7789)
+  - [Affichage OLED SSD1306 (I2C)](#affichage-oled-ssd1306-i2c)
   - [Modes de Fonctionnement](#modes-de-fonctionnement)
   - [Animations](#animations)
   - [Animation Horloge (à partir de v5.3.2)](#animation-horloge-à-partir-de-v532)
@@ -103,16 +103,13 @@ Exemple : `192.168.1.100`
 
 ## Affichage OLED SSD1306 (I2C)
 
-- **Écran monochrome 128x64px** (SSD1306, I2C)
-- **Affichage universel** : supporté sur toutes les plateformes si connecté (SDA=GPIO4, SCL=GPIO5 par défaut)
+- **Écran monochrome 128x64 ou 128x32** (SSD1306, I2C)
+- **Affichage universel** : supporté sur toutes les plateformes si connecté (voir broches par carte dans PIN_MAPPING)
 - **Écran de démarrage** : nom du projet, version, progression WiFi
-- **Écran principal** : nom du projet, version, SSID, IP, mDNS, mode, animations
-- **Zone d'animation** : visualisation temps réel, messages système
+- **Écran principal** : nom du projet, version, adresse IP, mode, animations guirlande + matrice
 - **Sélection du mode d'affichage** (Animé, Statique, Éteint) depuis l'interface web
 - **Persistance automatique** (NVS, restauré au boot)
 - **Effet immédiat, sans reboot**
-- **11 visualisations animées** (une par animation, mode animé)
-- **Mises à jour temps réel à 10 FPS (mode animé)**
 
 ---
 
@@ -151,7 +148,7 @@ Depuis la version 5.1.1, la **guirlande** et la **matrice** possèdent des **int
 
 ## Utilisation Quotidienne
 - Changer animation/mode avec les boutons ou l'interface web
-- Suivre l'état sur le LCD et le tableau de bord web
+- Suivre l'état sur l'OLED et le tableau de bord web
 
 ---
 

@@ -7,7 +7,7 @@ La configuration (mode, animation, intervalles) est stockée dans la NVS de l’
 - Si la NVS est vide ou corrompue, les valeurs par défaut sont utilisées puis sauvegardées.
 
 Ceci garantit la restauration automatique des réglages utilisateur après redémarrage ou coupure d’alimentation.
-# 📚 Architecture - LED-Garland-Anim v5.6.1
+# 📚 Architecture - LED-Garland-Anim v5.6.3
 
 ## 🎯 Vue d'ensemble
 
@@ -16,18 +16,17 @@ LED-Garland-Anim v5.6.x prend en charge plusieurs plateformes matérielles offic
 
 - **ESP32 Classic (IdeaSpark/DevKitC)**
 - **ESP32 Wroom (DevKit V1)**
-- **ESP32-C3 HW-675 (OLED 0.42" 72×40)**
 - **ESP32-S3 Mini (esp32s3_mini)**
 - **ESP32-S3 Super Mini (esp32s3_supermini)**
 
 Toutes les fonctionnalités sont disponibles sur chaque carte, avec adaptation automatique de l'affichage (OLED ou sans écran selon la plateforme).
 
 - **Interface Web** : Contrôle à distance et configuration
-- **Affichage Local** : OLED (HW-675), ou sans écran (autres plateformes)
+- **Affichage Local** : OLED SSD1306 (I2C) si connecté
 - **Contrôle Physique** : Boutons pour changement d'animation/mode
 - **Modes Intelligents** : Gestion automatique basée sur capteurs
 - **Module TB6612FNG** : Contrôle bi-directionnel de la guirlande
-- **Détection automatique du capteur de mouvement** : PIR (HC-SR501) ou radar Doppler (RCWL-0516) auto-détecté sur GPIO 35
+- **Détection automatique du capteur de mouvement** : PIR (HC-SR501) ou radar Doppler (RCWL-0516) sur broches spécifiques à la carte (voir PIN_MAPPING)
 
 ## Structure Modulaire
 

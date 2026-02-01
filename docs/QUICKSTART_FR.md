@@ -1,17 +1,17 @@
-# 🚀 Guide Rapide - LED-Garland-Anim v5.6.2
+# 🚀 Guide Rapide - LED-Garland-Anim v5.6.3
 
-*Ce document est valide à partir de la version 5.6.2.*
+*Ce document est valide à partir de la version 5.6.3.*
 
 
 ## Plateformes supportées
 - ESP32 Classic (IdeaSpark/DevKitC)
 - ESP32 Wroom
-- ESP32-C3 HW-675
 - ESP32-S3 Mini (esp32s3_mini)
+- ESP32-S3 Super Mini (esp32s3_supermini)
 
-> 📌 **Affichage OLED SSD1306 (I2C) disponible sur toutes les plateformes si connecté sur SDA/SCL**
+> 📌 **Affichage OLED SSD1306 (I2C) disponible sur toutes les plateformes si connecté (voir broches par carte dans PIN_MAPPING).**
 
-Ce guide s'adresse aux débutants pour ESP32 Classic (IdeaSpark/DevKitC), ESP32-C3 HW-675, ESP32-S3 Mini.
+Ce guide s'adresse aux débutants pour ESP32 Classic (IdeaSpark/DevKitC), ESP32 Wroom, ESP32-S3 Mini et ESP32-S3 Super Mini.
 
 
 **Objectif** : Faire fonctionner votre guirlande LED en 5 minutes !
@@ -44,7 +44,7 @@ Ce guide s'adresse aux débutants sans expérience ESP32. Suivez ces étapes dan
 
 ### 2. Liste du matériel requis
 
-✅ Carte ESP32 (IdeaSpark, DevKitC, Wroom, HW-675, S3 Mini)  
+✅ Carte ESP32 (IdeaSpark, DevKitC, Wroom, S3 Mini, S3 Super Mini)  
 ✅ Câble USB (micro-USB ou USB-C selon la carte)  
 ✅ Module pilote moteur TB6612FNG  
 ✅ Guirlande LED 2 fils (LEDs anti-parallèles)  
@@ -178,7 +178,7 @@ http://garland.local
 
 ### Méthode 2 : Utiliser l'adresse IP
 
-Utiliser l'adresse IP affichée sur le LCD ou dans le moniteur série :
+Utiliser l'adresse IP affichée sur l'OLED ou dans le moniteur série :
 ```
 http://192.168.x.x
 ```
@@ -228,7 +228,7 @@ Vous devriez maintenant avoir :
 - ✅ Interface web accessible à `http://garland.local`
 - ✅ Détection de mouvement déclenchant les animations
 - ✅ Boutons physiques fonctionnels
-- ✅ LCD affichant l'IP et le statut (si équipé)
+- ✅ OLED affichant l'IP et le statut (si connecté)
 
 ---
 

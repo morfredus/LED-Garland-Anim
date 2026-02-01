@@ -1,11 +1,11 @@
 
 # LED-Garland-Anim
 
-**Version: 5.6.2** (2026-02-01)  
-*This documentation is valid from version 5.6.2.*
+**Version: 5.6.3** (2026-02-01)  
+*This documentation is valid from version 5.6.3.*
 
 
-Controller for bi-directional LED garland and 8x8 NeoPixel matrix animation on **ESP32 Classic** (IdeaSpark/DevKitC), **ESP32 Wroom (DevKit V1)**, **ESP32-C3 HW-675**, **ESP32-S3 Mini** — all platforms support **OLED SSD1306 (I2C)** display if connected (default SDA/SCL). PIR/RCWL-0516 auto-detection, **modern web interface with instant save**, responsive layout, flash-free AJAX updates, web-based OTA updates, **mDNS support for easy access via unique device name**, physical controls: BOOT + 1 user button (see below), 11 garland animations, 39 festive matrix animations (Christmas, New Year, Easter, Campfire, Radar), dual independent control, smart modes, persistent configuration, automatic startup animations.
+Controller for bi-directional LED garland and 8x8 NeoPixel matrix animation on **ESP32 Classic** (IdeaSpark/DevKitC), **ESP32 Wroom (DevKit V1)**, **ESP32-S3 Mini**, **ESP32-S3 Super Mini** — all platforms support **OLED SSD1306 (I2C)** if connected (see per-board pins in the Pin Mapping guide). PIR/RCWL-0516 auto-detection, **modern web interface with instant save**, responsive layout, flash-free AJAX updates, web-based OTA updates, **mDNS support for easy access via unique device name**, physical controls: BOOT + 1 user button (see below), 11 garland animations, multiple festive matrix animations, dual independent control, smart modes, persistent configuration, automatic startup animations.
 
 ## ✨ What's New in v5.2.0
 
@@ -15,31 +15,15 @@ Controller for bi-directional LED garland and 8x8 NeoPixel matrix animation on *
 4. **I2C diagnostics** - Automatic device detection on startup
 5. **Multi-board compatibility** - Seamless support for ESP32 Classic and ESP32-C3 architectures
 
-## ✨ What's New in v5.1.0
-
-1. **Animated LCD reorganized** to a **stacked full-width layout**: festive header, a wide info frame, then a larger animation zone for better readability.
-2. **SSID truncation** to 20 characters with "..." to prevent overflow in the info frame.
-3. **mDNS shown on animated screen**: `garland.local` now appears alongside Mode, SSID, and IP.
-
-## ✨ What's New in v5.0.0
-
-1. **Festive animated LCD (MAJOR)** – Animated mode now mirrors the static screen’s festive style with textured background, ribbon frames, sparkles, and twin garlands.
-2. (Superseded) **Compact mini animation window** – Replaced in v5.1.0 by the stacked full-width layout for clarity.
-3. **Richer info layout** – Mode, garland animation, matrix animation, SSID, and IP are displayed in a decorated info card for instant readability.
-
-## ✨ What's New in v4.0.0
-
-1. **Festive static LCD dashboard (MAJOR)** – Static mode is now a decorated scene with ribbon frame, sparkle corners, and a bright banner for the program name + version.
-2. **Always-on connectivity panel** – The LCD now permanently shows SSID, IP address, and mDNS (`*.local`) in colorful badges to make pairing effortless.
-3. **Playful separators** – Twin garland strings and starbursts keep the screen lively without animation or performance cost.
+See [CHANGELOG.md](./CHANGELOG.md) for older releases.
 
 ## ✨ What's New in v3.0.0
 
 ### 💥 Complete Web UI Card Reorganization (BREAKING CHANGE)
 - **New navigation flow** - Card order completely restructured for better UX
 - **Animations prioritized** - Garland and Matrix animations now at top (most frequently accessed)
-- **3-zone Mode card** - Mode + LCD side-by-side, all parameters below in unified section
-- **Integrated LCD mode** - LCD display mode now part of Mode card (removed separate card)
+- **3-zone Mode card** - Mode + screen mode side-by-side, all parameters below in unified section
+- **Integrated screen mode** - Screen display mode now part of Mode card (removed separate card)
 - **Consolidated parameters** - All temporal parameters + matrix brightness in one place
 - **Reduced scrolling** - More compact layout with logical grouping
 
@@ -48,7 +32,7 @@ Controller for bi-directional LED garland and 8x8 NeoPixel matrix animation on *
 2. 🎨 **Matrice 8x8** - All matrix animations (was Card 3)
 3. 🎯 **Mode de fonctionnement** - 3-zone layout:
    - Zone A (left): Mode selection (Auto/Manuel/Détection)
-   - Zone B (right): LCD display mode (was separate Card 4)
+   - Zone B (right): screen display mode (was separate Card 4)
    - Zone C (below): All temporal parameters + matrix brightness
 4. ℹ️ **Système & Réseau** - System and network information
 5. 🏷️ **Nom d'appareil** - Device name configuration
@@ -56,7 +40,7 @@ Controller for bi-directional LED garland and 8x8 NeoPixel matrix animation on *
 ### 🎨 Enhanced Mode Card Design
 **Side-by-Side Layout** (CSS Grid):
 - **Left Half**: Operating mode selection (Auto | Manuel | Détection mouvement)
-- **Right Half**: LCD display mode (Animation + matrice | Animation seule | Écran éteint)
+- **Right Half**: screen display mode (Animated + matrix | animation only | screen off)
 - **Full Width Below**: All temporal parameters (motion duration, garland interval, matrix interval) + matrix brightness
 
 **Benefits**:
@@ -89,10 +73,10 @@ Controller for bi-directional LED garland and 8x8 NeoPixel matrix animation on *
 
 - **ESP32 Classic (IdeaSpark/DevKitC)**
 - **ESP32 Wroom (DevKit V1)**
-- **ESP32-C3 HW-675**
 - **ESP32-S3 Mini** (esp32s3_mini)
+- **ESP32-S3 Super Mini** (esp32s3_supermini)
 
-> 📌 **OLED SSD1306 (I2C) display is supported on all platforms if connected to SDA/SCL**
+> 📌 **OLED SSD1306 (I2C) display is supported on all platforms if connected. See per-board I2C pins in the Pin Mapping guide.**
 
 
 #### Required Components (all platforms)
@@ -100,45 +84,25 @@ Controller for bi-directional LED garland and 8x8 NeoPixel matrix animation on *
 - **2-wire LED garland** (anti-parallel LEDs, ~50 LEDs)
 - **8x8 NeoPixel Matrix WS2812B-64** (64 addressable RGB LEDs)
 - **Motion sensor**: PIR HC-SR501 or RCWL-0516 (auto-detected)
-- **OLED SSD1306 (I2C) display** (optional but supported on all platforms, SDA=GPIO4, SCL=GPIO5 by default)
+- **OLED SSD1306 (I2C) display** (optional but supported on all platforms; see per-board pins)
 - **Suitable power supply** for the garland and matrix (5V recommended for NeoPixels)
 
 
 ### Main pinout summary (ESP32 Classic)
 ```
 TB6612FNG (Garland):
-   PWMA  → GPIO 13
-   AIN1  → GPIO 26
-   AIN2  → GPIO 25
-   STBY  → GPIO 15
+   PWMA  → GPIO 12
+   AIN1  → GPIO 25
+   AIN2  → GPIO 33
+   STBY  → GPIO 14
 8x8 NeoPixel Matrix:
-   DATA  → GPIO 34
+   DATA  → GPIO 27
 MOTION_SENSOR_PIN (PIR/RCWL-0516) → GPIO 35
-LCD_MOSI → GPIO 23
-LCD_SCLK → GPIO 18
-LCD_CS   → GPIO 5
-LCD_DC   → GPIO 27
-LCD_RST  → GPIO 33
-LCD_BLK  → GPIO 32
+OLED I2C:
+   SDA   → GPIO 21
+   SCL   → GPIO 22
 BTN1     → GPIO 16 (User button)
 BOOT     → GPIO 0  (Boot/Reset)
-```
-
-### Main pinout summary (ESP32-C3 HW-675)
-```
-TB6612FNG (Garland):
-   PWMA  → GPIO 0
-   AIN1  → GPIO 1
-   AIN2  → GPIO 2
-   STBY  → GPIO 3
-8x8 NeoPixel Matrix:
-   DATA  → GPIO 8
-OLED I2C:
-   SDA   → GPIO 5
-   SCL   → GPIO 6
-   ADDR  → 0x3C
-BUTTON BOOT (Mode) → GPIO 9
-MOTION_SENSOR_PIN  → GPIO 10 (optional)
 ```
 
 ### Main pinout summary (ESP32 Wroom)
@@ -151,11 +115,28 @@ TB6612FNG (Garland):
 8x8 NeoPixel Matrix:
    DATA  → GPIO 27
 MOTION_SENSOR_PIN (PIR/RCWL-0516) → GPIO 35
-I2C SDA → GPIO 21
-I2C SCL → GPIO 22
-BTN1     → GPIO 16 (Garland animation)
-BTN2     → GPIO 17 (Matrix animation)
-BTN3     → GPIO 18 (Mode)
+OLED I2C:
+   SDA   → GPIO 21
+   SCL   → GPIO 22
+BTN1     → GPIO 16 (User button)
+BOOT     → GPIO 0  (Boot/Reset)
+```
+
+### Main pinout summary (ESP32-S3 Mini / Super Mini)
+```
+TB6612FNG (Garland):
+   PWMA  → GPIO 10
+   AIN1  → GPIO 11
+   AIN2  → GPIO 12
+   STBY  → GPIO 13
+8x8 NeoPixel Matrix:
+   DATA  → GPIO 7
+MOTION_SENSOR_PIN (PIR/RCWL-0516) → GPIO 7
+OLED I2C:
+   SDA   → GPIO 4
+   SCL   → GPIO 5
+BTN1     → GPIO 8 (User button)
+BOOT     → GPIO 0  (Boot/Reset)
 ```
 
 ---
@@ -163,17 +144,17 @@ BTN3     → GPIO 18 (Mode)
 ## 2. Key Features
 
 - **Dual LED Control**: 2-wire LED garland + 8x8 NeoPixel matrix with independent control
-- **48 Total Animations**: 11 for garland + 37 festive animations for 8x8 matrix
+- **Animations**: 11 for the garland + multiple festive animations for the 8x8 matrix
 - **Physical Controls (since v5.3.4):**
    - **BOOT button (GPIO 0):** Long press = reboot (unchanged)
    - **User button (GPIO 16):**
       - 1 click = next garland animation
       - 2 clicks = next matrix animation
       - long press = change global mode
-- **3 Display Modes (Screen):**
-   - **Animated**: Classic animated visuals (default)
-   - **Static**: Festive dashboard with project name, version, SSID, IP, and mDNS on a decorated frame
-   - **Off**: Screen and backlight fully off
+- **3 Display Modes (OLED):**
+   - **Animated**: OLED info screen (project name, version, IP, mode, animations)
+   - **Static**: Same information shown without animation
+   - **Off**: Display fully off
 - **Display Mode Selection**:
    - Selectable live from the web UI (radio buttons)
    - Default value set in `config.h`
@@ -190,7 +171,7 @@ BTN3     → GPIO 18 (Mode)
 - **Startup Animation**: Sparkling star animation on matrix at boot
 - **3 Smart Operating Modes**: Permanent (both always on), Motion Trigger (both follow motion), Motion Independent (garland follows motion, matrix always on)
 - Auto-detection of PIR HC-SR501 or RCWL-0516
-- Color ST7789 display (optional, built-in on IdeaSpark)
+- OLED SSD1306 display (128x64 or 128x32 via config)
 - Full-featured web interface with matrix controls
 - **Web-based OTA firmware updates** (new in v1.4.0)
 - Physical button controls
@@ -216,8 +197,10 @@ BTN3     → GPIO 18 (Mode)
    ```
 2. Configure `include/secrets.h` (WiFi)
 3. In `platformio.ini`, choose your environment:
-   - `esp32devkitc`: ESP32 Classic (4MB Flash, ST7789 LCD)
-   - `esp32c3_hw675`: ESP32-C3 HW-675 (OLED 72×40, I2C GPIO5/6)
+   - `esp32devkitc`: ESP32 Classic (4MB Flash)
+   - `esp32wroom`: ESP32 Wroom (DevKit V1)
+   - `esp32s3_mini`: ESP32-S3 Mini
+   - `esp32s3_supermini`: ESP32-S3 Super Mini
 4. Wire the components as shown above
 5. Build and upload
    ```bash
@@ -225,9 +208,13 @@ BTN3     → GPIO 18 (Mode)
    pio run -e esp32devkitc
    pio run -e esp32devkitc -t upload
    
-   # For ESP32-C3 HW-675:
-   pio run -e esp32c3_hw675
-   pio run -e esp32c3_hw675 -t upload
+   # For ESP32-S3 Mini:
+   pio run -e esp32s3_mini
+   pio run -e esp32s3_mini -t upload
+
+   # For ESP32-S3 Super Mini:
+   pio run -e esp32s3_supermini
+   pio run -e esp32s3_supermini -t upload
    
    # Monitor serial output:
    pio device monitor
@@ -272,7 +259,7 @@ The device can be accessed in **two ways**:
    ```
    Find your ESP32's IP address in:
    - Serial monitor output
-   - LCD display (if equipped)
+   - OLED display (if connected)
    - Your router's connected devices list
 
 2. **Via mDNS Name** (recommended) 🆕:
@@ -310,9 +297,9 @@ You can change the mDNS device name directly from the web interface:
    - **Display Mode**: Select between Animated, Static, Off (immediate effect)
    - **Device Name Configuration**: Change mDNS name on the fly
    - All settings (animation, mode, display mode, durations, device name) are persistent and restored at boot
-   - SSID, IP, and mDNS name always visible
+   - Network info visible in the dashboard (SSID, IP, mDNS)
    - Save/Restore/Erase configuration actions
-   - **OLED display**: IP address is now shown in smaller font, and the current mode is displayed at the bottom of the screen (v5.3.3)
+   - **OLED display**: project name, version, IP, mode, and current animations
 
 ---
 
@@ -340,7 +327,6 @@ The firmware supports **two OTA update methods**:
 
 5. Progress is displayed in real-time:
    - Progress bar in the browser
-   - Percentage display on the ST7789 screen
    - Status messages (success/failure)
 
 6. The ESP32 reboots automatically after a successful update
@@ -373,8 +359,7 @@ The firmware supports **two OTA update methods**:
 
 In `include/config.h`:
 ```cpp
-// #define HAS_OLED        // Comment to disable
-// #define HAS_ST7789      // Comment to disable
+// #define HAS_OLED_U8G2   // Comment to disable OLED
 ```
 In `include/garland_control.h`:
 ```cpp
@@ -388,7 +373,7 @@ In `include/garland_control.h`:
 - LED garland: 2 wires, anti-parallel LEDs, 8-bit PWM 5kHz
 - TB6612FNG: dual H-bridge, direction/intensity control
 - Sensors: PIR (LOW idle, HIGH detection), RCWL-0516 (HIGH idle, LOW detection)
-- Display: ST7789 1.14" 135x240px (optional)
+- Display: OLED SSD1306 (I2C), 128x64 or 128x32 (configurable)
 - Memory: 4MB Flash, ~500KB RAM
 - WiFi: 2.4GHz, auto-reconnect, integrated web server
 
@@ -403,7 +388,7 @@ In `include/garland_control.h`:
 
 ## 10. Versions
 
-**Current Version: v5.6.2** (2026-02-01)
+**Current Version: v5.6.3** (2026-02-01)
 See [CHANGELOG.md](./CHANGELOG.md)
 
 ---
@@ -443,23 +428,16 @@ ESP32 project for bi-directional LED garlands with advanced animations and smart
 ## 15. Acknowledgements
 
 - PlatformIO team
-- Adafruit (GFX, NeoPixel, ST7789 libraries)
+- Adafruit (NeoPixel, U8g2 libraries)
 - ESP32 community
 - TB6612FNG module
 
 ### OLED Display
-- Shows current animation name
+- Shows project name and version
 - Shows IP address
-- Animated visualization bar at bottom (14 distinct patterns)
+- Shows mode and current animations
 
-You can use either the ESP32 IdeaSpark board (recommended) or any ESP32 board with a compatible ST7789 display. You must respect the default pin mapping:
-- LCD_MOSI 23
-- LCD_SCLK 18
-- LCD_DC    2
-- LCD_RST   4
-- LCD_BLK  32
-
-See [docs/PIN_MAPPING.md](docs/PIN_MAPPING.md) for details.
+See [docs/PIN_MAPPING.md](docs/PIN_MAPPING.md) for wiring details.
 
 ---
 
@@ -471,14 +449,14 @@ Anim-Guirlande/
 │   ├── board_config.h        # ESP32/S3 pin mapping
 │   ├── config.h              # General configuration
 │   ├── secrets.h             # WiFi networks credentials
-│   ├── display.h             # OLED/TFT display management
+│   ├── display_oled.h        # OLED display management
 │   ├── garland_control.h     # Garland control and animations
 │   ├── web_interface.h       # HTTP handlers
 │   ├── web_pages.h           # HTML generator
 │   └── web_styles.h          # CSS styles
 ├── src/
 │   ├── main.cpp              # Entry point
-│   ├── display.cpp           # Display implementation
+│   ├── display_oled.cpp      # OLED display implementation
 │   └── garland_control.cpp   # Animation implementation
 ├── docs/
 │   ├── PIN_MAPPING.md        # Connection schematics
@@ -499,8 +477,7 @@ Anim-Guirlande/
 ### Disable Displays
 In `include/config.h`:
 ```cpp
-// #define HAS_OLED        // Comment to disable
-// #define HAS_ST7789      // Comment to disable
+// #define HAS_OLED_U8G2   // Comment to disable OLED
 ```
 
 ### Adjust Motion Detection Duration
@@ -645,7 +622,7 @@ Ce projet est libre d'utilisation pour projets personnels et éducatifs.
 
 ## ✨ Remerciements
 
-* Adafruit pour les bibliothèques GFX, NeoPixel, OLED et ST7789
+* Adafruit pour les bibliothèques NeoPixel et U8g2
 * PlatformIO pour l'environnement de développement
 * Communauté ESP32 pour le support et documentation
 

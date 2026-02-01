@@ -13,16 +13,16 @@
 - Check for error messages on serial console
 - If problem persists, file an issue with logs
 
-# Troubleshooting - LED-Garland-Anim v5.6.2
+# Troubleshooting - LED-Garland-Anim v5.6.3
 
 Use this guide to debug any supported platform:
 - **ESP32 Classic (IdeaSpark/DevKitC)**
 - **ESP32 Wroom (DevKit V1)**
-- **ESP32-C3 HW-675 (OLED 0.42" 72×40)**
 - **ESP32-S3 Mini (esp32s3_mini)**
+- **ESP32-S3 Super Mini (esp32s3_supermini)**
 
 ## Quick Checklist
-- Confirm you flashed the correct PlatformIO environment for your board (`esp32devkitc`, `esp32wroom`, `esp32c3_hw675`, `esp32s3_mini`).
+- Confirm you flashed the correct PlatformIO environment for your board (`esp32devkitc`, `esp32wroom`, `esp32s3_mini`, `esp32s3_supermini`).
 - Double-check WiFi credentials in `include/secrets.h`.
 - Pins must match `include/board_config.h` (see PIN_MAPPING.md).
 - Common ground between ESP32, TB6612FNG, and external power.
@@ -34,22 +34,22 @@ Use this guide to debug any supported platform:
 - Frequent drops: move closer to AP, avoid USB hubs with low power, and reduce metal shielding around the board.
 
 ## Web Interface Unreachable
-- Ping the IP shown on LCD; if ping fails, recheck WiFi or DHCP.
+- Ping the IP shown on the OLED display; if ping fails, recheck WiFi or DHCP.
 - Clear browser cache or try incognito; ensure you use `http://<ip>` (not HTTPS).
 - If only some endpoints fail, reboot to reset the internal web server.
 
 ## Buttons (Animation/Mode)
-- BUTTON_1 GPIO16, BUTTON_2 GPIO17, BUTTON_BOOT on GPIO0.
+- User button (BUTTON_1) and BOOT (GPIO0).
+- User button: 1 click = next garland, 2 clicks = next matrix, long press = change mode.
 - Buttons are active-low with internal pull-ups; ensure wiring goes to GND on press.
-- If bouncy, inspect cabling length and switch quality; logs should show presses.
 
 ## Sensors
 - MOTION_SENSOR_PIN: GPIO35. System auto-detects PIR (HC-SR501) or RCWL-0516. Verify module has 5V and GND. For PIR: adjust sensitivity and delay pots. For RCWL: check for interference or false triggers.
 If motion always true, move the sensor away from heaters/sunlight (PIR) or sources of interference (RCWL); if never true, increase sensitivity (PIR) or check wiring (RCWL).
 
 ## Display
-- LCD ST7789: verify all SPI lines plus BLK (backlight) are powered; reseat jumpers.
-- For ghosting or random colors, lower cable length and check that GND is common.
+- OLED SSD1306 (I2C): verify SDA/SCL wiring, I2C address (0x3C/0x3D), and power.
+- If the screen stays black, run the I2C scan logs on boot and check common GND.
 
 ## Garland Output / TB6612FNG
 - TB6612_STBY must be HIGH (GPIO14).
@@ -58,4 +58,4 @@ If motion always true, move the sensor away from heaters/sunlight (PIR) or sourc
 
 ---
 
-**Document version: v5.6.2 (2026-02-01)**
+**Document version: v5.6.3 (2026-02-01)**

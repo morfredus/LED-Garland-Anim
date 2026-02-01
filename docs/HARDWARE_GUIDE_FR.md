@@ -1,12 +1,13 @@
 
-# 🛒 Guide Matériel - LED-Garland-Anim v5.6.2
+# 🛒 Guide Matériel - LED-Garland-Anim v5.6.3
 
-*Ce document est valide à partir de la version 5.6.2.*
+*Ce document est valide à partir de la version 5.6.3.*
 
 ## Plateformes supportées
 - ESP32 Classic (IdeaSpark/DevKitC)
-- ESP32-C3 HW-675 (OLED)
+- ESP32 Wroom (DevKit V1)
 - ESP32-S3 Mini (esp32s3_mini)
+- ESP32-S3 Super Mini (esp32s3_supermini)
 
 Liste d'achat complète et spécifications des composants pour construire le projet LED-Garland-Anim.
 
@@ -18,7 +19,7 @@ Liste d'achat complète et spécifications des composants pour construire le pro
 
 | Composant | Quantité | Coût Estimé | Notes |
 |-----------|----------|-------------|-------|
-| ESP32 IdeaSpark ou DevKitC | 1 | 8-15€ | Doit être ESP32 Classic (pas S2/S3/C3) |
+| ESP32 IdeaSpark ou DevKitC | 1 | 8-15€ | Doit être ESP32 Classic (pas S2/S3) |
 | Module TB6612FNG | 1 | 2-5€ | Pilote moteur double pont en H |
 | Guirlande LED 2 fils | 1 | 5-10€ | LEDs anti-parallèles (~50 LEDs) |
 | Matrice WS2812B 8x8 | 1 | 8-12€ | 64 LEDs RGB addressables |
@@ -62,10 +63,10 @@ Liste d'achat complète et spécifications des composants pour construire le pro
   - Mouser / Digi-Key
 - **Prix** : ~8-12€
 
-**Important** : Doit être ESP32 "Classic" (Xtensa dual-core), PAS :
-- ❌ ESP32-S2 (mono-cœur, brochage différent)
-- ❌ ESP32-S3 (architecture différente)
-- ❌ ESP32-C3 (RISC-V, incompatible)
+**Important** :
+- Pour l'environnement **ESP32 Classic**, choisissez bien une carte ESP32 "Classic" (Xtensa dual-core).
+- Les cartes **ESP32-S3 Mini/Super Mini** sont supportées via leurs environnements dédiés.
+- Évitez les ESP32-S2 si vous ciblez l'environnement Classic.
 
 ### 2. Module Pilote Moteur TB6612FNG
 

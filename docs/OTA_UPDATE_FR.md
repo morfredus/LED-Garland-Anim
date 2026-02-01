@@ -1,4 +1,4 @@
-# Procédure de mise à jour OTA - LED-Garland-Anim v5.6.2
+# Procédure de mise à jour OTA - LED-Garland-Anim v5.6.3
 
 Ce guide explique comment mettre à jour le firmware LED-Garland-Anim via WiFi en utilisant deux méthodes différentes.
 
@@ -25,7 +25,7 @@ Ce guide explique comment mettre à jour le firmware LED-Garland-Anim via WiFi e
 
 2. **Accédez à l'interface web** :
    - Ouvrez `http://[IP_ESP32]` dans votre navigateur
-   - L'adresse IP s'affiche sur l'écran LCD ST7789
+   - L'adresse IP s'affiche sur l'écran OLED (si connecté)
 
 3. **Naviguez vers la page de mise à jour OTA** :
    - Cliquez sur le bouton **"⬆️ Mise à jour OTA"** du tableau de bord
@@ -38,7 +38,7 @@ Ce guide explique comment mettre à jour le firmware LED-Garland-Anim via WiFi e
 
 5. **Suivez la progression** :
    - Barre de progression dans le navigateur
-   - Affichage du pourcentage sur l'écran ST7789
+   - Messages de statut (succès/échec)
    - Messages de statut (succès/échec)
 
 6. **Redémarrage automatique** :
@@ -68,7 +68,7 @@ Ce guide explique comment mettre à jour le firmware LED-Garland-Anim via WiFi e
 ### Étapes
 
 1. **Allumez l'ESP32 et connectez-le au WiFi**
-   - L'adresse IP s'affiche sur l'écran LCD (ou vérifiez sur votre box)
+   - L'adresse IP s'affiche sur l'écran OLED (ou vérifiez sur votre box)
 
 2. **Ouvrez PlatformIO ou l'Arduino IDE**
    - Dans PlatformIO, sélectionnez l'environnement (ex : `esp32devkitc`)
@@ -101,7 +101,7 @@ Ce guide explique comment mettre à jour le firmware LED-Garland-Anim via WiFi e
 |----------------|---------|------------|
 | **Facilité d'utilisation** | ⭐⭐⭐⭐⭐ Très facile | ⭐⭐⭐ Modérée |
 | **Outils requis** | Navigateur web seulement | PlatformIO/Arduino IDE |
-| **Progression visuelle** | ✅ Oui (navigateur + LCD) | ❌ Non |
+| **Progression visuelle** | ✅ Oui (navigateur + OLED) | ❌ Non |
 | **Depuis n'importe quel appareil** | ✅ Oui | ❌ Non (machine de dev uniquement) |
 | **Confirmation de sécurité** | ✅ Double-clic | ❌ Non |
 | **Idéal pour** | Utilisateurs finaux, mises à jour rapides | Développeurs, builds automatisés |

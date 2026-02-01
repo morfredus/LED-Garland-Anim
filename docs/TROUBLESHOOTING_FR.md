@@ -13,16 +13,16 @@
 - Vérifier les messages d’erreur sur la console série
 - Si le problème persiste, ouvrir un ticket avec les logs
 
-# Dépannage - LED-Garland-Anim v5.6.2
+# Dépannage - LED-Garland-Anim v5.6.3
 
 Guide rapide pour diagnostiquer les problèmes sur toutes les plateformes supportées :
 - **ESP32 Classic (IdeaSpark/DevKitC)**
 - **ESP32 Wroom (DevKit V1)**
-- **ESP32-C3 HW-675 (OLED 0.42" 72×40)**
 - **ESP32-S3 Mini (esp32s3_mini)**
+- **ESP32-S3 Super Mini (esp32s3_supermini)**
 
 ## Check-list Express
-- Flasher le bon environnement PlatformIO selon la carte utilisée (`esp32devkitc`, `esp32wroom`, `esp32c3_hw675`, `esp32s3_mini`).
+- Flasher le bon environnement PlatformIO selon la carte utilisée (`esp32devkitc`, `esp32wroom`, `esp32s3_mini`, `esp32s3_supermini`).
 - Vérifier les identifiants WiFi dans `include/secrets.h`.
 - Respecter les pins de `include/board_config.h` (voir PIN_MAPPING_FR.md).
 - Masse commune entre ESP32, TB6612FNG et alimentation externe.
@@ -34,22 +34,22 @@ Guide rapide pour diagnostiquer les problèmes sur toutes les plateformes suppor
 - Coupures fréquentes : rapprocher du point d'accès, éviter les hubs USB peu puissants, limiter les obstacles métalliques.
 
 ## Interface Web Injoignable
-- Pinger l'IP affichée sur le LCD ; si échec, revoir WiFi/DHCP.
+- Pinger l'IP affichée sur l'écran OLED ; si échec, revoir WiFi/DHCP.
 - Vider le cache ou utiliser un onglet privé ; utiliser `http://<ip>` (pas HTTPS).
 - Si certaines pages répondent mal, redémarrer la carte pour relancer le serveur web interne.
 
 ## Boutons (Animation/Mode)
-- BUTTON_1 GPIO16, BUTTON_2 GPIO17, BUTTON_BOOT sur GPIO0.
+- Bouton utilisateur (BUTTON_1) et BOOT (GPIO0).
+- Bouton utilisateur : 1 clic = animation guirlande suivante, 2 clics = animation matrice suivante, appui long = changement de mode.
 - Boutons actifs bas avec pull-up interne ; le câblage doit aller à GND à l'appui.
-- Si rebonds, vérifier la longueur des fils et l'état des interrupteurs ; les logs série doivent afficher les pressions.
 
 ## Capteurs
 - MOTION_SENSOR_PIN : GPIO35. Le système auto-détecte PIR (HC-SR501) ou RCWL-0516. Vérifiez l'alim 5V/GND. Pour PIR : ajustez sensibilité/temporisation. Pour RCWL : vérifiez les interférences ou faux positifs.
 Si détection permanente, éloigner le capteur des sources de chaleur/soleil (PIR) ou d'interférences (RCWL) ; si jamais, augmenter la sensibilité (PIR) ou vérifier le câblage (RCWL).
 
 ## Affichage
-- LCD ST7789 : contrôler toutes les lignes SPI et l'alim BLK (backlight).
-- Couleurs erratiques : raccourcir les câbles, vérifier la masse commune.
+- OLED SSD1306 (I2C) : vérifier SDA/SCL, l'adresse I2C (0x3C/0x3D) et l'alimentation.
+- Si écran noir, vérifier les logs de scan I2C au démarrage et la masse commune.
 
 ## Sortie Guirlande / TB6612FNG
 - TB6612_STBY doit être HIGH (GPIO14).
@@ -58,4 +58,4 @@ Si détection permanente, éloigner le capteur des sources de chaleur/soleil (PI
 
 ---
 
-**Version du document : v5.6.2 (2026-02-01)**
+**Version du document : v5.6.3 (2026-02-01)**

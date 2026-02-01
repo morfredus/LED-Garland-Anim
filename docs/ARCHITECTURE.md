@@ -7,7 +7,7 @@ The configuration (mode, animation, intervals) is stored in ESP32's NVS using th
 - If NVS is empty or corrupted, defaults are used and saved.
 
 This ensures user settings are always restored after a reboot or power loss.
-# 📚 Architecture - LED-Garland-Anim v5.6.1
+# 📚 Architecture - LED-Garland-Anim v5.6.3
 
 ## 🎯 Overview
 
@@ -16,18 +16,17 @@ LED-Garland-Anim v5.6.x supports multiple official hardware platforms:
 
 - **ESP32 Classic (IdeaSpark/DevKitC)**
 - **ESP32 Wroom (DevKit V1)**
-- **ESP32-C3 HW-675 (OLED 0.42" 72×40)**
 - **ESP32-S3 Mini (esp32s3_mini)**
 - **ESP32-S3 Super Mini (esp32s3_supermini)**
 
 All features are available on each board, with automatic adaptation of the display (OLED or headless depending on platform).
 
 - **Web Interface**: Remote control and configuration
-- **Local Display**: OLED (HW-675), or headless (other platforms)
+- **Local Display**: OLED SSD1306 (I2C) when connected
 - **Physical Control**: Buttons for animation/mode changes
 - **Smart Modes**: Automatic management based on sensors
 - **TB6612FNG Module**: Bi-directional garland control
-- **Motion Sensor Auto-Detection**: PIR (HC-SR501) or Doppler radar (RCWL-0516) auto-detected on GPIO 35
+- **Motion Sensor Auto-Detection**: PIR (HC-SR501) or Doppler radar (RCWL-0516) on board-specific pins (see PIN_MAPPING)
 
 ## Modular Structure
 

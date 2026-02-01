@@ -1,12 +1,13 @@
 
-# 🛒 Hardware Guide - LED-Garland-Anim v5.6.2
+# 🛒 Hardware Guide - LED-Garland-Anim v5.6.3
 
-*This document is valid from version 5.6.2.*
+*This document is valid from version 5.6.3.*
 
 ## Supported Platforms
 - ESP32 Classic (IdeaSpark/DevKitC)
-- ESP32-C3 HW-675 (OLED)
+- ESP32 Wroom (DevKit V1)
 - ESP32-S3 Mini (esp32s3_mini)
+- ESP32-S3 Super Mini (esp32s3_supermini)
 
 Complete shopping list and component specifications for building the LED-Garland-Anim project.
 
@@ -18,7 +19,7 @@ Complete shopping list and component specifications for building the LED-Garland
 
 | Component | Quantity | Estimated Cost | Notes |
 |-----------|----------|----------------|-------|
-| ESP32 IdeaSpark or DevKitC | 1 | $8-15 | Must be ESP32 Classic (not S2/S3/C3) |
+| ESP32 IdeaSpark or DevKitC | 1 | $8-15 | Must be ESP32 Classic (not S2/S3) |
 | TB6612FNG Module | 1 | $2-5 | Dual H-bridge motor driver |
 | 2-wire LED Garland | 1 | $5-10 | Anti-parallel LEDs (~50 LEDs) |
 | WS2812B 8x8 Matrix | 1 | $8-12 | 64 addressable RGB LEDs |
@@ -30,27 +31,12 @@ Complete shopping list and component specifications for building the LED-Garland
 
 **Total Estimated Cost**: $40-75 USD
 
-### Essential Components - ESP32-C3 HW-675 (NEW in v5.2.0)
-
-| Component | Quantity | Estimated Cost | Notes |
-|-----------|----------|----------------|-------|
-| **ESP32-C3-DevKitM-1 with HW-675 OLED** | 1 | $10-15 | Integrated OLED 0.42" (72×40) |
-| TB6612FNG Module | 1 | $2-5 | Dual H-bridge motor driver |
-| 2-wire LED Garland | 1 | $5-10 | Anti-parallel LEDs (~50 LEDs) |
-| WS2812B 8x8 Matrix | 1 | $8-12 | 64 addressable RGB LEDs |
-| 5V Power Supply | 1 | $8-15 | 2A minimum, 3-5A recommended |
-| Breadboard 830 points | 1 | $3-5 | For prototyping |
-| Jumper Wires (M-M, M-F) | 1 set | $3-5 | 40pcs minimum |
-| USB-C Cable | 1 | $2-5 | For ESP32-C3 |
-
-**Total Estimated Cost**: $40-70 USD
-
 ### Optional Components
 
 | Component | Quantity | Cost | Purpose |
 |-----------|----------|------|---------|
 | RCWL-0516 Radar | 1 | $2-3 | Alternative to PIR (faster, more sensitive) |
-| PIR HC-SR501 | 1 | $2-4 | Motion detection (ESP32-C3 optional) |
+| PIR HC-SR501 | 1 | $2-4 | Motion detection |
 | DC Barrel Jack Adapter | 1 | $2-3 | For cleaner power connection |
 | Capacitor 1000µF 16V | 1-2 | $1-2 | Power supply smoothing |
 | Resistor 470Ω | 1 | $0.10 | Data line protection for NeoPixels |
@@ -70,13 +56,12 @@ Complete shopping list and component specifications for building the LED-Garland
   - AliExpress: Search "ESP32 IdeaSpark"
   - Price: ~$12-15
 
-#### ESP32-C3-DevKitM-1 with HW-675 OLED ⭐⭐ (NEW in v5.2.0)
-- **Features**: RISC-V architecture, integrated OLED 0.42" (72×40 px), USB-C, 4MB Flash
-- **Advantages**: Compact, low power, built-in OLED display, no external display needed
+#### ESP32-S3 Mini / Super Mini ⭐⭐
+- **Features**: ESP32-S3, USB-C, optional PSRAM (board-dependent)
+- **Advantages**: Compact form factor, modern USB-C
 - **Where to buy**:
-  - AliExpress: Search "ESP32-C3 HW-675 OLED"
-  - Price: ~$10-15
-- **Display**: SSD1306 OLED 72×40 pixels via I2C (SDA=GPIO5, SCL=GPIO6)
+  - AliExpress: Search "ESP32-S3 Mini" or "ESP32-S3 Super Mini"
+  - Price: ~$8-15
 
 #### ESP32 DevKitC (Alternative Classic)
 - **Features**: Standard 38-pin board, 4MB Flash, micro-USB
@@ -87,11 +72,11 @@ Complete shopping list and component specifications for building the LED-Garland
   - Adafruit: Product ID 3269
 - **Price**: ~$8-12
 
-**Important**: 
-- **ESP32 Classic** must be ESP32 "Classic" (Xtensa dual-core), NOT:
-  - ❌ ESP32-S2 (single core, different pinout)
-  - ❌ ESP32-S3 (different architecture)
-- **ESP32-C3** is supported in v5.2.0+ with specific environment `esp32c3_hw675`
+**Important**:
+- For the **ESP32 Classic** environment, choose an ESP32 "Classic" (Xtensa dual-core).
+- **ESP32-S3 Mini/Super Mini** are supported via their dedicated environments.
+- Avoid ESP32-S2 if you target the Classic environment.
+- **ESP32-S3 Mini/Super Mini** are supported with environments `esp32s3_mini` and `esp32s3_supermini`
 
 ### 2. TB6612FNG Motor Driver Module
 

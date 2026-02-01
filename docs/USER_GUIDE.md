@@ -1,19 +1,19 @@
-# User Guide - LED-Garland-Anim v5.6.2
+# User Guide - LED-Garland-Anim v5.6.3
 
-*This document is valid from version 5.6.2.*
+*This document is valid from version 5.6.3.*
 
 
 ## Supported Platforms
 - ESP32 Classic (IdeaSpark/DevKitC)
 - ESP32 Wroom
-- ESP32-C3 HW-675
 - ESP32-S3 Mini (esp32s3_mini)
+- ESP32-S3 Super Mini (esp32s3_supermini)
 
-> 📌 **OLED SSD1306 (I2C) display supported on all platforms if connected (SDA=GPIO4, SCL=GPIO5 by default)**
+> 📌 **OLED SSD1306 (I2C) display supported on all platforms if connected (see per-board pins in PIN_MAPPING)**
 
-Complete user guide for the LED-Garland-Anim LED garland and 8x8 matrix animation controller (ESP32 Classic IdeaSpark/DevKitC, ESP32 Wroom, ESP32-C3 HW-675, ESP32-S3 Mini) — all platforms compatible with OLED SSD1306 (I2C).
+Complete user guide for the LED-Garland-Anim LED garland and 8x8 matrix animation controller (ESP32 Classic IdeaSpark/DevKitC, ESP32 Wroom, ESP32-S3 Mini, ESP32-S3 Super Mini) — all platforms compatible with OLED SSD1306 (I2C).
 
-**Document version: v5.6.2 (2026-02-01)**
+**Document version: v5.6.3 (2026-02-01)**
 
 ---
 
@@ -105,16 +105,13 @@ Example: `192.168.1.100`
 
 ## OLED SSD1306 (I2C) Display
 
-- **128x64px monochrome display** (SSD1306, I2C)
-- **Universal display**: supported on all platforms if connected (SDA=GPIO4, SCL=GPIO5 by default)
+- **128x64 or 128x32 monochrome display** (SSD1306, I2C)
+- **Universal display**: supported on all platforms if connected (see per-board pins in PIN_MAPPING)
 - **Startup screen**: project name, version, WiFi progress
-- **Main screen**: project name, version, SSID, IP, mDNS, mode, animations
-- **Animation area**: real-time visualization, system messages
+- **Main screen**: project name, version, IP address, mode, garland + matrix animations
 - **Display mode selection** (Animated, Static, Off) from the web interface
 - **Automatic persistence** (NVS, restored at boot)
 - **Immediate effect, no reboot**
-- **11 animated visualizations** (one per animation, animated mode)
-- **Real-time updates at 10 FPS (animated mode)**
 
 ---
 

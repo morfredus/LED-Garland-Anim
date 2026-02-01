@@ -1,3 +1,8 @@
+# [5.6.3] - 2026-02-01
+
+### Modifié
+1. Documentation utilisateur alignée avec les cartes supportées actuelles et l'affichage OLED uniquement (suppression des références LCD/TFT et GPIO obsolètes)
+
 # [5.6.2] - 2026-02-01
 
 ### Modifié

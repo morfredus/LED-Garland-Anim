@@ -1,4 +1,4 @@
-# OTA Update Process - LED-Garland-Anim v5.6.2
+# OTA Update Process - LED-Garland-Anim v5.6.3
 
 This guide explains how to update the LED-Garland-Anim firmware over WiFi using two different methods.
 
@@ -25,7 +25,7 @@ This guide explains how to update the LED-Garland-Anim firmware over WiFi using 
 
 2. **Access the web interface**:
    - Go to `http://[ESP32_IP]` in your browser
-   - The IP address is displayed on the ST7789 LCD screen
+   - The IP address is displayed on the OLED screen (if connected)
 
 3. **Navigate to OTA update page**:
    - Click the **"⬆️ OTA Update"** button on the dashboard
@@ -38,7 +38,7 @@ This guide explains how to update the LED-Garland-Anim firmware over WiFi using 
 
 5. **Monitor progress**:
    - Progress bar in the browser
-   - Percentage display on the ST7789 screen
+   - Status messages (success/failure)
    - Status messages (success/failure)
 
 6. **Automatic reboot**:
@@ -68,7 +68,7 @@ This guide explains how to update the LED-Garland-Anim firmware over WiFi using 
 ### Step-by-Step
 
 1. **Power on the ESP32 and connect it to WiFi**
-   - The device will display its IP address on the LCD (or check your router)
+   - The device will display its IP address on the OLED screen (or check your router)
 
 2. **Open PlatformIO or Arduino IDE**
    - In PlatformIO, select the environment (e.g. `esp32devkitc`)
@@ -101,7 +101,7 @@ This guide explains how to update the LED-Garland-Anim firmware over WiFi using 
 |---------|---------------|------------|
 | **Ease of use** | ⭐⭐⭐⭐⭐ Very easy | ⭐⭐⭐ Moderate |
 | **Required tools** | Web browser only | PlatformIO/Arduino IDE |
-| **Visual progress** | ✅ Yes (browser + LCD) | ❌ No |
+| **Visual progress** | ✅ Yes (browser + OLED) | ❌ No |
 | **From any device** | ✅ Yes | ❌ No (only dev machine) |
 | **Safety confirmation** | ✅ Double-click | ❌ No |
 | **Best for** | End users, quick updates | Developers, automated builds |
