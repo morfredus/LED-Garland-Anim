@@ -1,8 +1,8 @@
 
 # LED-Garland-Anim
 
-**Version: 5.6.3** (2026-02-01)  
-*This documentation is valid from version 5.6.3.*
+**Version: 5.6.4** (2026-02-02)  
+*This documentation is valid from version 5.6.4.*
 
 
 Controller for bi-directional LED garland and 8x8 NeoPixel matrix animation on **ESP32 Classic** (IdeaSpark/DevKitC), **ESP32 Wroom (DevKit V1)**, **ESP32-S3 Mini**, **ESP32-S3 Super Mini** — all platforms support **OLED SSD1306 (I2C)** if connected (see per-board pins in the Pin Mapping guide). PIR/RCWL-0516 auto-detection, **modern web interface with instant save**, responsive layout, flash-free AJAX updates, web-based OTA updates, **mDNS support for easy access via unique device name**, physical controls: BOOT + 1 user button (see below), 11 garland animations, multiple festive matrix animations, dual independent control, smart modes, persistent configuration, automatic startup animations.
@@ -131,7 +131,7 @@ TB6612FNG (Garland):
    STBY  → GPIO 13
 8x8 NeoPixel Matrix:
    DATA  → GPIO 7
-MOTION_SENSOR_PIN (PIR/RCWL-0516) → GPIO 7
+MOTION_SENSOR_PIN (PIR/RCWL-0516) → GPIO 2
 OLED I2C:
    SDA   → GPIO 4
    SCL   → GPIO 5
@@ -388,7 +388,7 @@ In `include/garland_control.h`:
 
 ## 10. Versions
 
-**Current Version: v5.6.3** (2026-02-01)
+**Current Version: v5.6.4** (2026-02-02)
 See [CHANGELOG.md](./CHANGELOG.md)
 
 ---
@@ -568,7 +568,7 @@ static GarlandMode currentMode = MODE_PERMANENT;         // Or MODE_MOTION_TRIGG
 
 ## 📝 Versions
 
-**Current Version: v5.6.2** (2026-02-01)
+**Current Version: v5.6.4** (2026-02-02)
 
 See [CHANGELOG.md](./CHANGELOG.md) for complete history.
 
@@ -628,7 +628,7 @@ Ce projet est libre d'utilisation pour projets personnels et éducatifs.
 
 ---
 
-**Projet Anim-Guirlande v5.6.2** - Animations de guirlande LED avec ESP32 🎄✨
+**Projet Anim-Guirlande v5.6.4** - Animations de guirlande LED avec ESP32 🎄✨
 ## 🌍 Internationalization & Language Policy
 
 As of version 5.3.3, all user-facing and log messages in the codebase are in English only (except *_FR.md documentation files). This ensures full internationalization and easier maintenance for all users and contributors. See the [CHANGELOG](CHANGELOG.md) for details.

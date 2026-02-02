@@ -1,3 +1,12 @@
+# [5.6.4] - 2026-02-02
+
+### Corrigé
+1. **Bug de persistance du mode** : Le mode de fonctionnement (Permanent/Détection mouvement) est maintenant correctement restauré au démarrage. Correction d'une incompatibilité de type NVS (sauvegarde en u8 mais lecture en i32)
+2. **Mapping pins ESP32-S3 Mini** : Correction du pin capteur de mouvement de GPIO7 vers GPIO2 dans toute la documentation
+
+### Modifié
+3. Mise à jour de toute la documentation utilisateur (README, PIN_MAPPING) avec le bon mapping de pins et le tableau des contrôles par boutons physiques
+
 # [5.6.3] - 2026-02-01
 
 ### Modifié
