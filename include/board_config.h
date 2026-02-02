@@ -56,14 +56,12 @@
 // ---------------------------------------------------------------------------
 // Capteur de mouvement (PIR / RCWL-0516)
 // ---------------------------------------------------------------------------
-#define MOTION_SENSOR_PIN  7   ///< Entrée capteur (GPIO7)
+#define MOTION_SENSOR_PIN  2   ///< Entrée capteur (GPIO7)
 
 // ---------------------------------------------------------------------------
 // Boutons utilisateur externes
 // ---------------------------------------------------------------------------
 #define BUTTON_1      8      ///< Bouton 1 (GPIO8) : Changement animation guirlande
-#define BUTTON_2      9      ///< Bouton 2 (GPIO9) : Changement animation matrice
-#define BUTTON_3     10      ///< Bouton 3 (GPIO10) : Changement de mode
 
 // ---------------------------------------------------------------------------
 // Matrice NeoPixel 8x8 WS2812B-64
