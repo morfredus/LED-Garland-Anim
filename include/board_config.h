@@ -96,8 +96,6 @@
 
 // Boutons utilisateur externes
 #define BUTTON_1     16   ///< Bouton 1 : Changement animation guirlande
-#define BUTTON_2     17   ///< Bouton 2 : Changement animation matrice
-#define BUTTON_3     18   ///< Bouton 3 : Changement de mode
 
 // Matrice NeoPixel 8x8 WS2812B-64
 #define MATRIX8X8_PIN        27   ///< Data pin for 8x8 NeoPixel matrix (WS2812B-64)
@@ -132,8 +130,6 @@
 
 // Boutons utilisateur externes
 #define BUTTON_1     16   ///< Bouton 1 : Changement animation guirlande
-#define BUTTON_2     17   ///< Bouton 2 : Changement animation matrice
-#define BUTTON_3     18   ///< Bouton 3 : Changement de mode
 
 // Matrice NeoPixel 8x8 WS2812B-64
 #define MATRIX8X8_PIN        27   ///< Data pin for 8x8 NeoPixel matrix (WS2812B-64)
