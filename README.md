@@ -1,11 +1,11 @@
 
 # LED-Garland-Anim
 
-**Version: 5.6.4** (2026-02-02)  
-*This documentation is valid from version 5.6.4.*
+**Version: 5.6.5** (2026-02-02)
+*This documentation is valid from version 5.6.5.*
 
 
-Controller for bi-directional LED garland and 8x8 NeoPixel matrix animation on **ESP32 Classic** (IdeaSpark/DevKitC), **ESP32 Wroom (DevKit V1)**, **ESP32-S3 Mini**, **ESP32-S3 Super Mini** — all platforms support **OLED SSD1306 (I2C)** if connected (see per-board pins in the Pin Mapping guide). PIR/RCWL-0516 auto-detection, **modern web interface with instant save**, responsive layout, flash-free AJAX updates, web-based OTA updates, **mDNS support for easy access via unique device name**, physical controls: BOOT + 1 user button (see below), 11 garland animations, multiple festive matrix animations, dual independent control, smart modes, persistent configuration, automatic startup animations.
+Controller for bi-directional LED garland and 8x8 NeoPixel matrix animation on **ESP32-S3 Super Mini** (default) and **ESP32 Wroom DevKit V1** — both platforms support **OLED SSD1306 (I2C)** if connected (see per-board pins in the Pin Mapping guide). PIR/RCWL-0516 auto-detection, **modern web interface with instant save**, responsive layout, flash-free AJAX updates, web-based OTA updates, **mDNS support for easy access via unique device name**, physical controls: BOOT + 1 user button (see below), 11 garland animations, multiple festive matrix animations, dual independent control, smart modes, persistent configuration, automatic startup animations.
 
 ## ✨ What's New in v5.2.0
 
@@ -71,12 +71,14 @@ See [CHANGELOG.md](./CHANGELOG.md) for older releases.
 
 ### Supported Hardware Platforms
 
-- **ESP32 Classic (IdeaSpark/DevKitC)**
-- **ESP32 Wroom (DevKit V1)**
-- **ESP32-S3 Mini** (esp32s3_mini)
-- **ESP32-S3 Super Mini** (esp32s3_supermini)
+This project supports **two boards**:
 
-> 📌 **OLED SSD1306 (I2C) display is supported on all platforms if connected. See per-board I2C pins in the Pin Mapping guide.**
+| Board | Environment | Description |
+|-------|-------------|-------------|
+| **ESP32-S3 Super Mini** | `esp32s3_supermini` | Compact board, **default choice** |
+| **ESP32 Wroom DevKit V1** | `esp32wroom` | Classic development board |
+
+> 📌 **OLED SSD1306 (I2C) display is supported on both platforms if connected. See per-board I2C pins in the Pin Mapping guide.**
 
 
 #### Required Components (all platforms)
@@ -88,20 +90,20 @@ See [CHANGELOG.md](./CHANGELOG.md) for older releases.
 - **Suitable power supply** for the garland and matrix (5V recommended for NeoPixels)
 
 
-### Main pinout summary (ESP32 Classic)
+### Main pinout summary (ESP32-S3 Super Mini)
 ```
 TB6612FNG (Garland):
-   PWMA  → GPIO 12
-   AIN1  → GPIO 25
-   AIN2  → GPIO 33
-   STBY  → GPIO 14
+   PWMA  → GPIO 10
+   AIN1  → GPIO 11
+   AIN2  → GPIO 12
+   STBY  → GPIO 13
 8x8 NeoPixel Matrix:
-   DATA  → GPIO 27
-MOTION_SENSOR_PIN (PIR/RCWL-0516) → GPIO 35
+   DATA  → GPIO 7
+MOTION_SENSOR_PIN (PIR/RCWL-0516) → GPIO 2
 OLED I2C:
-   SDA   → GPIO 21
-   SCL   → GPIO 22
-BTN1     → GPIO 16 (User button)
+   SDA   → GPIO 4
+   SCL   → GPIO 5
+BTN1     → GPIO 8 (User button)
 BOOT     → GPIO 0  (Boot/Reset)
 ```
 
@@ -119,23 +121,6 @@ OLED I2C:
    SDA   → GPIO 21
    SCL   → GPIO 22
 BTN1     → GPIO 16 (User button)
-BOOT     → GPIO 0  (Boot/Reset)
-```
-
-### Main pinout summary (ESP32-S3 Mini / Super Mini)
-```
-TB6612FNG (Garland):
-   PWMA  → GPIO 10
-   AIN1  → GPIO 11
-   AIN2  → GPIO 12
-   STBY  → GPIO 13
-8x8 NeoPixel Matrix:
-   DATA  → GPIO 7
-MOTION_SENSOR_PIN (PIR/RCWL-0516) → GPIO 2
-OLED I2C:
-   SDA   → GPIO 4
-   SCL   → GPIO 5
-BTN1     → GPIO 8 (User button)
 BOOT     → GPIO 0  (Boot/Reset)
 ```
 
@@ -197,25 +182,19 @@ BOOT     → GPIO 0  (Boot/Reset)
    ```
 2. Configure `include/secrets.h` (WiFi)
 3. In `platformio.ini`, choose your environment:
-   - `esp32devkitc`: ESP32 Classic (4MB Flash)
-   - `esp32wroom`: ESP32 Wroom (DevKit V1)
-   - `esp32s3_mini`: ESP32-S3 Mini
-   - `esp32s3_supermini`: ESP32-S3 Super Mini
+   - `esp32s3_supermini`: **ESP32-S3 Super Mini** (default)
+   - `esp32wroom`: ESP32 Wroom DevKit V1
 4. Wire the components as shown above
 5. Build and upload
    ```bash
-   # For ESP32 Classic:
-   pio run -e esp32devkitc
-   pio run -e esp32devkitc -t upload
-   
-   # For ESP32-S3 Mini:
-   pio run -e esp32s3_mini
-   pio run -e esp32s3_mini -t upload
-
-   # For ESP32-S3 Super Mini:
+   # For ESP32-S3 Super Mini (default):
    pio run -e esp32s3_supermini
    pio run -e esp32s3_supermini -t upload
-   
+
+   # For ESP32 Wroom:
+   pio run -e esp32wroom
+   pio run -e esp32wroom -t upload
+
    # Monitor serial output:
    pio device monitor
    ```
@@ -388,7 +367,7 @@ In `include/garland_control.h`:
 
 ## 10. Versions
 
-**Current Version: v5.6.4** (2026-02-02)
+**Current Version: v5.6.5** (2026-02-02)
 See [CHANGELOG.md](./CHANGELOG.md)
 
 ---
@@ -568,7 +547,7 @@ static GarlandMode currentMode = MODE_PERMANENT;         // Or MODE_MOTION_TRIGG
 
 ## 📝 Versions
 
-**Current Version: v5.6.4** (2026-02-02)
+**Current Version: v5.6.5** (2026-02-02)
 
 See [CHANGELOG.md](./CHANGELOG.md) for complete history.
 
@@ -628,7 +607,7 @@ Ce projet est libre d'utilisation pour projets personnels et éducatifs.
 
 ---
 
-**Projet Anim-Guirlande v5.6.4** - Animations de guirlande LED avec ESP32 🎄✨
+**Projet Anim-Guirlande v5.6.5** - Animations de guirlande LED avec ESP32 🎄✨
 ## 🌍 Internationalization & Language Policy
 
 As of version 5.3.3, all user-facing and log messages in the codebase are in English only (except *_FR.md documentation files). This ensures full internationalization and easier maintenance for all users and contributors. See the [CHANGELOG](CHANGELOG.md) for details.

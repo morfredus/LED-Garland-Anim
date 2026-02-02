@@ -1,11 +1,22 @@
+# [5.6.5] - 2026-02-02
+
+### Modifie
+1. **Support de cartes simplifie** : Suppression des environnements ESP32 Classic (IdeaSpark/DevKitC) et ESP32-S3 Mini - supporte maintenant uniquement **ESP32-S3 Super Mini** (par defaut) et **ESP32 Wroom DevKit V1**
+2. **Mise a jour de board_config.h** : Simplifie a deux configurations de cartes avec erreur de compilation si aucune cible definie
+3. **Refonte complete de la documentation** : Toute la documentation utilisateur (README, PIN_MAPPING, TROUBLESHOOTING, QUICKSTART, HARDWARE_GUIDE) mise a jour avec :
+   - Tableaux GPIO precis pour les deux cartes supportees
+   - Conseils clairs de selection de carte
+   - Instructions de cablage pour debutants
+   - Depannage detaille par carte
+
 # [5.6.4] - 2026-02-02
 
-### Corrigé
-1. **Bug de persistance du mode** : Le mode de fonctionnement (Permanent/Détection mouvement) est maintenant correctement restauré au démarrage. Correction d'une incompatibilité de type NVS (sauvegarde en u8 mais lecture en i32)
+### Corrige
+1. **Bug de persistance du mode** : Le mode de fonctionnement (Permanent/Detection mouvement) est maintenant correctement restaure au demarrage. Correction d'une incompatibilite de type NVS (sauvegarde en u8 mais lecture en i32)
 2. **Mapping pins ESP32-S3 Mini** : Correction du pin capteur de mouvement de GPIO7 vers GPIO2 dans toute la documentation
 
-### Modifié
-3. Mise à jour de toute la documentation utilisateur (README, PIN_MAPPING) avec le bon mapping de pins et le tableau des contrôles par boutons physiques
+### Modifie
+3. Mise a jour de toute la documentation utilisateur (README, PIN_MAPPING) avec le bon mapping de pins et le tableau des controles par boutons physiques
 
 # [5.6.3] - 2026-02-01
 

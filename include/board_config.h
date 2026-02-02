@@ -1,12 +1,12 @@
-// ---
-// Changelog :
-// #4 (2025-12-31) : Détection automatique du capteur de mouvement (PIR ou RCWL-0516), code et documentation adaptés, version 1.2.0
-// ---
 /**
  * @file board_config.h
- * @brief Configuration matérielle multi-cartes (ESP32 Classic, Wroom, S3 Mini)
- * @version 5.6.4
+ * @brief Configuration materielle multi-cartes (ESP32-S3 Super Mini, ESP32 Wroom)
+ * @version 5.6.5
  * @date 2026-02-02
+ *
+ * Cartes supportees :
+ * - ESP32-S3 Super Mini (TARGET_ESP32S3_MINI) - Carte par defaut
+ * - ESP32 Wroom DevKit V1 (TARGET_ESP32_WROOM)
  */
 
 #ifndef BOARD_CONFIG_H
@@ -14,127 +14,100 @@
 
 #include <Arduino.h>
 
+// ============================================================================
+// ESP32-S3 Super Mini
+// ============================================================================
 #ifdef TARGET_ESP32S3_MINI
-// ============================================================================
-// Configuration matérielle — ESP32‑S3 Mini Zero
-// Pins accessibles uniquement (gauche + droite)
-// ============================================================================
 
-#define BOARD_NAME "ESP32-S3 Mini Zero Garland"
-
-// ============================================================================
-// Configuration matérielle — ESP32‑S3 Mini Zero
-// Pins accessibles uniquement (gauche + droite)
-// ============================================================================
+#define BOARD_NAME "ESP32-S3 Super Mini"
 
 // ---------------------------------------------------------------------------
-// Bouton et LED système
+// Bouton et LED systeme
 // ---------------------------------------------------------------------------
-#define BUTTON_BOOT    0     ///< Bouton BOOT intégré (GPIO 0)
+#define BUTTON_BOOT    0     ///< Bouton BOOT integre (GPIO 0)
 #ifndef LED_BUILTIN
-#define LED_BUILTIN 8
+#define LED_BUILTIN    8     ///< LED integree (GPIO 8)
 #endif
 
-
-
 // ---------------------------------------------------------------------------
-// Bus I2C (périphériques externes)
-// Pins accessibles et propres
+// Bus I2C (OLED SSD1306)
 // ---------------------------------------------------------------------------
-#define I2C_SDA       4      ///< SDA
-#define I2C_SCL       5      ///< SCL
+#define I2C_SDA        4     ///< SDA (GPIO 4)
+#define I2C_SCL        5     ///< SCL (GPIO 5)
 
 // ---------------------------------------------------------------------------
 // Module TB6612FNG (Pilotage Guirlande)
-// Pins alignés côté droit (10–13)
 // ---------------------------------------------------------------------------
-#define TB6612_PWMA   10     ///< PWM pour intensité
-#define TB6612_AIN1   11     ///< Direction A (Pin 1)
-#define TB6612_AIN2   12     ///< Direction A (Pin 2)
-#define TB6612_STBY   13     ///< Standby (HIGH = actif)
+#define TB6612_PWMA   10     ///< PWM pour intensite (GPIO 10)
+#define TB6612_AIN1   11     ///< Direction A Pin 1 (GPIO 11)
+#define TB6612_AIN2   12     ///< Direction A Pin 2 (GPIO 12)
+#define TB6612_STBY   13     ///< Standby - HIGH = actif (GPIO 13)
 
 // ---------------------------------------------------------------------------
 // Capteur de mouvement (PIR / RCWL-0516)
 // ---------------------------------------------------------------------------
-#define MOTION_SENSOR_PIN  2   ///< Entrée capteur (GPIO7)
+#define MOTION_SENSOR_PIN  2 ///< Entree capteur de mouvement (GPIO 2)
 
 // ---------------------------------------------------------------------------
-// Boutons utilisateur externes
+// Bouton utilisateur
 // ---------------------------------------------------------------------------
-#define BUTTON_1      8      ///< Bouton 1 (GPIO8) : Changement animation guirlande
+#define BUTTON_1       8     ///< Bouton utilisateur (GPIO 8)
 
 // ---------------------------------------------------------------------------
 // Matrice NeoPixel 8x8 WS2812B-64
 // ---------------------------------------------------------------------------
-#define MATRIX8X8_PIN        7    ///< Data pin NeoPixel (GPIO7)
-#define MATRIX8X8_NUMPIXELS  64
+#define MATRIX8X8_PIN        7    ///< Data pin NeoPixel (GPIO 7)
+#define MATRIX8X8_NUMPIXELS  64   ///< Nombre de pixels (8x8)
 
-
-// --- ESP32 Wroom DevKit V1 ---
+// ============================================================================
+// ESP32 Wroom DevKit V1
+// ============================================================================
 #elif defined(TARGET_ESP32_WROOM)
-// ============================================================================
-// Configuration matérielle pour ESP32 Wroom DevKit V1
-// ============================================================================
+
 #define BOARD_NAME "ESP32 Wroom DevKit V1"
 
-// Bouton et LED système
-#define BUTTON_BOOT    0   ///< Bouton BOOT intégré (GPIO 0)
-#define LED_BUILTIN    2   ///< LED intégrée (GPIO 2)
+// ---------------------------------------------------------------------------
+// Bouton et LED systeme
+// ---------------------------------------------------------------------------
+#define BUTTON_BOOT    0     ///< Bouton BOOT integre (GPIO 0)
+#define LED_BUILTIN    2     ///< LED integree (GPIO 2)
 
-// Bus I2C (périphériques externes)
-#define I2C_SDA  21
-#define I2C_SCL  22
+// ---------------------------------------------------------------------------
+// Bus I2C (OLED SSD1306)
+// ---------------------------------------------------------------------------
+#define I2C_SDA       21     ///< SDA (GPIO 21)
+#define I2C_SCL       22     ///< SCL (GPIO 22)
 
+// ---------------------------------------------------------------------------
 // Module TB6612FNG (Pilotage Guirlande)
-#define TB6612_PWMA  12   ///< PWM pour intensité
-#define TB6612_AIN1  25   ///< Direction A (Pin 1)
-#define TB6612_AIN2  33   ///< Direction A (Pin 2)
-#define TB6612_STBY  14   ///< Standby (HIGH = actif)
+// ---------------------------------------------------------------------------
+#define TB6612_PWMA   12     ///< PWM pour intensite (GPIO 12)
+#define TB6612_AIN1   25     ///< Direction A Pin 1 (GPIO 25)
+#define TB6612_AIN2   33     ///< Direction A Pin 2 (GPIO 33)
+#define TB6612_STBY   14     ///< Standby - HIGH = actif (GPIO 14)
 
-// Capteur de mouvement (PIR ou RCWL-0516)
-#define MOTION_SENSOR_PIN   35   ///< Entrée capteur de mouvement (PIR ou RCWL-0516)
+// ---------------------------------------------------------------------------
+// Capteur de mouvement (PIR / RCWL-0516)
+// ---------------------------------------------------------------------------
+#define MOTION_SENSOR_PIN  35 ///< Entree capteur de mouvement (GPIO 35)
 
-// Boutons utilisateur externes
-#define BUTTON_1     16   ///< Bouton 1 : Changement animation guirlande
+// ---------------------------------------------------------------------------
+// Bouton utilisateur
+// ---------------------------------------------------------------------------
+#define BUTTON_1      16     ///< Bouton utilisateur (GPIO 16)
 
+// ---------------------------------------------------------------------------
 // Matrice NeoPixel 8x8 WS2812B-64
-#define MATRIX8X8_PIN        27   ///< Data pin for 8x8 NeoPixel matrix (WS2812B-64)
-#define MATRIX8X8_NUMPIXELS  64   ///< Number of pixels in 8x8 matrix
-
-// --- Fin ESP32 Wroom ---
+// ---------------------------------------------------------------------------
+#define MATRIX8X8_PIN        27   ///< Data pin NeoPixel (GPIO 27)
+#define MATRIX8X8_NUMPIXELS  64   ///< Nombre de pixels (8x8)
 
 #else
 // ============================================================================
-// Configuration matérielle pour ESP32 IdeaSpark (LCD 1.14" ST7789)
+// Erreur : Aucune carte cible definie
 // ============================================================================
-#define BOARD_NAME "ESP32 IdeaSpark 1.14 LCD"
+#error "Aucune carte cible definie. Utilisez TARGET_ESP32S3_MINI ou TARGET_ESP32_WROOM dans platformio.ini"
 
-// Bouton et LED système
-#define BUTTON_BOOT    0   ///< Bouton BOOT intégré (GPIO 0)
-#define LED_BUILTIN    2   ///< LED bleue intégrée (Attention: Partagée avec LCD_DC)
-
-
-
-// Bus I2C (périphériques externes)
-#define I2C_SDA  21
-#define I2C_SCL  22
-
-// Module TB6612FNG (Pilotage Guirlande)
-#define TB6612_PWMA  12   ///< PWM pour intensité
-#define TB6612_AIN1  25   ///< Direction A (Pin 1)
-#define TB6612_AIN2  33   ///< Direction A (Pin 2)
-#define TB6612_STBY  14   ///< Standby (HIGH = actif)
-
-// Capteur de mouvement (PIR ou RCWL-0516)
-#define MOTION_SENSOR_PIN   35   ///< Entrée capteur de mouvement (PIR ou RCWL-0516)
-
-// Boutons utilisateur externes
-#define BUTTON_1     16   ///< Bouton 1 : Changement animation guirlande
-
-// Matrice NeoPixel 8x8 WS2812B-64
-#define MATRIX8X8_PIN        27   ///< Data pin for 8x8 NeoPixel matrix (WS2812B-64)
-#define MATRIX8X8_NUMPIXELS  64   ///< Number of pixels in 8x8 matrix
-
-#endif // TARGET_ESP32S3_MINI
+#endif // TARGET_ESP32S3_MINI / TARGET_ESP32_WROOM
 
 #endif // BOARD_CONFIG_H

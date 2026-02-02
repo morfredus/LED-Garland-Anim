@@ -27,7 +27,7 @@ Vous pouvez choisir la méthode de téléversement (USB ou OTA) à chaque upload
 ---
 # LED-Garland-Anim
 
-**Version : 5.6.4** (2026-02-02)
+**Version : 5.6.5** (2026-02-02)
 
 
 Contrôleur d'animation de guirlande LED bi-directionnelle et matrice NeoPixel 8x8 pour **ESP32 Classic** (IdeaSpark/DevKitC), **ESP32 Wroom**, **ESP32-S3 Mini**, **ESP32-S3 Super Mini** — toutes plateformes compatibles avec l'affichage **OLED SSD1306 (I2C)** si connecté (voir les broches par carte dans le guide de mapping). Auto-détection PIR/RCWL-0516, **interface web modernisée avec sauvegarde instantanée**, layout responsive, mises à jour AJAX sans flash, mises à jour OTA via web, **support mDNS pour un accès facile via nom unique**, commandes physiques : BOOT + 1 bouton utilisateur (voir ci-dessous), 11 animations de guirlande, plusieurs animations festives pour matrice, contrôle double indépendant, modes intelligents, configuration persistante, animations de démarrage automatiques.
@@ -91,14 +91,16 @@ Voir [CHANGELOG_FR.md](./CHANGELOG_FR.md) pour les versions précédentes.
 
 
 
-## Plateformes matérielles supportées
+## Cartes Supportees
 
-- **ESP32 Classic (IdeaSpark/DevKitC)**
-- **ESP32 Wroom**
-- **ESP32-S3 Mini** (esp32s3_mini)
-- **ESP32-S3 Super Mini** (esp32s3_supermini)
+Ce projet supporte **deux cartes** :
 
-> 📌 **Affichage OLED SSD1306 (I2C) disponible sur toutes les plateformes si connecté. Voir les broches par carte dans le guide de mapping.**
+| Carte | Environnement | Description |
+|-------|---------------|-------------|
+| **ESP32-S3 Super Mini** | `esp32s3_supermini` | Carte compacte, **choix par defaut** |
+| **ESP32 Wroom DevKit V1** | `esp32wroom` | Carte de developpement classique |
+
+> 📌 **Affichage OLED SSD1306 (I2C) disponible sur les deux plateformes si connecte. Voir les broches par carte dans le guide de mapping.**
 
 #### Composants requis (toutes plateformes)
 - **Module TB6612FNG** (double pont H)
@@ -246,28 +248,22 @@ BOOT     → GPIO 0  (Boot/Reset)
   ```
 2. Configurer `include/secrets.h` (WiFi)
 3. Dans `platformio.ini`, choisir votre environnement :
-  - `esp32devkitc`: ESP32 Classic (4MB Flash)
-  - `esp32wroom`: ESP32 Wroom (DevKit V1)
-  - `esp32s3_mini`: ESP32-S3 Mini
-  - `esp32s3_supermini`: ESP32-S3 Super Mini
-4. Câbler les composants selon le schéma ci-dessus
-5. Compiler et téléverser
-  ```bash
-  # Pour ESP32 Classic :
-  pio run -e esp32devkitc
-  pio run -e esp32devkitc -t upload
-  
-  # Pour ESP32-S3 Mini :
-  pio run -e esp32s3_mini
-  pio run -e esp32s3_mini -t upload
+   - `esp32s3_supermini` : **ESP32-S3 Super Mini** (par defaut)
+   - `esp32wroom` : ESP32 Wroom DevKit V1
+4. Cabler les composants selon le schema ci-dessus
+5. Compiler et televerser
+   ```bash
+   # Pour ESP32-S3 Super Mini (par defaut) :
+   pio run -e esp32s3_supermini
+   pio run -e esp32s3_supermini -t upload
 
-  # Pour ESP32-S3 Super Mini :
-  pio run -e esp32s3_supermini
-  pio run -e esp32s3_supermini -t upload
-  
-  # Moniteur série :
-  pio device monitor
-  ```
+   # Pour ESP32 Wroom :
+   pio run -e esp32wroom
+   pio run -e esp32wroom -t upload
+
+   # Moniteur serie :
+   pio device monitor
+   ```
 
 ---
 
@@ -432,7 +428,7 @@ Dans `include/garland_control.h` :
 
 ## 11. Versions
 
-**Version Actuelle : v5.6.4** (2026-02-02)
+**Version Actuelle : v5.6.5** (2026-02-02)
 Voir [CHANGELOG_FR.md](./CHANGELOG_FR.md)
 
 ---

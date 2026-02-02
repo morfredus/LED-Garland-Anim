@@ -1,3 +1,14 @@
+# [5.6.5] - 2026-02-02
+
+### Changed
+1. **Streamlined board support**: Removed ESP32 Classic (IdeaSpark/DevKitC) and ESP32-S3 Mini environments - now supporting only **ESP32-S3 Super Mini** (default) and **ESP32 Wroom DevKit V1**
+2. **Updated board_config.h**: Simplified to two board configurations with compile-time error if no target defined
+3. **Complete documentation overhaul**: All user documentation (README, PIN_MAPPING, TROUBLESHOOTING, QUICKSTART, HARDWARE_GUIDE) updated with:
+   - Precise GPIO tables for both supported boards
+   - Clear board selection guidance
+   - Beginner-friendly wiring instructions
+   - Detailed troubleshooting per board
+
 # [5.6.4] - 2026-02-02
 
 ### Fixed
