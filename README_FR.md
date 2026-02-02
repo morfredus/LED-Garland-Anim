@@ -27,7 +27,7 @@ Vous pouvez choisir la méthode de téléversement (USB ou OTA) à chaque upload
 ---
 # LED-Garland-Anim
 
-**Version : 5.6.3** (2026-02-01)
+**Version : 5.6.4** (2026-02-02)
 
 
 Contrôleur d'animation de guirlande LED bi-directionnelle et matrice NeoPixel 8x8 pour **ESP32 Classic** (IdeaSpark/DevKitC), **ESP32 Wroom**, **ESP32-S3 Mini**, **ESP32-S3 Super Mini** — toutes plateformes compatibles avec l'affichage **OLED SSD1306 (I2C)** si connecté (voir les broches par carte dans le guide de mapping). Auto-détection PIR/RCWL-0516, **interface web modernisée avec sauvegarde instantanée**, layout responsive, mises à jour AJAX sans flash, mises à jour OTA via web, **support mDNS pour un accès facile via nom unique**, commandes physiques : BOOT + 1 bouton utilisateur (voir ci-dessous), 11 animations de guirlande, plusieurs animations festives pour matrice, contrôle double indépendant, modes intelligents, configuration persistante, animations de démarrage automatiques.
@@ -109,7 +109,7 @@ Voir [CHANGELOG_FR.md](./CHANGELOG_FR.md) pour les versions précédentes.
 - **Écran OLED SSD1306 (I2C)** (optionnel)
 - **Alimentation adaptée** pour la guirlande et la matrice (5V recommandé pour NeoPixels)
 
-*Ce document est valide à partir de la version 5.6.3.*
+*Ce document est valide à partir de la version 5.6.4.*
 
 ## 1. Matériel requis
 
@@ -189,7 +189,7 @@ TB6612FNG (Guirlande) :
   STBY  → GPIO 13
 Matrice NeoPixel 8x8 :
   DATA  → GPIO 7
-MOTION_SENSOR_PIN (PIR/RCWL-0516) → GPIO 7
+MOTION_SENSOR_PIN (PIR/RCWL-0516) → GPIO 2
 OLED I2C :
   SDA   → GPIO 4
   SCL   → GPIO 5
@@ -432,7 +432,7 @@ Dans `include/garland_control.h` :
 
 ## 11. Versions
 
-**Version Actuelle : v5.6.3** (2026-02-01)
+**Version Actuelle : v5.6.4** (2026-02-02)
 Voir [CHANGELOG_FR.md](./CHANGELOG_FR.md)
 
 ---

@@ -1,3 +1,12 @@
+# [5.6.4] - 2026-02-02
+
+### Fixed
+1. **Mode persistence bug**: Operating mode (Permanent/Motion Trigger) now correctly restored at boot. Fixed NVS type mismatch (was saving as u8 but reading as i32)
+2. **ESP32-S3 Mini pin mapping**: Corrected motion sensor pin from GPIO7 to GPIO2 in all documentation
+
+### Changed
+3. Updated all user documentation (README, PIN_MAPPING) with correct pin mapping and physical button controls table
+
 # [5.6.3] - 2026-02-01
 
 ### Changed

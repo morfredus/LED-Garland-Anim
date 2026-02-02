@@ -4,9 +4,9 @@
 // ---
 /**
  * @file board_config.h
- * @brief Mapping optimisé pour ESP32 IdeaSpark (Écran 1.14" intégré)
- * @version 1.11.3
- * @date 2026-01-01
+ * @brief Configuration matérielle multi-cartes (ESP32 Classic, Wroom, S3 Mini)
+ * @version 5.6.4
+ * @date 2026-02-02
  */
 
 #ifndef BOARD_CONFIG_H

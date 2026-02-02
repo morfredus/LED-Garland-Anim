@@ -1,9 +1,6 @@
+# Guide de Connexion des Pins - LED-Garland-Anim v5.6.4
 
-
-# Guide de Connexion des Pins - LED-Garland-Anim v5.6.3
-
-*Ce document est valide à partir de la version 5.6.3.*
-
+*Ce document est valide à partir de la version 5.6.4.*
 
 ## Plateformes supportées
 - ESP32 Classic (IdeaSpark/DevKitC)
@@ -22,15 +19,23 @@
 |---|---|---|---|---|---|---|
 | ESP32 Classic | GPIO21 / GPIO22 | GPIO12 / GPIO25 / GPIO33 / GPIO14 | GPIO27 | GPIO35 | GPIO16 | GPIO0 |
 | ESP32 Wroom | GPIO21 / GPIO22 | GPIO12 / GPIO25 / GPIO33 / GPIO14 | GPIO27 | GPIO35 | GPIO16 | GPIO0 |
-| ESP32-S3 Mini / Super Mini | GPIO4 / GPIO5 | GPIO10 / GPIO11 / GPIO12 / GPIO13 | GPIO7 | GPIO7 | GPIO8 | GPIO0 |
+| ESP32-S3 Mini / Super Mini | GPIO4 / GPIO5 | GPIO10 / GPIO11 / GPIO12 / GPIO13 | GPIO7 | GPIO2 | GPIO8 | GPIO0 |
+
+---
+
+## Contrôles par boutons physiques
+
+Le firmware utilise **un seul bouton utilisateur** (BUTTON_1) plus le bouton BOOT intégré :
+
+| Bouton | Action | Fonction |
+|--------|--------|----------|
+| **BUTTON_1** | 1 clic | Animation suivante guirlande |
+| **BUTTON_1** | 2 clics | Animation suivante matrice |
+| **BUTTON_1** | Appui long | Changement de mode |
+| **BOOT** | Appui long | Redémarrage système |
 
 ---
 
 ## Notes
-- Le firmware utilise **un seul bouton utilisateur** (BUTTON_1). Les autres entrées bouton ne sont pas utilisées.
-- Sur ESP32-S3 Mini / Super Mini, le capteur de mouvement et la matrice partagent GPIO7, conformément à board_config.h.
+- Sur ESP32-S3 Mini / Super Mini, le capteur de mouvement utilise GPIO2 et la matrice utilise GPIO7.
 - Voir board_config.h pour le mapping de référence.
-
-**Note** : Ce guide accompagne le projet LED-Garland-Anim v1.11.3. Pour toute question ou problème, consultez le README.md et le code source commenté.
-
-**Version du document : v1.13.0 (2026-01-06)**

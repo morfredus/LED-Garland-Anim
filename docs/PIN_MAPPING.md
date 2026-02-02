@@ -1,6 +1,6 @@
-# Pin Connection Guide - LED-Garland-Anim v5.6.3
+# Pin Connection Guide - LED-Garland-Anim v5.6.4
 
-*This document is valid from version 5.6.3.*
+*This document is valid from version 5.6.4.*
 
 ## Supported Platforms
 - ESP32 Classic (IdeaSpark/DevKitC)
@@ -19,11 +19,23 @@
 |---|---|---|---|---|---|---|
 | ESP32 Classic | GPIO21 / GPIO22 | GPIO12 / GPIO25 / GPIO33 / GPIO14 | GPIO27 | GPIO35 | GPIO16 | GPIO0 |
 | ESP32 Wroom | GPIO21 / GPIO22 | GPIO12 / GPIO25 / GPIO33 / GPIO14 | GPIO27 | GPIO35 | GPIO16 | GPIO0 |
-| ESP32-S3 Mini / Super Mini | GPIO4 / GPIO5 | GPIO10 / GPIO11 / GPIO12 / GPIO13 | GPIO7 | GPIO7 | GPIO8 | GPIO0 |
+| ESP32-S3 Mini / Super Mini | GPIO4 / GPIO5 | GPIO10 / GPIO11 / GPIO12 / GPIO13 | GPIO7 | GPIO2 | GPIO8 | GPIO0 |
+
+---
+
+## Physical Button Controls
+
+The firmware uses a **single user button** (BUTTON_1) plus the built-in BOOT button:
+
+| Button | Action | Function |
+|--------|--------|----------|
+| **BUTTON_1** | 1 click | Next garland animation |
+| **BUTTON_1** | 2 clicks | Next matrix animation |
+| **BUTTON_1** | Long press | Change operating mode |
+| **BOOT** | Long press | System reboot |
 
 ---
 
 ## Notes
-- The firmware uses a **single user button** (BUTTON_1). Other button inputs are not used by current firmware logic.
-- On ESP32-S3 Mini / Super Mini, the motion sensor and matrix share GPIO7 as defined in board_config.h.
+- On ESP32-S3 Mini / Super Mini, the motion sensor uses GPIO2 and the matrix uses GPIO7.
 - See board_config.h for the authoritative mapping.

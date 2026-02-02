@@ -1,8 +1,8 @@
 /**
  * @file garland_control.cpp
  * @brief Implémentation du contrôle des animations de guirlande
- * @version 5.5.1
- * @date 2026-01-23
+ * @version 5.6.4
+ * @date 2026-02-02
  */
 
 #include "garland_control.h"
@@ -221,10 +221,11 @@ void loadGarlandSettings() {
     }
     
     // Charger le mode
-    int32_t mode = 0;
-    if (nvs_get_i32(handle, "mode", &mode) == ESP_OK && mode >= 0 && mode < MODE_COUNT) {
+    uint8_t mode = 0;
+    if (nvs_get_u8(handle, "mode", &mode) == ESP_OK && mode < MODE_COUNT) {
         currentMode = (GarlandMode)mode;
         savedMode = currentMode;  // Synchroniser l'état de démarrage
+        LOG_PRINTF("[RESTORE] - Mode - %s\n", modeNames[currentMode]);
     }
 
     // Charger l'animation
