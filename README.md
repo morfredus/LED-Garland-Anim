@@ -1,6 +1,5 @@
 
-# LED-Garland-Anim
-
+# LEDGarland
 **Version: 5.6.4** (2026-02-02)  
 *This documentation is valid from version 5.6.4.*
 
